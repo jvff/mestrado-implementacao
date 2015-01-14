@@ -1,0 +1,13 @@
+apply plugin: 'cpp'
+
+libraries {
+    main
+}
+
+executables {
+    test {
+        binaries.all {
+            lib libraries.main
+        }
+    }
+}
