@@ -1,5 +1,20 @@
 apply plugin: 'cpp'
 
+model {
+    repositories {
+        lib(PrebuiltLibraries) {
+            cppunit {
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libcppunit.a")
+                }
+                binaries.withType(SharedLibraryBinary) {
+                    sharedLibraryFile = file("/usr/lib/x86_64-linux-gnu/libcppunit.so")
+                }
+            }
+        }
+    }
+}
+
 libraries {
     main
 }
@@ -8,6 +23,7 @@ executables {
     test {
         binaries.all {
             lib libraries.main
+            lib library: 'cppunit', linkage: 'shared'
         }
     }
 }
