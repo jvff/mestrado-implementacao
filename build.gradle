@@ -35,6 +35,9 @@ sources {
                 srcDir "src/main/cpp/"
                 exclude "*.swp"
             }
+            exportedHeaders {
+                srcDir "src/main/cpp/"
+            }
         }
     }
     test {
