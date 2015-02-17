@@ -19,22 +19,25 @@ public:
     }
 
     void testSinglePixel(int color) {
-        Image image(1, 1);
-
-        image.setPixel(0, 0, color);
-
-        CPPUNIT_ASSERT(image.getPixel(0, 0) == color);
+	testPixelsWithSameColor(1, 1, color);
     }
 
     void testTwoPixels() {
-        Image image(2, 1);
-	int color = 10;
+	testPixelsWithSameColor(2, 1, 10);
+    }
 
-        image.setPixel(0, 0, color);
-        image.setPixel(1, 0, color);
+    void testPixelsWithSameColor(int width, int height, int color) {
+        Image image(width, height);
 
-        CPPUNIT_ASSERT(image.getPixel(0, 0) == color);
-        CPPUNIT_ASSERT(image.getPixel(1, 0) == color);
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y)
+		image.setPixel(x, y, color);
+	}
+
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y)
+		CPPUNIT_ASSERT(image.getPixel(x, y) == color);
+	}
     }
 };
 
