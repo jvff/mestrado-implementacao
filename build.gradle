@@ -27,3 +27,22 @@ executables {
         }
     }
 }
+
+sources {
+    main {
+        cpp {
+            source {
+                srcDir "src/main/cpp/"
+                exclude "*.swp"
+            }
+        }
+    }
+    test {
+        cpp {
+            source {
+                srcDir "src/test/cpp/"
+                exclude "**/*.swp"
+            }
+        }
+    }
+}
