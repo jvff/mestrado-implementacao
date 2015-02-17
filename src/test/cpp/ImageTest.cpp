@@ -5,12 +5,20 @@
 class ImageTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ImageTest);
 	CPPUNIT_TEST(testSinglePixel);
+	CPPUNIT_TEST(testSingleRedPixel);
     CPPUNIT_TEST_SUITE_END();
 
 public:
     void testSinglePixel() {
+	testSinglePixel(10);
+    }
+
+    void testSingleRedPixel() {
+	testSinglePixel(0xFF0000);
+    }
+
+    void testSinglePixel(int color) {
         Image image(1, 1);
-        int color = 10;
 
         image.setPixel(0, 0, color);
 
