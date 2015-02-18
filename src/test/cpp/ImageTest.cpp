@@ -28,14 +28,10 @@ public:
     }
 
     void testTwoPixelsWithDifferentColors() {
-        Image image(2, 1);
-	int colors[2] = { 10, 20 };
+	int colors[] = { 10, 20 };
 
-	image.setPixel(0, 0, colors[0]);
-	image.setPixel(1, 0, colors[1]);
+	testPixels(2, 1, colors);
 
-	CPPUNIT_ASSERT(image.getPixel(0, 0) == colors[0]);
-	CPPUNIT_ASSERT(image.getPixel(1, 0) == colors[1]);
     }
 
     void testPixelsWithSameColor(int width, int height, int color) {
@@ -49,6 +45,24 @@ public:
 	for (int x = 0; x < width; ++x) {
 	    for (int y = 0; y < height; ++y)
 		CPPUNIT_ASSERT(image.getPixel(x, y) == color);
+	}
+    }
+
+    void testPixels(int width, int height, const int colors[]) {
+        Image image(width, height);
+	const int* colorIterator = &colors[0];
+
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y)
+		image.setPixel(x, y, *(colorIterator++));
+	}
+
+	colorIterator = &colors[0];
+
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y) {
+		CPPUNIT_ASSERT_EQUAL(image.getPixel(x, y), *(colorIterator++));
+	    }
 	}
     }
 };
