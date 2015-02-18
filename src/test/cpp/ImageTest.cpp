@@ -8,6 +8,7 @@ class ImageTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST(testSingleRedPixel);
 	CPPUNIT_TEST(testTwoPixels);
 	CPPUNIT_TEST(testTwoPixelsWithDifferentColors);
+        CPPUNIT_TEST(testRedGreenBlueRect);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -31,7 +32,33 @@ public:
 	int colors[] = { 10, 20 };
 
 	testPixels(2, 1, colors);
+    }
 
+    void testRedGreenBlueRect() {
+	int width = 9;
+	int height = 5;
+	int colors[width * height];
+	int *colorIterator = &colors[0];
+
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y) {
+		switch (y % 5) {
+		    case 0:
+		    case 1:
+		    case 2:
+			*colorIterator++ = 0xFF << (2 * (x % 3));
+			break;
+		    case 3:
+			*colorIterator++ = 0x00000000;
+			break;
+		    case 4:
+			*colorIterator++ = 0xFFFFFFFF;
+			break;
+		};
+	    }
+	}
+
+	testPixels(width, height, colors);
     }
 
     void testPixelsWithSameColor(int width, int height, int color) {
