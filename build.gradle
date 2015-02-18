@@ -49,3 +49,12 @@ sources {
         }
     }
 }
+
+task test(type: Exec, dependsOn: 'testExecutable') {
+    doFirst {
+        def binary = executables.test.getBinaries().getAt(0)
+        def executableFile = binary.getExecutableFile()
+
+        commandLine executableFile.toString()
+    }
+}
