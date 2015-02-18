@@ -5,22 +5,22 @@ private:
     int* pixels;
 
     inline int getPixelIndex(int x, int y) {
-	return y * width + x;
+        return y * width + x;
     }
 
 public:
     Image(int width, int height) {
-	this->width = width;
-	this->height = height;
+        this->width = width;
+        this->height = height;
 
-	pixels = new int[width * height];
+        pixels = new int[width * height];
     }
 
     void setPixel(int x, int y, int color) {
-	pixels[getPixelIndex(x, y)] = color;
+        pixels[getPixelIndex(x, y)] = color;
     }
 
     int getPixel(int x, int y) {
-	return pixels[getPixelIndex(x, y)];
+        return pixels[getPixelIndex(x, y)];
     }
 };
