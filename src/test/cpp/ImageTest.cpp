@@ -7,6 +7,7 @@ class ImageTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST(testSinglePixel);
 	CPPUNIT_TEST(testSingleRedPixel);
 	CPPUNIT_TEST(testTwoPixels);
+	CPPUNIT_TEST(testTwoPixelsWithDifferentColors);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,6 +25,17 @@ public:
 
     void testTwoPixels() {
 	testPixelsWithSameColor(2, 1, 10);
+    }
+
+    void testTwoPixelsWithDifferentColors() {
+        Image image(2, 1);
+	int colors[2] = { 10, 20 };
+
+	image.setPixel(0, 0, colors[0]);
+	image.setPixel(1, 0, colors[1]);
+
+	CPPUNIT_ASSERT(image.getPixel(0, 0) == colors[0]);
+	CPPUNIT_ASSERT(image.getPixel(1, 0) == colors[1]);
     }
 
     void testPixelsWithSameColor(int width, int height, int color) {
