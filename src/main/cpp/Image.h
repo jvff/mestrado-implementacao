@@ -5,7 +5,7 @@ private:
     int* pixels;
 
     inline int getPixelIndex(int x, int y) {
-	return y * height + x;
+	return y * width + x;
     }
 
 public:
