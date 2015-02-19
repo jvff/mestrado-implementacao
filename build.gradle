@@ -3,12 +3,14 @@ apply plugin: 'cpp'
 model {
     repositories {
         lib(PrebuiltLibraries) {
-            cppunit {
+            gtest {
                 binaries.withType(StaticLibraryBinary) {
-                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libcppunit.a")
+                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libgtest.a")
                 }
-                binaries.withType(SharedLibraryBinary) {
-                    sharedLibraryFile = file("/usr/lib/x86_64-linux-gnu/libcppunit.so")
+            }
+            gtest_main {
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libgtest_main.a")
                 }
             }
         }
@@ -22,8 +24,10 @@ libraries {
 executables {
     test {
         binaries.all {
+            linker.args "-pthread"
             lib libraries.main
-            lib library: 'cppunit', linkage: 'shared'
+            lib library: 'gtest', linkage: 'static'
+            lib library: 'gtest_main', linkage: 'static'
         }
     }
 }
