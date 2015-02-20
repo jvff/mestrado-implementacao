@@ -2,26 +2,28 @@
 
 #include "ImageTest.h"
 
+typedef ::testing::Types<Image> ImageTypes;
+TYPED_TEST_CASE(ImageTest, ImageTypes);
 
-TEST_F(ImageTest, testSinglePixel) {
-    testSinglePixel(10);
+TYPED_TEST(ImageTest, testSinglePixel) {
+    this->testSinglePixel(10);
 }
 
-TEST_F(ImageTest, testSingleRedPixel) {
-    testSinglePixel(0xFF0000);
+TYPED_TEST(ImageTest, testSingleRedPixel) {
+    this->testSinglePixel(0xFF0000);
 }
 
-TEST_F(ImageTest, testTwoPixelsWithTheSameColor) {
-    testPixelsWithSameColor(2, 1, 10);
+TYPED_TEST(ImageTest, testTwoPixelsWithTheSameColor) {
+    this->testPixelsWithSameColor(2, 1, 10);
 }
 
-TEST_F(ImageTest, testTwoPixelsWithDifferentColors) {
+TYPED_TEST(ImageTest, testTwoPixelsWithDifferentColors) {
     int colors[] = { 10, 20 };
 
-    testPixels(2, 1, colors);
+    this->testPixels(2, 1, colors);
 }
 
-TEST_F(ImageTest, testRedGreenBlueRect) {
+TYPED_TEST(ImageTest, testRedGreenBlueRect) {
     int width = 9;
     int height = 5;
     int colors[width * height];
@@ -45,15 +47,17 @@ TEST_F(ImageTest, testRedGreenBlueRect) {
         }
     }
 
-    testPixels(width, height, colors);
+    this->testPixels(width, height, colors);
 }
 
-void ImageTest::testSinglePixel(int color) {
+template <typename ImageType>
+void ImageTest<ImageType>::testSinglePixel(int color) {
     testPixelsWithSameColor(1, 1, color);
 }
 
-void ImageTest::testPixelsWithSameColor(int width, int height, int color) {
-    Image image(width, height);
+template <typename ImageType>
+void ImageTest<ImageType>::testPixelsWithSameColor(int width, int height, int color) {
+    ImageType image(width, height);
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
@@ -66,8 +70,9 @@ void ImageTest::testPixelsWithSameColor(int width, int height, int color) {
     }
 }
 
-void ImageTest::testPixels(int width, int height, const int colors[]) {
-    Image image(width, height);
+template <typename ImageType>
+void ImageTest<ImageType>::testPixels(int width, int height, const int colors[]) {
+    ImageType image(width, height);
     const int* colorIterator = &colors[0];
 
     for (int x = 0; x < width; ++x) {

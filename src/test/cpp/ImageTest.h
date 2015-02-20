@@ -2,6 +2,7 @@
 
 #include "Image.h"
 
+template <typename ImageType>
 class ImageTest : public ::testing::Test {
 protected:
     void testSinglePixel(int color);
