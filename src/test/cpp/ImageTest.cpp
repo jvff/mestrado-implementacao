@@ -1,44 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Image.h"
+#include "ImageTest.h"
 
-class ImageTest : public ::testing::Test {
-public:
-    void testSinglePixel(int color) {
-        testPixelsWithSameColor(1, 1, color);
-    }
-
-    void testPixelsWithSameColor(int width, int height, int color) {
-        Image image(width, height);
-
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y)
-                image.setPixel(x, y, color);
-        }
-
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y)
-                EXPECT_EQ(image.getPixel(x, y), color);
-        }
-    }
-
-    void testPixels(int width, int height, const int colors[]) {
-        Image image(width, height);
-        const int* colorIterator = &colors[0];
-
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y)
-                image.setPixel(x, y, *(colorIterator++));
-        }
-
-        colorIterator = &colors[0];
-
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y)
-                EXPECT_EQ(image.getPixel(x, y), *(colorIterator++));
-        }
-    }
-};
 
 TEST_F(ImageTest, testSinglePixel) {
     testSinglePixel(10);
@@ -83,4 +46,39 @@ TEST_F(ImageTest, testRedGreenBlueRect) {
     }
 
     testPixels(width, height, colors);
+}
+
+void ImageTest::testSinglePixel(int color) {
+    testPixelsWithSameColor(1, 1, color);
+}
+
+void ImageTest::testPixelsWithSameColor(int width, int height, int color) {
+    Image image(width, height);
+
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y)
+            image.setPixel(x, y, color);
+    }
+
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y)
+            EXPECT_EQ(image.getPixel(x, y), color);
+    }
+}
+
+void ImageTest::testPixels(int width, int height, const int colors[]) {
+    Image image(width, height);
+    const int* colorIterator = &colors[0];
+
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y)
+            image.setPixel(x, y, *(colorIterator++));
+    }
+
+    colorIterator = &colors[0];
+
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y)
+            EXPECT_EQ(image.getPixel(x, y), *(colorIterator++));
+    }
 }
