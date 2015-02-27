@@ -1,3 +1,6 @@
+#ifndef IMAGE_H
+#define IMAGE_H
+
 class Image {
 private:
     int width;
@@ -24,3 +27,5 @@ public:
         return pixels[getPixelIndex(x, y)];
     }
 };
+
+#endif
