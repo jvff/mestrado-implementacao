@@ -8,9 +8,14 @@ model {
                     staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libgtest.a")
                 }
             }
-            gtest_main {
+            mtrace_gtest {
                 binaries.withType(StaticLibraryBinary) {
-                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libgtest_main.a")
+                    staticLibraryFile = file("../mtrace_gtest/build/binaries/mtrace_gtestStaticLibrary/libmtrace_gtest.a")
+                }
+            }
+            mtrace_gtest_main {
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("../mtrace_gtest/build/binaries/mtrace_gtest_mainStaticLibrary/libmtrace_gtest_main.a")
                 }
             }
         }
@@ -26,8 +31,9 @@ executables {
         binaries.all {
             linker.args "-pthread"
             lib libraries.main
+            lib library: 'mtrace_gtest_main', linkage: 'static'
+            lib library: 'mtrace_gtest', linkage: 'static'
             lib library: 'gtest', linkage: 'static'
-            lib library: 'gtest_main', linkage: 'static'
         }
     }
 }
