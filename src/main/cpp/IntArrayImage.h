@@ -16,6 +16,10 @@ public:
         pixels = new int[width * height];
     }
 
+    ~IntArrayImage() {
+        delete[] pixels;
+    }
+
     void setPixel(int x, int y, int color) {
         pixels[getPixelIndex(x, y)] = color;
     }
