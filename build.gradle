@@ -67,6 +67,6 @@ task test(type: Exec, dependsOn: ['testExecutable', 'checkHeaderGuards']) {
         def binary = executables.test.getBinaries().getAt(0)
         def executableFile = binary.getExecutableFile()
 
-        commandLine executableFile.toString()
+        commandLine executableFile.toString(), '--gtest_color=yes'
     }
 }
