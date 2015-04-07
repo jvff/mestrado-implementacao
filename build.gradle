@@ -20,41 +20,22 @@ model {
             }
         }
     }
-}
 
-libraries {
-    main
-}
-
-executables {
-    test {
-        binaries.all {
-            linker.args "-pthread"
-            lib libraries.main
-            lib library: 'mtrace_gtest_main', linkage: 'static'
-            lib library: 'mtrace_gtest', linkage: 'static'
-            lib library: 'gtest', linkage: 'static'
-        }
-    }
-}
-
-sources {
-    main {
-        cpp {
-            source {
-                srcDir "src/main/cpp/"
-                exclude "*.swp"
-            }
-            exportedHeaders {
-                srcDir "src/main/cpp/"
+    components {
+        main(NativeLibrarySpec) {
+            sources.cpp.exportedHeaders {
+                srcDir "src/main/cpp"
             }
         }
-    }
-    test {
-        cpp {
-            source {
-                srcDir "src/test/cpp/"
-                exclude "**/*.swp"
+        test(NativeExecutableSpec) {
+            binaries.all {
+                linker.args "-pthread"
+            }
+            sources.cpp {
+                lib library: 'main'
+                lib library: 'mtrace_gtest_main', linkage: 'static'
+                lib library: 'mtrace_gtest', linkage: 'static'
+                lib library: 'gtest', linkage: 'static'
             }
         }
     }
@@ -64,7 +45,7 @@ task checkHeaderGuards(type: com.janitovff.headerguardplugin.HeaderGuardTask)
 
 task test(type: Exec, dependsOn: ['testExecutable', 'checkHeaderGuards']) {
     doFirst {
-        def binary = executables.test.getBinaries().getAt(0)
+        def binary = binaries.getByName 'testExecutable'
         def executableFile = binary.getExecutableFile()
 
         commandLine executableFile.toString(), '--gtest_color=yes'
