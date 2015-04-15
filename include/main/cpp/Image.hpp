@@ -14,7 +14,7 @@ public:
     }
 
     virtual void setPixel(int x, int y, int color) = 0;
-    virtual int getPixel(int x, int y) = 0;
+    virtual PixelType getPixel(int x, int y) = 0;
 };
 
 #endif
