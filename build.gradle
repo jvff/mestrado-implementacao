@@ -24,7 +24,7 @@ model {
     components {
         main(NativeLibrarySpec) {
             sources.cpp.exportedHeaders {
-                srcDir "src/main/cpp"
+                srcDir "include/main/cpp"
             }
         }
         test(NativeExecutableSpec) {
