@@ -12,6 +12,11 @@ TYPED_TEST(RgbImageTest, typeIsImage) {
     Image<int>* image = specificImage;
 }
 
+TYPED_TEST(RgbImageTest, typeIsRgbImage) {
+    TypeParam* specificImage = NULL;
+    RgbImage* rgbImage = specificImage;
+}
+
 TYPED_TEST(RgbImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
