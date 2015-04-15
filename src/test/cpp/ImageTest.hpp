@@ -1,5 +1,5 @@
-#ifndef IMAGE_TEST_H
-#define IMAGE_TEST_H
+#ifndef IMAGE_TEST_HPP
+#define IMAGE_TEST_HPP
 
 #include <gtest/gtest.h>
 

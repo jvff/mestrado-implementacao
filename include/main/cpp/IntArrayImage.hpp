@@ -1,5 +1,5 @@
-#ifndef INT_ARRAY_IMAGE_H
-#define INT_ARRAY_IMAGE_H
+#ifndef INT_ARRAY_IMAGE_HPP
+#define INT_ARRAY_IMAGE_HPP
 
 #include "Image.hpp"
 

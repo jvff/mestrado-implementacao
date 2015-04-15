@@ -1,5 +1,5 @@
-#ifndef RGB_IMAGE_TEST_H
-#define RGB_IMAGE_TEST_H
+#ifndef RGB_IMAGE_TEST_HPP
+#define RGB_IMAGE_TEST_HPP
 
 #include "ImageTest.hpp"
 
