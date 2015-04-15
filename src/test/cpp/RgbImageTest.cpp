@@ -2,30 +2,30 @@
 
 #include "IntArrayImage.hpp"
 
-#include "ImageTest.hpp"
+#include "RgbImageTest.hpp"
 
 typedef ::testing::Types<IntArrayImage> ImageTypes;
-TYPED_TEST_CASE(ImageTest, ImageTypes);
+TYPED_TEST_CASE(RgbImageTest, ImageTypes);
 
-TYPED_TEST(ImageTest, testSinglePixel) {
+TYPED_TEST(RgbImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
 
-TYPED_TEST(ImageTest, testSingleRedPixel) {
+TYPED_TEST(RgbImageTest, testSingleRedPixel) {
     this->testSinglePixel(0xFF0000);
 }
 
-TYPED_TEST(ImageTest, testTwoPixelsWithTheSameColor) {
+TYPED_TEST(RgbImageTest, testTwoPixelsWithTheSameColor) {
     this->testPixelsWithSameColor(2, 1, 10);
 }
 
-TYPED_TEST(ImageTest, testTwoPixelsWithDifferentColors) {
+TYPED_TEST(RgbImageTest, testTwoPixelsWithDifferentColors) {
     int colors[] = { 10, 20 };
 
     this->testPixels(2, 1, colors);
 }
 
-TYPED_TEST(ImageTest, testRedGreenBlueRect) {
+TYPED_TEST(RgbImageTest, testRedGreenBlueRect) {
     int width = 9;
     int height = 5;
     int colors[width * height];
