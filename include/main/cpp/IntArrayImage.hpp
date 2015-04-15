@@ -1,7 +1,7 @@
 #ifndef INT_ARRAY_IMAGE_H
 #define INT_ARRAY_IMAGE_H
 
-#include "Image.h"
+#include "Image.hpp"
 
 class IntArrayImage : public Image {
 private:

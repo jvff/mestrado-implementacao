@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "Image.h"
+#include "Image.hpp"
 
 template <typename ImageType>
 class ImageTest : public ::testing::Test {

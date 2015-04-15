@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "IntArrayImage.h"
+#include "IntArrayImage.hpp"
 
-#include "ImageTest.h"
+#include "ImageTest.hpp"
 
 typedef ::testing::Types<IntArrayImage> ImageTypes;
 TYPED_TEST_CASE(ImageTest, ImageTypes);
