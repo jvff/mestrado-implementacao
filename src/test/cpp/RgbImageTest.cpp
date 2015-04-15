@@ -7,6 +7,11 @@
 typedef ::testing::Types<IntArrayImage> ImageTypes;
 TYPED_TEST_CASE(RgbImageTest, ImageTypes);
 
+TYPED_TEST(RgbImageTest, typeIsImage) {
+    TypeParam* specificImage = NULL;
+    Image<int>* rgbImage = specificImage;
+}
+
 TYPED_TEST(RgbImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
