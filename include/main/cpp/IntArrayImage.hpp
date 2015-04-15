@@ -3,7 +3,7 @@
 
 #include "Image.hpp"
 
-class IntArrayImage : public Image {
+class IntArrayImage : public Image<int> {
 private:
     int* pixels;
 

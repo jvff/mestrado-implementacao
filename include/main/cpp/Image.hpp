@@ -1,6 +1,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+template <typename PixelType>
 class Image {
 protected:
     int width;
