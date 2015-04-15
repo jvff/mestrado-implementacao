@@ -5,51 +5,52 @@
 
 #include "Image.hpp"
 
-template <typename ImageType>
+template <typename ImageType, typename PixelType>
 class ImageTest : public ::testing::Test {
 protected:
-    void testSinglePixel(int color);
-    void testPixelsWithSameColor(int width, int height, int color);
-    void testPixels(int width, int height, const int colors[]);
+    void testSinglePixel(PixelType value);
+    void testPixelsWithSameColor(int width, int height, PixelType values);
+    void testPixels(int width, int height, const PixelType values[]);
+    virtual void comparePixel(PixelType a, PixelType b) = 0;
 };
 
-template <typename ImageType>
-void ImageTest<ImageType>::testSinglePixel(int color) {
-    testPixelsWithSameColor(1, 1, color);
+template <typename ImageType, typename PixelType>
+void ImageTest<ImageType, PixelType>::testSinglePixel(PixelType value) {
+    testPixelsWithSameColor(1, 1, value);
 }
 
-template <typename ImageType>
-void ImageTest<ImageType>::testPixelsWithSameColor(int width, int height,
-        int color) {
+template <typename ImageType, typename PixelType>
+void ImageTest<ImageType, PixelType>::testPixelsWithSameColor(int width,
+        int height, PixelType value) {
     ImageType image(width, height);
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            image.setPixel(x, y, color);
+            image.setPixel(x, y, value);
     }
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            EXPECT_EQ(image.getPixel(x, y), color);
+            comparePixel(image.getPixel(x, y), value);
     }
 }
 
-template <typename ImageType>
-void ImageTest<ImageType>::testPixels(int width, int height,
-        const int colors[]) {
+template <typename ImageType, typename PixelType>
+void ImageTest<ImageType, PixelType>::testPixels(int width, int height,
+        const PixelType values[]) {
     ImageType image(width, height);
-    const int* colorIterator = &colors[0];
+    const PixelType* pixelIterator = &values[0];
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            image.setPixel(x, y, *(colorIterator++));
+            image.setPixel(x, y, *(pixelIterator++));
     }
 
-    colorIterator = &colors[0];
+    pixelIterator = &values[0];
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            EXPECT_EQ(image.getPixel(x, y), *(colorIterator++));
+            comparePixel(image.getPixel(x, y), *(pixelIterator++));
     }
 }
 
