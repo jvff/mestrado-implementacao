@@ -9,18 +9,18 @@ template <typename ImageType, typename PixelType>
 class ImageTest : public ::testing::Test {
 protected:
     void testSinglePixel(PixelType value);
-    void testPixelsWithSameColor(int width, int height, PixelType values);
+    void testPixelsWithSameValue(int width, int height, PixelType values);
     void testPixels(int width, int height, const PixelType values[]);
     virtual void comparePixel(PixelType a, PixelType b) = 0;
 };
 
 template <typename ImageType, typename PixelType>
 void ImageTest<ImageType, PixelType>::testSinglePixel(PixelType value) {
-    testPixelsWithSameColor(1, 1, value);
+    testPixelsWithSameValue(1, 1, value);
 }
 
 template <typename ImageType, typename PixelType>
-void ImageTest<ImageType, PixelType>::testPixelsWithSameColor(int width,
+void ImageTest<ImageType, PixelType>::testPixelsWithSameValue(int width,
         int height, PixelType value) {
     ImageType image(width, height);
 

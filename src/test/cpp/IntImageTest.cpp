@@ -25,8 +25,8 @@ TYPED_TEST(IntImageTest, testSingleRedPixel) {
     this->testSinglePixel(0xFF0000);
 }
 
-TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameColor) {
-    this->testPixelsWithSameColor(2, 1, 10);
+TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameValue) {
+    this->testPixelsWithSameValue(2, 1, 10);
 }
 
 TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentColors) {
