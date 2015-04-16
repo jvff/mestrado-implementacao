@@ -24,17 +24,17 @@ TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameValue) {
     this->testPixelsWithSameValue(2, 1, 10);
 }
 
-TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentColors) {
-    int colors[] = { 10, 20 };
+TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentValues) {
+    int values[] = { 10, 20 };
 
-    this->testPixels(2, 1, colors);
+    this->testPixels(2, 1, values);
 }
 
 TYPED_TEST(IntImageTest, testRedGreenBlueRect) {
     int width = 9;
     int height = 5;
-    int colors[width * height];
-    int *colorIterator = &colors[0];
+    int values[width * height];
+    int *valueIterator = &values[0];
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y) {
@@ -42,17 +42,17 @@ TYPED_TEST(IntImageTest, testRedGreenBlueRect) {
                 case 0:
                 case 1:
                 case 2:
-                    *colorIterator++ = 0xFF << (2 * (x % 3));
+                    *valueIterator++ = 0xFF << (2 * (x % 3));
                     break;
                 case 3:
-                    *colorIterator++ = 0x00000000;
+                    *valueIterator++ = 0x00000000;
                     break;
                 case 4:
-                    *colorIterator++ = 0xFFFFFFFF;
+                    *valueIterator++ = 0xFFFFFFFF;
                     break;
             };
         }
     }
 
-    this->testPixels(width, height, colors);
+    this->testPixels(width, height, values);
 }
