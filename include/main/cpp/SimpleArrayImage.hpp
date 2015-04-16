@@ -25,7 +25,7 @@ public:
         pixels[getPixelIndex(x, y)] = color;
     }
 
-    int getPixel(int x, int y) {
+    PixelType getPixel(int x, int y) {
         return pixels[getPixelIndex(x, y)];
     }
 };
