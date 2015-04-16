@@ -32,15 +32,40 @@ public:
 
 template <>
 class SimpleArrayImage<bool> : public Image<bool> {
+private:
+    int pixelsPerBlock;
+    int blockWidth;
+    long* blocks;
+
+    inline int getBlockIndex(int x, int y) {
+	return y * blockWidth + x / pixelsPerBlock;
+    }
+
+    inline long getPixelMask(int x) {
+	int pixelIndex = x % pixelsPerBlock;
+
+	return 1 << pixelIndex;
+    }
 public:
     SimpleArrayImage(int width, int height) : Image(width, height) {
+	pixelsPerBlock = sizeof(long) * 8;
+	blockWidth = width / pixelsPerBlock + 1;
+	blocks = new long[blockWidth * height];
     }
 
     virtual void setPixel(int x, int y, bool value) {
+	int index = getBlockIndex(x, y);
+	int mask = getPixelMask(x);
+	int invertedMask = ~mask;
+
+	if (value == true)
+	    blocks[index] |= mask;
+	else
+	    blocks[index] &= invertedMask;
     }
 
     virtual bool getPixel(int x, int y) {
-	return true;
+	return blocks[getBlockIndex(x, y)] & getPixelMask(x) != 0L;
     }
 };
 
