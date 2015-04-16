@@ -2,40 +2,40 @@
 
 #include "IntArrayImage.hpp"
 
-#include "RgbImageTest.hpp"
+#include "IntImageTest.hpp"
 
 typedef ::testing::Types<IntArrayImage> ImageTypes;
-TYPED_TEST_CASE(RgbImageTest, ImageTypes);
+TYPED_TEST_CASE(IntImageTest, ImageTypes);
 
-TYPED_TEST(RgbImageTest, typeIsImage) {
+TYPED_TEST(IntImageTest, typeIsImage) {
     TypeParam* specificImage = NULL;
     Image<int>* image = specificImage;
 }
 
-TYPED_TEST(RgbImageTest, typeIsRgbImage) {
+TYPED_TEST(IntImageTest, typeIsRgbImage) {
     TypeParam* specificImage = NULL;
     RgbImage* rgbImage = specificImage;
 }
 
-TYPED_TEST(RgbImageTest, testSinglePixel) {
+TYPED_TEST(IntImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
 
-TYPED_TEST(RgbImageTest, testSingleRedPixel) {
+TYPED_TEST(IntImageTest, testSingleRedPixel) {
     this->testSinglePixel(0xFF0000);
 }
 
-TYPED_TEST(RgbImageTest, testTwoPixelsWithTheSameColor) {
+TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameColor) {
     this->testPixelsWithSameColor(2, 1, 10);
 }
 
-TYPED_TEST(RgbImageTest, testTwoPixelsWithDifferentColors) {
+TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentColors) {
     int colors[] = { 10, 20 };
 
     this->testPixels(2, 1, colors);
 }
 
-TYPED_TEST(RgbImageTest, testRedGreenBlueRect) {
+TYPED_TEST(IntImageTest, testRedGreenBlueRect) {
     int width = 9;
     int height = 5;
     int colors[width * height];
