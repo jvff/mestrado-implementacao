@@ -16,8 +16,8 @@ TYPED_TEST(IntImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
 
-TYPED_TEST(IntImageTest, testSingleRedPixel) {
-    this->testSinglePixel(0xFF0000);
+TYPED_TEST(IntImageTest, testSinglePixelMaxValue) {
+    this->testSinglePixel(0xFFFFFFFF);
 }
 
 TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameValue) {
