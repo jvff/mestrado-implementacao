@@ -30,4 +30,11 @@ public:
     }
 };
 
+template <>
+class SimpleArrayImage<bool> : public Image<bool> {
+public:
+    SimpleArrayImage(int width, int height) : Image(width, height) {
+    }
+};
+
 #endif
