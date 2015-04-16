@@ -11,3 +11,11 @@ TYPED_TEST(BoolImageTest, typeIsImage) {
     TypeParam* specificImage = NULL;
     Image<bool>* image = specificImage;
 }
+
+TYPED_TEST(BoolImageTest, typeIsntAbstract) {
+    TypeParam* image = new TypeParam(1, 1);
+
+    EXPECT_TRUE(image != NULL);
+
+    delete image;
+}
