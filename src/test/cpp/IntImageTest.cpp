@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "IntArrayImage.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "IntImageTest.hpp"
 
-typedef ::testing::Types<IntArrayImage> ImageTypes;
+typedef ::testing::Types<SimpleArrayImage<int> > ImageTypes;
 TYPED_TEST_CASE(IntImageTest, ImageTypes);
 
 TYPED_TEST(IntImageTest, typeIsImage) {
