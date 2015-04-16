@@ -35,6 +35,13 @@ class SimpleArrayImage<bool> : public Image<bool> {
 public:
     SimpleArrayImage(int width, int height) : Image(width, height) {
     }
+
+    virtual void setPixel(int x, int y, bool value) {
+    }
+
+    virtual bool getPixel(int x, int y) {
+	return true;
+    }
 };
 
 #endif
