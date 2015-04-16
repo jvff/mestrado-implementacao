@@ -21,8 +21,8 @@ public:
         delete[] pixels;
     }
 
-    void setPixel(int x, int y, PixelType color) {
-        pixels[getPixelIndex(x, y)] = color;
+    void setPixel(int x, int y, PixelType value) {
+        pixels[getPixelIndex(x, y)] = value;
     }
 
     PixelType getPixel(int x, int y) {
