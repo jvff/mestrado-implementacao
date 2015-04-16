@@ -1,9 +1,10 @@
-#ifndef INT_ARRAY_IMAGE_HPP
-#define INT_ARRAY_IMAGE_HPP
+#ifndef SIMPLE_ARRAY_IMAGE_HPP
+#define SIMPLE_ARRAY_IMAGE_HPP
 
 #include "Image.hpp"
 
-class IntArrayImage : public Image<int> {
+template <typename PixelType>
+class SimpleArrayImage : public Image<int> {
 private:
     int* pixels;
 
@@ -12,11 +13,11 @@ private:
     }
 
 public:
-    IntArrayImage(int width, int height) : Image(width, height) {
+    SimpleArrayImage(int width, int height) : Image(width, height) {
         pixels = new int[width * height];
     }
 
-    ~IntArrayImage() {
+    ~SimpleArrayImage() {
         delete[] pixels;
     }
 
