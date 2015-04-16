@@ -1,9 +1,9 @@
 #ifndef INT_ARRAY_IMAGE_HPP
 #define INT_ARRAY_IMAGE_HPP
 
-#include "RgbImage.hpp"
+#include "Image.hpp"
 
-class IntArrayImage : public RgbImage {
+class IntArrayImage : public Image<int> {
 private:
     int* pixels;
 
@@ -12,7 +12,7 @@ private:
     }
 
 public:
-    IntArrayImage(int width, int height) : RgbImage(width, height) {
+    IntArrayImage(int width, int height) : Image(width, height) {
         pixels = new int[width * height];
     }
 
