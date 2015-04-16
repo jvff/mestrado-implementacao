@@ -53,6 +53,10 @@ public:
 	blocks = new long[blockWidth * height];
     }
 
+    ~SimpleArrayImage() {
+	delete[] blocks;
+    }
+
     virtual void setPixel(int x, int y, bool value) {
 	int index = getBlockIndex(x, y);
 	int mask = getPixelMask(x);
