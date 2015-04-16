@@ -19,3 +19,9 @@ TYPED_TEST(BoolImageTest, typeIsntAbstract) {
 
     delete image;
 }
+
+TYPED_TEST(BoolImageTest, twoDifferentPixels) {
+    bool pixelValues[] = { true, false };
+
+    this->testPixels(1, 2, pixelValues);
+}
