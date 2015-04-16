@@ -4,16 +4,16 @@
 #include "Image.hpp"
 
 template <typename PixelType>
-class SimpleArrayImage : public Image<int> {
+class SimpleArrayImage : public Image<PixelType> {
 private:
     int* pixels;
 
     inline int getPixelIndex(int x, int y) {
-        return y * width + x;
+        return y * Image<PixelType>::width + x;
     }
 
 public:
-    SimpleArrayImage(int width, int height) : Image(width, height) {
+    SimpleArrayImage(int width, int height) : Image<PixelType>(width, height) {
         pixels = new int[width * height];
     }
 
