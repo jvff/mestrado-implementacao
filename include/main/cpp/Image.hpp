@@ -13,6 +13,9 @@ public:
         this->height = height;
     }
 
+    virtual ~Image() {
+    }
+
     virtual void setPixel(int x, int y, PixelType value) = 0;
     virtual PixelType getPixel(int x, int y) = 0;
 };
