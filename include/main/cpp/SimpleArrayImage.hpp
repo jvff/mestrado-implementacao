@@ -34,23 +34,27 @@ template <>
 class SimpleArrayImage<bool> : public Image<bool> {
 private:
     int pixelsPerBlock;
-    int blockWidth;
     long* blocks;
 
-    inline int getBlockIndex(int x, int y) {
-	return y * blockWidth + x / pixelsPerBlock;
+    inline int getPixelIndex(int x, int y) {
+	return y * width + x;
     }
 
-    inline long getPixelMask(int x) {
-	int pixelIndex = x % pixelsPerBlock;
+    inline int getBlockIndex(int pixelIndex) {
+	return pixelIndex / pixelsPerBlock;
+    }
 
-	return 1 << pixelIndex;
+    inline long getPixelMask(int pixelIndex) {
+	int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
+
+	return 1 << pixelIndexInBlock;
     }
 public:
     SimpleArrayImage(int width, int height) : Image(width, height) {
+	int totalPixels = width * height;
+
 	pixelsPerBlock = sizeof(long) * 8;
-	blockWidth = width / pixelsPerBlock + 1;
-	blocks = new long[blockWidth * height];
+	blocks = new long[(totalPixels - 1) / pixelsPerBlock + 1];
     }
 
     ~SimpleArrayImage() {
@@ -58,18 +62,23 @@ public:
     }
 
     virtual void setPixel(int x, int y, bool value) {
-	int index = getBlockIndex(x, y);
-	long mask = getPixelMask(x);
+	int pixelIndex = getPixelIndex(x, y);
+	int blockIndex = getBlockIndex(pixelIndex);
+	long mask = getPixelMask(pixelIndex);
 	long invertedMask = ~mask;
 
 	if (value == true)
-	    blocks[index] |= mask;
+	    blocks[blockIndex] |= mask;
 	else
-	    blocks[index] &= invertedMask;
+	    blocks[blockIndex] &= invertedMask;
     }
 
     virtual bool getPixel(int x, int y) {
-	return (blocks[getBlockIndex(x, y)] & getPixelMask(x)) != 0L;
+	int pixelIndex = getPixelIndex(x, y);
+	int blockIndex = getBlockIndex(pixelIndex);
+	long mask = getPixelMask(pixelIndex);
+
+	return (blocks[blockIndex] & mask) != 0L;
     }
 };
 
