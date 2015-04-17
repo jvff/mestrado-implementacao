@@ -24,3 +24,13 @@ TEST(DummyImageFactoryTest, destructorIsVirtual) {
 
     EXPECT_TRUE(destructorWasCalled);
 }
+
+TEST(DummyImageFactoryTest, createdImageIsntNull) {
+    ImageFactory<DummyImage>* factory = new DummyImageFactory();
+    DummyImage* image = factory->createImage(1, 1);
+
+    EXPECT_TRUE(image != NULL);
+
+    delete factory;
+    delete image;
+}
