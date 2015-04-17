@@ -69,7 +69,7 @@ public:
     }
 
     virtual bool getPixel(int x, int y) {
-	return blocks[getBlockIndex(x, y)] & getPixelMask(x) != 0L;
+	return (blocks[getBlockIndex(x, y)] & getPixelMask(x)) != 0L;
     }
 };
 
