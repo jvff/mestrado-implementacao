@@ -5,10 +5,6 @@
 
 template <typename ImageType>
 class BoolImageTest : public ImageTest<ImageType, bool> {
-protected:
-    virtual void comparePixel(bool a, bool b) {
-        EXPECT_EQ(a, b);
-    }
 };
 
 #endif

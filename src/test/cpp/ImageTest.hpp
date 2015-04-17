@@ -11,7 +11,8 @@ protected:
     void testSinglePixel(PixelType value);
     void testPixelsWithSameValue(int width, int height, PixelType values);
     void testPixels(int width, int height, const PixelType values[]);
-    virtual void comparePixel(PixelType a, PixelType b) = 0;
+    virtual void comparePixel(int x, int y, PixelType a, PixelType b);
+    virtual bool comparePixel(PixelType a, PixelType b);
 };
 
 template <typename ImageType, typename PixelType>
@@ -50,8 +51,24 @@ void ImageTest<ImageType, PixelType>::testPixels(int width, int height,
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            comparePixel(*(pixelIterator++), image.getPixel(x, y));
+            comparePixel(x, y, *(pixelIterator++), image.getPixel(x, y));
     }
+}
+
+template <typename ImageType, typename PixelType>
+void ImageTest<ImageType, PixelType>::comparePixel(int x,
+	int y, PixelType expected, PixelType actual) {
+    if (comparePixel(expected, actual) == false) {
+	FAIL() << "Pixel at (" << x << "," << y << ")" << std::endl
+		<< "Expected: " << expected << std::endl
+		<< "  Actual: " << actual;
+    }
+}
+
+template <typename ImageType, typename PixelType>
+bool ImageTest<ImageType, PixelType>::comparePixel(PixelType expected,
+	PixelType actual) {
+    return expected == actual;
 }
 
 #endif
