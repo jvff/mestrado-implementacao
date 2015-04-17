@@ -25,3 +25,17 @@ TYPED_TEST(BoolImageTest, twoDifferentPixels) {
 
     this->testPixels(1, 2, pixelValues);
 }
+
+TYPED_TEST(BoolImageTest, verticalStripes) {
+    int width = 8;
+    int height = 4;
+    bool pixelValues[width * height];
+    bool* pixelIterator = &pixelValues[0];
+
+    for (int y = 0; y < height; ++y) {
+	for (int x = 0; x < width; ++x)
+	    *(pixelIterator++) = (x / 2) % 2 == 0;
+    }
+
+    this->testPixels(width, height, pixelValues);
+}
