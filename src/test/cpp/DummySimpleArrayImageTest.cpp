@@ -6,7 +6,8 @@
 
 class DummySimpleArrayImage : public SimpleArrayImage<DummyType> {
 public:
-    DummySimpleArrayImage(int width, int height) : SimpleArrayImage(width, height) {
+    DummySimpleArrayImage(int width, int height) :
+	    SimpleArrayImage(width, height) {
     }
 };
 
