@@ -12,3 +12,15 @@ TEST(DummyImageFactoryTest, classIsntAbstract) {
 
     delete factory;
 }
+
+TEST(DummyImageFactoryTest, destructorIsVirtual) {
+    bool destructorWasCalled = false;
+    DummyImageFactory* dummyFactory = new DummyImageFactory();
+    ImageFactory<DummyImage>* factory = dummyFactory;
+
+    dummyFactory->setDestructorListener(&destructorWasCalled);
+
+    delete factory;
+
+    EXPECT_TRUE(destructorWasCalled);
+}
