@@ -23,3 +23,12 @@ TEST(DummyImageTest, destructorIsVirtual) {
 
     EXPECT_TRUE(destructorWasCalled);
 }
+
+TEST(DummyImageTest, widthIsCorrect) {
+    int width = 100;
+    Image<DummyType>* image = new DummyImage(width, 1);
+
+    EXPECT_EQ(width, image->getWidth());
+
+    delete image;
+}
