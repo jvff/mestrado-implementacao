@@ -34,3 +34,17 @@ TEST(DummyImageFactoryTest, createdImageIsntNull) {
     delete factory;
     delete image;
 }
+
+TEST(DummyImageFactoryTest, createdImageDimensionsAreCorrect) {
+    int width = 15;
+    int height = 10;
+    ImageFactory<DummyImage>* factory = new DummyImageFactory();
+    DummyImage* image = factory->createImage(width, height);
+
+    ASSERT_TRUE(image != NULL);
+    EXPECT_EQ(width, image->getWidth());
+    EXPECT_EQ(height, image->getHeight());
+
+    delete factory;
+    delete image;
+}
