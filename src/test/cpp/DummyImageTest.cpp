@@ -32,3 +32,12 @@ TEST(DummyImageTest, widthIsCorrect) {
 
     delete image;
 }
+
+TEST(DummyImageTest, heightIsCorrect) {
+    int height = 100;
+    Image<DummyType>* image = new DummyImage(1, height);
+
+    EXPECT_EQ(height, image->getHeight());
+
+    delete image;
+}
