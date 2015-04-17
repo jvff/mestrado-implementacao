@@ -50,7 +50,7 @@ void ImageTest<ImageType, PixelType>::testPixels(int width, int height,
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y)
-            comparePixel(image.getPixel(x, y), *(pixelIterator++));
+            comparePixel(*(pixelIterator++), image.getPixel(x, y));
     }
 }
 
