@@ -3,6 +3,9 @@
 
 template <typename ImageType>
 class ImageFactory {
+public:
+    virtual ~ImageFactory() {
+    }
 };
 
 #endif
