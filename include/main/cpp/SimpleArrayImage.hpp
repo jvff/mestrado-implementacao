@@ -59,8 +59,8 @@ public:
 
     virtual void setPixel(int x, int y, bool value) {
 	int index = getBlockIndex(x, y);
-	int mask = getPixelMask(x);
-	int invertedMask = ~mask;
+	long mask = getPixelMask(x);
+	long invertedMask = ~mask;
 
 	if (value == true)
 	    blocks[index] |= mask;
