@@ -16,6 +16,10 @@ public:
     virtual ~Image() {
     }
 
+    int getWidth() {
+	return width;
+    }
+
     virtual void setPixel(int x, int y, PixelType value) = 0;
     virtual PixelType getPixel(int x, int y) = 0;
 };
