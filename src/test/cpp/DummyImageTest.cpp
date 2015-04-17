@@ -2,7 +2,7 @@
 
 #include "Image.hpp"
 
-#include "DummyType.hpp"
+#include "DummyTypes.hpp"
 
 class DummyImage : public Image<DummyType> {
 private:

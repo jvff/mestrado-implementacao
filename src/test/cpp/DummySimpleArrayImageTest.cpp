@@ -2,7 +2,7 @@
 
 #include "SimpleArrayImage.hpp"
 
-#include "DummyType.hpp"
+#include "DummyTypes.hpp"
 
 class DummySimpleArrayImage : public SimpleArrayImage<DummyType> {
 public:
