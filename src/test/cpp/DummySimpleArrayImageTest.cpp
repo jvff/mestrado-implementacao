@@ -2,9 +2,7 @@
 
 #include "SimpleArrayImage.hpp"
 
-struct DummyType {
-    int value;
-};
+#include "DummyType.hpp"
 
 class DummySimpleArrayImage : public SimpleArrayImage<DummyType> {
 public:

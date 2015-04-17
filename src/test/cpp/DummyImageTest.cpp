@@ -2,9 +2,7 @@
 
 #include "Image.hpp"
 
-struct DummyType {
-    int value;
-};
+#include "DummyType.hpp"
 
 class DummyImage : public Image<DummyType> {
 private:
