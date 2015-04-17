@@ -41,3 +41,14 @@ TEST(DummyImageTest, heightIsCorrect) {
 
     delete image;
 }
+
+TEST(DummyImageTest, widthAndHeightAreCorrect) {
+    int width = 35;
+    int height = 63;
+    Image<DummyType>* image = new DummyImage(width, height);
+
+    EXPECT_EQ(width, image->getWidth());
+    EXPECT_EQ(height, image->getHeight());
+
+    delete image;
+}
