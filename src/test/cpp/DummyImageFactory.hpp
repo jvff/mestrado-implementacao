@@ -6,6 +6,8 @@
 #include "DestructorInterceptor.hpp"
 #include "DummyImage.hpp"
 
-typedef DestructorInterceptor<ImageFactory<DummyImage> > DummyImageFactory;
+class DummyImageFactory : public DestructorInterceptor,
+	public ImageFactory<DummyImage> {
+};
 
 #endif

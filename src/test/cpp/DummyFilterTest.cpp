@@ -6,8 +6,10 @@
 #include "DestructorInterceptor.hpp"
 #include "DummyTypes.hpp"
 
-typedef DestructorInterceptor<
-	    Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > > > DummyFilter;
+class DummyFilter : public DestructorInterceptor,
+        public Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > > {
+};
+
 
 TEST(DummyFilterTest, classIsntAbstract) {
     Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter =

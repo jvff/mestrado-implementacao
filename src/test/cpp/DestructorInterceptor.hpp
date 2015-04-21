@@ -3,8 +3,7 @@
 
 #include <cstddef>
 
-template <typename InterceptedClass>
-class DestructorInterceptor : public InterceptedClass {
+class DestructorInterceptor {
 private:
     bool* destructorWasCalled;
 
