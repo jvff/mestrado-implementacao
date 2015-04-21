@@ -1,50 +1,34 @@
-#include <gtest/gtest.h>
+#include "ImageFactoryTest.hpp"
 
-#include "ImageFactory.hpp"
-#include "Image.hpp"
-
-#include "DummyImageFactory.hpp"
-
-TEST(ImageFactoryTest, classIsntAbstract) {
-    ImageFactory<DummyImage> *factory = new DummyImageFactory();
-
+TEST_F(ImageFactoryTest, classIsntAbstract) {
     EXPECT_TRUE(factory != NULL);
-
-    delete factory;
 }
 
-TEST(ImageFactoryTest, destructorIsVirtual) {
+TEST_F(ImageFactoryTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    DummyImageFactory* dummyFactory = new DummyImageFactory();
-    ImageFactory<DummyImage>* factory = dummyFactory;
 
     dummyFactory->setDestructorListener(&destructorWasCalled);
 
     delete factory;
+    factory = NULL;
+    dummyFactory = NULL;
 
     EXPECT_TRUE(destructorWasCalled);
 }
 
-TEST(ImageFactoryTest, createdImageIsntNull) {
-    ImageFactory<DummyImage>* factory = new DummyImageFactory();
-    DummyImage* image = factory->createImage(1, 1);
+TEST_F(ImageFactoryTest, createdImageIsntNull) {
+    createImage(1, 1);
 
     EXPECT_TRUE(image != NULL);
-
-    delete factory;
-    delete image;
 }
 
-TEST(ImageFactoryTest, createdImageDimensionsAreCorrect) {
+TEST_F(ImageFactoryTest, createdImageDimensionsAreCorrect) {
     int width = 15;
     int height = 10;
-    ImageFactory<DummyImage>* factory = new DummyImageFactory();
-    DummyImage* image = factory->createImage(width, height);
+
+    createImage(width, height);
 
     ASSERT_TRUE(image != NULL);
     EXPECT_EQ(width, image->getWidth());
     EXPECT_EQ(height, image->getHeight());
-
-    delete factory;
-    delete image;
 }
