@@ -1,5 +1,5 @@
-#ifndef DUMMY_IMAGE_H
-#define DUMMY_IMAGE_H
+#ifndef DUMMY_IMAGE_HPP
+#define DUMMY_IMAGE_HPP
 
 #include <cstddef>
 
