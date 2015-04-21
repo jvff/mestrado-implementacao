@@ -5,7 +5,7 @@
 
 #include "DummyImageFactory.hpp"
 
-TEST(DummyImageFactoryTest, classIsntAbstract) {
+TEST(ImageFactoryTest, classIsntAbstract) {
     ImageFactory<DummyImage> *factory = new DummyImageFactory();
 
     EXPECT_TRUE(factory != NULL);
@@ -13,7 +13,7 @@ TEST(DummyImageFactoryTest, classIsntAbstract) {
     delete factory;
 }
 
-TEST(DummyImageFactoryTest, destructorIsVirtual) {
+TEST(ImageFactoryTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
     DummyImageFactory* dummyFactory = new DummyImageFactory();
     ImageFactory<DummyImage>* factory = dummyFactory;
@@ -25,7 +25,7 @@ TEST(DummyImageFactoryTest, destructorIsVirtual) {
     EXPECT_TRUE(destructorWasCalled);
 }
 
-TEST(DummyImageFactoryTest, createdImageIsntNull) {
+TEST(ImageFactoryTest, createdImageIsntNull) {
     ImageFactory<DummyImage>* factory = new DummyImageFactory();
     DummyImage* image = factory->createImage(1, 1);
 
@@ -35,7 +35,7 @@ TEST(DummyImageFactoryTest, createdImageIsntNull) {
     delete image;
 }
 
-TEST(DummyImageFactoryTest, createdImageDimensionsAreCorrect) {
+TEST(ImageFactoryTest, createdImageDimensionsAreCorrect) {
     int width = 15;
     int height = 10;
     ImageFactory<DummyImage>* factory = new DummyImageFactory();
