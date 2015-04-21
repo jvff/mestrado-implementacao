@@ -2,7 +2,7 @@
 
 #include "DummyFilter.hpp"
 
-TEST(DummyFilterTest, classIsntAbstract) {
+TEST(FilterTest, classIsntAbstract) {
     Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter =
 	    new DummyFilter();
 
@@ -11,7 +11,7 @@ TEST(DummyFilterTest, classIsntAbstract) {
     delete filter;
 }
 
-TEST(DummyFilterTest, destructorIsVirtual) {
+TEST(FilterTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
     DummyFilter* dummyFilter = new DummyFilter();
     Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter = dummyFilter;
