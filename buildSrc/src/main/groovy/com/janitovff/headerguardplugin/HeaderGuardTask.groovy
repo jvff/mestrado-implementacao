@@ -56,9 +56,10 @@ public class HeaderGuardTask extends DefaultTask  {
         FileInputStream inputStream = new FileInputStream(headerFile)
         InputStreamReader fileStreamReader = new InputStreamReader(inputStream)
         BufferedReader fileReader = new BufferedReader(fileStreamReader)
+        String expectedGuard = getExpectedGuard(headerFile)
 
         try {
-            checkGuards(fileReader)
+            checkGuards(fileReader, expectedGuard)
         } catch (HeaderGuardException exception) {
             failures.put(headerFile, exception)
         } finally {
@@ -66,10 +67,34 @@ public class HeaderGuardTask extends DefaultTask  {
         }
     }
 
-    private void checkGuards(BufferedReader fileReader) throws IOException,
-            HeaderGuardException {
+    private String getExpectedGuard(File headerFile) {
+        String fileName = headerFile.getName()
+        char currentChar = fileName.charAt(0)
+        StringBuilder expectedGuard = new StringBuilder()
+
+        expectedGuard.append(Character.toUpperCase(currentChar))
+
+        for (int index = 1; index < fileName.length(); ++index) {
+            currentChar = fileName.charAt(index)
+
+            if (Character.isUpperCase(currentChar))
+                expectedGuard.append('_')
+            else if (!Character.isJavaIdentifierPart(currentChar))
+                currentChar = '_'
+            else
+                currentChar = Character.toUpperCase(currentChar)
+
+            expectedGuard.append(currentChar)
+        }
+
+        return expectedGuard.toString()
+    }
+
+    private void checkGuards(BufferedReader fileReader, String expectedGuard)
+            throws IOException, HeaderGuardException {
         String guard = findGuard(fileReader)
 
+        checkGuardName(guard, expectedGuard)
         checkGuardDefinition(guard, fileReader)
         checkGuardEnd(fileReader)
     }
@@ -94,6 +119,12 @@ public class HeaderGuardTask extends DefaultTask  {
             throw FAIL_GUARD_NOT_FOUND
 
         return matcher.group(1)
+    }
+
+    private String checkGuardName(String guard, String expectedGuard)
+            throws HeaderGuardException {
+        if (!guard.equals(expectedGuard))
+            throw FAIL_INCORRECT_GUARD_NAME
     }
 
     private void checkGuardDefinition(String guard, BufferedReader fileReader)
