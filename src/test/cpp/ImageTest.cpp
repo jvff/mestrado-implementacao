@@ -1,54 +1,48 @@
-#include <gtest/gtest.h>
+#include "ImageTest.hpp"
 
-#include "Image.hpp"
-
-#include "DummyImage.hpp"
-
-TEST(ImageTest, classIsntAbstract) {
-    Image<DummyType>* image = new DummyImage(0, 0);
+TEST_F(ImageTest, classIsntAbstract) {
+    makeImage(0, 0);
 
     EXPECT_TRUE(image != NULL);
-
-    delete image;
 }
 
-TEST(ImageTest, destructorIsVirtual) {
+TEST_F(ImageTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    DummyImage* dummyImage = new DummyImage(0, 0);
-    Image<DummyType>* image = dummyImage;
+
+    makeImage(0, 0);
 
     dummyImage->setDestructorListener(&destructorWasCalled);
 
     delete image;
 
+    image = NULL;
+    dummyImage = NULL;
+
     EXPECT_TRUE(destructorWasCalled);
 }
 
-TEST(ImageTest, widthIsCorrect) {
+TEST_F(ImageTest, widthIsCorrect) {
     int width = 100;
-    Image<DummyType>* image = new DummyImage(width, 1);
+
+    makeImage(width, 1);
 
     EXPECT_EQ(width, image->getWidth());
-
-    delete image;
 }
 
-TEST(ImageTest, heightIsCorrect) {
+TEST_F(ImageTest, heightIsCorrect) {
     int height = 100;
-    Image<DummyType>* image = new DummyImage(1, height);
+
+    makeImage(1, height);
 
     EXPECT_EQ(height, image->getHeight());
-
-    delete image;
 }
 
-TEST(ImageTest, widthAndHeightAreCorrect) {
+TEST_F(ImageTest, widthAndHeightAreCorrect) {
     int width = 35;
     int height = 63;
-    Image<DummyType>* image = new DummyImage(width, height);
+
+    makeImage(width, height);
 
     EXPECT_EQ(width, image->getWidth());
     EXPECT_EQ(height, image->getHeight());
-
-    delete image;
 }
