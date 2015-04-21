@@ -1,10 +1,10 @@
 #ifndef BOOL_IMAGE_TEST_HPP
 #define BOOL_IMAGE_TEST_HPP
 
-#include "ImageTest.hpp"
+#include "ImageImplementationTest.hpp"
 
 template <typename ImageType>
-class BoolImageTest : public ImageTest<ImageType, bool> {
+class BoolImageTest : public ImageImplementationTest<ImageType, bool> {
 };
 
 #endif

@@ -1,10 +1,10 @@
 #ifndef INT_IMAGE_TEST_HPP
 #define INT_IMAGE_TEST_HPP
 
-#include "ImageTest.hpp"
+#include "ImageImplementationTest.hpp"
 
 template <typename ImageType>
-class IntImageTest : public ImageTest<ImageType, int> {
+class IntImageTest : public ImageImplementationTest<ImageType, int> {
 };
 
 #endif

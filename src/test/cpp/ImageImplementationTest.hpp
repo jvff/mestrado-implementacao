@@ -1,12 +1,12 @@
-#ifndef IMAGE_TEST_HPP
-#define IMAGE_TEST_HPP
+#ifndef IMAGE_IMPLEMENTATION_TEST_HPP
+#define IMAGE_IMPLEMENTATION_TEST_HPP
 
 #include <gtest/gtest.h>
 
 #include "Image.hpp"
 
 template <typename ImageType, typename PixelType>
-class ImageTest : public ::testing::Test {
+class ImageImplementationTest : public ::testing::Test {
 protected:
     void testSinglePixel(PixelType value);
     void testPixelsWithSameValue(int width, int height, PixelType values);
@@ -16,13 +16,14 @@ protected:
 };
 
 template <typename ImageType, typename PixelType>
-void ImageTest<ImageType, PixelType>::testSinglePixel(PixelType value) {
+void ImageImplementationTest<ImageType, PixelType>::testSinglePixel(
+	PixelType value) {
     testPixelsWithSameValue(1, 1, value);
 }
 
 template <typename ImageType, typename PixelType>
-void ImageTest<ImageType, PixelType>::testPixelsWithSameValue(int width,
-        int height, PixelType value) {
+void ImageImplementationTest<ImageType, PixelType>::testPixelsWithSameValue(
+	int width, int height, PixelType value) {
     ImageType image(width, height);
 
     for (int x = 0; x < width; ++x) {
@@ -37,8 +38,8 @@ void ImageTest<ImageType, PixelType>::testPixelsWithSameValue(int width,
 }
 
 template <typename ImageType, typename PixelType>
-void ImageTest<ImageType, PixelType>::testPixels(int width, int height,
-        const PixelType values[]) {
+void ImageImplementationTest<ImageType, PixelType>::testPixels(int width,
+	int height, const PixelType values[]) {
     ImageType image(width, height);
     const PixelType* pixelIterator = &values[0];
 
@@ -56,7 +57,7 @@ void ImageTest<ImageType, PixelType>::testPixels(int width, int height,
 }
 
 template <typename ImageType, typename PixelType>
-void ImageTest<ImageType, PixelType>::comparePixel(int x,
+void ImageImplementationTest<ImageType, PixelType>::comparePixel(int x,
 	int y, PixelType expected, PixelType actual) {
     if (comparePixel(expected, actual) == false) {
 	FAIL() << "Pixel at (" << x << "," << y << ")" << std::endl
@@ -66,8 +67,8 @@ void ImageTest<ImageType, PixelType>::comparePixel(int x,
 }
 
 template <typename ImageType, typename PixelType>
-bool ImageTest<ImageType, PixelType>::comparePixel(PixelType expected,
-	PixelType actual) {
+bool ImageImplementationTest<ImageType, PixelType>::comparePixel(
+	PixelType expected, PixelType actual) {
     return expected == actual;
 }
 
