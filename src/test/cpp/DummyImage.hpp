@@ -5,19 +5,12 @@
 
 #include "Image.hpp"
 
+#include "DestructorInterceptor.hpp"
 #include "DummyTypes.hpp"
 
-class DummyImage : public Image<DummyType> {
-private:
-    bool* destructorWasCalled;
+class DummyImage : public Image<DummyType>, public DestructorInterceptor {
 public:
     DummyImage(int width, int height) : Image(width, height) {
-	destructorWasCalled = NULL;
-    }
-
-    ~DummyImage() {
-	if (destructorWasCalled != NULL)
-	    *destructorWasCalled = true;
     }
 
     virtual void setPixel(int x, int y, DummyType value) {
@@ -27,10 +20,6 @@ public:
         static DummyType dummyValue = { 0 };
 
         return dummyValue;
-    }
-
-    void setDestructorListener(bool* destructorListener) {
-	destructorWasCalled = destructorListener;
     }
 };
 
