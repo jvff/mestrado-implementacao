@@ -4,7 +4,7 @@
 
 #include "DummyImage.hpp"
 
-TEST(DummyImageTest, classIsntAbstract) {
+TEST(ImageTest, classIsntAbstract) {
     Image<DummyType>* image = new DummyImage(0, 0);
 
     EXPECT_TRUE(image != NULL);
@@ -12,7 +12,7 @@ TEST(DummyImageTest, classIsntAbstract) {
     delete image;
 }
 
-TEST(DummyImageTest, destructorIsVirtual) {
+TEST(ImageTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
     DummyImage* dummyImage = new DummyImage(0, 0);
     Image<DummyType>* image = dummyImage;
@@ -24,7 +24,7 @@ TEST(DummyImageTest, destructorIsVirtual) {
     EXPECT_TRUE(destructorWasCalled);
 }
 
-TEST(DummyImageTest, widthIsCorrect) {
+TEST(ImageTest, widthIsCorrect) {
     int width = 100;
     Image<DummyType>* image = new DummyImage(width, 1);
 
@@ -33,7 +33,7 @@ TEST(DummyImageTest, widthIsCorrect) {
     delete image;
 }
 
-TEST(DummyImageTest, heightIsCorrect) {
+TEST(ImageTest, heightIsCorrect) {
     int height = 100;
     Image<DummyType>* image = new DummyImage(1, height);
 
@@ -42,7 +42,7 @@ TEST(DummyImageTest, heightIsCorrect) {
     delete image;
 }
 
-TEST(DummyImageTest, widthAndHeightAreCorrect) {
+TEST(ImageTest, widthAndHeightAreCorrect) {
     int width = 35;
     int height = 63;
     Image<DummyType>* image = new DummyImage(width, height);
