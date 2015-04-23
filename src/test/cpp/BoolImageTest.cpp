@@ -33,8 +33,8 @@ TYPED_TEST(BoolImageTest, verticalStripes) {
     bool* pixelIterator = &pixelValues[0];
 
     for (int y = 0; y < height; ++y) {
-	for (int x = 0; x < width; ++x)
-	    *(pixelIterator++) = (x / 2) % 2 == 0;
+        for (int x = 0; x < width; ++x)
+            *(pixelIterator++) = (x / 2) % 2 == 0;
     }
 
     this->testPixels(width, height, pixelValues);
@@ -47,18 +47,18 @@ TYPED_TEST(BoolImageTest, complexImage) {
     bool* pixelIterator = &pixelValues[0];
 
     for (int x = 0; x < width; ++x) {
-	for (int y = 0; y < height; ++y) {
-	    if (x < width / 2 && y < height / 2)
-		*pixelIterator = false;
-	    else if (x > width / 2 && y > height / 2)
-		*pixelIterator = true;
-	    else if (x < width / 2)
-		*pixelIterator = (x / 4) % 2 == 0;
-	    else
-		*pixelIterator = (y / 4) % 2 == 0;
+        for (int y = 0; y < height; ++y) {
+            if (x < width / 2 && y < height / 2)
+                *pixelIterator = false;
+            else if (x > width / 2 && y > height / 2)
+                *pixelIterator = true;
+            else if (x < width / 2)
+                *pixelIterator = (x / 4) % 2 == 0;
+            else
+                *pixelIterator = (y / 4) % 2 == 0;
 
-	    ++pixelIterator;
-	}
+            ++pixelIterator;
+        }
     }
 
     this->testPixels(width, height, pixelValues);

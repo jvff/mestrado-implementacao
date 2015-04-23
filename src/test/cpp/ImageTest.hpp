@@ -13,18 +13,18 @@ protected:
     DummyImage* dummyImage;
 
     void SetUp() {
-	image = NULL;
-	dummyImage = NULL;
+        image = NULL;
+        dummyImage = NULL;
     }
 
     void TearDown() {
-	if (dummyImage != NULL)
-	    delete dummyImage;
+        if (dummyImage != NULL)
+            delete dummyImage;
     }
 
     void makeImage(int width, int height) {
-	dummyImage = new DummyImage(width, height);
-	image = dummyImage;
+        dummyImage = new DummyImage(width, height);
+        image = dummyImage;
     }
 };
 

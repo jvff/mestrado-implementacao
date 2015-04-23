@@ -37,48 +37,48 @@ private:
     long* blocks;
 
     inline int getPixelIndex(int x, int y) {
-	return y * width + x;
+        return y * width + x;
     }
 
     inline int getBlockIndex(int pixelIndex) {
-	return pixelIndex / pixelsPerBlock;
+        return pixelIndex / pixelsPerBlock;
     }
 
     inline long getPixelMask(int pixelIndex) {
-	int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
+        int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
 
-	return 1 << pixelIndexInBlock;
+        return 1 << pixelIndexInBlock;
     }
 public:
     SimpleArrayImage(int width, int height) : Image(width, height) {
-	int totalPixels = width * height;
+        int totalPixels = width * height;
 
-	pixelsPerBlock = sizeof(long) * 8;
-	blocks = new long[(totalPixels - 1) / pixelsPerBlock + 1];
+        pixelsPerBlock = sizeof(long) * 8;
+        blocks = new long[(totalPixels - 1) / pixelsPerBlock + 1];
     }
 
     ~SimpleArrayImage() {
-	delete[] blocks;
+        delete[] blocks;
     }
 
     virtual void setPixel(int x, int y, bool value) {
-	int pixelIndex = getPixelIndex(x, y);
-	int blockIndex = getBlockIndex(pixelIndex);
-	long mask = getPixelMask(pixelIndex);
-	long invertedMask = ~mask;
+        int pixelIndex = getPixelIndex(x, y);
+        int blockIndex = getBlockIndex(pixelIndex);
+        long mask = getPixelMask(pixelIndex);
+        long invertedMask = ~mask;
 
-	if (value == true)
-	    blocks[blockIndex] |= mask;
-	else
-	    blocks[blockIndex] &= invertedMask;
+        if (value == true)
+            blocks[blockIndex] |= mask;
+        else
+            blocks[blockIndex] &= invertedMask;
     }
 
     virtual bool getPixel(int x, int y) {
-	int pixelIndex = getPixelIndex(x, y);
-	int blockIndex = getBlockIndex(pixelIndex);
-	long mask = getPixelMask(pixelIndex);
+        int pixelIndex = getPixelIndex(x, y);
+        int blockIndex = getBlockIndex(pixelIndex);
+        long mask = getPixelMask(pixelIndex);
 
-	return (blocks[blockIndex] & mask) != 0L;
+        return (blocks[blockIndex] & mask) != 0L;
     }
 };
 

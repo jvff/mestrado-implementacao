@@ -9,16 +9,16 @@ private:
 
 public:
     DestructorInterceptor() {
-	destructorWasCalled = NULL;
+        destructorWasCalled = NULL;
     }
 
     virtual ~DestructorInterceptor() {
-	if (destructorWasCalled != NULL)
-	    *destructorWasCalled = true;
+        if (destructorWasCalled != NULL)
+            *destructorWasCalled = true;
     }
 
     void setDestructorListener(bool* destructorListener) {
-	destructorWasCalled = destructorListener;
+        destructorWasCalled = destructorListener;
     }
 };
 

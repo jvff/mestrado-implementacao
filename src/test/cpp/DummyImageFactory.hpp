@@ -7,7 +7,7 @@
 #include "DummyImage.hpp"
 
 class DummyImageFactory : public DestructorInterceptor,
-	public ImageFactory<DummyImage> {
+        public ImageFactory<DummyImage> {
 };
 
 #endif

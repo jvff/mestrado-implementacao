@@ -4,7 +4,7 @@
 
 TEST(FilterTest, classIsntAbstract) {
     Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter =
-	    new DummyFilter();
+            new DummyFilter();
 
     EXPECT_TRUE(filter != NULL);
 

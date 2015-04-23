@@ -10,7 +10,7 @@ class DummySimpleArrayImage : public DestructorInterceptor,
         public SimpleArrayImage<DummyType> {
 public:
     DummySimpleArrayImage(int width, int height) :
-	    SimpleArrayImage(width, height) {
+            SimpleArrayImage(width, height) {
     }
 };
 

@@ -17,11 +17,11 @@ public:
     }
 
     int getWidth() {
-	return width;
+        return width;
     }
 
     int getHeight() {
-	return height;
+        return height;
     }
 
     virtual void setPixel(int x, int y, PixelType value) = 0;

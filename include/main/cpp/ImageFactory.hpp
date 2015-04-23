@@ -8,7 +8,7 @@ public:
     }
 
     virtual ImageType* createImage(int width, int height) {
-	return new ImageType(width, height);
+        return new ImageType(width, height);
     }
 };
 

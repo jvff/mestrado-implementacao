@@ -17,13 +17,13 @@ protected:
 
 template <typename ImageType, typename PixelType>
 void ImageImplementationTest<ImageType, PixelType>::testSinglePixel(
-	PixelType value) {
+        PixelType value) {
     testPixelsWithSameValue(1, 1, value);
 }
 
 template <typename ImageType, typename PixelType>
 void ImageImplementationTest<ImageType, PixelType>::testPixelsWithSameValue(
-	int width, int height, PixelType value) {
+        int width, int height, PixelType value) {
     ImageType image(width, height);
 
     for (int x = 0; x < width; ++x) {
@@ -39,7 +39,7 @@ void ImageImplementationTest<ImageType, PixelType>::testPixelsWithSameValue(
 
 template <typename ImageType, typename PixelType>
 void ImageImplementationTest<ImageType, PixelType>::testPixels(int width,
-	int height, const PixelType values[]) {
+        int height, const PixelType values[]) {
     ImageType image(width, height);
     const PixelType* pixelIterator = &values[0];
 
@@ -58,17 +58,17 @@ void ImageImplementationTest<ImageType, PixelType>::testPixels(int width,
 
 template <typename ImageType, typename PixelType>
 void ImageImplementationTest<ImageType, PixelType>::comparePixel(int x,
-	int y, PixelType expected, PixelType actual) {
+        int y, PixelType expected, PixelType actual) {
     if (comparePixel(expected, actual) == false) {
-	FAIL() << "Pixel at (" << x << "," << y << ")" << std::endl
-		<< "Expected: " << expected << std::endl
-		<< "  Actual: " << actual;
+        FAIL() << "Pixel at (" << x << "," << y << ")" << std::endl
+                << "Expected: " << expected << std::endl
+                << "  Actual: " << actual;
     }
 }
 
 template <typename ImageType, typename PixelType>
 bool ImageImplementationTest<ImageType, PixelType>::comparePixel(
-	PixelType expected, PixelType actual) {
+        PixelType expected, PixelType actual) {
     return expected == actual;
 }
 
