@@ -3,7 +3,7 @@
 #include "DummyFilter.hpp"
 
 TEST(FilterTest, classIsntAbstract) {
-    Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter =
+    Filter<Image<DummyTypes<1> >, SimpleArrayImage<DummyTypes<2> > >* filter =
             new DummyFilter();
 
     EXPECT_TRUE(filter != NULL);
@@ -14,7 +14,8 @@ TEST(FilterTest, classIsntAbstract) {
 TEST(FilterTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
     DummyFilter* dummyFilter = new DummyFilter();
-    Filter<Image<DummyTypes<1> >, Image<DummyTypes<2> > >* filter = dummyFilter;
+    Filter<Image<DummyTypes<1> >, SimpleArrayImage<DummyTypes<2> > >* filter
+            = dummyFilter;
 
     dummyFilter->setDestructorListener(&destructorWasCalled);
 
