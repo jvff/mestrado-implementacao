@@ -23,3 +23,14 @@ TEST(FilterTest, destructorIsVirtual) {
 
     EXPECT_TRUE(destructorWasCalled);
 }
+
+TEST(FilterTest, imageFactoryWasCreated) {
+    DummyFilter* dummyFilter = new DummyFilter();
+    ImageFactory<SimpleArrayImage<DummyTypes<2> > >* factory;
+
+    factory = dummyFilter->getImageFactory();
+
+    EXPECT_TRUE(factory != NULL);
+
+    delete dummyFilter;
+}

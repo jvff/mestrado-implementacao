@@ -11,6 +11,10 @@
 class DummyFilter : public DestructorInterceptor,
         public Filter<Image<DummyTypes<1> >,
                 SimpleArrayImage<DummyTypes<2> > > {
+public:
+    ImageFactory<SimpleArrayImage<DummyTypes<2> > >* getImageFactory() {
+        return imageFactory;
+    }
 };
 
 #endif
