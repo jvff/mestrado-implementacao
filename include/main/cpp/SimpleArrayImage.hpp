@@ -17,7 +17,7 @@ public:
         pixels = new PixelType[width * height];
     }
 
-    ~SimpleArrayImage() {
+    virtual ~SimpleArrayImage() {
         delete[] pixels;
     }
 
