@@ -9,3 +9,15 @@ TEST(SimpleArrayImageTest, classIsntAbstract) {
 
     delete image;
 }
+
+TEST(SimpleArrayImageTest, destructorIsVirtual) {
+    bool destructorWasCalled = false;
+    DummySimpleArrayImage* dummyImage = new DummySimpleArrayImage(0, 0);
+    SimpleArrayImage<DummyType>* image = dummyImage;
+
+    dummyImage->setDestructorListener(&destructorWasCalled);
+
+    delete image;
+
+    EXPECT_TRUE(destructorWasCalled);
+}

@@ -3,9 +3,11 @@
 
 #include "SimpleArrayImage.hpp"
 
+#include "DestructorInterceptor.hpp"
 #include "DummyTypes.hpp"
 
-class DummySimpleArrayImage : public SimpleArrayImage<DummyType> {
+class DummySimpleArrayImage : public DestructorInterceptor,
+        public SimpleArrayImage<DummyType> {
 public:
     DummySimpleArrayImage(int width, int height) :
 	    SimpleArrayImage(width, height) {
