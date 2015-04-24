@@ -6,23 +6,23 @@
 #include "ImageFactory.hpp"
 #include "Image.hpp"
 
-#include "DummyImageFactory.hpp"
+#include "DummyTypes.hpp"
+#include "MockImage.hpp"
+#include "MockImageFactory.hpp"
 
 class ImageFactoryTest : public testing::Test {
 protected:
-    DummyImageFactory* dummyFactory;
-    MockImage<DummyType>* image;
     ImageFactory<MockImage<DummyType> >* factory;
+    MockImage<DummyType>* image;
 
     void SetUp() {
-        dummyFactory = new DummyImageFactory();
-        factory = dummyFactory;
+        factory = new ImageFactory<MockImage<DummyType> >();
         image = NULL;
     }
 
     void TearDown() {
-        if (dummyFactory != NULL)
-            delete dummyFactory;
+        if (factory != NULL)
+            delete factory;
 
         if (image != NULL)
             delete image;
