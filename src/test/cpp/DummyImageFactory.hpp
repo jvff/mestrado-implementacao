@@ -4,10 +4,11 @@
 #include "ImageFactory.hpp"
 
 #include "DestructorInterceptor.hpp"
-#include "DummyImage.hpp"
+#include "DummyTypes.hpp"
+#include "MockImage.hpp"
 
 class DummyImageFactory : public DestructorInterceptor,
-        public ImageFactory<DummyImage> {
+        public ImageFactory<MockImage<DummyType> > {
 };
 
 #endif

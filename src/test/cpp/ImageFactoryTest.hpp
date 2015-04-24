@@ -11,8 +11,8 @@
 class ImageFactoryTest : public testing::Test {
 protected:
     DummyImageFactory* dummyFactory;
-    DummyImage* image;
-    ImageFactory<DummyImage>* factory;
+    MockImage<DummyType>* image;
+    ImageFactory<MockImage<DummyType> >* factory;
 
     void SetUp() {
         dummyFactory = new DummyImageFactory();

@@ -11,12 +11,12 @@ TEST_F(ImageTest, destructorIsVirtual) {
 
     makeImage(0, 0);
 
-    dummyImage->setDestructorListener(&destructorWasCalled);
+    mockImage->setDestructorListener(&destructorWasCalled);
 
     delete image;
 
     image = NULL;
-    dummyImage = NULL;
+    mockImage = NULL;
 
     EXPECT_TRUE(destructorWasCalled);
 }

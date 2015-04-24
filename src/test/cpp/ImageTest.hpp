@@ -5,26 +5,27 @@
 
 #include "Image.hpp"
 
-#include "DummyImage.hpp"
+#include "DummyTypes.hpp"
+#include "MockImage.hpp"
 
 class ImageTest : public testing::Test {
 protected:
     Image<DummyType>* image;
-    DummyImage* dummyImage;
+    MockImage<DummyType>* mockImage;
 
     void SetUp() {
         image = NULL;
-        dummyImage = NULL;
+        mockImage = NULL;
     }
 
     void TearDown() {
-        if (dummyImage != NULL)
-            delete dummyImage;
+        if (mockImage != NULL)
+            delete mockImage;
     }
 
     void makeImage(int width, int height) {
-        dummyImage = new DummyImage(width, height);
-        image = dummyImage;
+        mockImage = new MockImage<DummyType>(width, height);
+        image = mockImage;
     }
 };
 
