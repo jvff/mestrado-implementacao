@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "DummySimpleArrayImage.hpp"
+#include "MockSimpleArrayImage.hpp"
 
 TEST(SimpleArrayImageTest, classIsntAbstract) {
-    SimpleArrayImage<DummyType>* image = new DummySimpleArrayImage(0, 0);
+    SimpleArrayImage<DummyType>* image =
+            new MockSimpleArrayImage<DummyType>(0, 0);
 
     EXPECT_TRUE(image != NULL);
 
@@ -12,10 +13,11 @@ TEST(SimpleArrayImageTest, classIsntAbstract) {
 
 TEST(SimpleArrayImageTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    DummySimpleArrayImage* dummyImage = new DummySimpleArrayImage(0, 0);
-    SimpleArrayImage<DummyType>* image = dummyImage;
+    MockSimpleArrayImage<DummyType>* mockImage =
+            new MockSimpleArrayImage<DummyType>(0, 0);
+    SimpleArrayImage<DummyType>* image = mockImage;
 
-    dummyImage->setDestructorListener(&destructorWasCalled);
+    mockImage->setDestructorListener(&destructorWasCalled);
 
     delete image;
 
