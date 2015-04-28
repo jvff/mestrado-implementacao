@@ -3,6 +3,7 @@
 #include "Image.hpp"
 #include "SimpleArrayImage.hpp"
 
+#include "DestructorInterceptor.hpp"
 #include "DummyTypes.hpp"
 #include "MockFilter.hpp"
 
@@ -22,10 +23,10 @@ TEST(FilterTest, classIsntAbstract) {
 
 TEST(FilterTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    MockFilter<SourceImageType, DestinationImageType>* mockFilter;
+    DestructorInterceptorFor<DummyFilter> *mockFilter;
     DummyFilter* filter;
 
-    mockFilter = new MockFilter<SourceImageType, DestinationImageType>();
+    mockFilter = new DestructorInterceptorFor<DummyFilter>();
     filter = mockFilter;
 
     mockFilter->setDestructorListener(&destructorWasCalled);
