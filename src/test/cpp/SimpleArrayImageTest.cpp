@@ -13,8 +13,9 @@ TEST(SimpleArrayImageTest, classIsntAbstract) {
 
 TEST(SimpleArrayImageTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    MockSimpleArrayImage<DummyType>* mockImage =
-            new MockSimpleArrayImage<DummyType>(0, 0);
+    DestructorInterceptorFor<SimpleArrayImage<DummyType>, int, int> *mockImage
+            = new DestructorInterceptorFor<SimpleArrayImage<DummyType>,
+                int, int>(0, 0);
     SimpleArrayImage<DummyType>* image = mockImage;
 
     mockImage->setDestructorListener(&destructorWasCalled);
