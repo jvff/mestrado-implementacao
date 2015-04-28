@@ -8,9 +8,10 @@
 
 typedef Image<DummyTypes<1> > SourceImageType;
 typedef SimpleArrayImage<DummyTypes<2> > DestinationImageType;
+typedef Filter<SourceImageType, DestinationImageType> DummyFilter;
 
 TEST(FilterTest, classIsntAbstract) {
-    Filter<SourceImageType, DestinationImageType>* filter;
+    DummyFilter* filter;
 
     filter = new MockFilter<SourceImageType, DestinationImageType>();
 
@@ -22,7 +23,7 @@ TEST(FilterTest, classIsntAbstract) {
 TEST(FilterTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
     MockFilter<SourceImageType, DestinationImageType>* mockFilter;
-    Filter<SourceImageType, DestinationImageType>* filter;
+    DummyFilter* filter;
 
     mockFilter = new MockFilter<SourceImageType, DestinationImageType>();
     filter = mockFilter;
