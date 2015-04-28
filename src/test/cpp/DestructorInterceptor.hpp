@@ -22,4 +22,12 @@ public:
     }
 };
 
+template <class InterceptedClass, typename... Args>
+class DestructorInterceptorFor : public DestructorInterceptor,
+        public InterceptedClass {
+public:
+    DestructorInterceptorFor(Args... args) : InterceptedClass(args...) {
+    }
+};
+
 #endif
