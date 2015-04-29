@@ -8,7 +8,6 @@
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-#include "MockImageFactory.hpp"
 
 class ImageFactoryTest : public testing::Test {
 protected:

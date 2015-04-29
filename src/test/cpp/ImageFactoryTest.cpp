@@ -1,3 +1,4 @@
+#include "DestructorInterceptor.hpp"
 #include "ImageFactoryTest.hpp"
 
 TEST_F(ImageFactoryTest, classIsntAbstract) {
