@@ -2,7 +2,7 @@
 
 #include "SimpleArrayImage.hpp"
 
-#include "DestructorInterceptor.hpp"
+#include "DestructorInterceptorFor.hpp"
 #include "DummyTypes.hpp"
 
 TEST(SimpleArrayImageTest, classIsntAbstract) {

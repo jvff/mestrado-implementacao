@@ -3,7 +3,7 @@
 #include "Image.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "DestructorInterceptor.hpp"
+#include "DestructorInterceptorFor.hpp"
 #include "DummyTypes.hpp"
 #include "FakeFilter.hpp"
 
