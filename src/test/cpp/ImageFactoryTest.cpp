@@ -6,13 +6,12 @@ TEST_F(ImageFactoryTest, classIsntAbstract) {
 
 TEST_F(ImageFactoryTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-    MockImageFactory<FakeImage<DummyType> >* mockFactory;
-    ImageFactory<FakeImage<DummyType> >* factory;
+    auto mockFactory = new DestructorInterceptorFor<
+            ImageFactory<FakeImage<DummyType> > >();
+    ImageFactory<FakeImage<DummyType> >* factory = mockFactory;
 
-    mockFactory = new MockImageFactory<FakeImage<DummyType> >();
     mockFactory->setDestructorListener(&destructorWasCalled);
 
-    factory = mockFactory;
     delete factory;
 
     EXPECT_TRUE(destructorWasCalled);
