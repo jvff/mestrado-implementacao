@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "MockSimpleArrayImage.hpp"
+#include "SimpleArrayImage.hpp"
+
+#include "DestructorInterceptor.hpp"
+#include "DummyTypes.hpp"
 
 TEST(SimpleArrayImageTest, classIsntAbstract) {
-    SimpleArrayImage<DummyType>* image =
-            new MockSimpleArrayImage<DummyType>(0, 0);
+    SimpleArrayImage<DummyType>* image = new SimpleArrayImage<DummyType>(0, 0);
 
     EXPECT_TRUE(image != NULL);
 
