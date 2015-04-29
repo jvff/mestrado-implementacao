@@ -3,10 +3,8 @@
 
 #include "Image.hpp"
 
-#include "DestructorInterceptor.hpp"
-
 template <typename PixelType>
-class FakeImage : public Image<PixelType>, public DestructorInterceptor {
+class FakeImage : public Image<PixelType> {
 public:
     FakeImage(int width, int height) : Image<PixelType>(width, height) {
     }

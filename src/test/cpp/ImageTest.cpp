@@ -1,3 +1,4 @@
+#include "DestructorInterceptor.hpp"
 #include "ImageTest.hpp"
 
 TEST_F(ImageTest, classIsntAbstract) {
@@ -8,15 +9,14 @@ TEST_F(ImageTest, classIsntAbstract) {
 
 TEST_F(ImageTest, destructorIsVirtual) {
     bool destructorWasCalled = false;
-
-    makeImage(0, 0);
+    auto mockImage = new DestructorInterceptorFor<
+            FakeImage<DummyType>, int, int>(0, 0);
 
     mockImage->setDestructorListener(&destructorWasCalled);
+    image = mockImage;
 
     delete image;
-
     image = NULL;
-    mockImage = NULL;
 
     EXPECT_TRUE(destructorWasCalled);
 }
