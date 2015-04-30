@@ -1,17 +1,16 @@
-#include <gtest/gtest.h>
 
 #include "Image.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "DestructorInterceptorFor.hpp"
 #include "DummyTypes.hpp"
 #include "FakeFilter.hpp"
+#include "FilterTest.hpp"
 
 typedef Image<DummyTypes<1> > SourceImageType;
 typedef SimpleArrayImage<DummyTypes<2> > DestinationImageType;
 typedef Filter<SourceImageType, DestinationImageType> DummyFilter;
 
-TEST(FilterTest, classIsntAbstract) {
+TEST_F(FilterTest, classIsntAbstract) {
     DummyFilter* filter;
 
     filter = new FakeFilter<SourceImageType, DestinationImageType>();
@@ -21,22 +20,11 @@ TEST(FilterTest, classIsntAbstract) {
     delete filter;
 }
 
-TEST(FilterTest, destructorIsVirtual) {
-    bool destructorWasCalled = false;
-    DestructorInterceptorFor<DummyFilter> *mockFilter;
-    DummyFilter* filter;
-
-    mockFilter = new DestructorInterceptorFor<DummyFilter>();
-    filter = mockFilter;
-
-    mockFilter->setDestructorListener(&destructorWasCalled);
-
-    delete filter;
-
-    EXPECT_TRUE(destructorWasCalled);
+TEST_F(FilterTest, destructorIsVirtual) {
+    testIfDestructorIsVirtual<DummyFilter>();
 }
 
-TEST(FilterTest, imageFactoryWasCreated) {
+TEST_F(FilterTest, imageFactoryWasCreated) {
     FakeFilter<SourceImageType, DestinationImageType>* mockFilter;
     ImageFactory<SimpleArrayImage<DummyTypes<2> > >* factory;
 

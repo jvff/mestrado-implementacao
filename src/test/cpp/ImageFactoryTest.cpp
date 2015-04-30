@@ -1,4 +1,3 @@
-#include "DestructorInterceptorFor.hpp"
 #include "ImageFactoryTest.hpp"
 
 TEST_F(ImageFactoryTest, classIsntAbstract) {
@@ -6,16 +5,7 @@ TEST_F(ImageFactoryTest, classIsntAbstract) {
 }
 
 TEST_F(ImageFactoryTest, destructorIsVirtual) {
-    bool destructorWasCalled = false;
-    auto mockFactory = new DestructorInterceptorFor<
-            ImageFactory<FakeImage<DummyType> > >();
-    ImageFactory<FakeImage<DummyType> >* factory = mockFactory;
-
-    mockFactory->setDestructorListener(&destructorWasCalled);
-
-    delete factory;
-
-    EXPECT_TRUE(destructorWasCalled);
+    testIfDestructorIsVirtual<ImageFactory<FakeImage<DummyType> > >();
 }
 
 TEST_F(ImageFactoryTest, createdImageIsntNull) {

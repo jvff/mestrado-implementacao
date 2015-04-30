@@ -8,8 +8,9 @@
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "VirtualDestructorTest.hpp"
 
-class ImageFactoryTest : public testing::Test {
+class ImageFactoryTest : public testing::Test, protected VirtualDestructorTest {
 protected:
     ImageFactory<FakeImage<DummyType> >* factory;
     FakeImage<DummyType>* image;

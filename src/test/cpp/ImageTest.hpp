@@ -5,10 +5,11 @@
 
 #include "Image.hpp"
 
+#include "VirtualDestructorTest.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
-class ImageTest : public testing::Test {
+class ImageTest : public testing::Test, protected VirtualDestructorTest {
 protected:
     Image<DummyType>* image;
     FakeImage<DummyType>* mockImage;

@@ -1,11 +1,9 @@
-#include <gtest/gtest.h>
-
 #include "SimpleArrayImage.hpp"
 
-#include "DestructorInterceptorFor.hpp"
 #include "DummyTypes.hpp"
+#include "SimpleArrayImageTest.hpp"
 
-TEST(SimpleArrayImageTest, classIsntAbstract) {
+TEST_F(SimpleArrayImageTest, classIsntAbstract) {
     SimpleArrayImage<DummyType>* image = new SimpleArrayImage<DummyType>(0, 0);
 
     EXPECT_TRUE(image != NULL);
@@ -13,15 +11,7 @@ TEST(SimpleArrayImageTest, classIsntAbstract) {
     delete image;
 }
 
-TEST(SimpleArrayImageTest, destructorIsVirtual) {
-    bool destructorWasCalled = false;
-    auto mockImage = new DestructorInterceptorFor<
+TEST_F(SimpleArrayImageTest, destructorIsVirtual) {
+    testIfDestructorIsVirtual<SimpleArrayImage<DummyType>,
             SimpleArrayImage<DummyType>, int, int>(0, 0);
-    SimpleArrayImage<DummyType>* image = mockImage;
-
-    mockImage->setDestructorListener(&destructorWasCalled);
-
-    delete image;
-
-    EXPECT_TRUE(destructorWasCalled);
 }
