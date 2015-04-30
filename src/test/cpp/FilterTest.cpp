@@ -1,14 +1,5 @@
 
-#include "Image.hpp"
-#include "SimpleArrayImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeFilter.hpp"
 #include "FilterTest.hpp"
-
-typedef Image<DummyTypes<1> > SourceImageType;
-typedef SimpleArrayImage<DummyTypes<2> > DestinationImageType;
-typedef Filter<SourceImageType, DestinationImageType> DummyFilter;
 
 TEST_F(FilterTest, classIsntAbstract) {
     DummyFilter* filter;
