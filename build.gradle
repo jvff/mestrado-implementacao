@@ -34,6 +34,7 @@ model {
         }
         test(NativeExecutableSpec) {
             binaries.all {
+                cppCompiler.args "-std=c++11"
                 linker.args "-pthread"
             }
             sources.cpp {
