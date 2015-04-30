@@ -7,16 +7,16 @@
 #include "Image.hpp"
 
 #include "DummyTypes.hpp"
-#include "MockImage.hpp"
+#include "FakeImage.hpp"
 #include "MockImageFactory.hpp"
 
 class ImageFactoryTest : public testing::Test {
 protected:
-    ImageFactory<MockImage<DummyType> >* factory;
-    MockImage<DummyType>* image;
+    ImageFactory<FakeImage<DummyType> >* factory;
+    FakeImage<DummyType>* image;
 
     void SetUp() {
-        factory = new ImageFactory<MockImage<DummyType> >();
+        factory = new ImageFactory<FakeImage<DummyType> >();
         image = NULL;
     }
 

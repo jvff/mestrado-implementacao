@@ -6,12 +6,12 @@
 #include "Image.hpp"
 
 #include "DummyTypes.hpp"
-#include "MockImage.hpp"
+#include "FakeImage.hpp"
 
 class ImageTest : public testing::Test {
 protected:
     Image<DummyType>* image;
-    MockImage<DummyType>* mockImage;
+    FakeImage<DummyType>* mockImage;
 
     void SetUp() {
         image = NULL;
@@ -24,7 +24,7 @@ protected:
     }
 
     void makeImage(int width, int height) {
-        mockImage = new MockImage<DummyType>(width, height);
+        mockImage = new FakeImage<DummyType>(width, height);
         image = mockImage;
     }
 };
