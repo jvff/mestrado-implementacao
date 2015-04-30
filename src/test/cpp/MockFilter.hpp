@@ -8,10 +8,9 @@
 template <typename SourceType, typename DestinationType>
 class MockFilter : public DestructorInterceptor,
         public Filter<SourceType, DestinationType> {
-
 public:
     ImageFactory<DestinationType>* getImageFactory() {
-        return imageFactory;
+        return this->imageFactory;
     }
 };
 
