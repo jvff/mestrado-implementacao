@@ -16,13 +16,10 @@ TEST_F(FilterTest, destructorIsVirtual) {
 }
 
 TEST_F(FilterTest, imageFactoryWasCreated) {
-    FakeFilter<SourceImageType, DestinationImageType>* mockFilter;
-    ImageFactory<SimpleArrayImage<DummyTypes<2> > >* factory;
-
-    mockFilter = new FakeFilter<SourceImageType, DestinationImageType>();
-    factory = mockFilter->getImageFactory();
+    auto fakeFilter = new FakeDummyFilter();
+    auto factory = fakeFilter->getImageFactory();
 
     EXPECT_TRUE(factory != NULL);
 
-    delete mockFilter;
+    delete fakeFilter;
 }

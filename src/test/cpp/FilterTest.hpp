@@ -16,6 +16,7 @@ protected:
     typedef Image<DummyTypes<1> > SourceImageType;
     typedef SimpleArrayImage<DummyTypes<2> > DestinationImageType;
     typedef Filter<SourceImageType, DestinationImageType> DummyFilter;
+    typedef FakeFilter<SourceImageType, DestinationImageType> FakeDummyFilter;
 };
 
 #endif
