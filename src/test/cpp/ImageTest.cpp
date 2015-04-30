@@ -7,8 +7,7 @@ TEST_F(ImageTest, classIsntAbstract) {
 }
 
 TEST_F(ImageTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<Image<DummyType>,
-            FakeImage<DummyType>, int, int>(0, 0);
+    testIfDestructorIsVirtual<DummyImage, FakeDummyImage, int, int>(0, 0);
 }
 
 TEST_F(ImageTest, widthIsCorrect) {

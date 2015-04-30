@@ -11,8 +11,11 @@
 
 class ImageTest : public testing::Test, protected VirtualDestructorTest {
 protected:
-    Image<DummyType>* image;
-    FakeImage<DummyType>* mockImage;
+    typedef Image<DummyType> DummyImage;
+    typedef FakeImage<DummyType> FakeDummyImage;
+
+    DummyImage* image;
+    FakeDummyImage* mockImage;
 
     void SetUp() {
         image = NULL;
@@ -25,7 +28,7 @@ protected:
     }
 
     void makeImage(int width, int height) {
-        mockImage = new FakeImage<DummyType>(width, height);
+        mockImage = new FakeDummyImage(width, height);
         image = mockImage;
     }
 };
