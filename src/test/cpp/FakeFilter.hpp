@@ -10,6 +10,14 @@ public:
     ImageFactory<DestinationType>* getImageFactory() {
         return this->imageFactory;
     }
+
+    int getDestinationImageWidth(SourceType* sourceImage) {
+        return 0;
+    }
+
+    int getDestinationImageHeight(SourceType* sourceImage) {
+        return 0;
+    }
 };
 
 #endif
