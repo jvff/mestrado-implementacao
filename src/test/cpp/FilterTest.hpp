@@ -15,10 +15,14 @@ using namespace fakeit;
 
 class FilterTest : public testing::Test, protected VirtualDestructorTest {
 protected:
-    typedef Image<DummyTypes<1> > SourceImageType;
-    typedef SimpleArrayImage<DummyTypes<2> > DestinationImageType;
-    typedef Filter<SourceImageType, DestinationImageType> DummyFilter;
-    typedef FakeFilter<SourceImageType, DestinationImageType> FakeDummyFilter;
+    typedef DummyTypes<1> SourcePixelType;
+    typedef DummyTypes<2> DestinationPixelType;
+    typedef Image<SourcePixelType> SourceImageType;
+    typedef SimpleArrayImage<DestinationPixelType> DestinationImageType;
+    typedef Filter<SourcePixelType, DestinationPixelType, DestinationImageType>
+            DummyFilter;
+    typedef FakeFilter<SourcePixelType, DestinationPixelType,
+            DestinationImageType> FakeDummyFilter;
     typedef ImageFactory<DestinationImageType> DummyImageFactory;
 
     bool imageShouldHaveBeenCreated;

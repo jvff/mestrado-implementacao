@@ -7,10 +7,13 @@
 
 #include "MockInterceptor.hpp"
 
-template <typename SourceType, typename DestinationType>
-class FakeFilter : public Filter<SourceType, DestinationType> {
+template <typename SourcePixelType, typename DestinationPixelType,
+        class DestinationImageType,
+        class SourceImageType = Image<SourcePixelType> >
+class FakeFilter : public Filter<SourcePixelType, DestinationPixelType,
+        DestinationImageType, SourceImageType> {
 private:
-    MockInterceptor<ImageFactory<DestinationType> > imageFactoryHandler;
+    MockInterceptor<ImageFactory<DestinationImageType> > imageFactoryHandler;
 
 public:
     FakeFilter() : imageFactoryHandler(this->imageFactory) {
@@ -19,19 +22,19 @@ public:
     ~FakeFilter() noexcept {
     }
 
-    ImageFactory<DestinationType>* getImageFactory() {
+    ImageFactory<DestinationImageType>* getImageFactory() {
         return imageFactoryHandler.getOriginal();
     }
 
-    fakeit::Mock<ImageFactory<DestinationType> >& getImageFactoryMock() {
+    fakeit::Mock<ImageFactory<DestinationImageType> >& getImageFactoryMock() {
         return imageFactoryHandler.getMock();
     }
 
-    int getDestinationImageWidth(SourceType* sourceImage) {
+    int getDestinationImageWidth(SourceImageType* sourceImage) {
         return 0;
     }
 
-    int getDestinationImageHeight(SourceType* sourceImage) {
+    int getDestinationImageHeight(SourceImageType* sourceImage) {
         return 0;
     }
 };
