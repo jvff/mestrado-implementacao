@@ -5,9 +5,7 @@
 using namespace fakeit;
 
 TEST_F(FilterTest, classIsntAbstract) {
-    DummyFilter* filter;
-
-    filter = new FakeFilter<SourceImageType, DestinationImageType>();
+    auto filter = new FakeDummyFilter();
 
     EXPECT_TRUE(filter != NULL);
 
