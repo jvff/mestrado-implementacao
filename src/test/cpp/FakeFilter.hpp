@@ -1,14 +1,32 @@
 #ifndef FAKE_FILTER_HPP
 #define FAKE_FILTER_HPP
 
-#include "Filter.hpp"
+#include <fakeit.hpp>
 
+#include "Filter.hpp"
 
 template <typename SourceType, typename DestinationType>
 class FakeFilter : public Filter<SourceType, DestinationType> {
+private:
+    ImageFactory<DestinationType>* originalImageFactory;
+    fakeit::Mock<ImageFactory<DestinationType> > mockImageFactory;
+
 public:
+    FakeFilter() {
+        originalImageFactory = this->imageFactory;
+        this->imageFactory = &mockImageFactory.get();
+    }
+
+    ~FakeFilter() noexcept {
+        this->imageFactory = originalImageFactory;
+    }
+
     ImageFactory<DestinationType>* getImageFactory() {
-        return this->imageFactory;
+        return originalImageFactory;
+    }
+
+    fakeit::Mock<ImageFactory<DestinationType> >& getImageFactoryMock() {
+        return mockImageFactory;
     }
 
     int getDestinationImageWidth(SourceType* sourceImage) {
