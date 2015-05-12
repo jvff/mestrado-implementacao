@@ -20,9 +20,11 @@ public:
         delete imageFactory;
     }
 
-    virtual void apply(SourceType* sourceImage) {
-        getDestinationImageWidth(sourceImage);
-        getDestinationImageHeight(sourceImage);
+    virtual DestinationType* apply(SourceType* sourceImage) {
+        int width = getDestinationImageWidth(sourceImage);
+        int height = getDestinationImageHeight(sourceImage);
+
+        return imageFactory->createImage(width, height);
     }
 };
 
