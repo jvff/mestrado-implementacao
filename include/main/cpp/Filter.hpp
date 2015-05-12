@@ -11,8 +11,10 @@ class Filter {
 protected:
     ImageFactory<DestinationImageType>* imageFactory;
 
-    virtual int getDestinationImageWidth(SourceImageType* sourceImage) = 0;
-    virtual int getDestinationImageHeight(SourceImageType* sourceImage) = 0;
+    virtual int getDestinationImageWidth(const SourceImageType* sourceImage)
+            = 0;
+    virtual int getDestinationImageHeight(const SourceImageType* sourceImage)
+            = 0;
 
 public:
     Filter() {
@@ -23,7 +25,7 @@ public:
         delete imageFactory;
     }
 
-    virtual DestinationImageType* apply(SourceImageType* sourceImage) {
+    virtual DestinationImageType* apply(const SourceImageType* sourceImage) {
         int width = getDestinationImageWidth(sourceImage);
         int height = getDestinationImageHeight(sourceImage);
         auto* destinationImage = imageFactory->createImage(width, height);
@@ -33,7 +35,7 @@ public:
         return destinationImage;
     }
 
-    virtual void apply(SourceImageType* sourceImage,
+    virtual void apply(const SourceImageType* sourceImage,
             DestinationImageType* destinationImage) {
     }
 };
