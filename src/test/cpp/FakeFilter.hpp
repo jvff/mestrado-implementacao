@@ -5,28 +5,26 @@
 
 #include "Filter.hpp"
 
+#include "MockInterceptor.hpp"
+
 template <typename SourceType, typename DestinationType>
 class FakeFilter : public Filter<SourceType, DestinationType> {
 private:
-    ImageFactory<DestinationType>* originalImageFactory;
-    fakeit::Mock<ImageFactory<DestinationType> > mockImageFactory;
+    MockInterceptor<ImageFactory<DestinationType> > imageFactoryHandler;
 
 public:
-    FakeFilter() {
-        originalImageFactory = this->imageFactory;
-        this->imageFactory = &mockImageFactory.get();
+    FakeFilter() : imageFactoryHandler(this->imageFactory) {
     }
 
     ~FakeFilter() noexcept {
-        this->imageFactory = originalImageFactory;
     }
 
     ImageFactory<DestinationType>* getImageFactory() {
-        return originalImageFactory;
+        return imageFactoryHandler.getOriginal();
     }
 
     fakeit::Mock<ImageFactory<DestinationType> >& getImageFactoryMock() {
-        return mockImageFactory;
+        return imageFactoryHandler.getMock();
     }
 
     int getDestinationImageWidth(SourceType* sourceImage) {
