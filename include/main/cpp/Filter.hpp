@@ -26,8 +26,15 @@ public:
     virtual DestinationImageType* apply(SourceImageType* sourceImage) {
         int width = getDestinationImageWidth(sourceImage);
         int height = getDestinationImageHeight(sourceImage);
+        auto* destinationImage = imageFactory->createImage(width, height);
 
-        return imageFactory->createImage(width, height);
+        apply(sourceImage, destinationImage);
+
+        return destinationImage;
+    }
+
+    virtual void apply(SourceImageType* sourceImage,
+            DestinationImageType* destinationImage) {
     }
 };
 
