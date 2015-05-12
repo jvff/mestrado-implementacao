@@ -30,15 +30,15 @@ public:
         return imageFactoryHandler.getMock();
     }
 
-    int getDestinationImageWidth(SourceImageType* sourceImage) {
+    int getDestinationImageWidth(const SourceImageType* sourceImage) {
         return 0;
     }
 
-    int getDestinationImageHeight(SourceImageType* sourceImage) {
+    int getDestinationImageHeight(const SourceImageType* sourceImage) {
         return 0;
     }
 
-    void apply(SourceImageType* sourceImage,
+    void apply(const SourceImageType* sourceImage,
             DestinationImageType* destinationImage) {
         Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
                 SourceImageType>::apply(sourceImage, destinationImage);

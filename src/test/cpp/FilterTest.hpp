@@ -58,7 +58,7 @@ protected:
 
     void expectImageCreation(int width, int height) {
         Spy(OverloadedMethod(filterSpy, apply,
-                void(SourceImageType*, DestinationImageType*)));
+                void(const SourceImageType*, DestinationImageType*)));
         When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
             .Return(width);
         When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
@@ -80,7 +80,7 @@ protected:
         Verify(Method(filterSpy, getDestinationImageWidth).Using(sourceImage));
         Verify(Method(filterSpy, getDestinationImageHeight).Using(sourceImage));
         Verify(OverloadedMethod(filterSpy, apply,
-                void(SourceImageType*, DestinationImageType*))
+                void(const SourceImageType*, DestinationImageType*))
             .Using(sourceImage, destinationImage));
         Verify(Method(imageFactoryMock, createImage)
             .Using(expectedWidth, expectedHeight));
