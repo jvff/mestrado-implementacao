@@ -29,8 +29,8 @@ TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     FakeDummyFilter fakeFilter;
     Mock<FakeDummyFilter> filterSpy(fakeFilter);
     Mock<SourceImageType> sourceImageMock;
-    DummyFilter& filter = filterSpy.get();
-    SourceImageType* sourceImage = &sourceImageMock.get();
+    auto& filter = filterSpy.get();
+    auto* sourceImage = &sourceImageMock.get();
 
     When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
         .Return(1);
