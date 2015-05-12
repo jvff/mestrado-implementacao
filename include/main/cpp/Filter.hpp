@@ -8,6 +8,9 @@ class Filter {
 protected:
     ImageFactory<DestinationType>* imageFactory;
 
+    virtual int getDestinationImageWidth(SourceType* sourceImage) = 0;
+    virtual int getDestinationImageHeight(SourceType* sourceImage) = 0;
+
 public:
     Filter() {
         imageFactory = new ImageFactory<DestinationType>();
@@ -15,6 +18,11 @@ public:
 
     virtual ~Filter() {
         delete imageFactory;
+    }
+
+    virtual void apply(SourceType* sourceImage) {
+        getDestinationImageWidth(sourceImage);
+        getDestinationImageHeight(sourceImage);
     }
 };
 
