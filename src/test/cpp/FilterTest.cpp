@@ -27,11 +27,9 @@ TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
 }
 
 TEST_F(FilterTest, imageFactoryIsUsed) {
-    int width = 211;
-    int height = 102;
     DestinationImageType* result = NULL;
 
-    expectImageCreation(width, height);
+    expectImageCreation(2, 3);
 
     result = filter->apply(sourceImage);
 
