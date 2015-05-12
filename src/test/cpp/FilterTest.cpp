@@ -2,8 +2,6 @@
 
 #include "FilterTest.hpp"
 
-using namespace fakeit;
-
 TEST_F(FilterTest, classIsntAbstract) {
     auto filter = new FakeDummyFilter();
 
@@ -17,59 +15,25 @@ TEST_F(FilterTest, destructorIsVirtual) {
 }
 
 TEST_F(FilterTest, imageFactoryWasCreated) {
-    auto fakeFilter = new FakeDummyFilter();
-    auto factory = fakeFilter->getImageFactory();
+    auto factory = fakeFilter.getImageFactory();
 
     EXPECT_TRUE(factory != NULL);
-
-    delete fakeFilter;
 }
 
 TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
-    FakeDummyFilter fakeFilter;
-    Mock<FakeDummyFilter> filterSpy(fakeFilter);
-    Mock<SourceImageType> sourceImageMock;
-    auto& imageFactoryMock = fakeFilter.getImageFactoryMock();
-    auto& filter = filterSpy.get();
-    auto* sourceImage = &sourceImageMock.get();
+    expectImageCreation(1, 1);
 
-    When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
-        .Return(1);
-    When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
-        .Return(1);
-    When(Method(imageFactoryMock, createImage)).Return(NULL);
-
-    filter.apply(sourceImage);
-
-    Verify(Method(filterSpy, getDestinationImageWidth).Using(sourceImage));
-    Verify(Method(filterSpy, getDestinationImageHeight).Using(sourceImage));
+    filter->apply(sourceImage);
 }
 
 TEST_F(FilterTest, imageFactoryIsUsed) {
     int width = 211;
     int height = 102;
-    DestinationImageType* destinationImage = NULL;
-    FakeDummyFilter fakeFilter;
-    Mock<FakeDummyFilter> filterSpy(fakeFilter);
-    Mock<SourceImageType> sourceImageMock;
-    Mock<DestinationImageType> destinationImageMock;
-    auto& imageFactoryMock = fakeFilter.getImageFactoryMock();
-    auto& filter = filterSpy.get();
-    auto* sourceImage = &sourceImageMock.get();
-    auto* createdDestinationImage = &destinationImageMock.get();
+    DestinationImageType* result = NULL;
 
-    When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
-        .Return(width);
-    When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
-        .Return(height);
-    When(Method(imageFactoryMock, createImage).Using(width, height))
-        .Return(createdDestinationImage);
+    expectImageCreation(width, height);
 
-    destinationImage = filter.apply(sourceImage);
+    result = filter->apply(sourceImage);
 
-    EXPECT_EQ(createdDestinationImage, destinationImage);
-
-    Verify(Method(filterSpy, getDestinationImageWidth).Using(sourceImage));
-    Verify(Method(filterSpy, getDestinationImageHeight).Using(sourceImage));
-    Verify(Method(imageFactoryMock, createImage).Using(width, height));
+    EXPECT_EQ(destinationImage, result);
 }
