@@ -37,6 +37,12 @@ public:
     int getDestinationImageHeight(SourceImageType* sourceImage) {
         return 0;
     }
+
+    void apply(SourceImageType* sourceImage,
+            DestinationImageType* destinationImage) {
+        Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
+                SourceImageType>::apply(sourceImage, destinationImage);
+    }
 };
 
 #endif
