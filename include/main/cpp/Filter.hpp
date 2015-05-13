@@ -11,10 +11,10 @@ class Filter {
 protected:
     ImageFactory<DestinationImageType>* imageFactory;
 
-    virtual int getDestinationImageWidth(const SourceImageType* sourceImage)
-            = 0;
-    virtual int getDestinationImageHeight(const SourceImageType* sourceImage)
-            = 0;
+    virtual unsigned int getDestinationImageWidth(
+            const SourceImageType* sourceImage) = 0;
+    virtual unsigned int getDestinationImageHeight(
+            const SourceImageType* sourceImage) = 0;
     virtual DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType* sourceImage) = 0;
 
@@ -28,8 +28,8 @@ public:
     }
 
     virtual DestinationImageType* apply(const SourceImageType* sourceImage) {
-        int width = getDestinationImageWidth(sourceImage);
-        int height = getDestinationImageHeight(sourceImage);
+        unsigned int width = getDestinationImageWidth(sourceImage);
+        unsigned int height = getDestinationImageHeight(sourceImage);
         auto* destinationImage = imageFactory->createImage(width, height);
 
         apply(sourceImage, destinationImage);
@@ -39,11 +39,11 @@ public:
 
     virtual void apply(const SourceImageType* sourceImage,
             DestinationImageType* destinationImage) {
-        int width = destinationImage->getWidth();
-        int height = destinationImage->getHeight();
+        unsigned int width = destinationImage->getWidth();
+        unsigned int height = destinationImage->getHeight();
 
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y)
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
                 apply(x, y, sourceImage);
         }
     }

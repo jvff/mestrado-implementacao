@@ -8,12 +8,13 @@ class SimpleArrayImage : public Image<PixelType> {
 private:
     PixelType* pixels;
 
-    inline int getPixelIndex(int x, int y) {
+    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) {
         return y * Image<PixelType>::width + x;
     }
 
 public:
-    SimpleArrayImage(int width, int height) : Image<PixelType>(width, height) {
+    SimpleArrayImage(unsigned int width, unsigned int height)
+            : Image<PixelType>(width, height) {
         pixels = new PixelType[width * height];
     }
 
@@ -21,11 +22,11 @@ public:
         delete[] pixels;
     }
 
-    void setPixel(int x, int y, PixelType value) {
+    void setPixel(unsigned int x, unsigned int y, PixelType value) {
         pixels[getPixelIndex(x, y)] = value;
     }
 
-    PixelType getPixel(int x, int y) {
+    PixelType getPixel(unsigned int x, unsigned int y) {
         return pixels[getPixelIndex(x, y)];
     }
 };
@@ -33,25 +34,26 @@ public:
 template <>
 class SimpleArrayImage<bool> : public Image<bool> {
 private:
-    int pixelsPerBlock;
+    unsigned int pixelsPerBlock;
     long* blocks;
 
-    inline int getPixelIndex(int x, int y) {
+    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) {
         return y * width + x;
     }
 
-    inline int getBlockIndex(int pixelIndex) {
+    inline unsigned int getBlockIndex(unsigned int pixelIndex) {
         return pixelIndex / pixelsPerBlock;
     }
 
-    inline long getPixelMask(int pixelIndex) {
-        int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
+    inline long getPixelMask(unsigned int pixelIndex) {
+        unsigned int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
 
         return 1 << pixelIndexInBlock;
     }
 public:
-    SimpleArrayImage(int width, int height) : Image(width, height) {
-        int totalPixels = width * height;
+    SimpleArrayImage(unsigned int width, unsigned int height)
+            : Image(width, height) {
+        unsigned int totalPixels = width * height;
 
         pixelsPerBlock = sizeof(long) * 8;
         blocks = new long[(totalPixels - 1) / pixelsPerBlock + 1];
@@ -61,9 +63,9 @@ public:
         delete[] blocks;
     }
 
-    virtual void setPixel(int x, int y, bool value) {
-        int pixelIndex = getPixelIndex(x, y);
-        int blockIndex = getBlockIndex(pixelIndex);
+    virtual void setPixel(unsigned int x, unsigned int y, bool value) {
+        unsigned int pixelIndex = getPixelIndex(x, y);
+        unsigned int blockIndex = getBlockIndex(pixelIndex);
         long mask = getPixelMask(pixelIndex);
         long invertedMask = ~mask;
 
@@ -73,9 +75,9 @@ public:
             blocks[blockIndex] &= invertedMask;
     }
 
-    virtual bool getPixel(int x, int y) {
-        int pixelIndex = getPixelIndex(x, y);
-        int blockIndex = getBlockIndex(pixelIndex);
+    virtual bool getPixel(unsigned int x, unsigned int y) {
+        unsigned int pixelIndex = getPixelIndex(x, y);
+        unsigned int blockIndex = getBlockIndex(pixelIndex);
         long mask = getPixelMask(pixelIndex);
 
         return (blocks[blockIndex] & mask) != 0L;

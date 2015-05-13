@@ -5,7 +5,8 @@
 
 class BitmapImage : public Image<bool> {
 public:
-    BitmapImage(int width, int height) : Image(width, height) {
+    BitmapImage(unsigned int width, unsigned int height)
+            : Image(width, height) {
     }
 };
 
