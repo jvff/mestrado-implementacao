@@ -33,7 +33,7 @@ model {
         }
         test(NativeExecutableSpec) {
             binaries.all {
-                cppCompiler.args "-std=c++11", "-Werror", "-Wall"
+                cppCompiler.args "-std=c++11", "-Werror", "-Wall", "-Wextra"
                 linker.args "-pthread"
             }
             sources.cpp {
