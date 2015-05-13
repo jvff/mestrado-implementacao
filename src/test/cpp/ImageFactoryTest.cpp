@@ -15,8 +15,8 @@ TEST_F(ImageFactoryTest, createdImageIsntNull) {
 }
 
 TEST_F(ImageFactoryTest, createdImageDimensionsAreCorrect) {
-    int width = 15;
-    int height = 10;
+    unsigned int width = 15;
+    unsigned int height = 10;
 
     createImage(width, height);
 

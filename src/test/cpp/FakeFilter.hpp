@@ -31,13 +31,13 @@ public:
         return imageFactoryHandler.getMock();
     }
 
-    int getDestinationImageWidth(const SourceImageType* sourceImage) {
+    unsigned int getDestinationImageWidth(const SourceImageType* sourceImage) {
         unused(sourceImage);
 
         return 0;
     }
 
-    int getDestinationImageHeight(const SourceImageType* sourceImage) {
+    unsigned int getDestinationImageHeight(const SourceImageType* sourceImage) {
         unused(sourceImage);
 
         return 0;

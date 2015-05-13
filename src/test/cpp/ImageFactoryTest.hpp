@@ -28,7 +28,7 @@ protected:
             delete image;
     }
 
-    void createImage(int width, int height) {
+    void createImage(unsigned int width, unsigned int height) {
         image = factory->createImage(width, height);
     }
 };

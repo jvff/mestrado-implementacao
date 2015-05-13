@@ -27,7 +27,7 @@ protected:
             delete mockImage;
     }
 
-    void makeImage(int width, int height) {
+    void makeImage(unsigned int width, unsigned int height) {
         mockImage = new FakeDummyImage(width, height);
         image = mockImage;
     }

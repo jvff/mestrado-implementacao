@@ -30,13 +30,13 @@ TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentValues) {
 }
 
 TYPED_TEST(IntImageTest, testRedGreenBlueRect) {
-    const int width = 9;
-    const int height = 5;
+    const unsigned int width = 9;
+    const unsigned int height = 5;
     int values[width * height];
     int *valueIterator = &values[0];
 
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
             switch (y % 5) {
                 case 0:
                 case 1:

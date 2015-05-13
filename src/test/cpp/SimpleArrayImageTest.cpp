@@ -13,5 +13,5 @@ TEST_F(SimpleArrayImageTest, classIsntAbstract) {
 
 TEST_F(SimpleArrayImageTest, destructorIsVirtual) {
     testIfDestructorIsVirtual<SimpleArrayImage<DummyType>,
-            SimpleArrayImage<DummyType>, int, int>(0, 0);
+            SimpleArrayImage<DummyType>, unsigned int, unsigned int>(0, 0);
 }

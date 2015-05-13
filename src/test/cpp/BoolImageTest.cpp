@@ -26,13 +26,13 @@ TYPED_TEST(BoolImageTest, twoDifferentPixels) {
 }
 
 TYPED_TEST(BoolImageTest, verticalStripes) {
-    const int width = 8;
-    const int height = 4;
+    const unsigned int width = 8;
+    const unsigned int height = 4;
     bool pixelValues[width * height];
     bool* pixelIterator = &pixelValues[0];
 
-    for (int y = 0; y < height; ++y) {
-        for (int x = 0; x < width; ++x)
+    for (unsigned int y = 0; y < height; ++y) {
+        for (unsigned int x = 0; x < width; ++x)
             *(pixelIterator++) = (x / 2) % 2 == 0;
     }
 
@@ -40,13 +40,13 @@ TYPED_TEST(BoolImageTest, verticalStripes) {
 }
 
 TYPED_TEST(BoolImageTest, complexImage) {
-    const int width = 32;
-    const int height = 32;
+    const unsigned int width = 32;
+    const unsigned int height = 32;
     bool pixelValues[width * height];
     bool* pixelIterator = &pixelValues[0];
 
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
             if (x < width / 2 && y < height / 2)
                 *pixelIterator = false;
             else if (x > width / 2 && y > height / 2)

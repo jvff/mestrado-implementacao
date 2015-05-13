@@ -8,14 +8,15 @@
 template <typename PixelType>
 class FakeImage : public Image<PixelType> {
 public:
-    FakeImage(int width, int height) : Image<PixelType>(width, height) {
+    FakeImage(unsigned int width, unsigned int height)
+            : Image<PixelType>(width, height) {
     }
 
-    void setPixel(int x, int y, PixelType pixel) {
+    void setPixel(unsigned int x, unsigned int y, PixelType pixel) {
         unused(x, y, pixel);
     }
 
-    PixelType getPixel(int x, int y) {
+    PixelType getPixel(unsigned int x, unsigned int y) {
         unused(x, y);
 
         PixelType defaultValue;

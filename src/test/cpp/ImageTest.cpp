@@ -7,11 +7,12 @@ TEST_F(ImageTest, classIsntAbstract) {
 }
 
 TEST_F(ImageTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<DummyImage, FakeDummyImage, int, int>(0, 0);
+    testIfDestructorIsVirtual<DummyImage, FakeDummyImage, unsigned int,
+            unsigned int>(0, 0);
 }
 
 TEST_F(ImageTest, widthIsCorrect) {
-    int width = 100;
+    unsigned int width = 100;
 
     makeImage(width, 1);
 
@@ -19,7 +20,7 @@ TEST_F(ImageTest, widthIsCorrect) {
 }
 
 TEST_F(ImageTest, heightIsCorrect) {
-    int height = 100;
+    unsigned int height = 100;
 
     makeImage(1, height);
 
@@ -27,8 +28,8 @@ TEST_F(ImageTest, heightIsCorrect) {
 }
 
 TEST_F(ImageTest, widthAndHeightAreCorrect) {
-    int width = 35;
-    int height = 63;
+    unsigned int width = 35;
+    unsigned int height = 63;
 
     makeImage(width, height);
 
