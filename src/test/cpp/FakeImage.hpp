@@ -3,6 +3,8 @@
 
 #include "Image.hpp"
 
+#include "Unused.hpp"
+
 template <typename PixelType>
 class FakeImage : public Image<PixelType> {
 public:
@@ -10,9 +12,12 @@ public:
     }
 
     void setPixel(int x, int y, PixelType pixel) {
+        unused(x, y, pixel);
     }
 
     PixelType getPixel(int x, int y) {
+        unused(x, y);
+
         PixelType defaultValue;
 
         return defaultValue;

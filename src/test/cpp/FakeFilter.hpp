@@ -6,6 +6,7 @@
 #include "Filter.hpp"
 
 #include "MockInterceptor.hpp"
+#include "Unused.hpp"
 
 template <typename SourcePixelType, typename DestinationPixelType,
         class DestinationImageType,
@@ -31,10 +32,14 @@ public:
     }
 
     int getDestinationImageWidth(const SourceImageType* sourceImage) {
+        unused(sourceImage);
+
         return 0;
     }
 
     int getDestinationImageHeight(const SourceImageType* sourceImage) {
+        unused(sourceImage);
+
         return 0;
     }
 
@@ -46,6 +51,8 @@ public:
 
     DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType* sourceImage) {
+        unused(x, y, sourceImage);
+
         DestinationPixelType defaultValue;
 
         return defaultValue;
