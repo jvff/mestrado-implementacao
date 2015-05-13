@@ -43,6 +43,11 @@ public:
         Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
                 SourceImageType>::apply(sourceImage, destinationImage);
     }
+
+    DestinationPixelType apply(unsigned int x, unsigned int y,
+            const SourceImageType* sourceImage) {
+        return DestinationPixelType{};
+    }
 };
 
 #endif

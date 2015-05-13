@@ -26,8 +26,9 @@ protected:
     typedef ImageFactory<DestinationImageType> DummyImageFactory;
 
     bool imageShouldHaveBeenCreated;
-    int expectedWidth;
-    int expectedHeight;
+    unsigned int expectedWidth;
+    unsigned int expectedHeight;
+
     FakeDummyFilter fakeFilter;
     Mock<FakeDummyFilter> filterSpy;
     Mock<SourceImageType> sourceImageMock;
@@ -56,15 +57,21 @@ protected:
         verifyMocks();
     }
 
-    void expectImageCreation(int width, int height) {
+    void expectImageCreation(unsigned int width, unsigned int height) {
         Spy(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType*, DestinationImageType*)));
+        Spy(OverloadedMethod(filterSpy, apply,
+                DestinationPixelType(unsigned int, unsigned int,
+                    const SourceImageType*))
+            .Using(Lt(width), Lt(height), sourceImage));
         When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
             .Return(width);
         When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
             .Return(height);
         When(Method(imageFactoryMock, createImage).Using(width, height))
             .Return(destinationImage);
+        When(Method(destinationImageMock, getWidth)).Return(width);
+        When(Method(destinationImageMock, getHeight)).Return(height);
 
         imageShouldHaveBeenCreated = true;
         expectedWidth = width;
@@ -84,6 +91,14 @@ protected:
             .Using(sourceImage, destinationImage));
         Verify(Method(imageFactoryMock, createImage)
             .Using(expectedWidth, expectedHeight));
+
+        for (int x = 0; x < expectedWidth; ++x) {
+            for (int y = 0; y < expectedHeight; ++y) {
+                Verify(OverloadedMethod(filterSpy, apply,
+                        DestinationPixelType(unsigned int, unsigned int,
+                            const SourceImageType*)).Using(x, y, sourceImage));
+            }
+        }
     }
 };
 
