@@ -15,6 +15,8 @@ protected:
             = 0;
     virtual int getDestinationImageHeight(const SourceImageType* sourceImage)
             = 0;
+    virtual DestinationPixelType apply(unsigned int x, unsigned int y,
+            const SourceImageType* sourceImage) = 0;
 
 public:
     Filter() {
@@ -37,6 +39,13 @@ public:
 
     virtual void apply(const SourceImageType* sourceImage,
             DestinationImageType* destinationImage) {
+        int width = destinationImage->getWidth();
+        int height = destinationImage->getHeight();
+
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y)
+                apply(x, y, sourceImage);
+        }
     }
 };
 
