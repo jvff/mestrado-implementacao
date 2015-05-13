@@ -26,8 +26,8 @@ TYPED_TEST(BoolImageTest, twoDifferentPixels) {
 }
 
 TYPED_TEST(BoolImageTest, verticalStripes) {
-    int width = 8;
-    int height = 4;
+    const int width = 8;
+    const int height = 4;
     bool pixelValues[width * height];
     bool* pixelIterator = &pixelValues[0];
 
@@ -40,8 +40,8 @@ TYPED_TEST(BoolImageTest, verticalStripes) {
 }
 
 TYPED_TEST(BoolImageTest, complexImage) {
-    int width = 32;
-    int height = 32;
+    const int width = 32;
+    const int height = 32;
     bool pixelValues[width * height];
     bool* pixelIterator = &pixelValues[0];
 
