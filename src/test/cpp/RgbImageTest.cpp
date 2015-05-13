@@ -3,6 +3,5 @@
 #include "RgbImage.hpp"
 
 TEST(RgbImageTest, type) {
-    RgbImage* rgbImage = NULL;
-    Image<int>* image = rgbImage;
+    EXPECT_TRUE((std::is_base_of<Image<int>, RgbImage>::value));
 }

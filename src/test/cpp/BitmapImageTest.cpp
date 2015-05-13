@@ -3,6 +3,5 @@
 #include "BitmapImage.hpp"
 
 TEST(BitmapImageTest, typeIsImage) {
-    BitmapImage* bitmap = NULL;
-    Image<bool>* image = bitmap;
+    EXPECT_TRUE((std::is_base_of<Image<bool>, BitmapImage>::value));
 }

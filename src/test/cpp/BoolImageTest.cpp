@@ -8,8 +8,7 @@ typedef ::testing::Types<SimpleArrayImage<bool> > ImageTypes;
 TYPED_TEST_CASE(BoolImageTest, ImageTypes);
 
 TYPED_TEST(BoolImageTest, typeIsImage) {
-    TypeParam* specificImage = NULL;
-    Image<bool>* image = specificImage;
+    EXPECT_TRUE((std::is_base_of<Image<bool>, TypeParam>::value));
 }
 
 TYPED_TEST(BoolImageTest, typeIsntAbstract) {

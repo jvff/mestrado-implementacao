@@ -3,6 +3,5 @@
 #include "GrayscaleImage.hpp"
 
 TEST(GrayscaleImageTest, type) {
-    GrayscaleImage* grayscaleImage = NULL;
-    Image<int>* image = grayscaleImage;
+    EXPECT_TRUE((std::is_base_of<Image<int>, GrayscaleImage>::value));
 }

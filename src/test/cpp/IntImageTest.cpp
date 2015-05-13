@@ -8,8 +8,7 @@ typedef ::testing::Types<SimpleArrayImage<int> > ImageTypes;
 TYPED_TEST_CASE(IntImageTest, ImageTypes);
 
 TYPED_TEST(IntImageTest, typeIsImage) {
-    TypeParam* specificImage = NULL;
-    Image<int>* image = specificImage;
+    EXPECT_TRUE((std::is_base_of<Image<int>, TypeParam>::value));
 }
 
 TYPED_TEST(IntImageTest, testSinglePixel) {
