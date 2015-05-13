@@ -92,8 +92,8 @@ protected:
         Verify(Method(imageFactoryMock, createImage)
             .Using(expectedWidth, expectedHeight));
 
-        for (int x = 0; x < expectedWidth; ++x) {
-            for (int y = 0; y < expectedHeight; ++y) {
+        for (unsigned int x = 0; x < expectedWidth; ++x) {
+            for (unsigned int y = 0; y < expectedHeight; ++y) {
                 Verify(OverloadedMethod(filterSpy, apply,
                         DestinationPixelType(unsigned int, unsigned int,
                             const SourceImageType*)).Using(x, y, sourceImage));
