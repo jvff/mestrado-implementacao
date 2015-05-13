@@ -46,7 +46,9 @@ public:
 
     DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType* sourceImage) {
-        return DestinationPixelType{};
+        DestinationPixelType defaultValue;
+
+        return defaultValue;
     }
 };
 

@@ -13,7 +13,9 @@ public:
     }
 
     PixelType getPixel(int x, int y) {
-        return PixelType{};
+        PixelType defaultValue;
+
+        return defaultValue;
     }
 };
 
