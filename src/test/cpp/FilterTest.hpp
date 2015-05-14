@@ -60,10 +60,12 @@ protected:
     void expectImageCreation(unsigned int width, unsigned int height) {
         Spy(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType*, DestinationImageType*)));
-        Spy(OverloadedMethod(filterSpy, apply,
+        When(OverloadedMethod(filterSpy, apply,
                 DestinationPixelType(unsigned int, unsigned int,
                     const SourceImageType*))
-            .Using(Lt(width), Lt(height), sourceImage));
+            .Using(Lt(width), Lt(height), sourceImage))
+            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType*)
+                   -> DestinationPixelType { return {(int)(x * y)}; });
         When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
             .Return(width);
         When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
@@ -99,7 +101,8 @@ protected:
                 Verify(OverloadedMethod(filterSpy, apply,
                         DestinationPixelType(unsigned int, unsigned int,
                             const SourceImageType*)).Using(x, y, sourceImage));
-                Verify(Method(destinationImageMock, setPixel).Using(x, y, _));
+                Verify(Method(destinationImageMock, setPixel)
+                    .Using(x, y, {(int)(x*y)}));
             }
         }
     }
