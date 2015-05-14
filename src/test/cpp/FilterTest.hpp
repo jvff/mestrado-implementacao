@@ -72,6 +72,8 @@ protected:
             .Return(destinationImage);
         When(Method(destinationImageMock, getWidth)).Return(width);
         When(Method(destinationImageMock, getHeight)).Return(height);
+        When(Method(destinationImageMock, setPixel)
+            .Using(Lt(width), Lt(height), _)).AlwaysReturn();
 
         imageShouldHaveBeenCreated = true;
         expectedWidth = width;
@@ -97,6 +99,7 @@ protected:
                 Verify(OverloadedMethod(filterSpy, apply,
                         DestinationPixelType(unsigned int, unsigned int,
                             const SourceImageType*)).Using(x, y, sourceImage));
+                Verify(Method(destinationImageMock, setPixel).Using(x, y, _));
             }
         }
     }
