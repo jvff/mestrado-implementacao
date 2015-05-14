@@ -44,9 +44,8 @@ public:
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
-                DestinationPixelType newPixel;
+                auto newPixel = apply(x, y, sourceImage);
 
-                apply(x, y, sourceImage);
                 destinationImage->setPixel(x, y, newPixel);
             }
         }
