@@ -43,8 +43,12 @@ public:
         unsigned int height = destinationImage->getHeight();
 
         for (unsigned int x = 0; x < width; ++x) {
-            for (unsigned int y = 0; y < height; ++y)
+            for (unsigned int y = 0; y < height; ++y) {
+                DestinationPixelType newPixel;
+
                 apply(x, y, sourceImage);
+                destinationImage->setPixel(x, y, newPixel);
+            }
         }
     }
 };
