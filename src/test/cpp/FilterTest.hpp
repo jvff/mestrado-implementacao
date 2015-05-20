@@ -101,14 +101,6 @@ protected:
             .Using(x, y, pixelValue));
     }
 
-    void verifyMocks() {
-        verifyImageDimensionsWereRequested();
-        verifyImageWasCreated();
-        verifyApplyWasCalled();
-        verifyApplyWasCalledOnEachPixel();
-        verifyAllPixelsWereSet();
-    }
-
 private:
     void prepareFilterSpy() {
         spyApplyMethod();
