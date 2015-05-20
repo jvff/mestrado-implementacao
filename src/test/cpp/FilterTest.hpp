@@ -58,28 +58,14 @@ protected:
     }
 
     void expectImageCreation(unsigned int width, unsigned int height) {
-        Spy(OverloadedMethod(filterSpy, apply,
-                void(const SourceImageType*, DestinationImageType*)));
-        When(OverloadedMethod(filterSpy, apply,
-                DestinationPixelType(unsigned int, unsigned int,
-                    const SourceImageType*))
-            .Using(Lt(width), Lt(height), sourceImage))
-            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType*)
-                   -> DestinationPixelType { return {(int)(x * y)}; });
-        When(Method(filterSpy, getDestinationImageWidth).Using(sourceImage))
-            .Return(width);
-        When(Method(filterSpy, getDestinationImageHeight).Using(sourceImage))
-            .Return(height);
-        When(Method(imageFactoryMock, createImage).Using(width, height))
-            .Return(destinationImage);
-        When(Method(destinationImageMock, getWidth)).Return(width);
-        When(Method(destinationImageMock, getHeight)).Return(height);
-        When(Method(destinationImageMock, setPixel)
-            .Using(Lt(width), Lt(height), _)).AlwaysReturn();
-
-        imageShouldHaveBeenCreated = true;
         expectedWidth = width;
         expectedHeight = height;
+
+        prepareFilterSpy();
+        prepareImageFactoryMock();
+        prepareDestinationImageMock();
+
+        imageShouldHaveBeenCreated = true;
     }
 
     void verifyMocks() {
@@ -105,6 +91,60 @@ protected:
                     .Using(x, y, {(int)(x*y)}));
             }
         }
+    }
+
+private:
+    void prepareFilterSpy() {
+        spyApplyMethod();
+        mockPerPixelApplyMethod();
+        mockGetDestinationImageDimensionsMethods();
+    }
+
+    void spyApplyMethod() {
+        Spy(OverloadedMethod(filterSpy, apply,
+                void(const SourceImageType*, DestinationImageType*)));
+    }
+
+    void mockPerPixelApplyMethod() {
+        When(OverloadedMethod(filterSpy, apply,
+                DestinationPixelType(unsigned int, unsigned int,
+                    const SourceImageType*))
+            .Using(Lt(expectedWidth), Lt(expectedHeight), sourceImage))
+            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType*)
+                   -> DestinationPixelType { return {(int)(x * y)}; });
+    }
+
+    void mockGetDestinationImageDimensionsMethods() {
+        When(Method(filterSpy, getDestinationImageWidth)
+            .Using(sourceImage))
+            .Return(expectedWidth);
+        When(Method(filterSpy, getDestinationImageHeight)
+            .Using(sourceImage))
+            .Return(expectedHeight);
+    }
+
+    void prepareImageFactoryMock() {
+        When(Method(imageFactoryMock, createImage)
+            .Using(expectedWidth, expectedHeight))
+            .Return(destinationImage);
+    }
+
+    void prepareDestinationImageMock() {
+        mockDestinationImageDimensions();
+        mockDestinationImageSetPixelMethod();
+    }
+
+    void mockDestinationImageDimensions() {
+        When(Method(destinationImageMock, getWidth))
+            .Return(expectedWidth);
+        When(Method(destinationImageMock, getHeight))
+            .Return(expectedHeight);
+    }
+
+    void mockDestinationImageSetPixelMethod() {
+        When(Method(destinationImageMock, setPixel)
+            .Using(Lt(expectedWidth), Lt(expectedHeight), _))
+            .AlwaysReturn();
     }
 };
 
