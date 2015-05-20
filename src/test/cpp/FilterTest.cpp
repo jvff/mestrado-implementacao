@@ -39,3 +39,11 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
 
     verifyImageWasCreated();
 }
+
+TEST_F(FilterTest, callToApplyToTheCreatedImageWasPerformed) {
+    expectImageCreation(5, 2);
+
+    filter->apply(sourceImage);
+
+    verifyApplyWasCalled();
+}
