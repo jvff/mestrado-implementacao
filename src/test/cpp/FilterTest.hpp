@@ -25,7 +25,6 @@ protected:
             DestinationImageType> FakeDummyFilter;
     typedef ImageFactory<DestinationImageType> DummyImageFactory;
 
-    bool imageShouldHaveBeenCreated;
     unsigned int expectedWidth;
     unsigned int expectedHeight;
 
@@ -49,14 +48,6 @@ protected:
     ~FilterTest() noexcept {
     }
 
-    void SetUp() {
-        imageShouldHaveBeenCreated = false;
-    }
-
-    void TearDown() {
-        verifyMocks();
-    }
-
     void expectImageCreation(unsigned int width, unsigned int height) {
         expectedWidth = width;
         expectedHeight = height;
@@ -64,13 +55,6 @@ protected:
         prepareFilterSpy();
         prepareImageFactoryMock();
         prepareDestinationImageMock();
-
-        imageShouldHaveBeenCreated = true;
-    }
-
-    void verifyMocks() {
-        if (imageShouldHaveBeenCreated)
-            verifyImageWasCreated();
     }
 
     void verifyImageWasCreated() {

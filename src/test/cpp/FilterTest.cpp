@@ -24,6 +24,8 @@ TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     expectImageCreation(1, 1);
 
     filter->apply(sourceImage);
+
+    verifyImageWasCreated();
 }
 
 TEST_F(FilterTest, imageFactoryIsUsed) {
@@ -34,4 +36,6 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
     result = filter->apply(sourceImage);
 
     EXPECT_EQ(destinationImage, result);
+
+    verifyImageWasCreated();
 }
