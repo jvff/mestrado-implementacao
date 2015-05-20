@@ -73,16 +73,28 @@ protected:
             .Using(sourceImage, destinationImage));
     }
 
+    void verifyApplyWasCalledOnEachPixel() {
+        for (unsigned int x = 0; x < expectedWidth; ++x) {
+            for (unsigned int y = 0; y < expectedHeight; ++y)
+                verifyApplyWasCalledOnPixel(x, y);
+        }
+    }
+
+    void verifyApplyWasCalledOnPixel(unsigned int x, unsigned int y) {
+        Verify(OverloadedMethod(filterSpy, apply,
+                DestinationPixelType(unsigned int, unsigned int,
+                    const SourceImageType*))
+            .Using(x, y, sourceImage));
+    }
+
     void verifyMocks() {
         verifyImageDimensionsWereRequested();
         verifyImageWasCreated();
         verifyApplyWasCalled();
+        verifyApplyWasCalledOnEachPixel();
 
         for (unsigned int x = 0; x < expectedWidth; ++x) {
             for (unsigned int y = 0; y < expectedHeight; ++y) {
-                Verify(OverloadedMethod(filterSpy, apply,
-                        DestinationPixelType(unsigned int, unsigned int,
-                            const SourceImageType*)).Using(x, y, sourceImage));
                 Verify(Method(destinationImageMock, setPixel)
                     .Using(x, y, {(int)(x*y)}));
             }
