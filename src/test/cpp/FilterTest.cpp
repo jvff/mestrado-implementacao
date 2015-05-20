@@ -25,7 +25,7 @@ TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
 
     filter->apply(sourceImage);
 
-    verifyImageWasCreated();
+    verifyImageDimensionsWereRequested();
 }
 
 TEST_F(FilterTest, imageFactoryIsUsed) {

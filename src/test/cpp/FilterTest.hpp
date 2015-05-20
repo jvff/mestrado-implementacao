@@ -57,9 +57,14 @@ protected:
         prepareDestinationImageMock();
     }
 
-    void verifyImageWasCreated() {
+    void verifyImageDimensionsWereRequested() {
         Verify(Method(filterSpy, getDestinationImageWidth).Using(sourceImage));
         Verify(Method(filterSpy, getDestinationImageHeight).Using(sourceImage));
+    }
+
+    void verifyImageWasCreated() {
+        verifyImageDimensionsWereRequested();
+
         Verify(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType*, DestinationImageType*))
             .Using(sourceImage, destinationImage));
