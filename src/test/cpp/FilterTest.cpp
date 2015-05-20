@@ -1,5 +1,3 @@
-#include <fakeit.hpp>
-
 #include "FilterTest.hpp"
 
 TEST_F(FilterTest, classIsntAbstract) {
