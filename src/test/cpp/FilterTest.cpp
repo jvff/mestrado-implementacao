@@ -55,3 +55,11 @@ TEST_F(FilterTest, filterWasAppliedToAllPixels) {
 
     verifyApplyWasCalledOnEachPixel();
 }
+
+TEST_F(FilterTest, allPixelsWereSet) {
+    expectImageCreation(3, 7);
+
+    filter->apply(sourceImage);
+
+    verifyAllPixelsWereSet();
+}

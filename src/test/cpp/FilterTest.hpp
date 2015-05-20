@@ -87,18 +87,26 @@ protected:
             .Using(x, y, sourceImage));
     }
 
+    void verifyAllPixelsWereSet() {
+        for (unsigned int x = 0; x < expectedWidth; ++x) {
+            for (unsigned int y = 0; y < expectedHeight; ++y)
+                verifyPixelWasSet(x, y);
+        }
+    }
+
+    void verifyPixelWasSet(unsigned int x, unsigned int y) {
+        DestinationPixelType pixelValue{(int)(x * y)};
+
+        Verify(Method(destinationImageMock, setPixel)
+            .Using(x, y, pixelValue));
+    }
+
     void verifyMocks() {
         verifyImageDimensionsWereRequested();
         verifyImageWasCreated();
         verifyApplyWasCalled();
         verifyApplyWasCalledOnEachPixel();
-
-        for (unsigned int x = 0; x < expectedWidth; ++x) {
-            for (unsigned int y = 0; y < expectedHeight; ++y) {
-                Verify(Method(destinationImageMock, setPixel)
-                    .Using(x, y, {(int)(x*y)}));
-            }
-        }
+        verifyAllPixelsWereSet();
     }
 
 private:
