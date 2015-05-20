@@ -63,13 +63,17 @@ protected:
     }
 
     void verifyImageWasCreated() {
+        Verify(Method(imageFactoryMock, createImage)
+            .Using(expectedWidth, expectedHeight));
+    }
+
+    void verifyMocks() {
         verifyImageDimensionsWereRequested();
+        verifyImageWasCreated();
 
         Verify(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType*, DestinationImageType*))
             .Using(sourceImage, destinationImage));
-        Verify(Method(imageFactoryMock, createImage)
-            .Using(expectedWidth, expectedHeight));
 
         for (unsigned int x = 0; x < expectedWidth; ++x) {
             for (unsigned int y = 0; y < expectedHeight; ++y) {
