@@ -12,3 +12,12 @@ TEST(BinarizationFilterTest, classIsntAbstract) {
 
     delete filter;
 }
+
+TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
+    auto filter = new BinarizationFilter<DummyType, FakeImage<bool>,
+            FakeImage<DummyType> >();
+
+    EXPECT_TRUE(filter != NULL);
+
+    delete filter;
+}
