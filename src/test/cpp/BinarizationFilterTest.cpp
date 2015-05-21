@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "Filter.hpp"
 #include "BinarizationFilter.hpp"
 
 #include "DummyTypes.hpp"
@@ -28,4 +29,12 @@ TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
             explicitType;
 
     EXPECT_TRUE((std::is_same<implicitType, explicitType>::value));
+}
+
+TEST(BinarizationFilterTest, classIsAFilter) {
+    typedef Filter<DummyType, bool, FakeImage<bool> > filterType;
+    typedef BinarizationFilter<DummyType, FakeImage<bool> >
+            binarizationFilterType;
+
+    EXPECT_TRUE((std::is_base_of<filterType, binarizationFilterType>::value));
 }
