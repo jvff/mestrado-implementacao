@@ -5,7 +5,20 @@
 
 template <typename SourcePixelType, typename DestinationImageType,
         typename SourceImageType = Image<SourcePixelType> >
-class BinarizationFilter {
+class BinarizationFilter : public Filter<SourcePixelType, bool,
+        DestinationImageType, SourceImageType> {
+protected:
+    unsigned int getDestinationImageWidth(const SourceImageType*) {
+        return 0;
+    }
+
+    unsigned int getDestinationImageHeight(const SourceImageType*) {
+        return 0;
+    }
+
+    bool apply(unsigned int, unsigned int, const SourceImageType*) {
+        return true;
+    }
 };
 
 #endif
