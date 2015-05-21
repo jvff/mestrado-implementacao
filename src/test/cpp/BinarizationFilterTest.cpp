@@ -21,3 +21,11 @@ TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
 
     delete filter;
 }
+
+TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
+    typedef BinarizationFilter<DummyType, FakeImage<bool> > implicitType;
+    typedef BinarizationFilter<DummyType, FakeImage<bool>, Image<DummyType> >
+            explicitType;
+
+    EXPECT_TRUE((std::is_same<implicitType, explicitType>::value));
+}
