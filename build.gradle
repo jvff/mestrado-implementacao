@@ -12,6 +12,9 @@ model {
                 headers.srcDir "../../lib/fakeit/include"
                 headers.srcDir "../../lib/fakeit/config/gtest"
             }
+            asserts {
+                headers.srcDir "../asserts/include/main/cpp"
+            }
             mtrace_gtest {
                 binaries.withType(StaticLibraryBinary) {
                     staticLibraryFile = file("../mtrace_gtest/build/binaries/mtrace_gtestStaticLibrary/libmtrace_gtest.a")
@@ -43,6 +46,7 @@ model {
                 lib library: 'mtrace_gtest', linkage: 'static'
                 lib library: 'gtest', linkage: 'static'
                 lib library: 'fakeit', linkage: 'api'
+                lib library: 'asserts', linkage: 'api'
             }
         }
     }
