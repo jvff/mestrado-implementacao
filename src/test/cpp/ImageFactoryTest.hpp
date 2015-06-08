@@ -3,14 +3,15 @@
 
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "ImageFactory.hpp"
 #include "Image.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-#include "VirtualDestructorTest.hpp"
 
-class ImageFactoryTest : public testing::Test, protected VirtualDestructorTest {
+class ImageFactoryTest : public testing::Test {
 protected:
     ImageFactory<FakeImage<DummyType> >* factory;
     FakeImage<DummyType>* image;

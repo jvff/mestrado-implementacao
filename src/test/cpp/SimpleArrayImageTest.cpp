@@ -1,9 +1,12 @@
+#include <gtest/gtest.h>
+
+#include "asserts.hpp"
+
 #include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
-#include "SimpleArrayImageTest.hpp"
 
-TEST_F(SimpleArrayImageTest, classIsntAbstract) {
+TEST(SimpleArrayImageTest, classIsntAbstract) {
     SimpleArrayImage<DummyType>* image = new SimpleArrayImage<DummyType>(0, 0);
 
     EXPECT_TRUE(image != NULL);
@@ -11,7 +14,6 @@ TEST_F(SimpleArrayImageTest, classIsntAbstract) {
     delete image;
 }
 
-TEST_F(SimpleArrayImageTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<SimpleArrayImage<DummyType>,
-            SimpleArrayImage<DummyType>, unsigned int, unsigned int>(0, 0);
+TEST(SimpleArrayImageTest, destructorIsVirtual) {
+    AssertThat<SimpleArrayImage<DummyType> >::hasVirtualDestructor();
 }

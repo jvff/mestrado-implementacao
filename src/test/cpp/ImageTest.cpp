@@ -7,8 +7,7 @@ TEST_F(ImageTest, classIsntAbstract) {
 }
 
 TEST_F(ImageTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<DummyImage, FakeDummyImage, unsigned int,
-            unsigned int>(0, 0);
+    AssertThat<DummyImage>::hasVirtualDestructor();
 }
 
 TEST_F(ImageTest, widthIsCorrect) {

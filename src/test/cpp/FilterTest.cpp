@@ -9,7 +9,7 @@ TEST_F(FilterTest, classIsntAbstract) {
 }
 
 TEST_F(FilterTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<DummyFilter, FakeDummyFilter>();
+    AssertThat<DummyFilter>::hasVirtualDestructor();
 }
 
 TEST_F(FilterTest, imageFactoryWasCreated) {

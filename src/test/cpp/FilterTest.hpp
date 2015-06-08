@@ -3,17 +3,18 @@
 
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "Filter.hpp"
 #include "Image.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeFilter.hpp"
-#include "VirtualDestructorTest.hpp"
 
 using namespace fakeit;
 
-class FilterTest : public testing::Test, protected VirtualDestructorTest {
+class FilterTest : public testing::Test {
 protected:
     typedef DummyTypes<1> SourcePixelType;
     typedef DummyTypes<2> DestinationPixelType;

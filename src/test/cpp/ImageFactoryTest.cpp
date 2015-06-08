@@ -5,7 +5,7 @@ TEST_F(ImageFactoryTest, classIsntAbstract) {
 }
 
 TEST_F(ImageFactoryTest, destructorIsVirtual) {
-    testIfDestructorIsVirtual<ImageFactory<FakeImage<DummyType> > >();
+    AssertThat<ImageFactory<FakeImage<DummyType> > >::hasVirtualDestructor();
 }
 
 TEST_F(ImageFactoryTest, createdImageIsntNull) {

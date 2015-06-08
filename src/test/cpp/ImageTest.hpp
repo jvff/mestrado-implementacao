@@ -3,13 +3,14 @@
 
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "Image.hpp"
 
-#include "VirtualDestructorTest.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
-class ImageTest : public testing::Test, protected VirtualDestructorTest {
+class ImageTest : public testing::Test {
 protected:
     typedef Image<DummyType> DummyImage;
     typedef FakeImage<DummyType> FakeDummyImage;
