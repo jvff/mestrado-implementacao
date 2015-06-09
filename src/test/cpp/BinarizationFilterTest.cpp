@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "Filter.hpp"
 #include "BinarizationFilter.hpp"
 
@@ -9,7 +11,7 @@
 TEST(BinarizationFilterTest, classIsntAbstract) {
     auto filter = new BinarizationFilter<DummyType, FakeImage<bool> >();
 
-    EXPECT_TRUE(filter != NULL);
+    assertThat(filter).isNotNull();
 
     delete filter;
 }
@@ -18,7 +20,7 @@ TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     auto filter = new BinarizationFilter<DummyType, FakeImage<bool>,
             FakeImage<DummyType> >();
 
-    EXPECT_TRUE(filter != NULL);
+    assertThat(filter).isNotNull();
 
     delete filter;
 }

@@ -3,7 +3,7 @@
 TEST_F(ImageTest, classIsntAbstract) {
     makeImage(0, 0);
 
-    EXPECT_TRUE(image != NULL);
+    assertThat(image).isNotNull();
 }
 
 TEST_F(ImageTest, destructorIsVirtual) {

@@ -9,7 +9,7 @@
 TEST(SimpleArrayImageTest, classIsntAbstract) {
     SimpleArrayImage<DummyType>* image = new SimpleArrayImage<DummyType>(0, 0);
 
-    EXPECT_TRUE(image != NULL);
+    assertThat(image).isNotNull();
 
     delete image;
 }

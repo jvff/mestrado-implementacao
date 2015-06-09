@@ -1,7 +1,7 @@
 #include "ImageFactoryTest.hpp"
 
 TEST_F(ImageFactoryTest, classIsntAbstract) {
-    EXPECT_TRUE(factory != NULL);
+    assertThat(factory).isNotNull();
 }
 
 TEST_F(ImageFactoryTest, destructorIsVirtual) {
@@ -11,7 +11,7 @@ TEST_F(ImageFactoryTest, destructorIsVirtual) {
 TEST_F(ImageFactoryTest, createdImageIsntNull) {
     createImage(1, 1);
 
-    EXPECT_TRUE(image != NULL);
+    assertThat(image).isNotNull();
 }
 
 TEST_F(ImageFactoryTest, createdImageDimensionsAreCorrect) {

@@ -3,7 +3,7 @@
 TEST_F(FilterTest, classIsntAbstract) {
     auto filter = new FakeDummyFilter();
 
-    EXPECT_TRUE(filter != NULL);
+    assertThat(filter).isNotNull();
 
     delete filter;
 }
@@ -15,7 +15,7 @@ TEST_F(FilterTest, destructorIsVirtual) {
 TEST_F(FilterTest, imageFactoryWasCreated) {
     auto factory = fakeFilter.getImageFactory();
 
-    EXPECT_TRUE(factory != NULL);
+    assertThat(factory).isNotNull();
 }
 
 TEST_F(FilterTest, destinationImageDimensionsAreRequested) {

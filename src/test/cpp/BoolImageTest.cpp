@@ -14,7 +14,7 @@ TYPED_TEST(BoolImageTest, typeIsImage) {
 TYPED_TEST(BoolImageTest, typeIsntAbstract) {
     TypeParam* image = new TypeParam(1, 1);
 
-    EXPECT_TRUE(image != NULL);
+    assertThat(image).isNotNull();
 
     delete image;
 }
