@@ -1,7 +1,3 @@
-#include <gtest/gtest.h>
-
-#include "SimpleArrayImage.hpp"
-
 #include "BoolImageTest.hpp"
 
 typedef ::testing::Types<SimpleArrayImage<bool> > ImageTypes;
