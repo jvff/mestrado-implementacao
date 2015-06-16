@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "GrayscaleImage.hpp"
 
 TEST(GrayscaleImageTest, type) {
-    EXPECT_TRUE((std::is_base_of<Image<int>, GrayscaleImage>::value));
+    AssertThat<GrayscaleImage>::isSubClass(Of<Image<int> >());
 }

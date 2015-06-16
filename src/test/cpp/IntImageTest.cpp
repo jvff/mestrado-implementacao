@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "SimpleArrayImage.hpp"
 
 #include "IntImageTest.hpp"
@@ -8,7 +10,7 @@ typedef ::testing::Types<SimpleArrayImage<int> > ImageTypes;
 TYPED_TEST_CASE(IntImageTest, ImageTypes);
 
 TYPED_TEST(IntImageTest, typeIsImage) {
-    EXPECT_TRUE((std::is_base_of<Image<int>, TypeParam>::value));
+    AssertThat<TypeParam>::isSubClass(Of<Image<int> >());
 }
 
 TYPED_TEST(IntImageTest, testSinglePixel) {

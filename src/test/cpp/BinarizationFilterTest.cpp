@@ -38,5 +38,5 @@ TEST(BinarizationFilterTest, classIsAFilter) {
     typedef BinarizationFilter<DummyType, FakeImage<bool> >
             binarizationFilterType;
 
-    EXPECT_TRUE((std::is_base_of<filterType, binarizationFilterType>::value));
+    AssertThat<binarizationFilterType>::isSubClass(Of<filterType>());
 }
