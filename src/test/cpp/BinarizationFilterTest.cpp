@@ -30,7 +30,7 @@ TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     typedef BinarizationFilter<DummyType, FakeImage<bool>, Image<DummyType> >
             explicitType;
 
-    EXPECT_TRUE((std::is_same<implicitType, explicitType>::value));
+    AssertThat<implicitType>::isTheSame(As<explicitType>());
 }
 
 TEST(BinarizationFilterTest, classIsAFilter) {
