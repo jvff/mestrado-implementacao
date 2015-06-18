@@ -15,7 +15,7 @@ TEST_F(ImageTest, widthIsCorrect) {
 
     makeImage(width, 1);
 
-    EXPECT_EQ(width, image->getWidth());
+    assertThat(image->getWidth()).isEqualTo(width);
 }
 
 TEST_F(ImageTest, heightIsCorrect) {
@@ -23,7 +23,7 @@ TEST_F(ImageTest, heightIsCorrect) {
 
     makeImage(1, height);
 
-    EXPECT_EQ(height, image->getHeight());
+    assertThat(image->getHeight()).isEqualTo(height);
 }
 
 TEST_F(ImageTest, widthAndHeightAreCorrect) {
@@ -32,6 +32,6 @@ TEST_F(ImageTest, widthAndHeightAreCorrect) {
 
     makeImage(width, height);
 
-    EXPECT_EQ(width, image->getWidth());
-    EXPECT_EQ(height, image->getHeight());
+    assertThat(image->getWidth()).isEqualTo(width);
+    assertThat(image->getHeight()).isEqualTo(height);
 }

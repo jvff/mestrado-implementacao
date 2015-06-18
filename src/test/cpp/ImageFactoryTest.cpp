@@ -19,8 +19,8 @@ TEST_F(ImageFactoryTest, createdImageDimensionsAreCorrect) {
     unsigned int height = 10;
 
     createImage(width, height);
-
     ASSERT_TRUE(image != NULL);
-    EXPECT_EQ(width, image->getWidth());
-    EXPECT_EQ(height, image->getHeight());
+
+    assertThat(image->getWidth()).isEqualTo(width);
+    assertThat(image->getHeight()).isEqualTo(height);
 }

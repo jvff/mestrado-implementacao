@@ -33,7 +33,7 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
 
     result = filter->apply(sourceImage);
 
-    EXPECT_EQ(destinationImage, result);
+    assertThat(result).isEqualTo(destinationImage);
 
     verifyImageWasCreated();
 }
