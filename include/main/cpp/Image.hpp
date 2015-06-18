@@ -16,11 +16,11 @@ public:
     virtual ~Image() {
     }
 
-    virtual int getWidth() {
+    virtual unsigned int getWidth() {
         return width;
     }
 
-    virtual int getHeight() {
+    virtual unsigned int getHeight() {
         return height;
     }
 
