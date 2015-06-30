@@ -35,3 +35,7 @@ TEST_F(ImageTest, widthAndHeightAreCorrect) {
     assertThat(image->getWidth()).isEqualTo(width);
     assertThat(image->getHeight()).isEqualTo(height);
 }
+
+TEST_F(ImageTest, getWidthIsConstMethod) {
+    assertThat(&DummyImage::getWidth).isConstMethod();
+}
