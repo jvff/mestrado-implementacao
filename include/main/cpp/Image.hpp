@@ -16,7 +16,7 @@ public:
     virtual ~Image() {
     }
 
-    virtual unsigned int getWidth() {
+    virtual unsigned int getWidth() const {
         return width;
     }
 
