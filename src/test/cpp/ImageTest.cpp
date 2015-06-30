@@ -39,3 +39,7 @@ TEST_F(ImageTest, widthAndHeightAreCorrect) {
 TEST_F(ImageTest, getWidthIsConstMethod) {
     assertThat(&DummyImage::getWidth).isConstMethod();
 }
+
+TEST_F(ImageTest, getHeightIsConstMethod) {
+    assertThat(&DummyImage::getHeight).isConstMethod();
+}
