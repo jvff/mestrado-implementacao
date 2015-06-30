@@ -20,7 +20,7 @@ public:
         return width;
     }
 
-    virtual unsigned int getHeight() {
+    virtual unsigned int getHeight() const {
         return height;
     }
 
