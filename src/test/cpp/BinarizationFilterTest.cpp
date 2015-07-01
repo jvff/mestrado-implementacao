@@ -1,19 +1,14 @@
-#include <gtest/gtest.h>
-
-#include "fakeit.hpp"
-
 #include "asserts.hpp"
 
 #include "Filter.hpp"
 #include "BinarizationFilter.hpp"
 
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "BinarizationFilterTest.hpp"
 
 using fakeit::Mock;
 using fakeit::When;
 
-TEST(BinarizationFilterTest, classIsntAbstract) {
+TEST_F(BinarizationFilterTest, classIsntAbstract) {
     auto filter = new BinarizationFilter<DummyType, FakeImage<bool> >();
 
     assertThat(filter).isNotNull();
@@ -21,7 +16,7 @@ TEST(BinarizationFilterTest, classIsntAbstract) {
     delete filter;
 }
 
-TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
+TEST_F(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     auto filter = new BinarizationFilter<DummyType, FakeImage<bool>,
             FakeImage<DummyType> >();
 
@@ -30,7 +25,7 @@ TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     delete filter;
 }
 
-TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
+TEST_F(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     typedef BinarizationFilter<DummyType, FakeImage<bool> > implicitType;
     typedef BinarizationFilter<DummyType, FakeImage<bool>, Image<DummyType> >
             explicitType;
@@ -38,7 +33,7 @@ TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     AssertThat<implicitType>::isTheSame(As<explicitType>());
 }
 
-TEST(BinarizationFilterTest, classIsAFilter) {
+TEST_F(BinarizationFilterTest, classIsAFilter) {
     typedef Filter<DummyType, bool, FakeImage<bool> > filterType;
     typedef BinarizationFilter<DummyType, FakeImage<bool> >
             binarizationFilterType;
@@ -46,15 +41,11 @@ TEST(BinarizationFilterTest, classIsAFilter) {
     AssertThat<binarizationFilterType>::isSubClass(Of<filterType>());
 }
 
-TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
+TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
     BinarizationFilter<DummyType, FakeImage<bool> > filter;
-    Mock<FakeImage<DummyType> > sourceImageMock;
-    const Image<DummyType>& sourceImage = sourceImageMock.get();
     unsigned int width = 100;
     unsigned int height = 240;
-
-    When(Method(sourceImageMock, getWidth)).Return(width);
-    When(Method(sourceImageMock, getHeight)).Return(height);
+    const Image<DummyType>& sourceImage = createMockImage(width, height);
 
     auto* destinationImage = filter.apply(&sourceImage);
 
