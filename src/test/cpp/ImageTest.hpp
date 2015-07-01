@@ -1,6 +1,8 @@
 #ifndef IMAGE_TEST_HPP
 #define IMAGE_TEST_HPP
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
@@ -13,24 +15,11 @@
 class ImageTest : public testing::Test {
 protected:
     typedef Image<DummyType> DummyImage;
-    typedef FakeImage<DummyType> FakeDummyImage;
 
-    DummyImage* image;
-    FakeDummyImage* mockImage;
-
-    void SetUp() {
-        image = NULL;
-        mockImage = NULL;
-    }
-
-    void TearDown() {
-        if (mockImage != NULL)
-            delete mockImage;
-    }
+    std::unique_ptr<DummyImage> image;
 
     void makeImage(unsigned int width, unsigned int height) {
-        mockImage = new FakeDummyImage(width, height);
-        image = mockImage;
+        image.reset(new FakeImage<DummyType>(width, height));
     }
 };
 
