@@ -1,11 +1,7 @@
 #include "FilterTest.hpp"
 
 TEST_F(FilterTest, classIsntAbstract) {
-    auto filter = new FakeDummyFilter();
-
-    assertThat(filter).isNotNull();
-
-    delete filter;
+    AssertThat<FakeDummyFilter>::isConstructible(WithoutParameters());
 }
 
 TEST_F(FilterTest, destructorIsVirtual) {

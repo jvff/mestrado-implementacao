@@ -1,7 +1,8 @@
 #include "ImageFactoryTest.hpp"
 
 TEST_F(ImageFactoryTest, classIsntAbstract) {
-    assertThat(factory).isNotNull();
+    AssertThat<ImageFactory<FakeImage<DummyType> > >
+            ::isConstructible(WithoutParameters());
 }
 
 TEST_F(ImageFactoryTest, destructorIsVirtual) {

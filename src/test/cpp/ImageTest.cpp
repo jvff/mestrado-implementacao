@@ -1,9 +1,8 @@
 #include "ImageTest.hpp"
 
 TEST_F(ImageTest, classIsntAbstract) {
-    makeImage(0, 0);
-
-    assertThat(image).isNotNull();
+    AssertThat<FakeImage<DummyType> >
+            ::isConstructible(With<unsigned int, unsigned int>());
 }
 
 TEST_F(ImageTest, destructorIsVirtual) {

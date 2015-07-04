@@ -9,20 +9,18 @@ using fakeit::Mock;
 using fakeit::When;
 
 TEST_F(BinarizationFilterTest, classIsntAbstract) {
-    auto filter = new BinarizationFilter<DummyType, FakeImage<bool> >();
+    typedef BinarizationFilter<DummyType, FakeImage<bool> >
+            DummyBinarizationFilter;
 
-    assertThat(filter).isNotNull();
-
-    delete filter;
+    AssertThat<DummyBinarizationFilter>::isConstructible(WithoutParameters());
 }
 
 TEST_F(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
-    auto filter = new BinarizationFilter<DummyType, FakeImage<bool>,
-            FakeImage<DummyType> >();
+    typedef FakeImage<DummyType> DummyFakeImage;
+    typedef BinarizationFilter<DummyType, FakeImage<bool>, DummyFakeImage>
+            DummyBinarizationFilter;
 
-    assertThat(filter).isNotNull();
-
-    delete filter;
+    AssertThat<DummyBinarizationFilter>::isConstructible(WithoutParameters());
 }
 
 TEST_F(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {

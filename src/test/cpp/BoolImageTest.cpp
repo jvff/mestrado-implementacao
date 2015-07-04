@@ -8,11 +8,7 @@ TYPED_TEST(BoolImageTest, typeIsImage) {
 }
 
 TYPED_TEST(BoolImageTest, typeIsntAbstract) {
-    TypeParam* image = new TypeParam(1, 1);
-
-    assertThat(image).isNotNull();
-
-    delete image;
+    AssertThat<TypeParam>::isConstructible(With<unsigned int, unsigned int>());
 }
 
 TYPED_TEST(BoolImageTest, twoDifferentPixels) {

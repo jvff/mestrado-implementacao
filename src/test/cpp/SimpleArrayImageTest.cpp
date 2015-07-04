@@ -7,11 +7,8 @@
 #include "DummyTypes.hpp"
 
 TEST(SimpleArrayImageTest, classIsntAbstract) {
-    SimpleArrayImage<DummyType>* image = new SimpleArrayImage<DummyType>(0, 0);
-
-    assertThat(image).isNotNull();
-
-    delete image;
+    AssertThat<SimpleArrayImage<DummyType> >
+            ::isConstructible(With<unsigned int, unsigned int>());
 }
 
 TEST(SimpleArrayImageTest, destructorIsVirtual) {
