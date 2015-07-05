@@ -17,7 +17,7 @@ TEST_F(FilterTest, imageFactoryWasCreated) {
 TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     expectImageCreation(1, 1);
 
-    filter->apply(sourceImage);
+    filter.apply(sourceImage);
 
     verifyImageDimensionsWereRequested();
 }
@@ -27,7 +27,7 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
 
     expectImageCreation(2, 3);
 
-    result = filter->apply(sourceImage);
+    result = filter.apply(sourceImage);
 
     assertThat(result).isEqualTo(destinationImage);
 
@@ -37,7 +37,7 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
 TEST_F(FilterTest, callToApplyToTheCreatedImageWasPerformed) {
     expectImageCreation(5, 2);
 
-    filter->apply(sourceImage);
+    filter.apply(sourceImage);
 
     verifyApplyWasCalled();
 }
@@ -45,7 +45,7 @@ TEST_F(FilterTest, callToApplyToTheCreatedImageWasPerformed) {
 TEST_F(FilterTest, filterWasAppliedToAllPixels) {
     expectImageCreation(10, 9);
 
-    filter->apply(sourceImage);
+    filter.apply(sourceImage);
 
     verifyApplyWasCalledOnEachPixel();
 }
@@ -53,7 +53,7 @@ TEST_F(FilterTest, filterWasAppliedToAllPixels) {
 TEST_F(FilterTest, allPixelsWereSet) {
     expectImageCreation(3, 7);
 
-    filter->apply(sourceImage);
+    filter.apply(sourceImage);
 
     verifyAllPixelsWereSet();
 }

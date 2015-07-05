@@ -34,14 +34,15 @@ protected:
     Mock<SourceImageType> sourceImageMock;
     Mock<DestinationImageType> destinationImageMock;
     Mock<DummyImageFactory>& imageFactoryMock;
-    DummyFilter* filter;
+
+    DummyFilter& filter;
     SourceImageType* sourceImage;
     DestinationImageType* destinationImage;
 
 protected:
     FilterTest() : filterSpy(fakeFilter),
-            imageFactoryMock(fakeFilter.getImageFactoryMock()) {
-        filter = &filterSpy.get();
+            imageFactoryMock(fakeFilter.getImageFactoryMock()),
+            filter(filterSpy.get()) {
         sourceImage = &sourceImageMock.get();
         destinationImage = &destinationImageMock.get();
     }
