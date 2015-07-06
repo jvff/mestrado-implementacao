@@ -32,21 +32,21 @@ public:
         unsigned int height = getDestinationImageHeight(sourceImage);
         auto* destinationImage = imageFactory->createImage(width, height);
 
-        apply(sourceImage, destinationImage);
+        apply(sourceImage, *destinationImage);
 
         return destinationImage;
     }
 
     virtual void apply(const SourceImageType& sourceImage,
-            DestinationImageType* destinationImage) {
-        unsigned int width = destinationImage->getWidth();
-        unsigned int height = destinationImage->getHeight();
+            DestinationImageType& destinationImage) {
+        unsigned int width = destinationImage.getWidth();
+        unsigned int height = destinationImage.getHeight();
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
                 auto newPixel = apply(x, y, sourceImage);
 
-                destinationImage->setPixel(x, y, newPixel);
+                destinationImage.setPixel(x, y, newPixel);
             }
         }
     }
