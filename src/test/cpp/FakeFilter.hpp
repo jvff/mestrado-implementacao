@@ -44,7 +44,7 @@ public:
     }
 
     void apply(const SourceImageType& sourceImage,
-            DestinationImageType* destinationImage) {
+            DestinationImageType& destinationImage) {
         Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
                 SourceImageType>::apply(sourceImage, destinationImage);
     }

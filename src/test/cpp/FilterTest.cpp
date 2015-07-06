@@ -29,7 +29,7 @@ TEST_F(FilterTest, imageFactoryIsUsed) {
 
     result = filter.apply(sourceImage);
 
-    assertThat(result).isEqualTo(destinationImage);
+    assertThat(result).isEqualTo(&destinationImage);
 
     verifyImageWasCreated();
 }

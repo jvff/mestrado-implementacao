@@ -38,13 +38,13 @@ protected:
 
     DummyFilter& filter;
     const SourceImageType& sourceImage;
-    DestinationImageType* destinationImage;
+    DestinationImageType& destinationImage;
 
 protected:
     FilterTest() : filterSpy(fakeFilter),
             imageFactoryMock(fakeFilter.getImageFactoryMock()),
-            filter(filterSpy.get()), sourceImage(sourceImageMock.get()) {
-        destinationImage = &destinationImageMock.get();
+            filter(filterSpy.get()), sourceImage(sourceImageMock.get()),
+            destinationImage(destinationImageMock.get()) {
     }
 
     ~FilterTest() noexcept {
@@ -74,8 +74,8 @@ protected:
 
     void verifyApplyWasCalled() {
         Verify(OverloadedMethod(filterSpy, apply,
-                void(const SourceImageType&, DestinationImageType*))
-            .Using(RefTo(sourceImage), destinationImage));
+                void(const SourceImageType&, DestinationImageType&))
+            .Using(RefTo(sourceImage), RefTo(destinationImage)));
     }
 
     void verifyApplyWasCalledOnEachPixel() {
@@ -115,7 +115,7 @@ private:
 
     void spyApplyMethod() {
         Spy(OverloadedMethod(filterSpy, apply,
-                void(const SourceImageType&, DestinationImageType*)));
+                void(const SourceImageType&, DestinationImageType&)));
     }
 
     void mockPerPixelApplyMethod() {
@@ -139,7 +139,7 @@ private:
     void prepareImageFactoryMock() {
         When(Method(imageFactoryMock, createImage)
             .Using(expectedWidth, expectedHeight))
-            .Return(destinationImage);
+            .Return(&destinationImage);
     }
 
     void prepareDestinationImageMock() {
