@@ -12,11 +12,11 @@ protected:
     ImageFactory<DestinationImageType>* imageFactory;
 
     virtual unsigned int getDestinationImageWidth(
-            const SourceImageType* sourceImage) = 0;
+            const SourceImageType& sourceImage) = 0;
     virtual unsigned int getDestinationImageHeight(
-            const SourceImageType* sourceImage) = 0;
+            const SourceImageType& sourceImage) = 0;
     virtual DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType* sourceImage) = 0;
+            const SourceImageType& sourceImage) = 0;
 
 public:
     Filter() {
@@ -27,7 +27,7 @@ public:
         delete imageFactory;
     }
 
-    virtual DestinationImageType* apply(const SourceImageType* sourceImage) {
+    virtual DestinationImageType* apply(const SourceImageType& sourceImage) {
         unsigned int width = getDestinationImageWidth(sourceImage);
         unsigned int height = getDestinationImageHeight(sourceImage);
         auto* destinationImage = imageFactory->createImage(width, height);
@@ -37,7 +37,7 @@ public:
         return destinationImage;
     }
 
-    virtual void apply(const SourceImageType* sourceImage,
+    virtual void apply(const SourceImageType& sourceImage,
             DestinationImageType* destinationImage) {
         unsigned int width = destinationImage->getWidth();
         unsigned int height = destinationImage->getHeight();

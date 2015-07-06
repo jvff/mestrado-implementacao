@@ -14,15 +14,15 @@ public:
     using SuperClass::apply;
 
 protected:
-    unsigned int getDestinationImageWidth(const SourceImageType* sourceImage) {
-        return sourceImage->getWidth();
+    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage) {
+        return sourceImage.getWidth();
     }
 
-    unsigned int getDestinationImageHeight(const SourceImageType* sourceImage) {
-        return sourceImage->getHeight();
+    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage) {
+        return sourceImage.getHeight();
     }
 
-    bool apply(unsigned int, unsigned int, const SourceImageType*) {
+    bool apply(unsigned int, unsigned int, const SourceImageType&) {
         return true;
     }
 };
