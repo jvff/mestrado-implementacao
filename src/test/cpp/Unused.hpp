@@ -4,12 +4,12 @@
 #define UNUSED(x) ((void)x)
 
 template <typename Type>
-void unused(Type arg) {
+void unused(const Type& arg) {
     UNUSED(arg);
 }
 
 template<typename Head, typename... Tail>
-void unused(Head head, Tail... tail) {
+void unused(const Head& head, const Tail&... tail) {
     UNUSED(head);
     unused(tail...);
 }
