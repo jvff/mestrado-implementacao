@@ -45,7 +45,7 @@ TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
     unsigned int height = 240;
     const Image<DummyType>& sourceImage = createMockImage(width, height);
 
-    auto* destinationImage = filter.apply(&sourceImage);
+    auto* destinationImage = filter.apply(sourceImage);
 
     assertThat(destinationImage->getWidth()).isEqualTo(width);
     assertThat(destinationImage->getHeight()).isEqualTo(height);

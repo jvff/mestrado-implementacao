@@ -31,26 +31,26 @@ public:
         return imageFactoryHandler.getMock();
     }
 
-    unsigned int getDestinationImageWidth(const SourceImageType* sourceImage) {
+    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage) {
         unused(sourceImage);
 
         return 0;
     }
 
-    unsigned int getDestinationImageHeight(const SourceImageType* sourceImage) {
+    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage) {
         unused(sourceImage);
 
         return 0;
     }
 
-    void apply(const SourceImageType* sourceImage,
+    void apply(const SourceImageType& sourceImage,
             DestinationImageType* destinationImage) {
         Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
                 SourceImageType>::apply(sourceImage, destinationImage);
     }
 
     DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType* sourceImage) {
+            const SourceImageType& sourceImage) {
         unused(x, y, sourceImage);
 
         DestinationPixelType defaultValue;

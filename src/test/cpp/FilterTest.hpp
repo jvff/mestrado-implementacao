@@ -11,6 +11,7 @@
 
 #include "DummyTypes.hpp"
 #include "FakeFilter.hpp"
+#include "RefTo.hpp"
 
 using namespace fakeit;
 
@@ -36,14 +37,13 @@ protected:
     Mock<DummyImageFactory>& imageFactoryMock;
 
     DummyFilter& filter;
-    SourceImageType* sourceImage;
+    const SourceImageType& sourceImage;
     DestinationImageType* destinationImage;
 
 protected:
     FilterTest() : filterSpy(fakeFilter),
             imageFactoryMock(fakeFilter.getImageFactoryMock()),
-            filter(filterSpy.get()) {
-        sourceImage = &sourceImageMock.get();
+            filter(filterSpy.get()), sourceImage(sourceImageMock.get()) {
         destinationImage = &destinationImageMock.get();
     }
 
@@ -60,8 +60,11 @@ protected:
     }
 
     void verifyImageDimensionsWereRequested() {
-        Verify(Method(filterSpy, getDestinationImageWidth).Using(sourceImage));
-        Verify(Method(filterSpy, getDestinationImageHeight).Using(sourceImage));
+        Verify(Method(filterSpy, getDestinationImageWidth)
+                .Using(RefTo(sourceImage)));
+
+        Verify(Method(filterSpy, getDestinationImageHeight)
+                .Using(RefTo(sourceImage)));
     }
 
     void verifyImageWasCreated() {
@@ -71,8 +74,8 @@ protected:
 
     void verifyApplyWasCalled() {
         Verify(OverloadedMethod(filterSpy, apply,
-                void(const SourceImageType*, DestinationImageType*))
-            .Using(sourceImage, destinationImage));
+                void(const SourceImageType&, DestinationImageType*))
+            .Using(RefTo(sourceImage), destinationImage));
     }
 
     void verifyApplyWasCalledOnEachPixel() {
@@ -85,8 +88,8 @@ protected:
     void verifyApplyWasCalledOnPixel(unsigned int x, unsigned int y) {
         Verify(OverloadedMethod(filterSpy, apply,
                 DestinationPixelType(unsigned int, unsigned int,
-                    const SourceImageType*))
-            .Using(x, y, sourceImage));
+                    const SourceImageType&))
+            .Using(x, y, RefTo(sourceImage)));
     }
 
     void verifyAllPixelsWereSet() {
@@ -112,24 +115,24 @@ private:
 
     void spyApplyMethod() {
         Spy(OverloadedMethod(filterSpy, apply,
-                void(const SourceImageType*, DestinationImageType*)));
+                void(const SourceImageType&, DestinationImageType*)));
     }
 
     void mockPerPixelApplyMethod() {
         When(OverloadedMethod(filterSpy, apply,
                 DestinationPixelType(unsigned int, unsigned int,
-                    const SourceImageType*))
-            .Using(Lt(expectedWidth), Lt(expectedHeight), sourceImage))
-            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType*)
+                    const SourceImageType&))
+            .Using(Lt(expectedWidth), Lt(expectedHeight), RefTo(sourceImage)))
+            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType&)
                    -> DestinationPixelType { return {(int)(x * y)}; });
     }
 
     void mockGetDestinationImageDimensionsMethods() {
         When(Method(filterSpy, getDestinationImageWidth)
-            .Using(sourceImage))
+            .Using(RefTo(sourceImage)))
             .Return(expectedWidth);
         When(Method(filterSpy, getDestinationImageHeight)
-            .Using(sourceImage))
+            .Using(RefTo(sourceImage)))
             .Return(expectedHeight);
     }
 
