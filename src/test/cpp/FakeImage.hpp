@@ -22,6 +22,8 @@ public:
         return getDefaultPixelValue();
     }
 
+    using Image<PixelType>::operator=;
+
 protected:
     virtual PixelType getDefaultPixelValue() = 0;
 };
@@ -30,6 +32,7 @@ template <typename PixelType>
 class FakeImage : public AbstractFakeImage<PixelType> {
 public:
     using AbstractFakeImage<PixelType>::AbstractFakeImage;
+    using AbstractFakeImage<PixelType>::operator=;
 
 protected:
     PixelType getDefaultPixelValue() {
@@ -43,6 +46,7 @@ template <>
 class FakeImage<bool> : public AbstractFakeImage<bool> {
 public:
     using AbstractFakeImage<bool>::AbstractFakeImage;
+    using AbstractFakeImage<bool>::operator=;
 
 protected:
     bool getDefaultPixelValue() {

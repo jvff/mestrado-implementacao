@@ -5,12 +5,16 @@
 
 #include <gtest/gtest.h>
 
+#include "fakeit.hpp"
+
 #include "asserts.hpp"
 
 #include "Image.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+
+using namespace fakeit;
 
 class ImageTest : public testing::Test {
 protected:
