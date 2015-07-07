@@ -1,7 +1,7 @@
 #include "ImageTest.hpp"
 
 TEST_F(ImageTest, classIsntAbstract) {
-    AssertThat<FakeImage<DummyType> >
+    AssertThat<FakeDummyImage>
             ::isConstructible(With<unsigned int, unsigned int>());
 }
 
@@ -12,27 +12,27 @@ TEST_F(ImageTest, destructorIsVirtual) {
 TEST_F(ImageTest, widthIsCorrect) {
     unsigned int width = 100;
 
-    makeImage(width, 1);
+    auto image = FakeDummyImage(width, 1);
 
-    assertThat(image->getWidth()).isEqualTo(width);
+    assertThat(image.getWidth()).isEqualTo(width);
 }
 
 TEST_F(ImageTest, heightIsCorrect) {
     unsigned int height = 100;
 
-    makeImage(1, height);
+    auto image = FakeDummyImage(1, height);
 
-    assertThat(image->getHeight()).isEqualTo(height);
+    assertThat(image.getHeight()).isEqualTo(height);
 }
 
 TEST_F(ImageTest, widthAndHeightAreCorrect) {
     unsigned int width = 35;
     unsigned int height = 63;
 
-    makeImage(width, height);
+    auto image = FakeDummyImage(width, height);
 
-    assertThat(image->getWidth()).isEqualTo(width);
-    assertThat(image->getHeight()).isEqualTo(height);
+    assertThat(image.getWidth()).isEqualTo(width);
+    assertThat(image.getHeight()).isEqualTo(height);
 }
 
 TEST_F(ImageTest, getWidthIsConstMethod) {

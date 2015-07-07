@@ -15,12 +15,7 @@
 class ImageTest : public testing::Test {
 protected:
     typedef Image<DummyType> DummyImage;
-
-    std::unique_ptr<DummyImage> image;
-
-    void makeImage(unsigned int width, unsigned int height) {
-        image.reset(new FakeImage<DummyType>(width, height));
-    }
+    typedef FakeImage<DummyType> FakeDummyImage;
 };
 
 #endif
