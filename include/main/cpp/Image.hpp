@@ -1,9 +1,13 @@
 #ifndef IMAGE_HPP
 #define IMAGE_HPP
 
+#include <functional>
+
 template <typename PixelType>
 class Image {
 protected:
+    typedef std::function<PixelType(unsigned int, unsigned int)> PaintFunction;
+
     unsigned int width;
     unsigned int height;
 
@@ -14,6 +18,15 @@ public:
     }
 
     virtual ~Image() {
+    }
+
+    virtual Image& operator=(PaintFunction makePixel) {
+        for (unsigned int y = 0; y < height; ++y) {
+            for (unsigned int x = 0; x < width; ++x)
+                setPixel(x, y, makePixel(x, y));
+        }
+
+        return *this;
     }
 
     virtual unsigned int getWidth() const {
