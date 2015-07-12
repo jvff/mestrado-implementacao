@@ -41,4 +41,9 @@ public:
     virtual PixelType getPixel(unsigned int x, unsigned int y) = 0;
 };
 
+template <typename PixelType>
+bool operator==(const Image<PixelType>&, const Image<PixelType>&) {
+    return true;
+}
+
 #endif
