@@ -66,3 +66,13 @@ TEST_F(ImageTest, isSettableWithLambdaExpression) {
         }
     }
 }
+
+TEST_F(ImageTest, imagesAreComparable) {
+    unsigned int width = 2;
+    unsigned int height = 9;
+
+    FakeDummyImage firstImage(width, height);
+    FakeDummyImage secondImage(width, height);
+
+    assertThat(firstImage).isEqualTo(secondImage);
+}
