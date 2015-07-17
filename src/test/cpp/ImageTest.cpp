@@ -121,3 +121,22 @@ TEST_F(ImageTest, imagesWithDifferentPixelsAtZeroZeroArentEqual) {
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
+
+TEST_F(ImageTest, imagesWithDifferentPixelsAtTwoThreeArentEqual) {
+    unsigned int width = 3;
+    unsigned int height = 4;
+
+    FakeDummyImage firstImage(width, height);
+    FakeDummyImage secondImage(width, height);
+
+    Mock<FakeDummyImage> firstImageSpy(firstImage);
+    Mock<FakeDummyImage> secondImageSpy(secondImage);
+
+    Spy(Method(firstImageSpy, getPixel));
+    Spy(Method(secondImageSpy, getPixel));
+
+    When(Method(firstImageSpy, getPixel).Using(2, 3)).Return(DummyType{ 5 });
+    When(Method(secondImageSpy, getPixel).Using(2, 3)).Return(DummyType{ 3 });
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+}
