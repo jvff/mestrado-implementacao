@@ -76,3 +76,14 @@ TEST_F(ImageTest, imagesAreComparable) {
 
     assertThat(firstImage).isEqualTo(secondImage);
 }
+
+TEST_F(ImageTest, imagesWithDifferentWidthsArentEqual) {
+    unsigned int firstWidth = 4;
+    unsigned int secondWidth = 7;
+    unsigned int height = 3;
+
+    FakeDummyImage firstImage(firstWidth, height);
+    FakeDummyImage secondImage(secondWidth, height);
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+}
