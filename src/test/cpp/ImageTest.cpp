@@ -43,6 +43,10 @@ TEST_F(ImageTest, getHeightIsConstMethod) {
     assertThat(&DummyImage::getHeight).isConstMethod();
 }
 
+TEST_F(ImageTest, getPixelIsConstMethod) {
+    assertThat(&DummyImage::getPixel).isConstMethod();
+}
+
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;

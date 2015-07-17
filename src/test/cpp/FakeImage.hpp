@@ -16,7 +16,7 @@ public:
         unused(x, y, pixel);
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) {
+    PixelType getPixel(unsigned int x, unsigned int y) const {
         unused(x, y);
 
         return getDefaultPixelValue();
@@ -25,7 +25,7 @@ public:
     using Image<PixelType>::operator=;
 
 protected:
-    virtual PixelType getDefaultPixelValue() = 0;
+    virtual PixelType getDefaultPixelValue() const = 0;
 };
 
 template <typename PixelType>
@@ -35,7 +35,7 @@ public:
     using AbstractFakeImage<PixelType>::operator=;
 
 protected:
-    PixelType getDefaultPixelValue() {
+    PixelType getDefaultPixelValue() const {
         PixelType defaultValue;
 
         return defaultValue;
@@ -49,7 +49,7 @@ public:
     using AbstractFakeImage<bool>::operator=;
 
 protected:
-    bool getDefaultPixelValue() {
+    bool getDefaultPixelValue() const {
         return false;
     }
 };
