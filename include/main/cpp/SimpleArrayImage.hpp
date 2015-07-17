@@ -8,7 +8,7 @@ class SimpleArrayImage : public Image<PixelType> {
 private:
     PixelType* pixels;
 
-    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) {
+    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) const {
         return y * Image<PixelType>::width + x;
     }
 
@@ -26,7 +26,7 @@ public:
         pixels[getPixelIndex(x, y)] = value;
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) {
+    PixelType getPixel(unsigned int x, unsigned int y) const {
         return pixels[getPixelIndex(x, y)];
     }
 };
@@ -37,15 +37,15 @@ private:
     unsigned int pixelsPerBlock;
     long* blocks;
 
-    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) {
+    inline unsigned int getPixelIndex(unsigned int x, unsigned int y) const {
         return y * width + x;
     }
 
-    inline unsigned int getBlockIndex(unsigned int pixelIndex) {
+    inline unsigned int getBlockIndex(unsigned int pixelIndex) const {
         return pixelIndex / pixelsPerBlock;
     }
 
-    inline long getPixelMask(unsigned int pixelIndex) {
+    inline long getPixelMask(unsigned int pixelIndex) const {
         unsigned int pixelIndexInBlock = pixelIndex % pixelsPerBlock;
 
         return 1 << pixelIndexInBlock;
@@ -75,7 +75,7 @@ public:
             blocks[blockIndex] &= invertedMask;
     }
 
-    virtual bool getPixel(unsigned int x, unsigned int y) {
+    virtual bool getPixel(unsigned int x, unsigned int y) const {
         unsigned int pixelIndex = getPixelIndex(x, y);
         unsigned int blockIndex = getBlockIndex(pixelIndex);
         long mask = getPixelMask(pixelIndex);

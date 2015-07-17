@@ -38,7 +38,7 @@ public:
     }
 
     virtual void setPixel(unsigned int x, unsigned int y, PixelType value) = 0;
-    virtual PixelType getPixel(unsigned int x, unsigned int y) = 0;
+    virtual PixelType getPixel(unsigned int x, unsigned int y) const = 0;
 };
 
 template <typename PixelType>
