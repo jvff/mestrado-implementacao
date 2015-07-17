@@ -87,3 +87,14 @@ TEST_F(ImageTest, imagesWithDifferentWidthsArentEqual) {
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
+
+TEST_F(ImageTest, imagesWithDifferentHeightArentEqual) {
+    unsigned int width = 3;
+    unsigned int firstHeight = 4;
+    unsigned int secondHeight = 7;
+
+    FakeDummyImage firstImage(width, firstHeight);
+    FakeDummyImage secondImage(width, secondHeight);
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+}
