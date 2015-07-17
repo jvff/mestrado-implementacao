@@ -8,12 +8,6 @@ TEST_F(FilterTest, destructorIsVirtual) {
     AssertThat<DummyFilter>::hasVirtualDestructor();
 }
 
-TEST_F(FilterTest, imageFactoryWasCreated) {
-    auto factory = fakeFilter.getImageFactory();
-
-    assertThat(factory).isNotNull();
-}
-
 TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     expectImageCreation(1, 1);
 
@@ -22,12 +16,10 @@ TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     verifyImageDimensionsWereRequested();
 }
 
-TEST_F(FilterTest, imageFactoryIsUsed) {
-    DestinationImageType* result = NULL;
-
+TEST_F(FilterTest, imageCreationIsRequested) {
     expectImageCreation(2, 3);
 
-    result = filter.apply(sourceImage);
+    auto* result = filter.apply(sourceImage);
 
     assertThat(result).isEqualTo(&destinationImage);
 

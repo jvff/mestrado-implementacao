@@ -25,7 +25,6 @@ protected:
             DummyFilter;
     typedef FakeFilter<SourcePixelType, DestinationPixelType,
             DestinationImageType> FakeDummyFilter;
-    typedef ImageFactory<DestinationImageType> DummyImageFactory;
 
     unsigned int expectedWidth;
     unsigned int expectedHeight;
@@ -34,16 +33,14 @@ protected:
     Mock<FakeDummyFilter> filterSpy;
     Mock<SourceImageType> sourceImageMock;
     Mock<DestinationImageType> destinationImageMock;
-    Mock<DummyImageFactory>& imageFactoryMock;
 
     DummyFilter& filter;
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
 
 protected:
-    FilterTest() : filterSpy(fakeFilter),
-            imageFactoryMock(fakeFilter.getImageFactoryMock()),
-            filter(filterSpy.get()), sourceImage(sourceImageMock.get()),
+    FilterTest() : filterSpy(fakeFilter), filter(filterSpy.get()),
+            sourceImage(sourceImageMock.get()),
             destinationImage(destinationImageMock.get()) {
     }
 
@@ -55,7 +52,6 @@ protected:
         expectedHeight = height;
 
         prepareFilterSpy();
-        prepareImageFactoryMock();
         prepareDestinationImageMock();
     }
 
@@ -68,7 +64,7 @@ protected:
     }
 
     void verifyImageWasCreated() {
-        Verify(Method(imageFactoryMock, createImage)
+        Verify(Method(filterSpy, createDestinationImage)
             .Using(expectedWidth, expectedHeight));
     }
 
@@ -111,6 +107,7 @@ private:
         spyApplyMethod();
         mockPerPixelApplyMethod();
         mockGetDestinationImageDimensionsMethods();
+        mockCreateDestinationImageMethod();
     }
 
     void spyApplyMethod() {
@@ -136,8 +133,8 @@ private:
             .Return(expectedHeight);
     }
 
-    void prepareImageFactoryMock() {
-        When(Method(imageFactoryMock, createImage)
+    void mockCreateDestinationImageMethod() {
+        When(Method(filterSpy, createDestinationImage)
             .Using(expectedWidth, expectedHeight))
             .Return(&destinationImage);
     }

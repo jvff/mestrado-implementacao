@@ -5,7 +5,6 @@
 
 #include "Filter.hpp"
 
-#include "MockInterceptor.hpp"
 #include "Unused.hpp"
 
 template <typename SourcePixelType, typename DestinationPixelType,
@@ -13,22 +12,8 @@ template <typename SourcePixelType, typename DestinationPixelType,
         class SourceImageType = Image<SourcePixelType> >
 class FakeFilter : public Filter<SourcePixelType, DestinationPixelType,
         DestinationImageType, SourceImageType> {
-private:
-    MockInterceptor<ImageFactory<DestinationImageType> > imageFactoryHandler;
-
 public:
-    FakeFilter() : imageFactoryHandler(this->imageFactory) {
-    }
-
     ~FakeFilter() noexcept {
-    }
-
-    ImageFactory<DestinationImageType>* getImageFactory() {
-        return imageFactoryHandler.getOriginal();
-    }
-
-    fakeit::Mock<ImageFactory<DestinationImageType> >& getImageFactoryMock() {
-        return imageFactoryHandler.getMock();
     }
 
     unsigned int getDestinationImageWidth(const SourceImageType& sourceImage) {
@@ -57,6 +42,9 @@ public:
 
         return defaultValue;
     }
+
+    using Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
+            SourceImageType>::createDestinationImage;
 };
 
 #endif
