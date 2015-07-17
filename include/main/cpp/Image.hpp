@@ -42,8 +42,8 @@ public:
 };
 
 template <typename PixelType>
-bool operator==(const Image<PixelType>&, const Image<PixelType>&) {
-    return true;
+bool operator==(const Image<PixelType>& first, const Image<PixelType>& second) {
+    return first.getWidth() == second.getWidth();
 }
 
 #endif
