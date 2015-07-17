@@ -42,10 +42,26 @@ public:
 };
 
 template <typename PixelType>
+static bool allPixelsAreEqual(const Image<PixelType>& first,
+        const Image<PixelType>& second) {
+    unsigned int width = first.getWidth();
+    unsigned int height = first.getHeight();
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            if (first.getPixel(x, y) != second.getPixel(x, y))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+template <typename PixelType>
 bool operator==(const Image<PixelType>& first, const Image<PixelType>& second) {
     return first.getWidth() == second.getWidth()
         && first.getHeight() == second.getHeight()
-        && first.getPixel(0, 0) == second.getPixel(0, 0);
+        && allPixelsAreEqual(first, second);
 }
 
 #endif
