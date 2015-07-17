@@ -2,15 +2,12 @@
 #define FILTER_HPP
 
 #include "Image.hpp"
-#include "ImageFactory.hpp"
 
 template <typename SourcePixelType, typename DestinationPixelType,
         class DestinationImageType,
         class SourceImageType = Image<SourcePixelType> >
 class Filter {
 protected:
-    ImageFactory<DestinationImageType>* imageFactory;
-
     virtual unsigned int getDestinationImageWidth(
             const SourceImageType& sourceImage) = 0;
     virtual unsigned int getDestinationImageHeight(
@@ -18,19 +15,19 @@ protected:
     virtual DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) = 0;
 
-public:
-    Filter() {
-        imageFactory = new ImageFactory<DestinationImageType>();
+    virtual DestinationImageType* createDestinationImage(unsigned int width,
+            unsigned int height) {
+        return new DestinationImageType(width, height);
     }
 
+public:
     virtual ~Filter() {
-        delete imageFactory;
     }
 
     virtual DestinationImageType* apply(const SourceImageType& sourceImage) {
         unsigned int width = getDestinationImageWidth(sourceImage);
         unsigned int height = getDestinationImageHeight(sourceImage);
-        auto* destinationImage = imageFactory->createImage(width, height);
+        auto* destinationImage = createDestinationImage(width, height);
 
         apply(sourceImage, *destinationImage);
 
