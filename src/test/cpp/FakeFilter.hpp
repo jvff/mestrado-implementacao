@@ -12,6 +12,9 @@ template <typename SourcePixelType, typename DestinationPixelType,
         class SourceImageType = Image<SourcePixelType> >
 class FakeFilter : public Filter<SourcePixelType, DestinationPixelType,
         DestinationImageType, SourceImageType> {
+private:
+    using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
 public:
     ~FakeFilter() noexcept {
     }
@@ -30,8 +33,7 @@ public:
 
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
-                SourceImageType>::apply(sourceImage, destinationImage);
+        ParentFilter::apply(sourceImage, destinationImage);
     }
 
     DestinationPixelType apply(unsigned int x, unsigned int y,
@@ -43,8 +45,7 @@ public:
         return defaultValue;
     }
 
-    using Filter<SourcePixelType, DestinationPixelType, DestinationImageType,
-            SourceImageType>::createDestinationImage;
+    using ParentFilter::createDestinationImage;
 };
 
 #endif
