@@ -121,7 +121,7 @@ private:
                     const SourceImageType&))
             .Using(Lt(expectedWidth), Lt(expectedHeight), RefTo(sourceImage)))
             .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType&)
-                   -> DestinationPixelType { return {(int)(x * y)}; });
+                   -> DestinationPixelType { return { (int)(x * y)}; });
     }
 
     void mockGetDestinationImageDimensionsMethods() {
