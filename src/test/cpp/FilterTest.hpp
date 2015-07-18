@@ -7,10 +7,10 @@
 
 #include "Filter.hpp"
 #include "Image.hpp"
-#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeFilter.hpp"
+#include "FakeImageMockProxy.hpp"
 #include "RefTo.hpp"
 
 using namespace fakeit;
@@ -20,7 +20,7 @@ protected:
     typedef DummyTypes<1> SourcePixelType;
     typedef DummyTypes<2> DestinationPixelType;
     typedef Image<SourcePixelType> SourceImageType;
-    typedef SimpleArrayImage<DestinationPixelType> DestinationImageType;
+    typedef FakeImageMockProxy<DestinationPixelType> DestinationImageType;
     typedef Filter<SourcePixelType, DestinationPixelType, DestinationImageType>
             DummyFilter;
     typedef FakeFilter<SourcePixelType, DestinationPixelType,
@@ -32,16 +32,13 @@ protected:
     FakeDummyFilter fakeFilter;
     Mock<FakeDummyFilter> filterSpy;
     Mock<SourceImageType> sourceImageMock;
-    Mock<DestinationImageType> destinationImageMock;
 
     DummyFilter& filter;
     const SourceImageType& sourceImage;
-    DestinationImageType& destinationImage;
 
 protected:
     FilterTest() : filterSpy(fakeFilter), filter(filterSpy.get()),
-            sourceImage(sourceImageMock.get()),
-            destinationImage(destinationImageMock.get()) {
+            sourceImage(sourceImageMock.get()) {
     }
 
     ~FilterTest() noexcept {
@@ -52,7 +49,6 @@ protected:
         expectedHeight = height;
 
         prepareFilterSpy();
-        prepareDestinationImageMock();
     }
 
     void verifyImageDimensionsWereRequested() {
@@ -68,10 +64,10 @@ protected:
             .Using(expectedWidth, expectedHeight));
     }
 
-    void verifyApplyWasCalled() {
+    void verifyApplyWasCalled(DestinationImageType& image) {
         Verify(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType&, DestinationImageType&))
-            .Using(RefTo(sourceImage), RefTo(destinationImage)));
+            .Using(RefTo(sourceImage), RefTo(image)));
     }
 
     void verifyApplyWasCalledOnEachPixel() {
@@ -88,31 +84,37 @@ protected:
             .Using(x, y, RefTo(sourceImage)));
     }
 
-    void verifyAllPixelsWereSet() {
+    void verifyAllPixelsWereSet(DestinationImageType& image) {
+        auto& mock = image.getMock();
+
         for (unsigned int x = 0; x < expectedWidth; ++x) {
             for (unsigned int y = 0; y < expectedHeight; ++y)
-                verifyPixelWasSet(x, y);
+                verifyPixelWasSet(mock, x, y);
         }
     }
 
-    void verifyPixelWasSet(unsigned int x, unsigned int y) {
+    void verifyPixelWasSet(Mock<FakeImage<DestinationPixelType> >& mock,
+            unsigned int x, unsigned int y) {
         DestinationPixelType pixelValue{(int)(x * y)};
 
-        Verify(Method(destinationImageMock, setPixel)
-            .Using(x, y, pixelValue));
+        Verify(Method(mock, setPixel).Using(x, y, pixelValue));
     }
 
 private:
     void prepareFilterSpy() {
         spyApplyMethod();
+        spyCreateDestinationImageMethod();
         mockPerPixelApplyMethod();
         mockGetDestinationImageDimensionsMethods();
-        mockCreateDestinationImageMethod();
     }
 
     void spyApplyMethod() {
         Spy(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType&, DestinationImageType&)));
+    }
+
+    void spyCreateDestinationImageMethod() {
+        Spy(Method(filterSpy, createDestinationImage));
     }
 
     void mockPerPixelApplyMethod() {
@@ -131,30 +133,6 @@ private:
         When(Method(filterSpy, getDestinationImageHeight)
             .Using(RefTo(sourceImage)))
             .Return(expectedHeight);
-    }
-
-    void mockCreateDestinationImageMethod() {
-        When(Method(filterSpy, createDestinationImage)
-            .Using(expectedWidth, expectedHeight))
-            .Return(&destinationImage);
-    }
-
-    void prepareDestinationImageMock() {
-        mockDestinationImageDimensions();
-        mockDestinationImageSetPixelMethod();
-    }
-
-    void mockDestinationImageDimensions() {
-        When(Method(destinationImageMock, getWidth))
-            .Return(expectedWidth);
-        When(Method(destinationImageMock, getHeight))
-            .Return(expectedHeight);
-    }
-
-    void mockDestinationImageSetPixelMethod() {
-        When(Method(destinationImageMock, setPixel)
-            .Using(Lt(expectedWidth), Lt(expectedHeight), _))
-            .AlwaysReturn();
     }
 };
 
