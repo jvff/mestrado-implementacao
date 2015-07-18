@@ -15,21 +15,21 @@ protected:
     virtual DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) = 0;
 
-    virtual DestinationImageType* createDestinationImage(unsigned int width,
+    virtual DestinationImageType createDestinationImage(unsigned int width,
             unsigned int height) {
-        return new DestinationImageType(width, height);
+        return DestinationImageType(width, height);
     }
 
 public:
     virtual ~Filter() {
     }
 
-    virtual DestinationImageType* apply(const SourceImageType& sourceImage) {
+    virtual DestinationImageType apply(const SourceImageType& sourceImage) {
         unsigned int width = getDestinationImageWidth(sourceImage);
         unsigned int height = getDestinationImageHeight(sourceImage);
-        auto* destinationImage = createDestinationImage(width, height);
+        auto destinationImage = createDestinationImage(width, height);
 
-        apply(sourceImage, *destinationImage);
+        apply(sourceImage, destinationImage);
 
         return destinationImage;
     }
