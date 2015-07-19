@@ -7,19 +7,21 @@
 using fakeit::Mock;
 using fakeit::When;
 
-TEST_F(BinarizationFilterTest, classIsntAbstract) {
+TEST_F(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
     typedef BinarizationFilter<DummyType, FakeImage<bool> >
             DummyBinarizationFilter;
+    typedef const DummyType& parameter;
 
-    AssertThat<DummyBinarizationFilter>::isConstructible(WithoutParameters());
+    AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
 }
 
 TEST_F(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     typedef FakeImage<DummyType> DummyFakeImage;
     typedef BinarizationFilter<DummyType, FakeImage<bool>, DummyFakeImage>
             DummyBinarizationFilter;
+    typedef const DummyType& parameter;
 
-    AssertThat<DummyBinarizationFilter>::isConstructible(WithoutParameters());
+    AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
 }
 
 TEST_F(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
@@ -39,7 +41,7 @@ TEST_F(BinarizationFilterTest, classIsAFilter) {
 }
 
 TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
-    BinarizationFilter<DummyType, FakeImage<bool> > filter;
+    BinarizationFilter<DummyType, FakeImage<bool> > filter(DummyType{0});
     unsigned int width = 100;
     unsigned int height = 240;
     const Image<DummyType>& sourceImage = createMockImage(width, height);
