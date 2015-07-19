@@ -6,23 +6,18 @@ struct DummyTypes {
     int value;
 };
 
-template <int discriminator>
-bool operator==(const DummyTypes<discriminator>& lhs,
-        const DummyTypes<discriminator>& rhs) {
-    return lhs.value == rhs.value;
+#define OPERATOR(op) \
+template <int discriminator> \
+bool operator op(const DummyTypes<discriminator>& lhs, \
+        const DummyTypes<discriminator>& rhs) { \
+    return lhs.value op rhs.value; \
 }
 
-template <int discriminator>
-bool operator!=(const DummyTypes<discriminator>& lhs,
-        const DummyTypes<discriminator>& rhs) {
-    return lhs.value != rhs.value;
-}
+OPERATOR(==)
+OPERATOR(!=)
+OPERATOR(>=)
 
-template <int discriminator>
-bool operator>=(const DummyTypes<discriminator>& lhs,
-        const DummyTypes<discriminator>& rhs) {
-    return lhs.value >= rhs.value;
-}
+#undef OPERATOR
 
 typedef DummyTypes<0> DummyType;
 
