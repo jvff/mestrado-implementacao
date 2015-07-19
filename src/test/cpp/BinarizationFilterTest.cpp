@@ -1,6 +1,5 @@
 #include "asserts.hpp"
 
-#include "Filter.hpp"
 #include "BinarizationFilter.hpp"
 
 #include "BinarizationFilterTest.hpp"
