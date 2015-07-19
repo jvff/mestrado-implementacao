@@ -11,10 +11,14 @@ class BinarizationFilter : public Filter<SourcePixelType, bool,
 private:
     typedef Filter<SourcePixelType, bool, DestinationImageType, SourceImageType>
             SuperClass;
+
+    const SourcePixelType threshold;
+
 public:
     using SuperClass::apply;
 
-    BinarizationFilter(const SourcePixelType&) {
+    BinarizationFilter(const SourcePixelType& parameter)
+            : threshold(parameter) {
     }
 
 protected:
@@ -26,8 +30,9 @@ protected:
         return sourceImage.getHeight();
     }
 
-    bool apply(unsigned int, unsigned int, const SourceImageType&) {
-        return true;
+    bool apply(unsigned int x, unsigned int y,
+            const SourceImageType& sourceImage) {
+        return sourceImage.getPixel(x, y) >= threshold;
     }
 };
 
