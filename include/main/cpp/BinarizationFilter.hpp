@@ -14,6 +14,9 @@ private:
 public:
     using SuperClass::apply;
 
+    BinarizationFilter(const SourcePixelType&) {
+    }
+
 protected:
     unsigned int getDestinationImageWidth(const SourceImageType& sourceImage) {
         return sourceImage.getWidth();
