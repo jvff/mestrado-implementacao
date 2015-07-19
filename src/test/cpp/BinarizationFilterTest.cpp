@@ -1,6 +1,7 @@
 #include "asserts.hpp"
 
 #include "BinarizationFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "BinarizationFilterTest.hpp"
 
@@ -50,4 +51,25 @@ TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
 
     assertThat(destinationImage.getWidth()).isEqualTo(width);
     assertThat(destinationImage.getHeight()).isEqualTo(height);
+}
+
+TEST_F(BinarizationFilterTest, pixelsAreSet) {
+    int threshold = 0;
+    BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
+    unsigned int width = 30;
+    unsigned int height = 40;
+    SimpleArrayImage<int> sourceImage(width, height);
+    SimpleArrayImage<bool> expectedImage(width, height);
+
+    sourceImage = [] (unsigned int x, unsigned int y) {
+        return x - y;
+    };
+
+    expectedImage = [] (unsigned int x, unsigned int y) {
+        return x >= y;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
 }

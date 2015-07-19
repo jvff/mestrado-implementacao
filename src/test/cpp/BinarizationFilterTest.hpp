@@ -24,6 +24,7 @@ protected:
             unsigned int height) {
         When(Method(sourceImageMock, getWidth)).Return(width);
         When(Method(sourceImageMock, getHeight)).Return(height);
+        When(Method(sourceImageMock, getPixel)).AlwaysReturn(DummyType{0});
 
         return sourceImageMock.get();
     }
