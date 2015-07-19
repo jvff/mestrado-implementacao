@@ -19,6 +19,8 @@ public:
             : Image<PixelType>(width, height), pixels(width * height) {
     }
 
+    using Image<PixelType>::operator=;
+
     void setPixel(unsigned int x, unsigned int y, PixelType value) {
         pixels[getPixelIndex(x, y)] = value;
     }
