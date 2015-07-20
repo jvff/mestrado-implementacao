@@ -94,3 +94,24 @@ TEST_F(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
 
     assertThat(result).isEqualTo(expectedImage);
 }
+
+TEST_F(BinarizationFilterTest, pixelsAreSetWhenNegativeThresholdIsUsed) {
+    int threshold = -9;
+    BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
+    unsigned int width = 65;
+    unsigned int height = 37;
+    SimpleArrayImage<int> sourceImage(width, height);
+    SimpleArrayImage<bool> expectedImage(width, height);
+
+    sourceImage = [] (unsigned int x, unsigned int y) {
+        return (int)x - (int)y;
+    };
+
+    expectedImage = [threshold] (unsigned int x, unsigned int y) {
+        return ((int)x - (int)y) >= threshold;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
+}
