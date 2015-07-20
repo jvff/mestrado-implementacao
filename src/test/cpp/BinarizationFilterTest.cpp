@@ -62,7 +62,7 @@ TEST_F(BinarizationFilterTest, pixelsAreSet) {
     SimpleArrayImage<bool> expectedImage(width, height);
 
     sourceImage = [] (unsigned int x, unsigned int y) {
-        return x - y;
+        return (int)x - (int)y;
     };
 
     expectedImage = [] (unsigned int x, unsigned int y) {
