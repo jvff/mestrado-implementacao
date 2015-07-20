@@ -1,8 +1,5 @@
 #include "asserts.hpp"
 
-#include "BinarizationFilter.hpp"
-#include "SimpleArrayImage.hpp"
-
 #include "BinarizationFilterTest.hpp"
 
 using fakeit::Mock;
@@ -56,62 +53,29 @@ TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
 TEST_F(BinarizationFilterTest, pixelsAreSet) {
     int threshold = 0;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
-    unsigned int width = 30;
-    unsigned int height = 40;
-    SimpleArrayImage<int> sourceImage(width, height);
-    SimpleArrayImage<bool> expectedImage(width, height);
+    TestImage<int> test(30, 40, threshold);
 
-    sourceImage = [] (unsigned int x, unsigned int y) {
-        return (int)x - (int)y;
-    };
+    auto result = filter.apply(test.sourceImage);
 
-    expectedImage = [] (unsigned int x, unsigned int y) {
-        return x >= y;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
+    assertThat(result).isEqualTo(test.expectedImage);
 }
 
 TEST_F(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
     int threshold = 22;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
-    unsigned int width = 33;
-    unsigned int height = 51;
-    SimpleArrayImage<int> sourceImage(width, height);
-    SimpleArrayImage<bool> expectedImage(width, height);
+    TestImage<int> test(33, 51, threshold);
 
-    sourceImage = [] (unsigned int x, unsigned int y) {
-        return (int)x - (int)y;
-    };
+    auto result = filter.apply(test.sourceImage);
 
-    expectedImage = [threshold] (unsigned int x, unsigned int y) {
-        return ((int)x - (int)y) >= threshold;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
+    assertThat(result).isEqualTo(test.expectedImage);
 }
 
 TEST_F(BinarizationFilterTest, pixelsAreSetWhenNegativeThresholdIsUsed) {
     int threshold = -9;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
-    unsigned int width = 65;
-    unsigned int height = 37;
-    SimpleArrayImage<int> sourceImage(width, height);
-    SimpleArrayImage<bool> expectedImage(width, height);
+    TestImage<int> test(65, 37, threshold);
 
-    sourceImage = [] (unsigned int x, unsigned int y) {
-        return (int)x - (int)y;
-    };
+    auto result = filter.apply(test.sourceImage);
 
-    expectedImage = [threshold] (unsigned int x, unsigned int y) {
-        return ((int)x - (int)y) >= threshold;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
+    assertThat(result).isEqualTo(test.expectedImage);
 }
