@@ -43,8 +43,8 @@ TEST_F(BinarizationFilterTest, classIsAFilter) {
 
 TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
     BinarizationFilter<DummyType, FakeImage<bool> > filter(DummyType{0});
-    unsigned int width = 100;
-    unsigned int height = 240;
+    unsigned int width = 10;
+    unsigned int height = 24;
     const Image<DummyType>& sourceImage = createMockImage(width, height);
 
     auto destinationImage = filter.apply(sourceImage);
