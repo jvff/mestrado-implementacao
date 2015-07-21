@@ -2,10 +2,7 @@
 
 #include "BinarizationFilterTest.hpp"
 
-using fakeit::Mock;
-using fakeit::When;
-
-TEST_F(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
+TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
     typedef BinarizationFilter<DummyType, FakeImage<bool> >
             DummyBinarizationFilter;
     typedef const DummyType& parameter;
@@ -13,7 +10,7 @@ TEST_F(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
     AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
 }
 
-TEST_F(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
+TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     typedef FakeImage<DummyType> DummyFakeImage;
     typedef BinarizationFilter<DummyType, FakeImage<bool>, DummyFakeImage>
             DummyBinarizationFilter;
@@ -22,7 +19,7 @@ TEST_F(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
 }
 
-TEST_F(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
+TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     typedef BinarizationFilter<DummyType, FakeImage<bool> > implicitType;
     typedef BinarizationFilter<DummyType, FakeImage<bool>, Image<DummyType> >
             explicitType;
@@ -30,7 +27,7 @@ TEST_F(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     AssertThat<implicitType>::isTheSame(As<explicitType>());
 }
 
-TEST_F(BinarizationFilterTest, classIsAFilter) {
+TEST(BinarizationFilterTest, classIsAFilter) {
     typedef Filter<DummyType, bool, FakeImage<bool> > filterType;
     typedef BinarizationFilter<DummyType, FakeImage<bool> >
             binarizationFilterType;
@@ -38,11 +35,11 @@ TEST_F(BinarizationFilterTest, classIsAFilter) {
     AssertThat<binarizationFilterType>::isSubClass(Of<filterType>());
 }
 
-TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
+TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
     BinarizationFilter<DummyType, FakeImage<bool> > filter(DummyType{0});
     unsigned int width = 10;
     unsigned int height = 24;
-    const Image<DummyType>& sourceImage = createMockImage(width, height);
+    const Image<DummyType>& sourceImage = FakeImage<DummyType>(width, height);
 
     auto destinationImage = filter.apply(sourceImage);
 
@@ -50,7 +47,7 @@ TEST_F(BinarizationFilterTest, imageDimensionsAreTheSame) {
     assertThat(destinationImage.getHeight()).isEqualTo(height);
 }
 
-TEST_F(BinarizationFilterTest, pixelsAreSet) {
+TEST(BinarizationFilterTest, pixelsAreSet) {
     int threshold = 0;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(30, 40, threshold);
@@ -60,7 +57,7 @@ TEST_F(BinarizationFilterTest, pixelsAreSet) {
     assertThat(result).isEqualTo(test.expectedImage);
 }
 
-TEST_F(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
+TEST(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
     int threshold = 22;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(33, 51, threshold);
@@ -70,7 +67,7 @@ TEST_F(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
     assertThat(result).isEqualTo(test.expectedImage);
 }
 
-TEST_F(BinarizationFilterTest, pixelsAreSetWhenNegativeThresholdIsUsed) {
+TEST(BinarizationFilterTest, pixelsAreSetWhenNegativeThresholdIsUsed) {
     int threshold = -9;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(65, 37, threshold);

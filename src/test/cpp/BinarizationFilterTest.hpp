@@ -3,35 +3,11 @@
 
 #include <gtest/gtest.h>
 
-#include "fakeit.hpp"
-
 #include "BinarizationFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-
-using fakeit::Mock;
-using fakeit::When;
-
-class BinarizationFilterTest : public testing::Test {
-private:
-    Mock<FakeImage<DummyType> > sourceImageMock;
-
-public:
-    ~BinarizationFilterTest() noexcept {
-    }
-
-protected:
-    FakeImage<DummyType>& createMockImage(unsigned int width,
-            unsigned int height) {
-        When(Method(sourceImageMock, getWidth)).Return(width);
-        When(Method(sourceImageMock, getHeight)).Return(height);
-        When(Method(sourceImageMock, getPixel)).AlwaysReturn(DummyType{0});
-
-        return sourceImageMock.get();
-    }
-};
 
 template <typename SourcePixel>
 class TestImage : public Image<SourcePixel> {
