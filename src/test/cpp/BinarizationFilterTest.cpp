@@ -58,7 +58,7 @@ TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
     assertThat(destinationImage.getHeight()).isEqualTo(height);
 }
 
-TEST(BinarizationFilterTest, pixelsAreSet) {
+TEST(BinarizationFilterTest, filterResult) {
     int threshold = 0;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(30, 40, threshold);
@@ -68,7 +68,7 @@ TEST(BinarizationFilterTest, pixelsAreSet) {
     assertThat(result).isEqualTo(test.expectedImage);
 }
 
-TEST(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
+TEST(BinarizationFilterTest, filterResultWithDifferentThreshold) {
     int threshold = 22;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(33, 51, threshold);
@@ -78,7 +78,7 @@ TEST(BinarizationFilterTest, pixelsAreSetWhenDifferentThresholdIsUsed) {
     assertThat(result).isEqualTo(test.expectedImage);
 }
 
-TEST(BinarizationFilterTest, pixelsAreSetWhenNegativeThresholdIsUsed) {
+TEST(BinarizationFilterTest, filterResultWithNegativeThreshold) {
     int threshold = -9;
     BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(65, 37, threshold);
