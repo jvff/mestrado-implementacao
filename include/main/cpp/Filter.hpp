@@ -9,16 +9,22 @@ template <typename SourcePixelType, typename DestinationPixelType,
 class Filter {
 protected:
     virtual unsigned int getDestinationImageWidth(
-            const SourceImageType& sourceImage) = 0;
+            const SourceImageType& sourceImage) {
+        return sourceImage.getWidth();
+    }
+
     virtual unsigned int getDestinationImageHeight(
-            const SourceImageType& sourceImage) = 0;
-    virtual DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) = 0;
+            const SourceImageType& sourceImage) {
+        return sourceImage.getHeight();
+    }
 
     virtual DestinationImageType createDestinationImage(unsigned int width,
             unsigned int height) {
         return DestinationImageType(width, height);
     }
+
+    virtual DestinationPixelType apply(unsigned int x, unsigned int y,
+            const SourceImageType& sourceImage) = 0;
 
 public:
     virtual ~Filter() {
