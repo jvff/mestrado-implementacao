@@ -1,5 +1,3 @@
-#include "asserts.hpp"
-
 #include "BinarizationFilterTest.hpp"
 
 TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {

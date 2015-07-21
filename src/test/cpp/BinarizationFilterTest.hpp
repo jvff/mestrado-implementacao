@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "BinarizationFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
