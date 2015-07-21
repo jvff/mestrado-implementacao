@@ -19,20 +19,6 @@ public:
     ~FakeFilter() noexcept {
     }
 
-    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage)
-            override {
-        unused(sourceImage);
-
-        return 0;
-    }
-
-    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage)
-            override {
-        unused(sourceImage);
-
-        return 0;
-    }
-
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
         ParentFilter::apply(sourceImage, destinationImage);
@@ -48,6 +34,8 @@ public:
     }
 
     using ParentFilter::createDestinationImage;
+    using ParentFilter::getDestinationImageWidth;
+    using ParentFilter::getDestinationImageHeight;
 };
 
 #endif

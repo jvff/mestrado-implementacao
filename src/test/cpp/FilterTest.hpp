@@ -49,6 +49,7 @@ protected:
         expectedHeight = height;
 
         prepareFilterSpy();
+        prepareSourceImageMock();
     }
 
     void verifyImageDimensionsWereRequested() {
@@ -103,14 +104,21 @@ protected:
 private:
     void prepareFilterSpy() {
         spyApplyMethod();
+        spyGetDestinationImageDimensionsMethods();
         spyCreateDestinationImageMethod();
         mockPerPixelApplyMethod();
-        mockGetDestinationImageDimensionsMethods();
     }
 
     void spyApplyMethod() {
         Spy(OverloadedMethod(filterSpy, apply,
                 void(const SourceImageType&, DestinationImageType&)));
+    }
+
+    void spyGetDestinationImageDimensionsMethods() {
+        Spy(Method(filterSpy, getDestinationImageWidth)
+            .Using(RefTo(sourceImage)));
+        Spy(Method(filterSpy, getDestinationImageHeight)
+            .Using(RefTo(sourceImage)));
     }
 
     void spyCreateDestinationImageMethod() {
@@ -126,13 +134,9 @@ private:
                    -> DestinationPixelType { return { (int)(x * y)}; });
     }
 
-    void mockGetDestinationImageDimensionsMethods() {
-        When(Method(filterSpy, getDestinationImageWidth)
-            .Using(RefTo(sourceImage)))
-            .Return(expectedWidth);
-        When(Method(filterSpy, getDestinationImageHeight)
-            .Using(RefTo(sourceImage)))
-            .Return(expectedHeight);
+    void prepareSourceImageMock() {
+        When(Method(sourceImageMock, getWidth)).Return(expectedWidth);
+        When(Method(sourceImageMock, getHeight)).Return(expectedHeight);
     }
 };
 
