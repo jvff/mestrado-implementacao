@@ -23,7 +23,8 @@ public:
             : threshold(parameter) {
     }
 
-    BinarizationFilter(const SourcePixelType& parameter, const Comparator&) {
+    BinarizationFilter(const SourcePixelType& parameter, const Comparator&)
+            : threshold(parameter) {
     }
 
 protected:
