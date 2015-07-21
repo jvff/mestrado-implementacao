@@ -11,6 +11,8 @@ class BinarizationFilter : public Filter<SourcePixelType, bool,
 private:
     typedef Filter<SourcePixelType, bool, DestinationImageType, SourceImageType>
             SuperClass;
+    typedef std::function<bool(const SourcePixelType&, const SourcePixelType&)>
+            Comparator;
 
     const SourcePixelType threshold;
 
@@ -19,6 +21,9 @@ public:
 
     BinarizationFilter(const SourcePixelType& parameter)
             : threshold(parameter) {
+    }
+
+    BinarizationFilter(const SourcePixelType& parameter, const Comparator&) {
     }
 
 protected:
