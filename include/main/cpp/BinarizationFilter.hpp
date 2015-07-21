@@ -35,16 +35,6 @@ public:
     }
 
 protected:
-    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage)
-            override {
-        return sourceImage.getWidth();
-    }
-
-    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage)
-            override {
-        return sourceImage.getHeight();
-    }
-
     bool apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) override {
         return comparator(sourceImage.getPixel(x, y), threshold);
