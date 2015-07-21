@@ -103,3 +103,35 @@ TEST(BinarizationFilterTest, filterResultWithCustomComparator) {
 
     assertThat(result).isEqualTo(test.expectedImage);
 }
+
+TEST(BinarizationFilterTest, filterResultWithComparatorAndDifferentThreshold) {
+    using FilterType = BinarizationFilter<int, SimpleArrayImage<bool> >;
+
+    int threshold = 22;
+    auto comparator = [] (int pixelValue, int threshold) -> bool {
+        return pixelValue <= threshold;
+    };
+
+    FilterType filter(threshold, comparator);
+    TestImage<int> test(33, 51, threshold, comparator);
+
+    auto result = filter.apply(test.sourceImage);
+
+    assertThat(result).isEqualTo(test.expectedImage);
+}
+
+TEST(BinarizationFilterTest, filterResultWithComparatorAndNegativeThreshold) {
+    using FilterType = BinarizationFilter<int, SimpleArrayImage<bool> >;
+
+    int threshold = -9;
+    auto comparator = [] (int pixelValue, int threshold) -> bool {
+        return pixelValue < threshold;
+    };
+
+    FilterType filter(threshold, comparator);
+    TestImage<int> test(65, 37, threshold, comparator);
+
+    auto result = filter.apply(test.sourceImage);
+
+    assertThat(result).isEqualTo(test.expectedImage);
+}
