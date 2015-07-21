@@ -12,14 +12,29 @@
 template <typename SourcePixel>
 class TestImage : public Image<SourcePixel> {
 public:
+    using Comparator =
+            std::function<bool(const SourcePixel&, const SourcePixel&)>;
+
     SimpleArrayImage<SourcePixel> sourceImage;
     SimpleArrayImage<bool> expectedImage;
     SourcePixel filterThreshold;
+    Comparator comparator;
+
+    static bool defaultComparator(const SourcePixel& value,
+            const SourcePixel& threshold) {
+        return value >= threshold;
+    }
 
     TestImage(unsigned int width, unsigned int height,
-            const SourcePixel& threshold) : Image<SourcePixel>(width, height),
-            sourceImage(width, height), expectedImage(width, height),
-            filterThreshold(threshold) {
+            const SourcePixel& threshold)
+            : TestImage(width, height, threshold, defaultComparator) {
+    }
+
+    TestImage(unsigned int width, unsigned int height,
+            const SourcePixel& threshold, const Comparator& customComparator)
+            : Image<SourcePixel>(width, height), sourceImage(width, height),
+            expectedImage(width, height), filterThreshold(threshold),
+            comparator(customComparator) {
         *this = [] (unsigned int x, unsigned int y) {
             return (int)x - (int)y;
         };
@@ -33,7 +48,7 @@ public:
 
     void setPixel(unsigned int x, unsigned int y, SourcePixel value) override {
         sourceImage.setPixel(x, y, value);
-        expectedImage.setPixel(x, y, value >= filterThreshold);
+        expectedImage.setPixel(x, y, comparator(value, filterThreshold));
     }
 };
 
