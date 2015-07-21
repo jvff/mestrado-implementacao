@@ -21,11 +21,11 @@ public:
 
     using Image<PixelType>::operator=;
 
-    void setPixel(unsigned int x, unsigned int y, PixelType value) {
+    void setPixel(unsigned int x, unsigned int y, PixelType value) override {
         pixels[getPixelIndex(x, y)] = value;
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) const {
+    PixelType getPixel(unsigned int x, unsigned int y) const override {
         return pixels[getPixelIndex(x, y)];
     }
 };

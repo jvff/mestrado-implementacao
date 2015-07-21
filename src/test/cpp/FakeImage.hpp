@@ -12,11 +12,11 @@ public:
             : Image<PixelType>(width, height) {
     }
 
-    void setPixel(unsigned int x, unsigned int y, PixelType pixel) {
+    void setPixel(unsigned int x, unsigned int y, PixelType pixel) override {
         unused(x, y, pixel);
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) const {
+    PixelType getPixel(unsigned int x, unsigned int y) const override {
         unused(x, y);
 
         return getDefaultPixelValue();
@@ -35,7 +35,7 @@ public:
     using AbstractFakeImage<PixelType>::operator=;
 
 protected:
-    PixelType getDefaultPixelValue() const {
+    PixelType getDefaultPixelValue() const override {
         PixelType defaultValue;
 
         return defaultValue;
@@ -49,7 +49,7 @@ public:
     using AbstractFakeImage<bool>::operator=;
 
 protected:
-    bool getDefaultPixelValue() const {
+    bool getDefaultPixelValue() const override {
         return false;
     }
 };

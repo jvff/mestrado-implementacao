@@ -19,25 +19,27 @@ public:
     ~FakeFilter() noexcept {
     }
 
-    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage) {
+    unsigned int getDestinationImageWidth(const SourceImageType& sourceImage)
+            override {
         unused(sourceImage);
 
         return 0;
     }
 
-    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage) {
+    unsigned int getDestinationImageHeight(const SourceImageType& sourceImage)
+            override {
         unused(sourceImage);
 
         return 0;
     }
 
     void apply(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) {
+            DestinationImageType& destinationImage) override {
         ParentFilter::apply(sourceImage, destinationImage);
     }
 
     DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) {
+            const SourceImageType& sourceImage) override {
         unused(x, y, sourceImage);
 
         DestinationPixelType defaultValue;
