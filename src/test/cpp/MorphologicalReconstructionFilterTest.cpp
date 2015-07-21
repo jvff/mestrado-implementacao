@@ -23,3 +23,15 @@ TEST(MorphologicalReconstructionFilterTest, isFilter) {
 
     AssertThat<FilterClass>::isSubClass(Of<ParentFilterClass>());
 }
+
+TEST(MorphologicalReconstructionFilterTest, defaultSourceImageType) {
+    using PixelType = DummyType;
+    using DestinationImageType = FakeImage<PixelType>;
+    using SourceImageType = Image<PixelType>;
+    using ImplicitType = MorphologicalReconstructionFilter<PixelType,
+            DestinationImageType>;
+    using ExplicitType = MorphologicalReconstructionFilter<PixelType,
+            DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
