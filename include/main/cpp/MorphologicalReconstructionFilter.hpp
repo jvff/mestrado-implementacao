@@ -6,10 +6,11 @@
 template <typename PixelType, class DestinationImageType,
         class SourceImageType = Image<PixelType> >
 class MorphologicalReconstructionFilter
-        : public Filter<PixelType, PixelType, DestinationImageType> {
+        : public Filter<PixelType, PixelType, DestinationImageType,
+                SourceImageType> {
 protected:
     PixelType apply(unsigned int x, unsigned int y,
-            const Image<PixelType>& sourceImage) {
+            const SourceImageType& sourceImage) override {
         return sourceImage.getPixel(x, y);
     }
 };
