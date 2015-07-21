@@ -10,6 +10,17 @@ TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
     AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
 }
 
+TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
+    typedef BinarizationFilter<DummyType, FakeImage<bool> >
+            DummyBinarizationFilter;
+    typedef const DummyType& thresholdParameter;
+    typedef const std::function<bool(const DummyType&, const DummyType&)>&
+            comparatorParameter;
+
+    AssertThat<DummyBinarizationFilter>::isConstructible(
+            With<thresholdParameter, comparatorParameter>());
+}
+
 TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
     typedef FakeImage<DummyType> DummyFakeImage;
     typedef BinarizationFilter<DummyType, FakeImage<bool>, DummyFakeImage>
