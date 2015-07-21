@@ -14,17 +14,24 @@ private:
     typedef std::function<bool(const SourcePixelType&, const SourcePixelType&)>
             Comparator;
 
+    static bool defaultComparator(const SourcePixelType& value,
+            const SourcePixelType& threshold) {
+        return value >= threshold;
+    }
+
+    Comparator comparator;
     const SourcePixelType threshold;
 
 public:
     using SuperClass::apply;
 
     BinarizationFilter(const SourcePixelType& parameter)
-            : threshold(parameter) {
+            : BinarizationFilter(parameter, defaultComparator) {
     }
 
-    BinarizationFilter(const SourcePixelType& parameter, const Comparator&)
-            : threshold(parameter) {
+    BinarizationFilter(const SourcePixelType& parameter,
+            const Comparator& customComparator) : comparator(customComparator),
+            threshold(parameter) {
     }
 
 protected:
@@ -38,7 +45,7 @@ protected:
 
     bool apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) {
-        return sourceImage.getPixel(x, y) >= threshold;
+        return comparator(sourceImage.getPixel(x, y), threshold);
     }
 };
 
