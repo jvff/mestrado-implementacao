@@ -3,7 +3,8 @@
 
 #include "Filter.hpp"
 
-template <typename PixelType, class DestinationImageType>
+template <typename PixelType, class DestinationImageType,
+        class SourceImageType = Image<PixelType> >
 class MorphologicalReconstructionFilter
         : public Filter<PixelType, PixelType, DestinationImageType> {
 protected:
