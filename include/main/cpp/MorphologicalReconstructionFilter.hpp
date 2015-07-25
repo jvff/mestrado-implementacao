@@ -67,8 +67,10 @@ private:
         unsigned int maxY = height - 1;
 
         for (unsigned int x = maxX; x > 0; --x) {
-            for (unsigned int y = maxY; y > 0; --y)
+            for (unsigned int y = maxY; y > 0; --y) {
                 propagateLeft(sourceImage, destinationImage, x, y);
+                propagateUp(sourceImage, destinationImage, x, y);
+            }
         }
     }
 
@@ -88,6 +90,12 @@ private:
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
         propagatePixel(sourceImage, destinationImage, x, y, x - 1, y);
+    }
+
+    void propagateUp(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage, unsigned int x,
+            unsigned int y) {
+        propagatePixel(sourceImage, destinationImage, x, y, x, y - 1);
     }
 
     void propagatePixel(const SourceImageType& sourceImage,
