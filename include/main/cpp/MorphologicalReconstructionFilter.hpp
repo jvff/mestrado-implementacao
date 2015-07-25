@@ -61,27 +61,27 @@ private:
     void propagateRight(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
-        const PixelType markerCenter = destinationImage.getPixel(x, y);
-        const PixelType markerRight = destinationImage.getPixel(x + 1, y);
-        const PixelType sourceRight = sourceImage.getPixel(x + 1, y);
-
-        const PixelType newRightPixel = std::min(markerCenter, sourceRight);
-        const PixelType destinationPixel = std::max(newRightPixel, markerRight);
-
-        destinationImage.setPixel(x + 1, y, destinationPixel);
+        propagatePixel(sourceImage, destinationImage, x, y, x + 1, y);
     }
 
     void propagateDown(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
-        const PixelType markerCenter = destinationImage.getPixel(x, y);
-        const PixelType markerDown = destinationImage.getPixel(x, y + 1);
-        const PixelType sourceDown = sourceImage.getPixel(x, y + 1);
+        propagatePixel(sourceImage, destinationImage, x, y, x, y + 1);
+    }
 
-        const PixelType newDownPixel = std::min(markerCenter, sourceDown);
-        const PixelType destinationPixel = std::max(newDownPixel, markerDown);
+    void propagatePixel(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage, unsigned int x,
+            unsigned int y, unsigned int nextX, unsigned int nextY) {
+        const PixelType markerCurrent = destinationImage.getPixel(x, y);
+        const PixelType markerNext = destinationImage.getPixel(nextX, nextY);
+        const PixelType sourcePixel = sourceImage.getPixel(nextX, nextY);
 
-        destinationImage.setPixel(x, y + 1, destinationPixel);
+        const PixelType propagatedPixel = std::min(markerCurrent, sourcePixel);
+        const PixelType destinationPixel = std::max(propagatedPixel,
+                markerNext);
+
+        destinationImage.setPixel(nextX, nextY, destinationPixel);
     }
 };
 
