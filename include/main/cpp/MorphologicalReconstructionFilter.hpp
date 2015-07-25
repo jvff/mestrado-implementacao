@@ -51,8 +51,10 @@ private:
         unsigned int maxY = height - 1;
 
         for (unsigned int x = 0; x < maxX; ++x) {
-            for (unsigned int y = 0; y < maxY; ++y)
+            for (unsigned int y = 0; y < maxY; ++y) {
                 propagateRight(sourceImage, destinationImage, x, y);
+                propagateDown(sourceImage, destinationImage, x, y);
+            }
         }
     }
 
@@ -67,6 +69,19 @@ private:
         const PixelType destinationPixel = std::max(newRightPixel, markerRight);
 
         destinationImage.setPixel(x + 1, y, destinationPixel);
+    }
+
+    void propagateDown(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage, unsigned int x,
+            unsigned int y) {
+        const PixelType markerCenter = destinationImage.getPixel(x, y);
+        const PixelType markerDown = destinationImage.getPixel(x, y + 1);
+        const PixelType sourceDown = sourceImage.getPixel(x, y + 1);
+
+        const PixelType newDownPixel = std::min(markerCenter, sourceDown);
+        const PixelType destinationPixel = std::max(newDownPixel, markerDown);
+
+        destinationImage.setPixel(x, y + 1, destinationPixel);
     }
 };
 
