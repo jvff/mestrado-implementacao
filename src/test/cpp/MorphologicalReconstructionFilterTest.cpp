@@ -47,25 +47,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRight) {
     const PixelType depth = 10;
     const unsigned int width = 5;
     const unsigned int height = 3;
-    const unsigned int maxX = width - 1;
 
     TestData<PixelType> test(width, height);
 
-    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y == height / 2)
-            return 100;
-        else
-            return 0;
-    };
-
+    test.useHorizontalLine(0, 100, depth);
     test.setMarker(0, std::make_tuple(1, height / 2, depth));
-
-    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y == height / 2)
-            return depth;
-        else
-            return 0;
-    };
 
     test.applyFilterAndVerifyResult();
 }
@@ -76,25 +62,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsDown) {
     const PixelType depth = 10;
     const unsigned int width = 3;
     const unsigned int height = 5;
-    const unsigned int maxY = height - 1;
 
     TestData<PixelType> test(width, height);
 
-    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (y >= 1 && y < maxY && x == width / 2)
-            return 100;
-        else
-            return 0;
-    };
-
+    test.useVerticalLine(0, 100, depth);
     test.setMarker(0, std::make_tuple(width / 2, 1, depth));
-
-    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (y >= 1 && y < maxY && x == width / 2)
-            return depth;
-        else
-            return 0;
-    };
 
     test.applyFilterAndVerifyResult();
 }
@@ -105,26 +77,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRightAndDown) {
     const PixelType depth = 33;
     const unsigned int width = 5;
     const unsigned int height = 5;
-    const unsigned int maxX = width - 1;
-    const unsigned int maxY = height - 1;
 
     TestData<PixelType> test(width, height);
 
-    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y >= 1 && y < maxY)
-            return 92;
-        else
-            return 0;
-    };
-
+    test.useRectangle(0, 92, depth);
     test.setMarker(0, std::make_tuple(1, 1, depth));
-
-    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y >= 1 && y < maxY)
-            return depth;
-        else
-            return 0;
-    };
 
     test.applyFilterAndVerifyResult();
 }
@@ -135,25 +92,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeft) {
     const PixelType depth = 10;
     const unsigned int width = 5;
     const unsigned int height = 3;
-    const unsigned int maxX = width - 1;
 
     TestData<PixelType> test(width, height);
 
-    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y == height / 2)
-            return 100;
-        else
-            return 0;
-    };
-
+    test.useHorizontalLine(0, 100, depth);
     test.setMarker(0, std::make_tuple(width - 2, height / 2, depth));
-
-    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x >= 1 && x < maxX && y == height / 2)
-            return depth;
-        else
-            return 0;
-    };
 
     test.applyFilterAndVerifyResult();
 }
@@ -164,25 +107,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsUp) {
     const PixelType depth = 10;
     const unsigned int width = 3;
     const unsigned int height = 5;
-    const unsigned int maxY = height - 1;
 
     TestData<PixelType> test(width, height);
 
-    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (y >= 1 && y < maxY && x == width / 2)
-            return 100;
-        else
-            return 0;
-    };
-
+    test.useVerticalLine(0, 100, depth);
     test.setMarker(0, std::make_tuple(width / 2, height - 2, depth));
-
-    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (y >= 1 && y < maxY && x == width / 2)
-            return depth;
-        else
-            return 0;
-    };
 
     test.applyFilterAndVerifyResult();
 }
