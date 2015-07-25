@@ -17,6 +17,7 @@ public:
             DestinationImageType& destinationImage) override {
         avoidMarkersBiggerThanSourcePixels(sourceImage, destinationImage);
         firstPass(sourceImage, destinationImage);
+        secondPass(sourceImage, destinationImage);
     }
 
 protected:
@@ -58,6 +59,19 @@ private:
         }
     }
 
+    void secondPass(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) {
+        unsigned int width = destinationImage.getWidth();
+        unsigned int height = destinationImage.getHeight();
+        unsigned int maxX = width - 1;
+        unsigned int maxY = height - 1;
+
+        for (unsigned int x = maxX; x > 0; --x) {
+            for (unsigned int y = maxY; y > 0; --y)
+                propagateLeft(sourceImage, destinationImage, x, y);
+        }
+    }
+
     void propagateRight(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
@@ -68,6 +82,12 @@ private:
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
         propagatePixel(sourceImage, destinationImage, x, y, x, y + 1);
+    }
+
+    void propagateLeft(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage, unsigned int x,
+            unsigned int y) {
+        propagatePixel(sourceImage, destinationImage, x, y, x - 1, y);
     }
 
     void propagatePixel(const SourceImageType& sourceImage,
