@@ -157,3 +157,32 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeft) {
 
     test.applyFilterAndVerifyResult();
 }
+
+TEST(MorphologicalReconstructionFilterTest, markerSpreadsUp) {
+    using PixelType = unsigned char;
+
+    const PixelType depth = 10;
+    const unsigned int width = 3;
+    const unsigned int height = 5;
+    const unsigned int maxY = height - 1;
+
+    TestData<PixelType> test(width, height);
+
+    test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (y >= 1 && y < maxY && x == width / 2)
+            return 100;
+        else
+            return 0;
+    };
+
+    test.setMarker(0, std::make_tuple(width / 2, height - 2, depth));
+
+    test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (y >= 1 && y < maxY && x == width / 2)
+            return depth;
+        else
+            return 0;
+    };
+
+    test.applyFilterAndVerifyResult();
+}
