@@ -47,12 +47,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRight) {
     const PixelType depth = 10;
     const unsigned int width = 5;
     const unsigned int height = 3;
+    const unsigned int maxX = width - 1;
 
     TestData<PixelType> test(width, height);
 
     test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-
         if (x >= 1 && x < maxX && y == height / 2)
             return 100;
         else
@@ -62,8 +61,6 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRight) {
     test.setMarker(0, std::make_tuple(1, height / 2, depth));
 
     test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-
         if (x >= 1 && x < maxX && y == height / 2)
             return depth;
         else
@@ -79,12 +76,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsDown) {
     const PixelType depth = 10;
     const unsigned int width = 3;
     const unsigned int height = 5;
+    const unsigned int maxY = height - 1;
 
     TestData<PixelType> test(width, height);
 
     test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxY = height - 1;
-
         if (y >= 1 && y < maxY && x == width / 2)
             return 100;
         else
@@ -94,8 +90,6 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsDown) {
     test.setMarker(0, std::make_tuple(width / 2, 1, depth));
 
     test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxY = height - 1;
-
         if (y >= 1 && y < maxY && x == width / 2)
             return depth;
         else
@@ -111,13 +105,12 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRightAndDown) {
     const PixelType depth = 33;
     const unsigned int width = 5;
     const unsigned int height = 5;
+    const unsigned int maxX = width - 1;
+    const unsigned int maxY = height - 1;
 
     TestData<PixelType> test(width, height);
 
     test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-        unsigned int maxY = height - 1;
-
         if (x >= 1 && x < maxX && y >= 1 && y < maxY)
             return 92;
         else
@@ -127,9 +120,6 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsRightAndDown) {
     test.setMarker(0, std::make_tuple(1, 1, depth));
 
     test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-        unsigned int maxY = height - 1;
-
         if (x >= 1 && x < maxX && y >= 1 && y < maxY)
             return depth;
         else
@@ -145,12 +135,11 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeft) {
     const PixelType depth = 10;
     const unsigned int width = 5;
     const unsigned int height = 3;
+    const unsigned int maxX = width - 1;
 
     TestData<PixelType> test(width, height);
 
     test.sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-
         if (x >= 1 && x < maxX && y == height / 2)
             return 100;
         else
@@ -160,8 +149,6 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeft) {
     test.setMarker(0, std::make_tuple(width - 2, height / 2, depth));
 
     test.expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        unsigned int maxX = width - 1;
-
         if (x >= 1 && x < maxX && y == height / 2)
             return depth;
         else
