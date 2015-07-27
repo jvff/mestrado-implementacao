@@ -1,6 +1,8 @@
 #ifndef MORPHOLOGICAL_RECONSTRUCTION_FILTER_HPP
 #define MORPHOLOGICAL_RECONSTRUCTION_FILTER_HPP
 
+#include <queue>
+
 #include "Filter.hpp"
 
 template <typename PixelType, class DestinationImageType,
@@ -11,14 +13,17 @@ class MorphologicalReconstructionFilter
 private:
     using ParentFilter = Filter<PixelType, PixelType, DestinationImageType,
             SourceImageType>;
+    using Pixel = std::tuple<unsigned int, unsigned int>;
 
 public:
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
+        std::queue<Pixel> pixelsToBeUpdated;
+
         avoidMarkersBiggerThanSourcePixels(sourceImage, destinationImage);
         firstPass(sourceImage, destinationImage);
-        secondPass(sourceImage, destinationImage);
-        firstPass(sourceImage, destinationImage);
+        secondPass(sourceImage, destinationImage, pixelsToBeUpdated);
+        thirdPass(sourceImage, destinationImage, pixelsToBeUpdated);
     }
 
 protected:
@@ -61,7 +66,8 @@ private:
     }
 
     void secondPass(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) {
+            DestinationImageType& destinationImage,
+            std::queue<Pixel>& pixelsToBeUpdated) {
         unsigned int width = destinationImage.getWidth();
         unsigned int height = destinationImage.getHeight();
         unsigned int maxX = width - 1;
@@ -69,37 +75,64 @@ private:
 
         for (unsigned int x = maxX; x > 0; --x) {
             for (unsigned int y = maxY; y > 0; --y) {
-                propagateLeft(sourceImage, destinationImage, x, y);
-                propagateUp(sourceImage, destinationImage, x, y);
+                if (propagateLeft(sourceImage, destinationImage, x, y))
+                    pixelsToBeUpdated.push(std::make_tuple(x - 1, y));
+
+                if (propagateUp(sourceImage, destinationImage, x, y))
+                    pixelsToBeUpdated.push(std::make_tuple(x, y - 1));
             }
         }
     }
 
-    void propagateRight(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage, unsigned int x,
-            unsigned int y) {
-        propagatePixel(sourceImage, destinationImage, x, y, x + 1, y);
+    void thirdPass(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage,
+            std::queue<Pixel>& pixelsToBeUpdated) {
+        unsigned int x, y;
+
+        while (!pixelsToBeUpdated.empty()) {
+            std::tie(x, y) = pixelsToBeUpdated.front();
+
+            if (propagateLeft(sourceImage, destinationImage, x, y))
+                pixelsToBeUpdated.push(std::make_tuple(x - 1, y));
+
+            if (propagateRight(sourceImage, destinationImage, x, y))
+                pixelsToBeUpdated.push(std::make_tuple(x + 1, y));
+
+            if (propagateUp(sourceImage, destinationImage, x, y))
+                pixelsToBeUpdated.push(std::make_tuple(x, y - 1));
+
+            if (propagateDown(sourceImage, destinationImage, x, y))
+                pixelsToBeUpdated.push(std::make_tuple(x, y + 1));
+
+            pixelsToBeUpdated.pop();
+        }
     }
 
-    void propagateDown(const SourceImageType& sourceImage,
+    bool propagateRight(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
-        propagatePixel(sourceImage, destinationImage, x, y, x, y + 1);
+        return propagatePixel(sourceImage, destinationImage, x, y, x + 1, y);
     }
 
-    void propagateLeft(const SourceImageType& sourceImage,
+    bool propagateDown(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
-        propagatePixel(sourceImage, destinationImage, x, y, x - 1, y);
+        return propagatePixel(sourceImage, destinationImage, x, y, x, y + 1);
     }
 
-    void propagateUp(const SourceImageType& sourceImage,
+    bool propagateLeft(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y) {
-        propagatePixel(sourceImage, destinationImage, x, y, x, y - 1);
+        return propagatePixel(sourceImage, destinationImage, x, y, x - 1, y);
     }
 
-    void propagatePixel(const SourceImageType& sourceImage,
+    bool propagateUp(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage, unsigned int x,
+            unsigned int y) {
+        return propagatePixel(sourceImage, destinationImage, x, y, x, y - 1);
+    }
+
+    bool propagatePixel(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y, unsigned int nextX, unsigned int nextY) {
         const PixelType markerCurrent = destinationImage.getPixel(x, y);
@@ -111,6 +144,8 @@ private:
                 markerNext);
 
         destinationImage.setPixel(nextX, nextY, destinationPixel);
+
+        return markerNext != destinationPixel;
     }
 };
 
