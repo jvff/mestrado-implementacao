@@ -18,6 +18,7 @@ public:
         avoidMarkersBiggerThanSourcePixels(sourceImage, destinationImage);
         firstPass(sourceImage, destinationImage);
         secondPass(sourceImage, destinationImage);
+        firstPass(sourceImage, destinationImage);
     }
 
 protected:
