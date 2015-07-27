@@ -130,3 +130,18 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeftAndUp) {
 
     test.applyFilterAndVerifyResult();
 }
+
+TEST(MorphologicalReconstructionFilterTest, markerSpreadsEverywhere) {
+    using PixelType = unsigned char;
+
+    const PixelType depth = 45;
+    const unsigned int width = 5;
+    const unsigned int height = 5;
+
+    TestData<PixelType> test(width, height);
+
+    test.useRectangle(0, 150, depth);
+    test.setMarker(0, std::make_tuple(width / 2, height / 2, depth));
+
+    test.applyFilterAndVerifyResult();
+}
