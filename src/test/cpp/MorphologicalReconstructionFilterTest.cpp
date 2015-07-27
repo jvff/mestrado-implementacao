@@ -42,106 +42,64 @@ TEST(MorphologicalReconstructionFilterTest, sourceImageTypeIsPropagated) {
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsRight) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 10;
-    const unsigned int width = 5;
-    const unsigned int height = 3;
-
-    TestData<PixelType> test(width, height);
-
-    test.useHorizontalLine(0, 100, depth);
-    test.setMarker(0, std::make_tuple(1, height / 2, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(5, 3)
+        .setBackground(0)
+        .setForeground(100)
+        .setMarkerDepth(10)
+        .useLeftToRightHorizontalLine();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsDown) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 10;
-    const unsigned int width = 3;
-    const unsigned int height = 5;
-
-    TestData<PixelType> test(width, height);
-
-    test.useVerticalLine(0, 100, depth);
-    test.setMarker(0, std::make_tuple(width / 2, 1, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(3, 5)
+        .setBackground(0)
+        .setForeground(100)
+        .setMarkerDepth(10)
+        .useTopToBottomVerticalLine();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsRightAndDown) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 33;
-    const unsigned int width = 5;
-    const unsigned int height = 5;
-
-    TestData<PixelType> test(width, height);
-
-    test.useRectangle(0, 92, depth);
-    test.setMarker(0, std::make_tuple(1, 1, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(5, 5)
+        .setBackground(0)
+        .setForeground(92)
+        .setMarkerDepth(33)
+        .useRectangleWithTopLeftMarker();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeft) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 10;
-    const unsigned int width = 5;
-    const unsigned int height = 3;
-
-    TestData<PixelType> test(width, height);
-
-    test.useHorizontalLine(0, 100, depth);
-    test.setMarker(0, std::make_tuple(width - 2, height / 2, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(5, 3)
+        .setBackground(0)
+        .setForeground(100)
+        .setMarkerDepth(10)
+        .useRightToLeftHorizontalLine();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsUp) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 10;
-    const unsigned int width = 3;
-    const unsigned int height = 5;
-
-    TestData<PixelType> test(width, height);
-
-    test.useVerticalLine(0, 100, depth);
-    test.setMarker(0, std::make_tuple(width / 2, height - 2, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(3, 5)
+        .setBackground(0)
+        .setForeground(100)
+        .setMarkerDepth(10)
+        .useBottomToTopVerticalLine();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsLeftAndUp) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 99;
-    const unsigned int width = 5;
-    const unsigned int height = 5;
-
-    TestData<PixelType> test(width, height);
-
-    test.useRectangle(0, 250, depth);
-    test.setMarker(0, std::make_tuple(width - 2, height - 2, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(5, 5)
+        .setBackground(0)
+        .setForeground(250)
+        .setMarkerDepth(99)
+        .useRectangleWithBottomRightMarker();
 }
 
 TEST(MorphologicalReconstructionFilterTest, markerSpreadsEverywhere) {
-    using PixelType = unsigned char;
-
-    const PixelType depth = 45;
-    const unsigned int width = 5;
-    const unsigned int height = 5;
-
-    TestData<PixelType> test(width, height);
-
-    test.useRectangle(0, 150, depth);
-    test.setMarker(0, std::make_tuple(width / 2, height / 2, depth));
-
-    test.applyFilterAndVerifyResult();
+    TestData<unsigned char>()
+        .setDimensions(5, 5)
+        .setBackground(0)
+        .setForeground(150)
+        .setMarkerDepth(45)
+        .useRectangleWithCenterMarker();
 }
