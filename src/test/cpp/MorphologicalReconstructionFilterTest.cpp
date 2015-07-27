@@ -133,3 +133,30 @@ TEST(MorphologicalReconstructionFilterTest, middleIsntReconstructed) {
             return 50;
     };
 }
+
+TEST(MorphologicalReconstructionFilterTest, markerSpreadsThroughSpiral) {
+    TestData<unsigned char> test;
+
+    test.setDimensions(7, 7)
+        .setBackground(0)
+        .setMarkerDepth(255);
+
+    *test.sourceImage = [] (unsigned int x, unsigned int y) -> unsigned char {
+        if (x == 0 || y == 0 || x == 6 || y == 6)
+            return 0;
+        else if (x == 2 && y == 1)
+            return 0;
+        else if (x == 1 || y == 1 || x == 5 || y == 5)
+            return 21;
+        else if (x == 3 && y == 2)
+            return 21;
+        else if (x == 2 || y == 2 || x == 4 || y == 4)
+            return 0;
+        else
+            return 21;
+    };
+
+    test.addMarker(1, 1);
+
+    *test.expectedImage = *test.sourceImage;
+}
