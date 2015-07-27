@@ -103,3 +103,33 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsEverywhere) {
         .setMarkerDepth(45)
         .useRectangleWithCenterMarker();
 }
+
+TEST(MorphologicalReconstructionFilterTest, middleIsntReconstructed) {
+    TestData<unsigned char> test;
+
+    test.setDimensions(7, 7)
+        .setBackground(0)
+        .setMarkerDepth(98);
+
+    *test.sourceImage = [] (unsigned int x, unsigned int y) -> unsigned char {
+        if (x == 0 || y == 0 || x == 6 || y == 6)
+            return 0;
+        else if (x == 1 || y == 1 || x == 5 || y == 5)
+            return 240;
+        else if (x == 2 || y == 2 || x ==  4|| y == 4)
+            return 50;
+        else
+            return 192;
+    };
+
+    test.addMarker(1, 1);
+
+    *test.expectedImage = [] (unsigned int x, unsigned int y) -> unsigned char {
+        if (x == 0 || y == 0 || x == 6 || y == 6)
+            return 0;
+        else if (x == 1 || y == 1 || x == 5 || y == 5)
+            return 98;
+        else
+            return 50;
+    };
+}
