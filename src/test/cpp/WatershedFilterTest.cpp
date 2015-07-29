@@ -13,3 +13,16 @@ TEST(WatershedFilterTest, classTemplateExists) {
 
     AssertThat<DummyFilter>::isClassOrStruct();
 }
+
+TEST(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
+    using SourcePixelType = DummyTypes<2>;
+    using DestinationPixelType = DummyTypes<1>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SourceImageType = Image<SourcePixelType>;
+    using ImplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
+            DestinationImageType>;
+    using ExplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
