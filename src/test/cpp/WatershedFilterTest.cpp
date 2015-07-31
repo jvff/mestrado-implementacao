@@ -2,6 +2,7 @@
 
 #include "asserts.hpp"
 
+#include "SimpleArrayImage.hpp"
 #include "WatershedFilter.hpp"
 
 #include "DummyTypes.hpp"
@@ -45,4 +46,29 @@ TEST(WatershedFilterTest, isConstructible) {
     using DummyFilter = WatershedFilter<DummyType, DummyType, ImageType>;
 
     AssertThat<DummyFilter>::isConstructible(WithoutParameters());
+}
+
+TEST(WatershedFilterTest, singleSegment) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
+
+    unsigned int width = 5;
+    unsigned int height = 5;
+
+    ImageType sourceImage(width, height);
+    ImageType expectedImage(width, height);
+    FilterType filter;
+
+    sourceImage = [] (unsigned int, unsigned int) {
+        return 10;
+    };
+
+    expectedImage = [] (unsigned int, unsigned int) {
+        return 1;
+    };
+
+    auto resultingImage = filter.apply(sourceImage);
+
+    assertThat(resultingImage).isEqualTo(expectedImage);
 }
