@@ -10,6 +10,7 @@
 #include "MorphologicalReconstructionFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
+#include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
@@ -49,7 +50,7 @@ public:
             failTest();
     }
 
-    ThisType& setDimensions(unsigned int newWidth, unsigned int newHeight) {
+    CHAIN(setDimensions, unsigned int newWidth, unsigned int newHeight) {
         if (state != State::EMPTY)
             cancelTestExecution();
         else {
@@ -65,11 +66,9 @@ public:
 
             state = State::SETTING_UP;
         }
-
-        return *this;
     }
 
-    ThisType& setBackground(PixelType value) {
+    CHAIN(setBackground, PixelType value) {
         background = value;
 
         if (state != State::SETTING_UP)
@@ -79,20 +78,14 @@ public:
                 return background;
             };
         }
-
-        return *this;
     }
 
-    ThisType& setForeground(PixelType value) {
+    CHAIN(setForeground, PixelType value) {
         foreground = value;
-
-        return *this;
     }
 
-    ThisType& setMarkerDepth(PixelType value) {
+    CHAIN(setMarkerDepth, PixelType value) {
         markerDepth = value;
-
-        return *this;
     }
 
     void useLeftToRightHorizontalLine() {
