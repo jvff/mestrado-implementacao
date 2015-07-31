@@ -9,6 +9,8 @@ template <typename SourcePixelType, typename DestinationPixelType,
 class WatershedFilter : public Filter<SourcePixelType, DestinationPixelType,
         DestinationImageType, SourceImageType> {
 private:
+    using DestinationPixel = std::tuple<unsigned int, unsigned int,
+            DestinationPixelType>;
     using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 
@@ -67,42 +69,83 @@ private:
     void erodeLevel(const SourcePixelType& level,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        bool erosionWasPerformed;
-        unsigned int width = sourceImage.getWidth();
-        unsigned int height = sourceImage.getHeight();
+        std::vector<DestinationPixel> pixelsToUpdate;
 
         do {
-            erosionWasPerformed = false;
+            pixelsToUpdate = collectErosion(level, sourceImage,
+                    destinationImage);
 
-            for (unsigned int x = 0; x < width; ++x) {
-                for (unsigned int y = 0; y < height; ++y) {
-                    if (sourceImage.getPixel(x, y) == level
-                            && destinationImage.getPixel(x, y) == 0) {
-                        erosionWasPerformed |= erodePixel(x, y,
-                                destinationImage);
-                    }
-                }
-            }
-        } while (erosionWasPerformed);
+            applyErosion(destinationImage, pixelsToUpdate);
+        } while (!pixelsToUpdate.empty());
     }
 
-    bool erodePixel(unsigned int x, unsigned int y,
-            DestinationImageType& image) {
+    std::vector<DestinationPixel> collectErosion(const SourcePixelType& level,
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) {
+        unsigned int width = sourceImage.getWidth();
+        unsigned int height = sourceImage.getHeight();
+        std::vector<DestinationPixel> erosionTargets;
+
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y) {
+                checkErosionCandidate(x, y, level, sourceImage,
+                        destinationImage, erosionTargets);
+            }
+        }
+
+        return erosionTargets;
+    }
+
+    void applyErosion(DestinationImageType& image,
+            std::vector<DestinationPixel>& pixelsToUpdate) {
+        for (auto pixel : pixelsToUpdate) {
+            DestinationPixelType value;
+            unsigned int x;
+            unsigned int y;
+
+            std::tie(x, y, value) = pixel;
+
+            image.setPixel(x, y, value);
+        }
+    }
+
+    void checkErosionCandidate(unsigned int x, unsigned int y,
+            const SourcePixelType& level, const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage,
+            std::vector<DestinationPixel>& erosionTargets) {
+        if (sourceImage.getPixel(x, y) != level
+                || destinationImage.getPixel(x, y) != 0)
+            return;
+
+        checkErosionCandidate(x, y, destinationImage, erosionTargets);
+    }
+
+    void checkErosionCandidate(unsigned int x, unsigned int y,
+            DestinationImageType& image,
+            std::vector<DestinationPixel>& erosionTargets) {
         unsigned int maxX = image.getWidth() - 1;
         unsigned int maxY = image.getHeight() - 1;
 
-        return (x > 0 && erodePixel(x, y, x - 1, y, image))
-            || (y > 0 && erodePixel(x, y, x, y - 1, image))
-            || (x < maxX && erodePixel(x, y, x + 1, y, image))
-            || (y < maxY && erodePixel(x, y, x, y + 1, image));
+        if (x > 0 && tryToErodePixel(x, y, x - 1, y, image, erosionTargets))
+            return;
+
+        if (y > 0 && tryToErodePixel(x, y, x, y - 1, image, erosionTargets))
+            return;
+
+        if (x < maxX && tryToErodePixel(x, y, x + 1, y, image, erosionTargets))
+            return;
+
+        if (y < maxY && tryToErodePixel(x, y, x, y + 1, image, erosionTargets))
+            return;
     }
 
-    bool erodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
-            unsigned int neighborY, DestinationImageType& image) {
+    bool tryToErodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
+            unsigned int neighborY, DestinationImageType& image,
+            std::vector<DestinationPixel>& erosionTargets) {
         auto neighbor = image.getPixel(neighborX, neighborY);
 
         if (neighbor > 0) {
-            image.setPixel(x, y, neighbor);
+            erosionTargets.push_back(std::make_tuple(x, y, neighbor));
 
             return true;
         } else
