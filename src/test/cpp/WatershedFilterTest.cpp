@@ -39,3 +39,10 @@ TEST(WatershedFilterTest, isSubClassOfFilter) {
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
+
+TEST(WatershedFilterTest, isConstructible) {
+    using ImageType = FakeImage<DummyType>;
+    using DummyFilter = WatershedFilter<DummyType, DummyType, ImageType>;
+
+    AssertThat<DummyFilter>::isConstructible(WithoutParameters());
+}
