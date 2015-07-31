@@ -14,12 +14,13 @@
 #include "FakeImage.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class TestData {
+class MorphologicalReconstructionFilterTestData {
 private:
-    using ImagePointer = std::unique_ptr<ImageType>;
     using FilterType = MorphologicalReconstructionFilter<PixelType, ImageType>;
-    using ThisType = TestData<PixelType, ImageType>;
+    using ImagePointer = std::unique_ptr<ImageType>;
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
+    using ThisType = MorphologicalReconstructionFilterTestData<PixelType,
+            ImageType>;
 
     enum class State { EMPTY, SETTING_UP, CANCELLED };
 
@@ -41,7 +42,7 @@ public:
     unsigned int maxY;
 
 public:
-    ~TestData<PixelType, ImageType>() {
+    ~MorphologicalReconstructionFilterTestData<PixelType, ImageType>() {
         if (state == State::SETTING_UP)
             applyFilterAndVerifyResult();
         else
