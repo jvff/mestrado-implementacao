@@ -35,3 +35,7 @@ TEST(SimpleArrayImageTest, isSettableWithLambdaExpression) {
         }
     }
 }
+
+TEST(SimpleArrayImageTest, isCopyConstructible) {
+    AssertThat<SimpleArrayImage<DummyType> >::isCopyConstructible();
+}
