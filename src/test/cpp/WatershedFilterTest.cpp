@@ -138,3 +138,34 @@ TEST(WatershedFilterTest, erosionFromTheRight) {
 
     assertThat(resultingImage).isEqualTo(expectedImage);
 }
+
+TEST(WatershedFilterTest, twoSegmentsWithLargerSeparationBetweenThem) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
+
+    unsigned int width = 4;
+    unsigned int height = 1;
+
+    ImageType sourceImage(width, height);
+    ImageType expectedImage(width, height);
+    FilterType filter;
+
+    sourceImage = [] (unsigned int x, unsigned int) {
+        if (x == 1 || x == 2)
+            return 100;
+        else
+            return 20;
+    };
+
+    expectedImage = [] (unsigned int x, unsigned int) {
+        if (x == 0 || x == 1)
+            return 1;
+        else
+            return 2;
+    };
+
+    auto resultingImage = filter.apply(sourceImage);
+
+    assertThat(resultingImage).isEqualTo(expectedImage);
+}
