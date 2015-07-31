@@ -72,3 +72,34 @@ TEST(WatershedFilterTest, singleSegment) {
 
     assertThat(resultingImage).isEqualTo(expectedImage);
 }
+
+TEST(WatershedFilterTest, twoSegments) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
+
+    unsigned int width = 3;
+    unsigned int height = 1;
+
+    ImageType sourceImage(width, height);
+    ImageType expectedImage(width, height);
+    FilterType filter;
+
+    sourceImage = [] (unsigned int x, unsigned int) {
+        if (x == 1)
+            return 100;
+        else
+            return 20;
+    };
+
+    expectedImage = [] (unsigned int x, unsigned int) {
+        if (x == 0 || x == 1)
+            return 1;
+        else
+            return 2;
+    };
+
+    auto resultingImage = filter.apply(sourceImage);
+
+    assertThat(resultingImage).isEqualTo(expectedImage);
+}
