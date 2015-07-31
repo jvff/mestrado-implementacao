@@ -58,36 +58,32 @@ private:
             DestinationPixelType& newestSegment,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        bool newSegmentNeeded = erodeLevel(level, sourceImage,
-                destinationImage);
-
-        while (newSegmentNeeded) {
-            createNewSegment(level, newestSegment, sourceImage,
-                    destinationImage);
-
-            newSegmentNeeded = erodeLevel(level, sourceImage, destinationImage);
-        }
+        do {
+            erodeLevel(level, sourceImage, destinationImage);
+        } while (createNewSegment(level, newestSegment, sourceImage,
+                    destinationImage));
     }
 
-    bool erodeLevel(const SourcePixelType& level,
+    void erodeLevel(const SourcePixelType& level,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        bool levelIsIncomplete = false;
-        bool newSegmentIsNeeded = true;
+        bool erosionWasPerformed;
         unsigned int width = sourceImage.getWidth();
         unsigned int height = sourceImage.getHeight();
 
-        for (unsigned int x = 0; x < width; ++x) {
-            for (unsigned int y = 0; y < height; ++y) {
-                if (sourceImage.getPixel(x, y) == level
-                        && destinationImage.getPixel(x, y) == 0) {
-                    levelIsIncomplete = true;
-                    newSegmentIsNeeded &= erodePixel(x, y, destinationImage);
+        do {
+            erosionWasPerformed = false;
+
+            for (unsigned int x = 0; x < width; ++x) {
+                for (unsigned int y = 0; y < height; ++y) {
+                    if (sourceImage.getPixel(x, y) == level
+                            && destinationImage.getPixel(x, y) == 0) {
+                        erosionWasPerformed |= erodePixel(x, y,
+                                destinationImage);
+                    }
                 }
             }
-        }
-
-        return levelIsIncomplete && newSegmentIsNeeded;
+        } while (erosionWasPerformed);
     }
 
     bool erodePixel(unsigned int x, unsigned int y,
@@ -95,10 +91,10 @@ private:
         unsigned int maxX = image.getWidth() - 1;
         unsigned int maxY = image.getHeight() - 1;
 
-        return (x == 0 || erodePixel(x, y, x - 1, y, image))
-            && (y == 0 || erodePixel(x, y, x, y - 1, image))
-            && (x == maxX || erodePixel(x, y, x + 1, y, image))
-            && (y == maxY || erodePixel(x, y, x, y + 1, image));
+        return (x > 0 && erodePixel(x, y, x - 1, y, image))
+            || (y > 0 && erodePixel(x, y, x, y - 1, image))
+            || (x < maxX && erodePixel(x, y, x + 1, y, image))
+            || (y < maxY && erodePixel(x, y, x, y + 1, image));
     }
 
     bool erodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
@@ -108,12 +104,12 @@ private:
         if (neighbor > 0) {
             image.setPixel(x, y, neighbor);
 
-            return false;
-        } else
             return true;
+        } else
+            return false;
     }
 
-    void createNewSegment(const SourcePixelType& level,
+    bool createNewSegment(const SourcePixelType& level,
             DestinationPixelType& newestSegment,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
@@ -126,10 +122,12 @@ private:
                         && destinationImage.getPixel(x, y) == 0) {
                     createNewSegmentAt(x, y, newestSegment, destinationImage);
 
-                    return;
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     void createNewSegmentAt(unsigned int x, unsigned int y,
