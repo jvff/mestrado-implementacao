@@ -8,10 +8,16 @@ template <typename SourcePixelType, typename DestinationPixelType,
         class SourceImageType = Image<SourcePixelType> >
 class WatershedFilter : public Filter<SourcePixelType, DestinationPixelType,
         DestinationImageType, SourceImageType> {
+private:
+    using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+public:
+    using ParentFilter::apply;
+
 protected:
-    DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) override {
-        return sourceImage.getPixel(x, y);
+    DestinationPixelType apply(unsigned int, unsigned int,
+            const SourceImageType&) override {
+        return 1;
     }
 };
 
