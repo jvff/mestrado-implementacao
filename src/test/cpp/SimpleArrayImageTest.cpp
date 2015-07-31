@@ -39,3 +39,17 @@ TEST(SimpleArrayImageTest, isSettableWithLambdaExpression) {
 TEST(SimpleArrayImageTest, isCopyConstructible) {
     AssertThat<SimpleArrayImage<DummyType> >::isCopyConstructible();
 }
+
+TEST(SimpleArrayImageTest, internalDataIsntSharedWithCopy) {
+    SimpleArrayImage<DummyType> originalImage(7, 6);
+
+    originalImage = [] (unsigned int, unsigned int) -> DummyType {
+        return DummyType{3};
+    };
+
+    SimpleArrayImage<DummyType> copyOfImage(originalImage);
+
+    originalImage.setPixel(0, 1, DummyType{7});
+
+    assertThat(copyOfImage).isNotEqualTo(originalImage);
+}
