@@ -84,3 +84,13 @@ TEST(WatershedFilterTest, twoSegmentsWithLargerSeparationBetweenThem) {
         .setSegmentDepths({20, 20})
         .setSegmentOrder({1, 2});
 }
+
+TEST(WatershedFilterTest, twoVerticalSegments) {
+    TestData<unsigned char>()
+        .setDimensions(3, 9)
+        .useSegmentGrid(2, 1)
+        .setSeparatorWidth(4)
+        .setSeparatorDepth(91)
+        .setSegmentDepths({88, 84})
+        .setSegmentOrder({2, 1});
+}
