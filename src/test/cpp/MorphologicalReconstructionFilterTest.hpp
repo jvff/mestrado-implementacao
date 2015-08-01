@@ -10,12 +10,13 @@
 #include "MorphologicalReconstructionFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
+#include "AbstractTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class MorphologicalReconstructionFilterTestData {
+class MorphologicalReconstructionFilterTestData : public AbstractTestData {
 private:
     using FilterType = MorphologicalReconstructionFilter<PixelType, ImageType>;
     using ImagePointer = std::unique_ptr<ImageType>;
@@ -23,11 +24,7 @@ private:
     using ThisType = MorphologicalReconstructionFilterTestData<PixelType,
             ImageType>;
 
-    enum class State { EMPTY, SETTING_UP, CANCELLED };
-
 public:
-    State state = State::EMPTY;
-
     FilterType filter;
     ImagePointer sourceImage;
     ImagePointer markerImage;
@@ -44,16 +41,11 @@ public:
 
 public:
     ~MorphologicalReconstructionFilterTestData<PixelType, ImageType>() {
-        if (state == State::SETTING_UP)
-            applyFilterAndVerifyResult();
-        else
-            failTest();
+        tryToRunTest();
     }
 
     CHAIN(setDimensions, unsigned int newWidth, unsigned int newHeight) {
-        if (state != State::EMPTY)
-            cancelTestExecution();
-        else {
+        if (stateIs(State::EMPTY)) {
             width = newWidth;
             height = newHeight;
 
@@ -69,11 +61,9 @@ public:
     }
 
     CHAIN(setBackground, PixelType value) {
-        background = value;
+        if (stateIs(State::SETTING_UP)) {
+            background = value;
 
-        if (state != State::SETTING_UP)
-            cancelTestExecution();
-        else {
             *markerImage = [this] (unsigned int, unsigned int) -> PixelType {
                 return background;
             };
@@ -132,18 +122,14 @@ public:
     }
 
 private:
-    void applyFilterAndVerifyResult() {
+    void finishSetUp() {
+        state = State::READY;
+    }
+
+    void runTest() override {
         filter.apply(*sourceImage, *markerImage);
 
         assertThat(*markerImage).isEqualTo(*expectedImage);
-    }
-
-    void cancelTestExecution() {
-        state = State::CANCELLED;
-    }
-
-    void failTest() {
-        FAIL() << "Test was incorrectly set-up";
     }
 
     void useHorizontalLine() {
