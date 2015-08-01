@@ -11,4 +11,14 @@
 \
     void unchainable_##MethodName(__VA_ARGS__)
 
+#define CHAIN_I(MethodName, ElementType, ParameterName) \
+    ThisType& MethodName(std::initializer_list<ElementType> ParameterName) { \
+        unchainable_##MethodName(ParameterName); \
+\
+        return *this; \
+    } \
+\
+    void unchainable_##MethodName( \
+            std::initializer_list<ElementType> ParameterName)
+
 #endif
