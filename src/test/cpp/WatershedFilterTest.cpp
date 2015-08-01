@@ -1,12 +1,11 @@
-#include <gtest/gtest.h>
+#include "WatershedFilterTest.hpp"
 
-#include "asserts.hpp"
-
-#include "SimpleArrayImage.hpp"
-#include "WatershedFilter.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+template <typename SourcePixelType,
+        typename DestinationPixelType = SourcePixelType,
+        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
+        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
+using TestData = WatershedFilterTestData<SourcePixelType, DestinationPixelType,
+        DestinationImageType, SourceImageType>;
 
 TEST(WatershedFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
@@ -49,123 +48,39 @@ TEST(WatershedFilterTest, isConstructible) {
 }
 
 TEST(WatershedFilterTest, singleSegment) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
-
-    unsigned int width = 5;
-    unsigned int height = 5;
-
-    ImageType sourceImage(width, height);
-    ImageType expectedImage(width, height);
-    FilterType filter;
-
-    sourceImage = [] (unsigned int, unsigned int) {
-        return 10;
-    };
-
-    expectedImage = [] (unsigned int, unsigned int) {
-        return 1;
-    };
-
-    auto resultingImage = filter.apply(sourceImage);
-
-    assertThat(resultingImage).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(5, 5)
+        .useSegmentGrid(1, 1)
+        .setSeparatorWidth(0)
+        .setSegmentDepths({10})
+        .setSegmentOrder({1});
 }
 
 TEST(WatershedFilterTest, twoSegments) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
-
-    unsigned int width = 3;
-    unsigned int height = 1;
-
-    ImageType sourceImage(width, height);
-    ImageType expectedImage(width, height);
-    FilterType filter;
-
-    sourceImage = [] (unsigned int x, unsigned int) {
-        if (x == 1)
-            return 100;
-        else
-            return 20;
-    };
-
-    expectedImage = [] (unsigned int x, unsigned int) {
-        if (x == 0 || x == 1)
-            return 1;
-        else
-            return 2;
-    };
-
-    auto resultingImage = filter.apply(sourceImage);
-
-    assertThat(resultingImage).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(3, 1)
+        .useSegmentGrid(1, 2)
+        .setSeparatorWidth(1)
+        .setSeparatorDepth(100)
+        .setSegmentDepths({20, 20})
+        .setSegmentOrder({1, 2});
 }
 
 TEST(WatershedFilterTest, erosionFromTheRight) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
-
-    unsigned int width = 5;
-    unsigned int height = 1;
-
-    ImageType sourceImage(width, height);
-    ImageType expectedImage(width, height);
-    FilterType filter;
-
-    sourceImage = [] (unsigned int x, unsigned int) {
-        if (x == 0)
-            return 52;
-        else if (x == 1)
-            return 101;
-        else if (x == 2 || x == 3)
-            return 100;
-        else
-            return 20;
-    };
-
-    expectedImage = [] (unsigned int x, unsigned int) {
-        if (x == 0 || x == 1)
-            return 2;
-        else
-            return 1;
-    };
-
-    auto resultingImage = filter.apply(sourceImage);
-
-    assertThat(resultingImage).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(5, 1)
+        .useSegmentGrid(1, 5)
+        .setSeparatorWidth(0)
+        .setSegmentDepths({52, 101, 100, 100, 20})
+        .setSegmentOrder({2, 2, 1, 1, 1});
 }
 
 TEST(WatershedFilterTest, twoSegmentsWithLargerSeparationBetweenThem) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = WatershedFilter<PixelType, PixelType, ImageType>;
-
-    unsigned int width = 4;
-    unsigned int height = 1;
-
-    ImageType sourceImage(width, height);
-    ImageType expectedImage(width, height);
-    FilterType filter;
-
-    sourceImage = [] (unsigned int x, unsigned int) {
-        if (x == 1 || x == 2)
-            return 100;
-        else
-            return 20;
-    };
-
-    expectedImage = [] (unsigned int x, unsigned int) {
-        if (x == 0 || x == 1)
-            return 1;
-        else
-            return 2;
-    };
-
-    auto resultingImage = filter.apply(sourceImage);
-
-    assertThat(resultingImage).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(4, 1)
+        .useSegmentGrid(1, 2)
+        .setSeparatorWidth(2)
+        .setSeparatorDepth(100)
+        .setSegmentDepths({20, 20})
+        .setSegmentOrder({1, 2});
 }
