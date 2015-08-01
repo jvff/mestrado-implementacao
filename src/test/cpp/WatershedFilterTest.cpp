@@ -94,3 +94,13 @@ TEST(WatershedFilterTest, twoVerticalSegments) {
         .setSegmentDepths({88, 84})
         .setSegmentOrder({2, 1});
 }
+
+TEST(WatershedFilterTest, twelveSegments) {
+    TestData<unsigned char>()
+        .setDimensions(110, 73)
+        .useSegmentGrid(4, 3)
+        .setSeparatorWidth(5)
+        .setSeparatorDepth(100)
+        .setSegmentDepths({31, 75, 42, 45, 9, 27, 99, 54, 74, 11, 22, 40})
+        .setSegmentOrder({5, 11, 7, 8, 1, 4, 12, 9, 10, 2, 3, 6});
+}
