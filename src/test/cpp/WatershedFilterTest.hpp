@@ -8,10 +8,9 @@
 
 #include "asserts.hpp"
 
-#include "SimpleArrayImage.hpp"
 #include "WatershedFilter.hpp"
 
-#include "AbstractTestData.hpp"
+#include "AbstractFilterTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
@@ -20,17 +19,19 @@ template <typename SourcePixelType,
         typename DestinationPixelType = SourcePixelType,
         typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
         typename SourceImageType = SimpleArrayImage<SourcePixelType> >
-class WatershedFilterTestData : public AbstractTestData {
+class WatershedFilterTestData : public AbstractFilterTestData<
+        WatershedFilter<SourcePixelType, DestinationPixelType,
+                DestinationImageType, SourceImageType>,
+        SourcePixelType, DestinationPixelType, DestinationImageType,
+        SourceImageType> {
 private:
+    using State = AbstractTestData::State;
     using FilterType = WatershedFilter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
-    using DestinationImagePointer = std::unique_ptr<DestinationImageType>;
-    using SourceImagePointer = std::unique_ptr<SourceImageType>;
+    using SuperClass = AbstractFilterTestData<FilterType, SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
     using ThisType = WatershedFilterTestData<SourcePixelType,
             DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    unsigned int width;
-    unsigned int height;
 
     unsigned int gridRows = -1;
     unsigned int gridColumns = -1;
@@ -40,32 +41,19 @@ private:
     std::vector<DestinationPixelType> gridOrder;
 
 public:
-    FilterType filter;
-    SourceImagePointer sourceImage;
-    DestinationImagePointer expectedImage;
-
-public:
     ~WatershedFilterTestData() {
         tryToRunTest();
     }
 
     CHAIN(setDimensions, unsigned int newWidth, unsigned int newHeight) {
-        if (stateIs(State::EMPTY)) {
-            width = newWidth;
-            height = newHeight;
-
-            sourceImage.reset(new SourceImageType(width, height));
-            expectedImage.reset(new DestinationImageType(width, height));
-
-            state = State::READY;
-        }
+        SuperClass::setDimensions(newWidth, newHeight);
     }
 
     CHAIN(useSegmentGrid, unsigned int rows, unsigned int columns) {
         if (!gridDepths.empty() || !gridOrder.empty())
             cancelTestExecution();
         else if (stateIs({State::READY, State::SETTING_UP})) {
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
 
             gridRows = rows;
             gridColumns = columns;
@@ -77,7 +65,7 @@ public:
 
     CHAIN(setSeparatorWidth, unsigned int newSeparatorWidth) {
         if (stateIs({State::READY, State::SETTING_UP})) {
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
 
             separatorWidth = newSeparatorWidth;
         }
@@ -85,7 +73,7 @@ public:
 
     CHAIN(setSeparatorDepth, SourcePixelType newSeparatorDepth) {
         if (stateIs({State::READY, State::SETTING_UP})) {
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
 
             separatorDepth = newSeparatorDepth;
         }
@@ -95,7 +83,7 @@ public:
         if (depths.size() != gridDepths.capacity())
             cancelTestExecution();
         else if (stateIs({State::READY, State::SETTING_UP})) {
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
 
             gridDepths = depths;
         }
@@ -105,15 +93,20 @@ public:
         if (labels.size() != gridOrder.capacity())
             cancelTestExecution();
         else if (stateIs({State::READY, State::SETTING_UP})) {
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
 
             gridOrder = labels;
         }
     }
 
 private:
+    using SuperClass::cancelTestExecution;
+    using SuperClass::stateIs;
+    using SuperClass::tryToRunTest;
+
     void finishSetUp() override {
-        *sourceImage = [this] (unsigned int x, unsigned int y) -> SourcePixelType {
+        *this->sourceImage = [this] (unsigned int x, unsigned int y)
+                -> SourcePixelType {
             auto coordinateInfo = getGridIndexForCoordinate(x, y);
             auto index = coordinateInfo.first;
             auto isInSeparator = coordinateInfo.second;
@@ -121,20 +114,20 @@ private:
             return isInSeparator ? separatorDepth : gridDepths[index];
         };
 
-        *expectedImage = [this] (unsigned int x, unsigned int y)
+        *this->expectedImage = [this] (unsigned int x, unsigned int y)
                 -> DestinationPixelType {
             auto index = getGridIndexForCoordinate(x, y).first;
 
             return gridOrder[index];
         };
 
-        state = State::READY;
+        this->state = State::READY;
     }
 
     std::pair<unsigned int, bool> getGridIndexForCoordinate(unsigned int x,
             unsigned int y) {
-        unsigned int column = getGridIndexForCoordinate(x, gridColumns, width);
-        unsigned int row = getGridIndexForCoordinate(y, gridRows, height);
+        auto column = getGridIndexForCoordinate(x, gridColumns, this->width);
+        auto row = getGridIndexForCoordinate(y, gridRows, this->height);
         bool isInSeparator = column >= gridColumns || row >= gridRows;
 
         if (isInSeparator) {
@@ -170,12 +163,6 @@ private:
                 return numSegments + containingSegment + 1;
         } else
             return containingSegment;
-    }
-
-    void runTest() override {
-        auto result = filter.apply(*sourceImage);
-
-        assertThat(result).isEqualTo(*expectedImage);
     }
 };
 
