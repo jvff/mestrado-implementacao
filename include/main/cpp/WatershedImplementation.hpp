@@ -7,6 +7,9 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename DestinationImageType,
         typename SourceImageType = Image<SourcePixelType> >
 class WatershedImplementation {
+public:
+    WatershedImplementation(const SourceImageType&, DestinationImageType&) {
+    }
 };
 
 #endif
