@@ -27,3 +27,17 @@ TEST(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
 
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
+
+TEST(WatershedImplementationTest, isConstructible) {
+    using SourcePixelType = DummyTypes<2>;
+    using DestinationPixelType = DummyTypes<1>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DummyImplementation = WatershedImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<DummyImplementation>::isConstructible(
+            With<SourceImageParameter, DestinationImageParameter>());
+}
