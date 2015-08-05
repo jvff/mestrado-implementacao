@@ -104,65 +104,76 @@ private:
     using SuperClass::stateIs;
     using SuperClass::tryToRunTest;
 
+    struct CoordinateInfo {
+        unsigned int gridIndex;
+        bool isInSeparator;
+    };
+
     void finishSetUp() override {
         *this->sourceImage = [this] (unsigned int x, unsigned int y)
                 -> SourcePixelType {
-            auto coordinateInfo = getGridIndexForCoordinate(x, y);
-            auto index = coordinateInfo.first;
-            auto isInSeparator = coordinateInfo.second;
+            auto coordinate = locateCoordinate(x, y);
 
-            return isInSeparator ? separatorDepth : gridDepths[index];
+            if (coordinate.isInSeparator)
+                return separatorDepth;
+            else
+                return gridDepths[coordinate.gridIndex];
         };
 
         *this->expectedImage = [this] (unsigned int x, unsigned int y)
                 -> DestinationPixelType {
-            auto index = getGridIndexForCoordinate(x, y).first;
+            auto coordinate = locateCoordinate(x, y);
 
-            return gridOrder[index];
+            return gridOrder[coordinate.gridIndex];
         };
 
         this->state = State::READY;
     }
 
-    std::pair<unsigned int, bool> getGridIndexForCoordinate(unsigned int x,
-            unsigned int y) {
-        auto column = getGridIndexForCoordinate(x, gridColumns, this->width);
-        auto row = getGridIndexForCoordinate(y, gridRows, this->height);
-        bool isInSeparator = column >= gridColumns || row >= gridRows;
+    CoordinateInfo locateCoordinate(unsigned int x, unsigned int y) {
+        CoordinateInfo coordinate = { 0, false };
 
-        if (isInSeparator) {
-            if (column >= gridColumns)
-                column -= gridColumns;
+        auto column = locateCoordinate(x, gridColumns, this->width, coordinate);
+        auto row = locateCoordinate(y, gridRows, this->height, coordinate);
 
-            if (row >= gridRows)
-                row -= gridRows;
-        }
+        coordinate.gridIndex = row * gridColumns + column;
 
-        unsigned int gridIndex = row * gridColumns + column;
-
-        return std::make_pair(gridIndex, isInSeparator);
+        return coordinate;
     }
 
-    unsigned int getGridIndexForCoordinate(unsigned int coordinate,
-            unsigned int numSegments, unsigned int length) {
+    unsigned int locateCoordinate(unsigned int position,
+            unsigned int numSegments, unsigned int length,
+            CoordinateInfo& coordinate) {
         unsigned int numSeparators = numSegments - 1;
         unsigned int totalSeparatorSpace = separatorWidth * numSeparators;
         unsigned int lengthWithoutSeparators = length - totalSeparatorSpace;
         unsigned int segmentLength = lengthWithoutSeparators / numSegments;
         unsigned int segmentAndSeparatorLength = segmentLength + separatorWidth;
-        unsigned int positionInSegment = coordinate % segmentAndSeparatorLength;
-        unsigned int containingSegment = coordinate / segmentAndSeparatorLength;
+        unsigned int positionInSegment = position % segmentAndSeparatorLength;
+        unsigned int containingSegment = position / segmentAndSeparatorLength;
         unsigned int positionInSeparator = positionInSegment - segmentLength;
-        unsigned int separatorMiddle = (separatorWidth - 1) / 2;
-        bool coordinateIsInSeparator = positionInSegment >= segmentLength;
+        bool isInSeparator = positionInSegment >= segmentLength;
 
-        if (coordinateIsInSeparator) {
-            if (positionInSeparator <= separatorMiddle)
-                return numSegments + containingSegment;
-            else
-                return numSegments + containingSegment + 1;
+        if (isInSeparator) {
+            return locateCoordinateThatIsInSeparator(positionInSeparator,
+                    containingSegment, coordinate);
         } else
             return containingSegment;
+    }
+
+    unsigned int locateCoordinateThatIsInSeparator(
+            unsigned int positionInSeparator,
+            unsigned int segmentBeforeSeparator,
+            CoordinateInfo& coordinate) {
+        unsigned int separatorMiddle = (separatorWidth - 1) / 2;
+        unsigned int segmentAfterSeparator = segmentBeforeSeparator + 1;
+
+        coordinate.isInSeparator = true;
+
+        if (positionInSeparator > separatorMiddle)
+            return segmentAfterSeparator;
+        else
+            return segmentBeforeSeparator;
     }
 };
 
