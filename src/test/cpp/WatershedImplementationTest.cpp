@@ -14,3 +14,16 @@ TEST(WatershedImplementationTest, classTemplateExists) {
 
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
+
+TEST(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
+    using SourcePixelType = DummyTypes<2>;
+    using DestinationPixelType = DummyTypes<1>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SourceImageType = Image<SourcePixelType>;
+    using ImplicitType = WatershedImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using ExplicitType = WatershedImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
