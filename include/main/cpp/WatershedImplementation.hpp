@@ -19,6 +19,7 @@ private:
     DestinationImageType& destinationImage;
 
     SourcePixelType currentLevel;
+    DestinationPixelType newestSegment;
 
     unsigned int width;
     unsigned int height;
@@ -26,15 +27,13 @@ private:
 public:
     WatershedImplementation(const SourceImageType& source,
             DestinationImageType& destination) : sourceImage(source),
-            destinationImage(destination), width(sourceImage.getWidth()),
-            height(sourceImage.getHeight()) {
+            destinationImage(destination), newestSegment(0),
+            width(sourceImage.getWidth()), height(sourceImage.getHeight()) {
     }
 
     void apply() {
-        DestinationPixelType newestSegment = 0;
-
         for (auto pixel : getSortedPixels())
-            processLevel(pixel, newestSegment);
+            processLevel(pixel);
     }
 
 private:
@@ -49,13 +48,12 @@ private:
         return pixels;
     }
 
-    void processLevel(const SourcePixelType& level,
-            DestinationPixelType& newestSegment) {
+    void processLevel(const SourcePixelType& level) {
         currentLevel = level;
 
         do {
             erodeLevel();
-        } while (createNewSegment(newestSegment));
+        } while (createNewSegment());
     }
 
     void erodeLevel() {
@@ -126,12 +124,12 @@ private:
             return false;
     }
 
-    bool createNewSegment(DestinationPixelType& newestSegment) {
+    bool createNewSegment() {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
                 if (sourceImage.getPixel(x, y) == currentLevel
                         && destinationImage.getPixel(x, y) == 0) {
-                    createNewSegmentAt(x, y, newestSegment);
+                    createNewSegmentAt(x, y);
 
                     return true;
                 }
@@ -141,8 +139,7 @@ private:
         return false;
     }
 
-    void createNewSegmentAt(unsigned int x, unsigned int y,
-            DestinationPixelType& newestSegment) {
+    void createNewSegmentAt(unsigned int x, unsigned int y) {
         destinationImage.setPixel(x, y, ++newestSegment);
     }
 };
