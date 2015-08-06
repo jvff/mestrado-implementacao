@@ -23,6 +23,8 @@ private:
 
     unsigned int width;
     unsigned int height;
+    unsigned int maxX;
+    unsigned int maxY;
 
     std::vector<DestinationPixel> erosionTargets;
 
@@ -30,7 +32,8 @@ public:
     WatershedImplementation(const SourceImageType& source,
             DestinationImageType& destination) : sourceImage(source),
             destinationImage(destination), newestSegment(0),
-            width(sourceImage.getWidth()), height(sourceImage.getHeight()) {
+            width(sourceImage.getWidth()), height(sourceImage.getHeight()),
+            maxX(width - 1), maxY(height - 1) {
     }
 
     void apply() {
@@ -90,9 +93,6 @@ private:
         if (sourceImage.getPixel(x, y) != currentLevel
                 || destinationImage.getPixel(x, y) != 0)
             return;
-
-        unsigned int maxX = destinationImage.getWidth() - 1;
-        unsigned int maxY = destinationImage.getHeight() - 1;
 
         if (x > 0 && tryToErodePixel(x, y, x - 1, y))
             return;
