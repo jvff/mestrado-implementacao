@@ -1,8 +1,8 @@
 #ifndef WATERSHED_IMPLEMENTATION_HPP
 #define WATERSHED_IMPLEMENTATION_HPP
 
+#include <map>
 #include <set>
-#include <vector>
 #include <tuple>
 
 #include "Image.hpp"
@@ -12,8 +12,7 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename SourceImageType = Image<SourcePixelType> >
 class WatershedImplementation {
 private:
-    using DestinationPixel = std::tuple<unsigned int, unsigned int,
-            DestinationPixelType>;
+    using Coordinate = std::pair<unsigned int, unsigned int>;
 
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
@@ -26,7 +25,7 @@ private:
     unsigned int maxX;
     unsigned int maxY;
 
-    std::vector<DestinationPixel> erosionMap;
+    std::map<Coordinate, DestinationPixelType> erosionMap;
 
 public:
     WatershedImplementation(const SourceImageType& source,
@@ -79,11 +78,11 @@ private:
 
     void applyErosion() {
         for (auto pixel : erosionMap) {
-            DestinationPixelType value;
+            DestinationPixelType value = pixel.second;
             unsigned int x;
             unsigned int y;
 
-            std::tie(x, y, value) = pixel;
+            std::tie(x, y) = pixel.first;
 
             destinationImage.setPixel(x, y, value);
         }
@@ -111,7 +110,7 @@ private:
         auto neighbor = destinationImage.getPixel(neighborX, neighborY);
 
         if (neighbor > 0) {
-            erosionMap.push_back(std::make_tuple(x, y, neighbor));
+            erosionMap[std::make_pair(x, y)] = neighbor;
 
             return true;
         } else
