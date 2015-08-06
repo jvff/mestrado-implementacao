@@ -37,20 +37,20 @@ public:
     }
 
     void apply() {
-        for (auto pixel : getSortedPixels())
+        for (auto pixel : getSortedLevels())
             processLevel(pixel);
     }
 
 private:
-    std::set<SourcePixelType> getSortedPixels() {
-        std::set<SourcePixelType> pixels;
+    std::set<SourcePixelType> getSortedLevels() {
+        std::set<SourcePixelType> levels;
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                pixels.insert(sourceImage.getPixel(x, y));
+                levels.insert(sourceImage.getPixel(x, y));
         }
 
-        return pixels;
+        return levels;
     }
 
     void processLevel(const SourcePixelType& level) {
