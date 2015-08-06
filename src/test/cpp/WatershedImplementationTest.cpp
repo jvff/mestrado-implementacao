@@ -1,11 +1,4 @@
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
-
-#include "WatershedImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "WatershedImplementationTest.hpp"
 
 TEST(WatershedImplementationTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
