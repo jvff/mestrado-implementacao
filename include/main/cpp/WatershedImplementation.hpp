@@ -18,6 +18,8 @@ private:
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
 
+    SourcePixelType currentLevel;
+
     unsigned int width;
     unsigned int height;
 
@@ -49,27 +51,29 @@ private:
 
     void processLevel(const SourcePixelType& level,
             DestinationPixelType& newestSegment) {
+        currentLevel = level;
+
         do {
-            erodeLevel(level);
-        } while (createNewSegment(level, newestSegment));
+            erodeLevel();
+        } while (createNewSegment(newestSegment));
     }
 
-    void erodeLevel(const SourcePixelType& level) {
+    void erodeLevel() {
         std::vector<DestinationPixel> pixelsToUpdate;
 
         do {
-            pixelsToUpdate = collectErosion(level);
+            pixelsToUpdate = collectErosion();
 
             applyErosion(pixelsToUpdate);
         } while (!pixelsToUpdate.empty());
     }
 
-    std::vector<DestinationPixel> collectErosion(const SourcePixelType& level) {
+    std::vector<DestinationPixel> collectErosion() {
         std::vector<DestinationPixel> erosionTargets;
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                checkErosionCandidate(x, y, level, erosionTargets);
+                checkErosionCandidate(x, y, erosionTargets);
         }
 
         return erosionTargets;
@@ -88,17 +92,11 @@ private:
     }
 
     void checkErosionCandidate(unsigned int x, unsigned int y,
-            const SourcePixelType& level,
             std::vector<DestinationPixel>& erosionTargets) {
-        if (sourceImage.getPixel(x, y) != level
+        if (sourceImage.getPixel(x, y) != currentLevel
                 || destinationImage.getPixel(x, y) != 0)
             return;
 
-        checkErosionCandidate(x, y, erosionTargets);
-    }
-
-    void checkErosionCandidate(unsigned int x, unsigned int y,
-            std::vector<DestinationPixel>& erosionTargets) {
         unsigned int maxX = destinationImage.getWidth() - 1;
         unsigned int maxY = destinationImage.getHeight() - 1;
 
@@ -128,11 +126,10 @@ private:
             return false;
     }
 
-    bool createNewSegment(const SourcePixelType& level,
-            DestinationPixelType& newestSegment) {
+    bool createNewSegment(DestinationPixelType& newestSegment) {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
-                if (sourceImage.getPixel(x, y) == level
+                if (sourceImage.getPixel(x, y) == currentLevel
                         && destinationImage.getPixel(x, y) == 0) {
                     createNewSegmentAt(x, y, newestSegment);
 
