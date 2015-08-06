@@ -90,8 +90,7 @@ private:
     }
 
     void checkErosionCandidate(unsigned int x, unsigned int y) {
-        if (sourceImage.getPixel(x, y) != currentLevel
-                || destinationImage.getPixel(x, y) != 0)
+        if (!pixelShouldBeProcessed(x, y))
             return;
 
         if (x > 0 && tryToErodePixel(x, y, x - 1, y))
@@ -122,8 +121,7 @@ private:
     bool tryToCreateNewSegment() {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
-                if (sourceImage.getPixel(x, y) == currentLevel
-                        && destinationImage.getPixel(x, y) == 0) {
+                if (pixelShouldBeProcessed(x, y)) {
                     createNewSegmentAt(x, y);
 
                     return true;
@@ -136,6 +134,18 @@ private:
 
     void createNewSegmentAt(unsigned int x, unsigned int y) {
         destinationImage.setPixel(x, y, ++newestSegment);
+    }
+
+    bool pixelShouldBeProcessed(unsigned int x, unsigned int y) {
+        return pixelIsAtCurrentLevel(x, y) && pixelHasntBeenSetYet(x, y);
+    }
+
+    bool pixelIsAtCurrentLevel(unsigned int x, unsigned int y) {
+        return sourceImage.getPixel(x, y) == currentLevel;
+    }
+
+    bool pixelHasntBeenSetYet(unsigned int x, unsigned int y) {
+        return destinationImage.getPixel(x, y) == 0;
     }
 };
 
