@@ -32,7 +32,7 @@ public:
     virtual ~AbstractImageTransformationTestData() {
     }
 
-    void setDimensions(unsigned int newWidth, unsigned int newHeight) {
+    bool setDimensions(unsigned int newWidth, unsigned int newHeight) {
         if (stateIs(State::EMPTY)) {
             width = newWidth;
             height = newHeight;
@@ -44,7 +44,10 @@ public:
                         expectedHeight));
 
             state = State::READY;
-        }
+
+            return true;
+        } else
+            return false;
     }
 
 protected:
