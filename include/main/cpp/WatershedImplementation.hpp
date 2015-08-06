@@ -26,7 +26,7 @@ private:
     unsigned int maxX;
     unsigned int maxY;
 
-    std::vector<DestinationPixel> erosionTargets;
+    std::vector<DestinationPixel> erosionMap;
 
 public:
     WatershedImplementation(const SourceImageType& source,
@@ -65,11 +65,11 @@ private:
         do {
             collectErosion();
             applyErosion();
-        } while (!erosionTargets.empty());
+        } while (!erosionMap.empty());
     }
 
     void collectErosion() {
-        erosionTargets.clear();
+        erosionMap.clear();
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
@@ -78,7 +78,7 @@ private:
     }
 
     void applyErosion() {
-        for (auto pixel : erosionTargets) {
+        for (auto pixel : erosionMap) {
             DestinationPixelType value;
             unsigned int x;
             unsigned int y;
@@ -112,7 +112,7 @@ private:
         auto neighbor = destinationImage.getPixel(neighborX, neighborY);
 
         if (neighbor > 0) {
-            erosionTargets.push_back(std::make_tuple(x, y, neighbor));
+            erosionMap.push_back(std::make_tuple(x, y, neighbor));
 
             return true;
         } else
