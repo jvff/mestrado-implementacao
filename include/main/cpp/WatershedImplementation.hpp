@@ -79,8 +79,7 @@ private:
     void applyErosion() {
         for (auto pixel : erosionMap) {
             DestinationPixelType value = pixel.second;
-            unsigned int x;
-            unsigned int y;
+            unsigned int x, y;
 
             std::tie(x, y) = pixel.first;
 
