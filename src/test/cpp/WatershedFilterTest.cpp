@@ -1,12 +1,5 @@
 #include "WatershedFilterTest.hpp"
 
-template <typename SourcePixelType,
-        typename DestinationPixelType = SourcePixelType,
-        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
-        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
-using TestData = WatershedFilterTestData<SourcePixelType, DestinationPixelType,
-        DestinationImageType, SourceImageType>;
-
 TEST(WatershedFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
     using DummyFilter = WatershedFilter<DummyType, DummyType, ImageType>;
