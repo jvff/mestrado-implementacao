@@ -58,7 +58,7 @@ private:
 
         do {
             erodeLevel();
-        } while (createNewSegment());
+        } while (tryToCreateNewSegment());
     }
 
     void erodeLevel() {
@@ -119,7 +119,7 @@ private:
             return false;
     }
 
-    bool createNewSegment() {
+    bool tryToCreateNewSegment() {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
                 if (sourceImage.getPixel(x, y) == currentLevel
