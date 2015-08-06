@@ -89,20 +89,20 @@ private:
     }
 
     void checkErosionCandidate(unsigned int x, unsigned int y) {
-        if (!pixelShouldBeProcessed(x, y))
-            return;
+        if (pixelShouldBeProcessed(x, y)) {
+            checkErosionCandidate(x, y, x > 0, x - 1, y)
+                || checkErosionCandidate(x, y, y > 0, x, y - 1)
+                || checkErosionCandidate(x, y, x < maxX, x + 1, y)
+                || checkErosionCandidate(x, y, y < maxY, x, y + 1);
+        }
+    }
 
-        if (x > 0 && tryToErodePixel(x, y, x - 1, y))
-            return;
-
-        if (y > 0 && tryToErodePixel(x, y, x, y - 1))
-            return;
-
-        if (x < maxX && tryToErodePixel(x, y, x + 1, y))
-            return;
-
-        if (y < maxY && tryToErodePixel(x, y, x, y + 1))
-            return;
+    bool checkErosionCandidate(unsigned int x, unsigned int y,
+            bool precondition, unsigned int neighborX, unsigned int neighborY) {
+        if (precondition == false)
+            return false;
+        else
+            return tryToErodePixel(x, y, neighborX, neighborY);
     }
 
     bool tryToErodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
