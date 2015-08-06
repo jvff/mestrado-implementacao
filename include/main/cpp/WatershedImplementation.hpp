@@ -24,6 +24,8 @@ private:
     unsigned int width;
     unsigned int height;
 
+    std::vector<DestinationPixel> erosionTargets;
+
 public:
     WatershedImplementation(const SourceImageType& source,
             DestinationImageType& destination) : sourceImage(source),
@@ -57,28 +59,23 @@ private:
     }
 
     void erodeLevel() {
-        std::vector<DestinationPixel> pixelsToUpdate;
-
         do {
-            pixelsToUpdate = collectErosion();
-
-            applyErosion(pixelsToUpdate);
-        } while (!pixelsToUpdate.empty());
+            collectErosion();
+            applyErosion();
+        } while (!erosionTargets.empty());
     }
 
-    std::vector<DestinationPixel> collectErosion() {
-        std::vector<DestinationPixel> erosionTargets;
+    void collectErosion() {
+        erosionTargets.clear();
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                checkErosionCandidate(x, y, erosionTargets);
+                checkErosionCandidate(x, y);
         }
-
-        return erosionTargets;
     }
 
-    void applyErosion(std::vector<DestinationPixel>& pixelsToUpdate) {
-        for (auto pixel : pixelsToUpdate) {
+    void applyErosion() {
+        for (auto pixel : erosionTargets) {
             DestinationPixelType value;
             unsigned int x;
             unsigned int y;
@@ -89,8 +86,7 @@ private:
         }
     }
 
-    void checkErosionCandidate(unsigned int x, unsigned int y,
-            std::vector<DestinationPixel>& erosionTargets) {
+    void checkErosionCandidate(unsigned int x, unsigned int y) {
         if (sourceImage.getPixel(x, y) != currentLevel
                 || destinationImage.getPixel(x, y) != 0)
             return;
@@ -98,22 +94,21 @@ private:
         unsigned int maxX = destinationImage.getWidth() - 1;
         unsigned int maxY = destinationImage.getHeight() - 1;
 
-        if (x > 0 && tryToErodePixel(x, y, x - 1, y, erosionTargets))
+        if (x > 0 && tryToErodePixel(x, y, x - 1, y))
             return;
 
-        if (y > 0 && tryToErodePixel(x, y, x, y - 1, erosionTargets))
+        if (y > 0 && tryToErodePixel(x, y, x, y - 1))
             return;
 
-        if (x < maxX && tryToErodePixel(x, y, x + 1, y, erosionTargets))
+        if (x < maxX && tryToErodePixel(x, y, x + 1, y))
             return;
 
-        if (y < maxY && tryToErodePixel(x, y, x, y + 1, erosionTargets))
+        if (y < maxY && tryToErodePixel(x, y, x, y + 1))
             return;
     }
 
     bool tryToErodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
-            unsigned int neighborY,
-            std::vector<DestinationPixel>& erosionTargets) {
+            unsigned int neighborY) {
         auto neighbor = destinationImage.getPixel(neighborX, neighborY);
 
         if (neighbor > 0) {
