@@ -18,10 +18,14 @@ private:
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
 
+    unsigned int width;
+    unsigned int height;
+
 public:
     WatershedImplementation(const SourceImageType& source,
             DestinationImageType& destination) : sourceImage(source),
-            destinationImage(destination) {
+            destinationImage(destination), width(sourceImage.getWidth()),
+            height(sourceImage.getHeight()) {
     }
 
     void apply() {
@@ -33,8 +37,6 @@ public:
 
 private:
     std::set<SourcePixelType> getSortedPixels() {
-        unsigned int width = sourceImage.getWidth();
-        unsigned int height = sourceImage.getHeight();
         std::set<SourcePixelType> pixels;
 
         for (unsigned int x = 0; x < width; ++x) {
@@ -63,8 +65,6 @@ private:
     }
 
     std::vector<DestinationPixel> collectErosion(const SourcePixelType& level) {
-        unsigned int width = sourceImage.getWidth();
-        unsigned int height = sourceImage.getHeight();
         std::vector<DestinationPixel> erosionTargets;
 
         for (unsigned int x = 0; x < width; ++x) {
@@ -130,9 +130,6 @@ private:
 
     bool createNewSegment(const SourcePixelType& level,
             DestinationPixelType& newestSegment) {
-        unsigned int width = sourceImage.getWidth();
-        unsigned int height = sourceImage.getHeight();
-
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
                 if (sourceImage.getPixel(x, y) == level
