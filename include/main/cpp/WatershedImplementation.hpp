@@ -26,6 +26,7 @@ private:
     unsigned int maxY;
 
     std::map<Coordinate, DestinationPixelType> erosionMap;
+    std::set<Coordinate> currentSeparators;
 
 public:
     WatershedImplementation(const SourceImageType& source,
@@ -54,6 +55,7 @@ private:
 
     void processLevel(const SourcePixelType& level) {
         currentLevel = level;
+        currentSeparators.clear();
 
         do {
             erodeLevel();
@@ -109,17 +111,27 @@ private:
         auto neighbor = destinationImage.getPixel(neighborX, neighborY);
 
         if (neighbor > 0) {
-            erosionMap[std::make_pair(x, y)] = neighbor;
+            auto coordinate = std::make_pair(x, y);
+            auto previousErosion = erosionMap.find(coordinate);
+            auto notFound = erosionMap.end();
 
-            return true;
-        } else
-            return false;
+            if (previousErosion == notFound)
+                erosionMap[coordinate] = neighbor;
+            else if (erosionMap[coordinate] != neighbor) {
+                erosionMap.erase(previousErosion);
+                currentSeparators.insert(coordinate);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     bool tryToCreateNewSegment() {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
-                if (pixelShouldBeProcessed(x, y)) {
+                if (shouldCreateNewSegmentAt(x, y)) {
                     createNewSegmentAt(x, y);
 
                     return true;
@@ -128,6 +140,11 @@ private:
         }
 
         return false;
+    }
+
+    bool shouldCreateNewSegmentAt(unsigned int x, unsigned int y) {
+        return pixelShouldBeProcessed(x, y) && pixelIsntSeparator(x, y)
+            && pixelIsntSurroundedBySeparators(x, y);
     }
 
     void createNewSegmentAt(unsigned int x, unsigned int y) {
@@ -144,6 +161,37 @@ private:
 
     bool pixelHasntBeenSetYet(unsigned int x, unsigned int y) {
         return destinationImage.getPixel(x, y) == 0;
+    }
+
+    bool pixelIsntSeparator(unsigned int x, unsigned int y) {
+        return pixelIsntCurrentSeparator(x, y) && pixelIsntOldSeparator(x, y);
+    }
+
+    bool pixelIsntCurrentSeparator(unsigned int x, unsigned int y) {
+        auto coordinate = std::make_pair(x, y);
+        auto notFound = currentSeparators.end();
+
+        return currentSeparators.find(coordinate) == notFound;
+    }
+
+    bool pixelIsntOldSeparator(unsigned int x, unsigned int y) {
+        auto level = sourceImage.getPixel(x, y);
+        auto pixelValue = destinationImage.getPixel(x, y);
+        auto separatorValue = 0;
+
+        return !(level < currentLevel && pixelValue != separatorValue);
+    }
+
+    bool pixelIsntSurroundedBySeparators(unsigned int x, unsigned int y) {
+        return neighborIsntSeparator(x > 0, x - 1, y)
+            || neighborIsntSeparator(y > 0, x, y - 1)
+            || neighborIsntSeparator(x < maxX, x + 1, y)
+            || neighborIsntSeparator(y < maxY, x, y + 1);
+    }
+
+    bool neighborIsntSeparator(bool neighborExists, unsigned int x,
+            unsigned int y) {
+        return neighborExists && pixelIsntSeparator(x, y);
     }
 };
 
