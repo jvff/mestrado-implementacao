@@ -93,6 +93,7 @@ private:
     struct CoordinateInfo {
         unsigned int gridIndex;
         bool isInSeparator;
+        bool isInTheMiddleOfTheSeparator;
     };
 
     void finishSetUp() override {
@@ -110,14 +111,17 @@ private:
                 -> DestinationPixelType {
             auto coordinate = locateCoordinate(x, y);
 
-            return gridOrder[coordinate.gridIndex];
+            if (coordinate.isInTheMiddleOfTheSeparator)
+                return 0;
+            else
+                return gridOrder[coordinate.gridIndex];
         };
 
         this->state = State::READY;
     }
 
     CoordinateInfo locateCoordinate(unsigned int x, unsigned int y) {
-        CoordinateInfo coordinate = { 0, false };
+        CoordinateInfo coordinate = { 0, false, false };
 
         auto column = locateCoordinate(x, gridColumns, this->width, coordinate);
         auto row = locateCoordinate(y, gridRows, this->height, coordinate);
@@ -155,11 +159,24 @@ private:
         unsigned int segmentAfterSeparator = segmentBeforeSeparator + 1;
 
         coordinate.isInSeparator = true;
+        coordinate.isInTheMiddleOfTheSeparator |=
+                isInTheMiddle(positionInSeparator, separatorWidth);
 
         if (positionInSeparator > separatorMiddle)
             return segmentAfterSeparator;
         else
             return segmentBeforeSeparator;
+    }
+
+    bool isInTheMiddle(unsigned int position, unsigned int size) {
+        bool hasMiddle = (size % 2) == 1;
+
+        if (!hasMiddle)
+            return false;
+
+        unsigned int middle = size / 2;
+
+        return position == middle;
     }
 };
 

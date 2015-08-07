@@ -34,7 +34,7 @@ TYPED_TEST_P(WatershedTests, erosionFromTheRight) {
         .useSegmentGrid(1, 5)
         .setSeparatorWidth(0)
         .setSegmentDepths({52, 101, 100, 100, 20})
-        .setSegmentOrder({2, 2, 1, 1, 1});
+        .setSegmentOrder({2, 0, 1, 1, 1});
 }
 
 TYPED_TEST_P(WatershedTests, twoSegmentsWithLargerSeparationBetweenThem) {
