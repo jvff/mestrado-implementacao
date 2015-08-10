@@ -14,3 +14,16 @@ TEST(MorphologicalGradientFilterTest, classTemplateExists) {
 
     AssertThat<DummyFilter>::isClassOrStruct();
 }
+
+TEST(MorphologicalGradientFilterTest, hasOptionalTemplateParameter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplicitType = MorphologicalGradientFilter<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using ExplicitType = MorphologicalGradientFilter<SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
