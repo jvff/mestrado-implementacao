@@ -40,3 +40,12 @@ TEST(MorphologicalGradientFilterTest, isFilter) {
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
+
+TEST(MorphologicalGradientFilterTest, isConstructibleWithParameter) {
+    using ImageType = FakeImage<DummyType>;
+    using DummyFilter = MorphologicalGradientFilter<DummyType, DummyType,
+            ImageType>;
+    using StructureSizeParameter = unsigned int;
+
+    AssertThat<DummyFilter>::isConstructible(With<StructureSizeParameter>());
+}
