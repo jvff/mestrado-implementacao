@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+#include "WatershedWaveImageTest.hpp"
+
 template <typename TestData>
 class WatershedTests : public testing::Test {
 };
@@ -67,8 +69,12 @@ TYPED_TEST_P(WatershedTests, twelveSegments) {
         .setSegmentOrder({5, 11, 7, 8, 1, 4, 12, 9, 10, 2, 3, 6});
 }
 
+TYPED_TEST_P(WatershedTests, waveImage) {
+    WatershedWaveImageTest<TypeParam>();
+}
+
 REGISTER_TYPED_TEST_CASE_P(WatershedTests, singleSegment, twoSegments,
         erosionFromTheRight, twoSegmentsWithLargerSeparationBetweenThem,
-        twoVerticalSegments, twelveSegments);
+        twoVerticalSegments, twelveSegments, waveImage);
 
 #endif
