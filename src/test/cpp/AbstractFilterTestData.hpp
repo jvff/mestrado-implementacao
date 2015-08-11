@@ -16,12 +16,28 @@ template <typename FilterType, typename SourcePixelType,
 class AbstractFilterTestData : public AbstractImageTransformationTestData<
         SourcePixelType, DestinationPixelType, DestinationImageType,
         SourceImageType> {
+private:
+    using SuperClass = AbstractImageTransformationTestData<SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
+
 public:
-    FilterType filter;
+    std::unique_ptr<FilterType> filter;
 
 protected:
+    template <typename... ParameterTypes>
+    void initializeFilter(ParameterTypes... parameters) {
+        filter.reset(new FilterType(parameters...));
+    }
+
+    void runTest() override {
+        if (!filter)
+            FAIL() << "Filter was not initialized";
+        else
+            SuperClass::runTest();
+    }
+
     DestinationImageType transformImage() override {
-        return filter.apply(*this->sourceImage);
+        return filter->apply(*this->sourceImage);
     }
 };
 
