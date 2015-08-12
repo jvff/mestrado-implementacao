@@ -40,3 +40,19 @@ TEST(AdjustedMorphologicalGradientFilterTest, isFilter) {
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
+
+TEST(AdjustedMorphologicalGradientFilterTest, isConstructibleWithParameters) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using ImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = AdjustedMorphologicalGradientFilter<SourcePixelType,
+            DestinationPixelType, ImageType>;
+    using StructureSizeParameter = unsigned int;
+    using ThresholdParameter = const SourcePixelType&;
+    using MaxPixelValueParameter = const DestinationPixelType&;
+    using AdjustmentExponentParameter = float;
+
+    AssertThat<DummyFilter>::isConstructible(With<StructureSizeParameter,
+            ThresholdParameter, MaxPixelValueParameter,
+            AdjustmentExponentParameter>());
+}
