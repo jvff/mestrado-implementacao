@@ -61,3 +61,12 @@ TEST(MorphologicalGradientFilterTest, grayscaleSquare) {
         .setBackground(20)
         .drawSquare(2, 2, 6, 27);
 }
+
+TEST(MorphologicalGradientFilterTest, twoGrayscaleSquares) {
+    TestData<unsigned char>()
+        .setDimensions(23, 15)
+        .setStructureSize(3)
+        .setBackground(100)
+        .drawSquare(4, 4, 7, 101)
+        .drawSquare(12, 4, 7, 102);
+}
