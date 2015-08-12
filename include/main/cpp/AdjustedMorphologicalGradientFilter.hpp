@@ -8,6 +8,16 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename SourceImageType = Image<SourcePixelType> >
 class AdjustedMorphologicalGradientFilter : public Filter<SourcePixelType,
         DestinationPixelType, DestinationImageType, SourceImageType> {
+public:
+    AdjustedMorphologicalGradientFilter(unsigned int, const SourcePixelType&,
+            const DestinationPixelType&, float)
+    }
+
+private:
+    DestinationPixelType apply(unsigned int x, unsigned int y,
+            const SourceImageType& sourceImage) override {
+        return sourceImage.getPixel(x, y);
+    }
 };
 
 #endif
