@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 
 #include "AdjustedMorphologicalGradientFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
@@ -55,4 +56,53 @@ TEST(AdjustedMorphologicalGradientFilterTest, isConstructibleWithParameters) {
     AssertThat<DummyFilter>::isConstructible(With<StructureSizeParameter,
             ThresholdParameter, MaxPixelValueParameter,
             AdjustmentExponentParameter>());
+}
+
+TEST(AdjustedMorphologicalGradientFilterTest, lightSquare) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = AdjustedMorphologicalGradientFilter<PixelType, PixelType,
+            ImageType>;
+
+    const unsigned int structureSize = 1;
+    const PixelType activationThreshold = 1;
+    const PixelType maxPixelValue = 0xFF;
+    const float adjustmentExponent = 0.01;
+
+    const unsigned int imageSize = 10;
+    const unsigned int squareSize = 6;
+    const unsigned int squareStart = 2;
+    const unsigned int squareEnd = squareStart + squareSize - 1;
+    const unsigned int outerSquareStart = squareStart - structureSize;
+    const unsigned int outerSquareEnd = squareEnd + structureSize;
+    const unsigned int innerSquareStart = squareStart + structureSize;
+    const unsigned int innerSquareEnd = squareEnd - structureSize;
+
+    FilterType filter(structureSize, activationThreshold, maxPixelValue,
+            adjustmentExponent);
+    ImageType sourceImage(imageSize, imageSize);
+    ImageType expectedImage(imageSize, imageSize);
+
+    sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (x >= squareStart && x <= squareEnd && y >= squareStart
+                && y <= squareEnd) {
+            return 100;
+        } else
+            return 50;
+    };
+
+    expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (x >= innerSquareStart && x <= innerSquareEnd
+                && y >= innerSquareStart && y <= innerSquareEnd) {
+            return 0;
+        } else if (x >= outerSquareStart && x <= outerSquareEnd
+                && y >= outerSquareStart && y <= outerSquareEnd) {
+            return 50;
+        } else
+            return 0;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
 }
