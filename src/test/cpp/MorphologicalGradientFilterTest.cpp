@@ -70,3 +70,13 @@ TEST(MorphologicalGradientFilterTest, twoGrayscaleSquares) {
         .drawSquare(4, 4, 7, 101)
         .drawSquare(12, 4, 7, 102);
 }
+
+TEST(MorphologicalGradientFilterTest, threeGrayscaleSquares) {
+    TestData<unsigned char>()
+        .setDimensions(23, 15)
+        .setStructureSize(1)
+        .setBackground(100)
+        .drawSquare(4, 4, 7, 101)
+        .drawSquare(12, 4, 7, 102)
+        .drawSquare(10, 6, 3, 109);
+}

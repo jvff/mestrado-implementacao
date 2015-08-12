@@ -78,6 +78,8 @@ public:
                     -> PixelType {
                 if (border.contains(x, y))
                     return color - getErodedPixel(x, y);
+                else if (border.surrounds(x, y))
+                    return 0;
                 else
                     return this->expectedImage->getPixel(x, y);
             };
@@ -160,6 +162,10 @@ private:
 
         bool contains(unsigned int x, unsigned int y) const {
             return outer->contains(x, y) && !inner->contains(x, y);
+        }
+
+        bool surrounds(unsigned int x, unsigned int y) const {
+            return inner->contains(x, y);
         }
     };
 };
