@@ -53,3 +53,11 @@ TEST(MorphologicalGradientFilterTest, binarySquare) {
         .setBackground(false)
         .drawSquare(2, 2, 6, true);
 }
+
+TEST(MorphologicalGradientFilterTest, grayscaleSquare) {
+    TestData<unsigned char>()
+        .setDimensions(10, 10)
+        .setStructureSize(2)
+        .setBackground(20)
+        .drawSquare(2, 2, 6, 27);
+}

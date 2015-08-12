@@ -33,8 +33,14 @@ public:
     }
 
     CHAIN(setDimensions, unsigned int width, unsigned int height) {
-        if (SuperClass::setDimensions(width, height))
+        if (SuperClass::setDimensions(width, height)) {
+            *this->expectedImage = [] (unsigned int, unsigned int)
+                    -> PixelType {
+                return 0;
+            };
+
             this->state = State::SETTING_UP;
+        }
     }
 
     CHAIN(setStructureSize, unsigned int size) {
@@ -47,12 +53,9 @@ public:
 
     CHAIN(setBackground, const PixelType& color) {
         if (stateIs(State::SETTING_UP)) {
-            auto fillImage = [=] (unsigned int, unsigned int) -> PixelType {
+            *this->sourceImage = [=] (unsigned int, unsigned int) -> PixelType {
                 return color;
             };
-
-            *this->sourceImage = fillImage;
-            *this->expectedImage = fillImage;
 
             this->state = State::READY;
         }
@@ -74,7 +77,7 @@ public:
             *this->expectedImage = [&] (unsigned int x, unsigned int y)
                     -> PixelType {
                 if (border.contains(x, y))
-                    return color;
+                    return color - getErodedPixel(x, y);
                 else
                     return this->expectedImage->getPixel(x, y);
             };
@@ -86,6 +89,24 @@ private:
 
     void finishSetUp() override {
         this->state = State::CANCELLED;
+    }
+
+    PixelType getErodedPixel(unsigned int x, unsigned int y) {
+        auto pixel = this->sourceImage->getPixel(x, y);
+        auto maxX = this->sourceImage->getWidth() - 1;
+        auto maxY = this->sourceImage->getHeight() - 1;
+
+        auto startU = structureSize >= x ? 0 : x - structureSize;
+        auto startV = structureSize >= y ? 0 : y - structureSize;
+        auto endU = std::min(maxX, x + structureSize);
+        auto endV = std::min(maxY, y + structureSize);
+
+        for (unsigned int u = startU; u <= endU; ++u) {
+            for (unsigned int v = startV; v <= endV; ++v)
+                pixel = std::min(pixel, this->sourceImage->getPixel(u, v));
+        }
+
+        return pixel;
     }
 
 private:
