@@ -75,3 +75,15 @@ TEST(AdjustedMorphologicalGradientFilterTest, darkSquare) {
         .setBackground(50)
         .drawSquare(2, 2, 6, 100);
 }
+
+TEST(AdjustedMorphologicalGradientFilterTest, lightSquareAndDarkSquare) {
+    TestData<unsigned char>()
+        .setDimensions(18, 10)
+        .setStructureSize(1)
+        .setActivationThreshold(100)
+        .setMaxPixelValue(0xFF)
+        .setAdjustmentExponent(0.1)
+        .setBackground(25)
+        .drawSquare(2, 2, 6, 150)
+        .drawSquare(10, 2, 6, 50);
+}
