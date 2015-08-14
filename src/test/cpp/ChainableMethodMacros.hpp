@@ -21,4 +21,12 @@
     void unchainable_##MethodName( \
             std::initializer_list<ElementType> ParameterName)
 
+#define CHAIN_PARENT_METHOD(MethodName) \
+    template <typename... ParameterTypes> \
+    ThisType& MethodName(ParameterTypes... parameters) { \
+        SuperClass::MethodName(parameters...); \
+\
+        return *this; \
+    } \
+
 #endif
