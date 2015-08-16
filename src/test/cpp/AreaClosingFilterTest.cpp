@@ -26,3 +26,16 @@ TEST(AreaClosingFilterTest, hasOptionalTemplateParameter) {
 
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
+
+TEST(AreaClosingFilterTest, isFilter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SubClass = AreaClosingFilter<SourcePixelType, DestinationPixelType,
+            DestinationImageType>;
+    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+
+    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
+}
