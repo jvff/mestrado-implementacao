@@ -8,9 +8,15 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename SourceImageType = Image<SourcePixelType> >
 class AreaOpeningFilter : public Filter<SourcePixelType, DestinationPixelType,
         DestinationImageType, SourceImageType> {
+private:
+    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+
 public:
     AreaOpeningFilter(unsigned int) {
     }
+
+    using SuperClass::apply;
 
 private:
     DestinationPixelType apply(unsigned int x, unsigned int y,
