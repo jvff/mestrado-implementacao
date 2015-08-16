@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 
 #include "AreaOpeningFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
@@ -49,4 +50,33 @@ TEST(AreaOpeningFilterTest, isConstructibleWithParameter) {
     using AreaSizeParameter = unsigned int;
 
     AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
+}
+
+TEST(AreaOpeningFilterTest, bigPlateauIsntCleared) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = AreaOpeningFilter<PixelType, PixelType, ImageType>;
+
+    const unsigned int maximumPeakSize = 9;
+    const unsigned int imageSize = 6;
+    const unsigned int squareSize = 4;
+
+    const unsigned int squareStart = 1;
+    const unsigned int squareEnd = squareStart + squareSize - 1;
+
+    FilterType filter(maximumPeakSize);
+    ImageType sourceImage(imageSize, imageSize);
+    ImageType& expectedImage = sourceImage;
+
+    sourceImage = [] (unsigned int x, unsigned int y) {
+        if (x >= squareStart && x <= squareEnd && y >= squareStart
+                && y <= squareEnd) {
+            return 167;
+        } else
+            return 102;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
 }
