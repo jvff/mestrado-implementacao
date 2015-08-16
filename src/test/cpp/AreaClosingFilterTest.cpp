@@ -39,3 +39,14 @@ TEST(AreaClosingFilterTest, isFilter) {
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
+
+TEST(AreaClosingFilterTest, isConstructibleWithParameter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using ImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = AreaClosingFilter<SourcePixelType, DestinationPixelType,
+            ImageType>;
+    using AreaSizeParameter = unsigned int;
+
+    AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
+}
