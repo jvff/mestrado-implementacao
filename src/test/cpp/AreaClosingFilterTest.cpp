@@ -13,3 +13,16 @@ TEST(AreaClosingFilterTest, classTemplateExists) {
 
     AssertThat<DummyFilter>::isClassOrStruct();
 }
+
+TEST(AreaClosingFilterTest, hasOptionalTemplateParameter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplicitType = AreaClosingFilter<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using ExplicitType = AreaClosingFilter<SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
