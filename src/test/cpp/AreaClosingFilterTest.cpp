@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 
 #include "AreaClosingFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
@@ -49,4 +50,33 @@ TEST(AreaClosingFilterTest, isConstructibleWithParameter) {
     using AreaSizeParameter = unsigned int;
 
     AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
+}
+
+TEST(AreaClosingFilterTest, bigHoleIsntFilled) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = AreaClosingFilter<PixelType, PixelType, ImageType>;
+
+    const unsigned int maximumHoleSize = 9;
+    const unsigned int imageSize = 6;
+    const unsigned int squareSize = 4;
+
+    const unsigned int squareStart = 1;
+    const unsigned int squareEnd = squareStart + squareSize - 1;
+
+    FilterType filter(maximumHoleSize);
+    ImageType sourceImage(imageSize, imageSize);
+    ImageType& expectedImage = sourceImage;
+
+    sourceImage = [] (unsigned int x, unsigned int y) {
+        if (x >= squareStart && x <= squareEnd && y >= squareStart
+                && y <= squareEnd) {
+            return 100;
+        } else
+            return 199;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
 }
