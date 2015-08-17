@@ -26,3 +26,16 @@ TEST(RegionalMaximumsFilterTest, hasOptionalTemplateParameter) {
 
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
+
+TEST(RegionalMaximumsFilterTest, isFilter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SubClass = RegionalMaximumsFilter<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+
+    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
+}
