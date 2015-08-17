@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 
 #include "RegionalMaximumsFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
@@ -48,4 +49,22 @@ TEST(RegionalMaximumsFilterTest, isConstructibleWithoutParameters) {
             DestinationPixelType, ImageType>;
 
     AssertThat<DummyFilter>::isConstructible(WithoutParameters());
+}
+
+TEST(RegionalMaximumsFilterTest, uniformImageIsHugeRegionalMaximum) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = RegionalMaximumsFilter<PixelType, PixelType, ImageType>;
+
+    FilterType filter;
+    ImageType sourceImage(7, 4);
+    ImageType& expectedImage = sourceImage;
+
+    sourceImage = [] (unsigned int, unsigned int) {
+        return 99;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
 }
