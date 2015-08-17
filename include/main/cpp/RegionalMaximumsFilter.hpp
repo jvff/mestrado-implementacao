@@ -8,6 +8,11 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename SourceImageType = Image<SourcePixelType> >
 class RegionalMaximumsFilter : public Filter<SourcePixelType,
         DestinationPixelType, DestinationImageType, SourceImageType> {
+private:
+    DestinationPixelType apply(unsigned int x, unsigned int y,
+            const SourceImageType& sourceImage) {
+        return sourceImage.getPixel(x, y);
+    }
 };
 
 #endif
