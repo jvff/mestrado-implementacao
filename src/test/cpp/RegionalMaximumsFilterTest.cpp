@@ -1,12 +1,7 @@
-#include <gtest/gtest.h>
+#include "RegionalMaximumsFilterTest.hpp"
 
-#include "asserts.hpp"
-
-#include "RegionalMaximumsFilter.hpp"
-#include "SimpleArrayImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = RegionalMaximumsFilterTestData<PixelType, ImageType>;
 
 TEST(RegionalMaximumsFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
@@ -52,53 +47,22 @@ TEST(RegionalMaximumsFilterTest, isConstructibleWithoutParameters) {
 }
 
 TEST(RegionalMaximumsFilterTest, uniformImageIsHugeRegionalMaximum) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = RegionalMaximumsFilter<PixelType, PixelType, ImageType>;
+    const unsigned int width = 7;
+    const unsigned int height = 4;
 
-    FilterType filter;
-    ImageType sourceImage(7, 4);
-    ImageType& expectedImage = sourceImage;
-
-    sourceImage = [] (unsigned int, unsigned int) {
-        return 99;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(width, height)
+        .drawPlateau(0, 0, width, height, 99);
 }
 
 TEST(RegionalMaximumsFilterTest, singleRegionalMaximum) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = RegionalMaximumsFilter<PixelType, PixelType, ImageType>;
-
     const unsigned int width = 9;
     const unsigned int height = 5;
     const unsigned int centerX = width / 2;
     const unsigned int centerY = height / 2;
-    const PixelType peakHeight = 143;
 
-    FilterType filter;
-    ImageType sourceImage(width, height);
-    ImageType expectedImage(width, height);
-
-    sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x == centerX && y == centerY)
-            return peakHeight;
-        else
-            return 99;
-    };
-
-    expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
-        if (x == centerX && y == centerY)
-            return peakHeight;
-        else
-            return 0;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
+    TestData<unsigned char>()
+        .setDimensions(width, height)
+        .setBackground(99)
+        .setPeak(centerX, centerY, 143);
 }
