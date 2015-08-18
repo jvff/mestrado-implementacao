@@ -81,3 +81,16 @@ TEST(RegionalMaximumsFilterTest, multipleEqualMaximums) {
         .setPeak(6, 2, peakHeight)
         .setPeak(2, 2, peakHeight);
 }
+
+TEST(RegionalMaximumsFilterTest, multipleDifferentMaximums) {
+    TestData<unsigned char>()
+        .setDimensions(10, 7)
+        .setBackground(200)
+        .setPeak(0, 0, 201)
+        .setPeak(9, 6, 202)
+        .setPeak(0, 6, 203)
+        .setPeak(9, 0, 204)
+        .setPeak(3, 4, 205)
+        .setPeak(6, 2, 206)
+        .setPeak(2, 2, 207);
+}
