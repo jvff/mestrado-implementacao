@@ -28,3 +28,17 @@ TEST(AreaOpeningImplementationTest, hasOptionalTemplateParameter) {
 
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
+
+TEST(AreaOpeningImplementationTest, isConstructibleWithParameters) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplementationType = AreaOpeningImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using AreaSizeParameter = unsigned int;
+    using SourceImageParameter = const Image<SourcePixelType>&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<ImplementationType>::isConstructible(With<AreaSizeParameter,
+            SourceImageParameter, DestinationImageParameter>());
+}
