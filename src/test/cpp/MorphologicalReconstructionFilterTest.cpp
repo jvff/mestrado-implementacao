@@ -117,6 +117,15 @@ TEST(MorphologicalReconstructionFilterTest, markerSpreadsToTopLeftCorner) {
         .useRectangleOnTheTopLeftCornerWithBottomRightMarker();
 }
 
+TEST(MorphologicalReconstructionFilterTest, markerSpreadsToAllCorners) {
+    TestData<unsigned char>()
+        .setDimensions(7, 7)
+        .setBackground(0)
+        .setForeground(100)
+        .setMarkerDepth(98)
+        .useFullImageWithCenterMarker();
+}
+
 TEST(MorphologicalReconstructionFilterTest, middleIsntReconstructed) {
     TestData<unsigned char> test;
 

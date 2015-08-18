@@ -123,6 +123,11 @@ public:
         addMarker(endX, endY);
     }
 
+    void useFullImageWithCenterMarker() {
+        useRectangle(0, 0, maxX, maxY);
+        addMarker(width / 2, height / 2);
+    }
+
     void addMarker(unsigned int x, unsigned int y) {
         addMarker(x, y, markerDepth);
     }
