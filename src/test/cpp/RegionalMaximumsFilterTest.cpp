@@ -94,3 +94,27 @@ TEST(RegionalMaximumsFilterTest, multipleDifferentMaximums) {
         .setPeak(6, 2, 206)
         .setPeak(2, 2, 207);
 }
+
+TEST(RegionalMaximumsFilterTest, pyramid) {
+    TestData<unsigned char> test;
+    const unsigned int size = 10;
+
+    test.setDimensions(size, size);
+
+    *test.sourceImage = [] (unsigned int x, unsigned int y) -> unsigned char {
+        auto distanceToLeftEdge = x;
+        auto distanceToTopEdge = y;
+        auto distanceToRightEdge = size - x - 1;
+        auto distanceToBottomEdge = size - y - 1;
+        auto smallestDistance = std::min({distanceToLeftEdge, distanceToTopEdge,
+                distanceToRightEdge, distanceToBottomEdge});
+
+        return (unsigned char)smallestDistance;
+    };
+
+    auto centerStart = (size / 2) - 1;
+    auto centerSize = 2;
+    auto height = centerStart;
+
+    test.drawPlateau(centerStart, centerStart, centerSize, centerSize, height);
+}
