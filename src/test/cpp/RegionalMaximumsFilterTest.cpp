@@ -68,3 +68,37 @@ TEST(RegionalMaximumsFilterTest, uniformImageIsHugeRegionalMaximum) {
 
     assertThat(result).isEqualTo(expectedImage);
 }
+
+TEST(RegionalMaximumsFilterTest, singleRegionalMaximum) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using FilterType = RegionalMaximumsFilter<PixelType, PixelType, ImageType>;
+
+    const unsigned int width = 9;
+    const unsigned int height = 5;
+    const unsigned int centerX = width / 2;
+    const unsigned int centerY = height / 2;
+    const PixelType peakHeight = 143;
+
+    FilterType filter;
+    ImageType sourceImage(width, height);
+    ImageType expectedImage(width, height);
+
+    sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (x == centerX && y == centerY)
+            return peakHeight;
+        else
+            return 99;
+    };
+
+    expectedImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (x == centerX && y == centerY)
+            return peakHeight;
+        else
+            return 0;
+    };
+
+    auto result = filter.apply(sourceImage);
+
+    assertThat(result).isEqualTo(expectedImage);
+}
