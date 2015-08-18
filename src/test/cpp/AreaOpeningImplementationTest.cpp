@@ -15,3 +15,16 @@ TEST(AreaOpeningImplementationTest, classTemplateExists) {
 
     AssertThat<ImplementationClass>::isClassOrStruct();
 }
+
+TEST(AreaOpeningImplementationTest, hasOptionalTemplateParameter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplicitType = AreaOpeningImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType>;
+    using ExplicitType = AreaOpeningImplementation<SourcePixelType,
+            DestinationPixelType, DestinationImageType, SourceImageType>;
+
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
+}
