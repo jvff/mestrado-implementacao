@@ -66,3 +66,18 @@ TEST(RegionalMaximumsFilterTest, singleRegionalMaximum) {
         .setBackground(99)
         .setPeak(centerX, centerY, 143);
 }
+
+TEST(RegionalMaximumsFilterTest, multipleEqualMaximums) {
+    const unsigned char peakHeight = 250;
+
+    TestData<unsigned char>()
+        .setDimensions(10, 6)
+        .setBackground(200)
+        .setPeak(0, 0, peakHeight)
+        .setPeak(9, 5, peakHeight)
+        .setPeak(0, 5, peakHeight)
+        .setPeak(9, 0, peakHeight)
+        .setPeak(3, 4, peakHeight)
+        .setPeak(6, 2, peakHeight)
+        .setPeak(2, 2, peakHeight);
+}
