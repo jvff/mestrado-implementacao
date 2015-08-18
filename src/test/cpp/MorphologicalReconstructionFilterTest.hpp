@@ -113,6 +113,16 @@ public:
         addMarker(width / 2, height / 2);
     }
 
+    void useRectangleOnTheTopLeftCornerWithBottomRightMarker() {
+        const unsigned int startX = 0;
+        const unsigned int startY = 0;
+        const unsigned int endX = maxX - 1;
+        const unsigned int endY = maxY - 1;
+
+        useRectangle(startX, startY, endX, endY);
+        addMarker(endX, endY);
+    }
+
     void addMarker(unsigned int x, unsigned int y) {
         addMarker(x, y, markerDepth);
     }
