@@ -135,6 +135,9 @@ private:
     bool propagatePixel(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage, unsigned int x,
             unsigned int y, unsigned int nextX, unsigned int nextY) {
+        if (coordinateIsInvalid(sourceImage, nextX, nextY))
+            return false;
+
         const PixelType markerCurrent = destinationImage.getPixel(x, y);
         const PixelType markerNext = destinationImage.getPixel(nextX, nextY);
         const PixelType sourcePixel = sourceImage.getPixel(nextX, nextY);
@@ -146,6 +149,16 @@ private:
         destinationImage.setPixel(nextX, nextY, destinationPixel);
 
         return markerNext != destinationPixel;
+    }
+
+    bool coordinateIsInvalid(const SourceImageType& sourceImage, unsigned int x,
+            unsigned int y) {
+        unsigned int width = sourceImage.getWidth();
+        unsigned int height = sourceImage.getHeight();
+        unsigned int maxX = width - 1;
+        unsigned int maxY = height - 1;
+
+        return x > maxX || y > maxY;
     }
 };
 
