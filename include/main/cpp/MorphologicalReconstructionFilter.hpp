@@ -63,6 +63,9 @@ private:
                 propagateDown(sourceImage, destinationImage, x, y);
             }
         }
+
+        propagateRight(sourceImage, destinationImage, maxX - 1, maxY);
+        propagateDown(sourceImage, destinationImage, maxX, maxY - 1);
     }
 
     void secondPass(const SourceImageType& sourceImage,
