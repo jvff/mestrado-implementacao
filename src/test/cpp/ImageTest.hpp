@@ -68,8 +68,24 @@ protected:
         verifyImageWasPainted(mock, width, height);
     }
 
+    void verifyImageWasPainted(Mock<FakeDummyImage>& mock,
+            unsigned int paintWidth) {
+        auto image = mock.get();
+        auto width = image.getWidth();
+        auto height = image.getHeight();
+
+        verifyImageWasPainted(mock, width, height, paintWidth);
+    }
+
     void verifyImageWasPainted(Mock<FakeDummyImage>& mock, unsigned int width,
             unsigned int height) {
+        verifyImageWasPainted(mock, width, height, width);
+    }
+
+    void verifyImageWasPainted(Mock<FakeDummyImage>& mock, unsigned int width,
+            unsigned int height, unsigned int paintWidth) {
+        auto pixelsToSkipAtEndOfRow = paintWidth - width;
+
         DummyType pixelValue = {0};
 
         for (unsigned int y = 0; y < height; ++y) {
@@ -78,6 +94,8 @@ protected:
 
                 ++pixelValue.value;
             }
+
+            pixelValue.value += pixelsToSkipAtEndOfRow;
         }
 
         VerifyNoOtherInvocations(Method(mock, setPixel));
