@@ -63,6 +63,24 @@ TEST_F(ImageTest, isSettableWithAnotherImage) {
     verifyImageWasPainted(destinationImageSpy);
 }
 
+TEST_F(ImageTest, isSettableWithSmallerImage) {
+    unsigned int sourceWidth = 3;
+    unsigned int sourceHeight = 2;
+    unsigned int destinationWidth = 5;
+    unsigned int destinationHeight = 4;
+
+    auto destinationImage = FakeDummyImage(destinationWidth, destinationHeight);
+    auto destinationImageSpy = spyImage(destinationImage);
+
+    auto sourceImageMock = createMockImage(sourceWidth, sourceHeight);
+    const auto& sourceImage = sourceImageMock.get();
+
+    destinationImage = sourceImage;
+
+    verifyImageWasRead(sourceImageMock);
+    verifyImageWasPainted(destinationImageSpy, sourceWidth, sourceHeight);
+}
+
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;

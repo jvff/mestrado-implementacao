@@ -64,6 +64,12 @@ protected:
         auto image = mock.get();
         auto width = image.getWidth();
         auto height = image.getHeight();
+
+        verifyImageWasPainted(mock, width, height);
+    }
+
+    void verifyImageWasPainted(Mock<FakeDummyImage>& mock, unsigned int width,
+            unsigned int height) {
         DummyType pixelValue = {0};
 
         for (unsigned int y = 0; y < height; ++y) {
@@ -73,6 +79,8 @@ protected:
                 ++pixelValue.value;
             }
         }
+
+        VerifyNoOtherInvocations(Method(mock, setPixel));
     }
 
     static PaintFunction getPaintFunction(unsigned int width) {
