@@ -51,58 +51,29 @@ TEST_F(ImageTest, isSettableWithAnotherImage) {
     unsigned int width = 3;
     unsigned int height = 5;
 
-    FakeDummyImage destinationImage(width, height);
-    Mock<FakeDummyImage> destinationImageSpy(destinationImage);
-    Mock<FakeDummyImage> sourceImageMock;
-    FakeDummyImage& sourceImage = sourceImageMock.get();
+    auto destinationImage = FakeDummyImage(width, height);
+    auto destinationImageSpy = spyImage(destinationImage);
 
-    auto returnPixel = [width] (unsigned int x, unsigned int y) -> DummyType {
-        return DummyType{ (int)(y * width + x) };
-    };
-
-    When(Method(sourceImageMock, getPixel)).AlwaysDo(returnPixel);
-    When(Method(sourceImageMock, getWidth)).Return(width);
-    When(Method(sourceImageMock, getHeight)).Return(height);
-
-    Spy(Method(destinationImageSpy, setPixel));
+    auto sourceImageMock = createMockImage(width, height);
+    const auto& sourceImage = sourceImageMock.get();
 
     destinationImage = sourceImage;
 
-    DummyType pixelValue = {0};
-
-    for (unsigned int y = 0; y < height; ++y) {
-        for (unsigned int x = 0; x < width; ++x) {
-            Verify(Method(sourceImageMock, getPixel).Using(x, y));
-            Verify(Method(destinationImageSpy, setPixel)
-                    .Using(x, y, pixelValue));
-
-            ++pixelValue.value;
-        }
-    }
+    verifyImageWasRead(sourceImageMock);
+    verifyImageWasPainted(destinationImageSpy);
 }
 
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;
 
-    FakeDummyImage image(width, height);
-    Mock<FakeDummyImage> spy(image);
+    auto paintFunction = getPaintFunction(width);
+    auto image = FakeDummyImage(width, height);
+    auto spy = spyImage(image);
 
-    Spy(Method(spy, setPixel));
+    image = paintFunction;
 
-    image = [width] (unsigned int x, unsigned int y) -> DummyType {
-        return DummyType{ (int)(y * width + x) };
-    };
-
-    DummyType pixelValue = {0};
-
-    for (unsigned int y = 0; y < height; ++y) {
-        for (unsigned int x = 0; x < width; ++x) {
-            Verify(Method(spy, setPixel).Using(x, y, pixelValue));
-
-            ++pixelValue.value;
-        }
-    }
+    verifyImageWasPainted(spy);
 }
 
 TEST_F(ImageTest, imagesAreComparable) {
@@ -141,17 +112,14 @@ TEST_F(ImageTest, imagesWithDifferentPixelsAtZeroZeroArentEqual) {
     unsigned int width = 3;
     unsigned int height = 4;
 
-    FakeDummyImage firstImage(width, height);
-    FakeDummyImage secondImage(width, height);
+    auto firstImage = FakeDummyImage(width, height);
+    auto secondImage = FakeDummyImage(width, height);
 
-    Mock<FakeDummyImage> firstImageSpy(firstImage);
-    Mock<FakeDummyImage> secondImageSpy(secondImage);
+    auto firstImageSpy = spyImage(firstImage);
+    auto secondImageSpy = spyImage(secondImage);
 
-    Spy(Method(firstImageSpy, getPixel));
-    Spy(Method(secondImageSpy, getPixel));
-
-    When(Method(firstImageSpy, getPixel).Using(0, 0)).Return(DummyType{ 1 });
-    When(Method(secondImageSpy, getPixel).Using(0, 0)).Return(DummyType{ 2 });
+    interceptPixel(firstImageSpy, 0, 0, DummyType{ 1 });
+    interceptPixel(secondImageSpy, 0, 0, DummyType{ 2 });
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
@@ -160,17 +128,14 @@ TEST_F(ImageTest, imagesWithDifferentPixelsAtTwoThreeArentEqual) {
     unsigned int width = 3;
     unsigned int height = 4;
 
-    FakeDummyImage firstImage(width, height);
-    FakeDummyImage secondImage(width, height);
+    auto firstImage = FakeDummyImage(width, height);
+    auto secondImage = FakeDummyImage(width, height);
 
-    Mock<FakeDummyImage> firstImageSpy(firstImage);
-    Mock<FakeDummyImage> secondImageSpy(secondImage);
+    auto firstImageSpy = spyImage(firstImage);
+    auto secondImageSpy = spyImage(secondImage);
 
-    Spy(Method(firstImageSpy, getPixel));
-    Spy(Method(secondImageSpy, getPixel));
-
-    When(Method(firstImageSpy, getPixel).Using(2, 3)).Return(DummyType{ 5 });
-    When(Method(secondImageSpy, getPixel).Using(2, 3)).Return(DummyType{ 3 });
+    interceptPixel(firstImageSpy, 2, 3, DummyType{ 5 });
+    interceptPixel(secondImageSpy, 2, 3, DummyType{ 3 });
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
