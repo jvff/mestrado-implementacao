@@ -47,6 +47,40 @@ TEST_F(ImageTest, getPixelIsConstMethod) {
     assertThat(&DummyImage::getPixel).isConstMethod();
 }
 
+TEST_F(ImageTest, isSettableWithAnotherImage) {
+    unsigned int width = 3;
+    unsigned int height = 5;
+
+    FakeDummyImage destinationImage(width, height);
+    Mock<FakeDummyImage> destinationImageSpy(destinationImage);
+    Mock<FakeDummyImage> sourceImageMock;
+    FakeDummyImage& sourceImage = sourceImageMock.get();
+
+    auto returnPixel = [width] (unsigned int x, unsigned int y) -> DummyType {
+        return DummyType{ (int)(y * width + x) };
+    };
+
+    When(Method(sourceImageMock, getPixel)).AlwaysDo(returnPixel);
+    When(Method(sourceImageMock, getWidth)).Return(width);
+    When(Method(sourceImageMock, getHeight)).Return(height);
+
+    Spy(Method(destinationImageSpy, setPixel));
+
+    destinationImage = sourceImage;
+
+    DummyType pixelValue = {0};
+
+    for (unsigned int y = 0; y < height; ++y) {
+        for (unsigned int x = 0; x < width; ++x) {
+            Verify(Method(sourceImageMock, getPixel).Using(x, y));
+            Verify(Method(destinationImageSpy, setPixel)
+                    .Using(x, y, pixelValue));
+
+            ++pixelValue.value;
+        }
+    }
+}
+
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;
