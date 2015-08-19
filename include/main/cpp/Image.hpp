@@ -1,6 +1,7 @@
 #ifndef IMAGE_HPP
 #define IMAGE_HPP
 
+#include <algorithm>
 #include <functional>
 
 template <typename PixelType>
@@ -21,8 +22,11 @@ public:
     }
 
     virtual Image& operator=(const Image<PixelType>& image) {
-        for (unsigned int x = 0; x < width; ++x) {
-            for (unsigned int y = 0; y < height; ++y)
+        auto smallestWidth = std::min(this->width, image.getWidth());
+        auto smallestHeight = std::min(this->height, image.getHeight());
+
+        for (unsigned int x = 0; x < smallestWidth; ++x) {
+            for (unsigned int y = 0; y < smallestHeight; ++y)
                 setPixel(x, y, image.getPixel(x, y));
         }
 
