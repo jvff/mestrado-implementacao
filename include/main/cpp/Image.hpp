@@ -6,7 +6,7 @@
 template <typename PixelType>
 class Image {
 protected:
-    typedef std::function<PixelType(unsigned int, unsigned int)> PaintFunction;
+    using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
     unsigned int width;
     unsigned int height;

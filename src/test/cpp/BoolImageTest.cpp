@@ -1,6 +1,6 @@
 #include "BoolImageTest.hpp"
 
-typedef ::testing::Types<SimpleArrayImage<bool> > ImageTypes;
+using ImageTypes = ::testing::Types<SimpleArrayImage<bool> >;
 TYPED_TEST_CASE(BoolImageTest, ImageTypes);
 
 TYPED_TEST(BoolImageTest, typeIsImage) {

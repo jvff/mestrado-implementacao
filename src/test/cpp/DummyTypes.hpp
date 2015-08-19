@@ -19,6 +19,6 @@ OPERATOR(>=)
 
 #undef OPERATOR
 
-typedef DummyTypes<0> DummyType;
+using DummyType = DummyTypes<0>;
 
 #endif

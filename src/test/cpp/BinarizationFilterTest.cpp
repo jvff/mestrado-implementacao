@@ -1,47 +1,47 @@
 #include "BinarizationFilterTest.hpp"
 
 TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
-    typedef BinarizationFilter<DummyType, FakeImage<bool> >
-            DummyBinarizationFilter;
-    typedef const DummyType& parameter;
+    using DummyBinarizationFilter = BinarizationFilter<DummyType,
+            FakeImage<bool> >;
+    using ThresholdParameter = const DummyType&;
 
-    AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
+    AssertThat<DummyBinarizationFilter>::isConstructible(
+            With<ThresholdParameter>());
 }
 
 TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
-    typedef BinarizationFilter<DummyType, FakeImage<bool> >
-            DummyBinarizationFilter;
-    typedef const DummyType& thresholdParameter;
-    typedef const std::function<bool(const DummyType&, const DummyType&)>&
-            comparatorParameter;
+    using DummyBinarizationFilter = BinarizationFilter<DummyType,
+            FakeImage<bool> >;
+    using ThresholdParameter = const DummyType&;
+    using ComparatorParameter =
+            const std::function<bool(const DummyType&, const DummyType&)>&;
 
     AssertThat<DummyBinarizationFilter>::isConstructible(
-            With<thresholdParameter, comparatorParameter>());
+            With<ThresholdParameter, ComparatorParameter>());
 }
 
 TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
-    typedef FakeImage<DummyType> DummyFakeImage;
-    typedef BinarizationFilter<DummyType, FakeImage<bool>, DummyFakeImage>
-            DummyBinarizationFilter;
-    typedef const DummyType& parameter;
+    using DummyFakeImage = FakeImage<DummyType>;
+    using DummyBinarizationFilter = BinarizationFilter<DummyType,
+            FakeImage<bool>, DummyFakeImage>;
+    using ThresholdParameter = const DummyType&;
 
-    AssertThat<DummyBinarizationFilter>::isConstructible(With<parameter>());
+    AssertThat<DummyBinarizationFilter>::isConstructible(With<ThresholdParameter>());
 }
 
 TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
-    typedef BinarizationFilter<DummyType, FakeImage<bool> > implicitType;
-    typedef BinarizationFilter<DummyType, FakeImage<bool>, Image<DummyType> >
-            explicitType;
+    using ImplicitType = BinarizationFilter<DummyType, FakeImage<bool> >;
+    using ExplicitType = BinarizationFilter<DummyType, FakeImage<bool>,
+            Image<DummyType> >;
 
-    AssertThat<implicitType>::isTheSame(As<explicitType>());
+    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
 TEST(BinarizationFilterTest, classIsAFilter) {
-    typedef Filter<DummyType, bool, FakeImage<bool> > filterType;
-    typedef BinarizationFilter<DummyType, FakeImage<bool> >
-            binarizationFilterType;
+    using SuperClass = Filter<DummyType, bool, FakeImage<bool> >;
+    using SubClass = BinarizationFilter<DummyType, FakeImage<bool> >;
 
-    AssertThat<binarizationFilterType>::isSubClass(Of<filterType>());
+    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
 TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {

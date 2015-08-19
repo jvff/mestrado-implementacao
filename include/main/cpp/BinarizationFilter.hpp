@@ -9,10 +9,10 @@ template <typename SourcePixelType, typename DestinationImageType,
 class BinarizationFilter : public Filter<SourcePixelType, bool,
         DestinationImageType, SourceImageType> {
 private:
-    typedef Filter<SourcePixelType, bool, DestinationImageType, SourceImageType>
-            SuperClass;
-    typedef std::function<bool(const SourcePixelType&, const SourcePixelType&)>
-            Comparator;
+    using SuperClass = Filter<SourcePixelType, bool, DestinationImageType,
+            SourceImageType>;
+    using Comparator =
+            std::function<bool(const SourcePixelType&, const SourcePixelType&)>;
 
     static bool defaultComparator(const SourcePixelType& value,
             const SourcePixelType& threshold) {

@@ -6,7 +6,7 @@
 
 #include "IntImageTest.hpp"
 
-typedef ::testing::Types<SimpleArrayImage<int> > ImageTypes;
+using ImageTypes = ::testing::Types<SimpleArrayImage<int> >;
 TYPED_TEST_CASE(IntImageTest, ImageTypes);
 
 TYPED_TEST(IntImageTest, typeIsImage) {

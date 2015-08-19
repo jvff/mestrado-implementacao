@@ -18,8 +18,8 @@ using namespace fakeit;
 
 class ImageTest : public testing::Test {
 protected:
-    typedef Image<DummyType> DummyImage;
-    typedef FakeImage<DummyType> FakeDummyImage;
+    using DummyImage = Image<DummyType>;
+    using FakeDummyImage = FakeImage<DummyType>;
 };
 
 #endif
