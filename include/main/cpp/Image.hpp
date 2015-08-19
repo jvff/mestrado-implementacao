@@ -20,6 +20,15 @@ public:
     virtual ~Image() {
     }
 
+    virtual Image& operator=(const Image<PixelType>& image) {
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
+                setPixel(x, y, image.getPixel(x, y));
+        }
+
+        return *this;
+    }
+
     virtual Image& operator=(PaintFunction makePixel) {
         for (unsigned int y = 0; y < height; ++y) {
             for (unsigned int x = 0; x < width; ++x)
