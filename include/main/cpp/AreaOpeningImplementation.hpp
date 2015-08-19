@@ -7,6 +7,10 @@ template <typename SourcePixelType, typename DestinationPixelType,
         typename DestinationImageType,
         typename SourceImageType = Image<SourcePixelType> >
 class AreaOpeningImplementation {
+public:
+    AreaOpeningImplementation(unsigned int, const SourceImageType&,
+            DestinationImageType&) {
+    }
 };
 
 #endif
