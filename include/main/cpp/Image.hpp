@@ -4,8 +4,11 @@
 #include <algorithm>
 #include <functional>
 
-template <typename PixelType>
+template <typename ImagePixelType>
 class Image {
+public:
+    using PixelType = ImagePixelType;
+
 protected:
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
