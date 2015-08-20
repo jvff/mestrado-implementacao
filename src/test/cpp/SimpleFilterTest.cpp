@@ -16,3 +16,15 @@ TEST(SimpleFilterTest, classTemplateExists) {
 
     AssertThat<DummyFilterType>::isClassOrStruct();
 }
+
+TEST(SimpleFilterTest, isSubClassOfFilter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using SubClass = SimpleFilter<SourceImageType, DestinationImageType>;
+    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
+            DestinationImageType, SourceImageType>;
+
+    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
+}
