@@ -1,7 +1,7 @@
 #include "FilterTest.hpp"
 
-TEST_F(FilterTest, classIsntAbstract) {
-    AssertThat<FakeDummyFilter>::isConstructible(WithoutParameters());
+TEST_F(FilterTest, classTemplateExists) {
+    AssertThat<DummyFilter>::isClassOrStruct();
 }
 
 TEST_F(FilterTest, destructorIsVirtual) {
