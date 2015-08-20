@@ -47,58 +47,6 @@ TEST_F(ImageTest, getPixelIsConstMethod) {
     assertThat(&DummyImage::getPixel).isConstMethod();
 }
 
-TEST_F(ImageTest, isSettableWithAnotherImage) {
-    unsigned int width = 3;
-    unsigned int height = 5;
-
-    auto destinationImage = FakeDummyImage(width, height);
-    auto destinationImageSpy = spyImage(destinationImage);
-
-    auto sourceImageMock = createMockImage(width, height);
-    const auto& sourceImage = sourceImageMock.get();
-
-    destinationImage = sourceImage;
-
-    verifyImageWasRead(sourceImageMock);
-    verifyImageWasPainted(destinationImageSpy);
-}
-
-TEST_F(ImageTest, isSettableWithSmallerImage) {
-    unsigned int sourceWidth = 3;
-    unsigned int sourceHeight = 2;
-    unsigned int destinationWidth = 5;
-    unsigned int destinationHeight = 4;
-
-    auto destinationImage = FakeDummyImage(destinationWidth, destinationHeight);
-    auto destinationImageSpy = spyImage(destinationImage);
-
-    auto sourceImageMock = createMockImage(sourceWidth, sourceHeight);
-    const auto& sourceImage = sourceImageMock.get();
-
-    destinationImage = sourceImage;
-
-    verifyImageWasRead(sourceImageMock);
-    verifyImageWasPainted(destinationImageSpy, sourceWidth, sourceHeight);
-}
-
-TEST_F(ImageTest, isSettableWithLargerImage) {
-    unsigned int sourceWidth = 9;
-    unsigned int sourceHeight = 7;
-    unsigned int destinationWidth = 7;
-    unsigned int destinationHeight = 6;
-
-    auto destinationImage = FakeDummyImage(destinationWidth, destinationHeight);
-    auto destinationImageSpy = spyImage(destinationImage);
-
-    auto sourceImageMock = createMockImage(sourceWidth, sourceHeight);
-    const auto& sourceImage = sourceImageMock.get();
-
-    destinationImage = sourceImage;
-
-    verifyImageWasRead(sourceImageMock);
-    verifyImageWasPainted(destinationImageSpy, sourceWidth);
-}
-
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;
