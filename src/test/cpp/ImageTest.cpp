@@ -9,6 +9,14 @@ TEST_F(ImageTest, destructorIsVirtual) {
     AssertThat<DummyImage>::hasVirtualDestructor();
 }
 
+TEST_F(ImageTest, hasPixelTypeStaticAlias) {
+    using PixelType = DummyTypes<3>;
+    using ImageType = Image<PixelType>;
+    using ImagePixelType = ImageType::PixelType;
+
+    AssertThat<ImagePixelType>::isTheSame(As<PixelType>());
+}
+
 TEST_F(ImageTest, widthIsCorrect) {
     unsigned int width = 100;
 
