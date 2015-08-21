@@ -1,16 +1,15 @@
 #ifndef BINARIZATION_FILTER_HPP
 #define BINARIZATION_FILTER_HPP
 
-#include "Filter.hpp"
+#include "SimpleFilter.hpp"
 #include "Image.hpp"
 
 template <typename SourcePixelType, typename DestinationImageType,
         typename SourceImageType = Image<SourcePixelType> >
-class BinarizationFilter : public Filter<SourcePixelType, bool,
-        DestinationImageType, SourceImageType> {
+class BinarizationFilter : public SimpleFilter<SourceImageType,
+        DestinationImageType> {
 private:
-    using SuperClass = Filter<SourcePixelType, bool, DestinationImageType,
-            SourceImageType>;
+    using SuperClass = SimpleFilter<SourceImageType, DestinationImageType>;
     using Comparator =
             std::function<bool(const SourcePixelType&, const SourcePixelType&)>;
 
