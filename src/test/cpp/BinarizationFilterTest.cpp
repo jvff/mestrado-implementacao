@@ -37,8 +37,8 @@ TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST(BinarizationFilterTest, classIsAFilter) {
-    using SuperClass = Filter<DummyType, bool, FakeImage<bool> >;
+TEST(BinarizationFilterTest, classIsSimpleFilter) {
+    using SuperClass = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
     using SubClass = BinarizationFilter<DummyType, FakeImage<bool> >;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
