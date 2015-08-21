@@ -13,7 +13,6 @@ private:
 public:
     using SuperClass::apply;
 
-protected:
     DestinationPixelType apply(unsigned int, unsigned int,
             const SourceImageType&) {
         return DestinationPixelType();

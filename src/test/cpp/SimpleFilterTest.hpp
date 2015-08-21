@@ -11,6 +11,7 @@
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 #include "FakeSimpleFilter.hpp"
+#include "RefTo.hpp"
 
 using namespace fakeit;
 
