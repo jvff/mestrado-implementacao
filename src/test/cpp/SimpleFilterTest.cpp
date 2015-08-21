@@ -55,3 +55,20 @@ TEST_F(SimpleFilterTest, applyWithDestinationImageCallsPerPixelApplyMethod) {
         }
     }
 }
+
+TEST_F(SimpleFilterTest, applyWithoutDestinationImageCallsApplyMethodWithIt) {
+    using FilterType = FakeSimpleFilter<SourceImageType, DestinationImageType>;
+    using MethodSignature = void(const SourceImageType&, DestinationImageType&);
+
+    FilterType filter;
+    Mock<FilterType> spy(filter);
+
+    Spy(OverloadedMethod(spy, apply, MethodSignature));
+
+    auto sourceImageMock = createSourceImageMock(12, 7);
+    const auto& sourceImage = sourceImageMock.get();
+
+    filter.apply(sourceImage);
+
+    Verify(OverloadedMethod(spy, apply, MethodSignature));
+}
