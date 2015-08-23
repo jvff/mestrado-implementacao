@@ -26,12 +26,6 @@ public:
         thirdPass(sourceImage, destinationImage, pixelsToBeUpdated);
     }
 
-protected:
-    PixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) override {
-        return sourceImage.getPixel(x, y);
-    }
-
 private:
     void avoidMarkersBiggerThanSourcePixels(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {

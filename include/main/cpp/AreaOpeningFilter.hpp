@@ -16,13 +16,12 @@ public:
     AreaOpeningFilter(unsigned int) {
     }
 
-    using SuperClass::apply;
-
-private:
-    DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) {
-        return sourceImage.getPixel(x, y);
+    void apply(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) {
+        destinationImage = sourceImage;
     }
+
+    using SuperClass::apply;
 };
 
 #endif

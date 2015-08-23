@@ -35,12 +35,6 @@ protected:
 
         return image;
     }
-
-private:
-    DestinationPixelType apply(unsigned int, unsigned int,
-            const SourceImageType&) override {
-        return 1;
-    }
 };
 
 #endif

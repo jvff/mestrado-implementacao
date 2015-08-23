@@ -22,18 +22,7 @@ public:
     }
 
     virtual void apply(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) {
-        unsigned int width = destinationImage.getWidth();
-        unsigned int height = destinationImage.getHeight();
-
-        for (unsigned int x = 0; x < width; ++x) {
-            for (unsigned int y = 0; y < height; ++y) {
-                auto newPixel = apply(x, y, sourceImage);
-
-                destinationImage.setPixel(x, y, newPixel);
-            }
-        }
-    }
+            DestinationImageType& destinationImage) = 0;
 
 protected:
     virtual unsigned int getDestinationImageWidth(
@@ -50,9 +39,6 @@ protected:
             unsigned int height) {
         return DestinationImageType(width, height);
     }
-
-    virtual DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) = 0;
 };
 
 #endif

@@ -45,11 +45,6 @@ public:
     using SuperClass::apply;
 
 private:
-    DestinationPixelType apply(unsigned int x, unsigned int y,
-            const SourceImageType& sourceImage) override {
-        return sourceImage.getPixel(x, y);
-    }
-
     void applyAdjustment(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
         unsigned int width = sourceImage.getWidth();
