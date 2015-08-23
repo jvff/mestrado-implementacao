@@ -31,19 +31,3 @@ TEST_F(FilterTest, callToApplyToTheCreatedImageWasPerformed) {
 
     verifyApplyWasCalled(result);
 }
-
-TEST_F(FilterTest, filterWasAppliedToAllPixels) {
-    expectImageCreation(10, 9);
-
-    filter.apply(sourceImage);
-
-    verifyApplyWasCalledOnEachPixel();
-}
-
-TEST_F(FilterTest, allPixelsWereSet) {
-    expectImageCreation(3, 7);
-
-    auto result = filter.apply(sourceImage);
-
-    verifyAllPixelsWereSet(result);
-}

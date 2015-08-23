@@ -71,42 +71,11 @@ protected:
             .Using(RefTo(sourceImage), RefTo(image)));
     }
 
-    void verifyApplyWasCalledOnEachPixel() {
-        for (unsigned int x = 0; x < expectedWidth; ++x) {
-            for (unsigned int y = 0; y < expectedHeight; ++y)
-                verifyApplyWasCalledOnPixel(x, y);
-        }
-    }
-
-    void verifyApplyWasCalledOnPixel(unsigned int x, unsigned int y) {
-        Verify(OverloadedMethod(filterSpy, apply,
-                DestinationPixelType(unsigned int, unsigned int,
-                    const SourceImageType&))
-            .Using(x, y, RefTo(sourceImage)));
-    }
-
-    void verifyAllPixelsWereSet(DestinationImageType& image) {
-        auto& mock = image.getMock();
-
-        for (unsigned int x = 0; x < expectedWidth; ++x) {
-            for (unsigned int y = 0; y < expectedHeight; ++y)
-                verifyPixelWasSet(mock, x, y);
-        }
-    }
-
-    void verifyPixelWasSet(Mock<FakeImage<DestinationPixelType> >& mock,
-            unsigned int x, unsigned int y) {
-        DestinationPixelType pixelValue{(int)(x * y)};
-
-        Verify(Method(mock, setPixel).Using(x, y, pixelValue));
-    }
-
 private:
     void prepareFilterSpy() {
         spyApplyMethod();
         spyGetDestinationImageDimensionsMethods();
         spyCreateDestinationImageMethod();
-        mockPerPixelApplyMethod();
     }
 
     void spyApplyMethod() {
@@ -123,15 +92,6 @@ private:
 
     void spyCreateDestinationImageMethod() {
         Spy(Method(filterSpy, createDestinationImage));
-    }
-
-    void mockPerPixelApplyMethod() {
-        When(OverloadedMethod(filterSpy, apply,
-                DestinationPixelType(unsigned int, unsigned int,
-                    const SourceImageType&))
-            .Using(Lt(expectedWidth), Lt(expectedHeight), RefTo(sourceImage)))
-            .AlwaysDo([](unsigned int x, unsigned int y, const SourceImageType&)
-                   -> DestinationPixelType { return { (int)(x * y)}; });
     }
 
     void prepareSourceImageMock() {
