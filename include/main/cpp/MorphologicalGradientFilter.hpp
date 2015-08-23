@@ -3,16 +3,15 @@
 
 #include <algorithm>
 
-#include "Filter.hpp"
+#include "SimpleFilter.hpp"
 
 template <typename SourcePixelType, typename DestinationPixelType,
         typename DestinationImageType,
         typename SourceImageType = Image<SourcePixelType> >
-class MorphologicalGradientFilter : public Filter<SourcePixelType,
-        DestinationPixelType, DestinationImageType, SourceImageType> {
+class MorphologicalGradientFilter : public SimpleFilter<SourceImageType,
+        DestinationImageType> {
 private:
-    using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using ParentFilter = SimpleFilter<SourceImageType, DestinationImageType>;
     using OperationType = const DestinationPixelType& (*)(
             const DestinationPixelType&, const DestinationPixelType&);
 
