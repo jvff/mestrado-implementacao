@@ -24,15 +24,14 @@ TEST(MorphologicalGradientFilterTest, hasOptionalTemplateParameter) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST(MorphologicalGradientFilterTest, isFilter) {
+TEST(MorphologicalGradientFilterTest, isSimpleFilter) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
     using SubClass = MorphologicalGradientFilter<SourcePixelType,
             DestinationPixelType, DestinationImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = SimpleFilter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
