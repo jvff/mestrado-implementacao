@@ -24,6 +24,17 @@ protected:
             DestinationImageType>;
     using FakeDummyImplementationType = FakeFilterImplementation<
             SourceImageType, DestinationImageType>;
+
+protected:
+    Mock<DestinationImageType> mockDestinationImage(unsigned int width,
+            unsigned int height) {
+        Mock<DestinationImageType> mock;
+
+        When(Method(mock, getWidth)).Return(width);
+        When(Method(mock, getHeight)).Return(height);
+
+        return mock;
+    }
 };
 
 #endif

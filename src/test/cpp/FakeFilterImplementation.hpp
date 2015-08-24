@@ -23,6 +23,14 @@ public:
     DestinationImageType& getDestinationImage() {
         return this->destinationImage;
     }
+
+    unsigned int getWidth() {
+        return this->width;
+    }
+
+    unsigned int getHeight() {
+        return this->height;
+    }
 };
 
 #endif

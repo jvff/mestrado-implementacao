@@ -6,7 +6,7 @@ TEST_F(FilterImplementationTest, classTemplateExists) {
 
 TEST_F(FilterImplementationTest, storesImageReferences) {
     Mock<SourceImageType> sourceImageMock;
-    Mock<DestinationImageType> destinationImageMock;
+    auto destinationImageMock = mockDestinationImage(15, 9);
     const auto& sourceImage = sourceImageMock.get();
     auto& destinationImage = destinationImageMock.get();
 
@@ -17,4 +17,19 @@ TEST_F(FilterImplementationTest, storesImageReferences) {
 
     assertThat(storedSourceImage).isAtSameAddressAs(sourceImage);
     assertThat(storedDestinationImage).isAtSameAddressAs(destinationImage);
+}
+
+TEST_F(FilterImplementationTest, storesDestinationImageDimensions) {
+    unsigned int width = 715;
+    unsigned int height = 504;
+
+    Mock<SourceImageType> sourceImageMock;
+    auto destinationImageMock = mockDestinationImage(width, height);
+    const auto& sourceImage = sourceImageMock.get();
+    auto& destinationImage = destinationImageMock.get();
+
+    FakeDummyImplementationType implementation(sourceImage, destinationImage);
+
+    assertThat(implementation.getWidth()).isEqualTo(width);
+    assertThat(implementation.getHeight()).isEqualTo(height);
 }
