@@ -7,10 +7,15 @@ protected:
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
 
+    unsigned int width;
+    unsigned int height;
+
 public:
     FilterImplementation(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) : sourceImage(sourceImage),
             destinationImage(destinationImage) {
+        width = destinationImage.getWidth();
+        height = destinationImage.getHeight();
     }
 };
 
