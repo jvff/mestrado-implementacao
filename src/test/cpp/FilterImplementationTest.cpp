@@ -1,35 +1,10 @@
-#include <gtest/gtest.h>
+#include "FilterImplementationTest.hpp"
 
-#include "asserts.hpp"
-#include "fakeit.hpp"
-
-#include "FilterImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-#include "FakeFilterImplementation.hpp"
-
-using namespace fakeit;
-
-TEST(FilterImplementationTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyImplementationType = FilterImplementation<SourceImageType,
-            DestinationImageType>;
-
+TEST_F(FilterImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementationType>::isClassOrStruct();
 }
 
-TEST(FilterImplementationTest, storesImageReferences) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using FakeDummyImplementationType = FakeFilterImplementation<
-            SourceImageType, DestinationImageType>;
-
+TEST_F(FilterImplementationTest, storesImageReferences) {
     Mock<SourceImageType> sourceImageMock;
     Mock<DestinationImageType> destinationImageMock;
     const auto& sourceImage = sourceImageMock.get();
