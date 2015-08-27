@@ -4,21 +4,50 @@
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
+#include "fakeit.hpp"
 
 #include "ComplexFilter.hpp"
 
 #include "DummyTypes.hpp"
+#include "FakeComplexFilter.hpp"
+#include "FakeFilterImplementation.hpp"
 #include "FakeImage.hpp"
+
+using namespace fakeit;
 
 class ComplexFilterTest : public testing::Test {
 protected:
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
-    using ImplementationType = DummyTypes<3>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplementationType = FakeFilterImplementation<SourceImageType,
+            DestinationImageType>;
     using DummyFilterType = ComplexFilter<SourceImageType, DestinationImageType,
             ImplementationType>;
+    using FakeDummyFilterType = FakeComplexFilter<SourceImageType,
+            DestinationImageType, ImplementationType>;
+
+protected:
+    Mock<SourceImageType> createSourceImageMock(unsigned int width,
+            unsigned int height) {
+        return createImageMock<SourceImageType>(width, height);
+    }
+
+    Mock<DestinationImageType> createDestinationImageMock(unsigned int width,
+            unsigned int height) {
+        return createImageMock<DestinationImageType>(width, height);
+    }
+
+    template <typename ImageType>
+    Mock<ImageType> createImageMock(unsigned int width, unsigned int height) {
+        Mock<ImageType> mock;
+
+        When(Method(mock, getWidth)).Return(width);
+        When(Method(mock, getHeight)).Return(height);
+
+        return mock;
+    }
 };
 
 #endif
