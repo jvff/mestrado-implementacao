@@ -4,6 +4,11 @@ TEST_F(FilterImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementationType>::isClassOrStruct();
 }
 
+TEST_F(FilterImplementationTest, hasApplyMethod) {
+    assertThat(&DummyImplementationType::apply)
+        .isMethod(WithSignature<void()>());
+}
+
 TEST_F(FilterImplementationTest, storesImageReferences) {
     Mock<SourceImageType> sourceImageMock;
     auto destinationImageMock = mockDestinationImage(15, 9);

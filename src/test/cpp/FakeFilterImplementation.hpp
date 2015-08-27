@@ -31,6 +31,9 @@ public:
     unsigned int getHeight() {
         return this->height;
     }
+
+    void apply() override {
+    }
 };
 
 #endif
