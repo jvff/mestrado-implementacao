@@ -8,6 +8,12 @@ template <typename SourceImageType, typename DestinationImageType,
 class ComplexFilter : public Filter<typename SourceImageType::PixelType,
         typename DestinationImageType::PixelType, DestinationImageType,
         SourceImageType> {
+protected:
+    ImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) {
+        return ImplementationType(sourceImage, destinationImage);
+    }
 };
 
 #endif
