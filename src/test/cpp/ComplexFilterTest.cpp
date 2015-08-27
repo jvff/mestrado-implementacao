@@ -1,30 +1,10 @@
-#include <gtest/gtest.h>
+#include "ComplexFilterTest.hpp"
 
-#include "asserts.hpp"
-
-#include "ComplexFilter.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(ComplexFilterTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using ImplementationType = DummyTypes<3>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyFilterType = ComplexFilter<SourceImageType,
-            DestinationImageType, ImplementationType>;
-
+TEST_F(ComplexFilterTest, classTemplateExists) {
     AssertThat<DummyFilterType>::isClassOrStruct();
 }
 
-TEST(ComplexFilterTest, isSubClassOfFilter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using ImplementationType = DummyTypes<3>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
+TEST_F(ComplexFilterTest, isSubClassOfFilter) {
     using SubClass = ComplexFilter<SourceImageType, DestinationImageType,
             ImplementationType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
