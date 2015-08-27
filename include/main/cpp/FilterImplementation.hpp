@@ -17,6 +17,8 @@ public:
         width = destinationImage.getWidth();
         height = destinationImage.getHeight();
     }
+
+    virtual void apply() = 0;
 };
 
 #endif
