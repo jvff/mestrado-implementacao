@@ -8,8 +8,14 @@ template <typename SourceImageType, typename DestinationImageType,
 class ComplexFilter : public Filter<typename SourceImageType::PixelType,
         typename DestinationImageType::PixelType, DestinationImageType,
         SourceImageType> {
+public:
+    void apply(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) override {
+        instantiateImplementation(sourceImage, destinationImage).apply();
+    }
+
 protected:
-    ImplementationType instantiateImplementation(
+    virtual ImplementationType instantiateImplementation(
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
         return ImplementationType(sourceImage, destinationImage);
