@@ -52,3 +52,14 @@ TEST_F(ComplexFilterTest, applyMethodUsesImplementation) {
     Verify(Method(filterSpy, instantiateImplementation)
             +  Method(implementationSpy, apply));
 }
+
+TEST_F(ComplexFilterTest, doesntInstantiateImplementationWithParameters) {
+    using ConstructorParameter = DummyType;
+    using ImplementationType =
+            FakeFilterImplementationWithConstructorParameters<SourceImageType,
+                    DestinationImageType, ConstructorParameter>;
+    using FilterType = ComplexFilter<SourceImageType, DestinationImageType,
+            ImplementationType>;
+
+    AssertThat<FilterType>::isNotConstructible(WithoutParameters());
+}

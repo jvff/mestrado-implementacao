@@ -10,6 +10,7 @@
 
 #include "DummyTypes.hpp"
 #include "FakeComplexFilter.hpp"
+#include "FakeFilterImplementationWithConstructorParameters.hpp"
 #include "FakeImage.hpp"
 #include "SpiedFakeFilterImplementation.hpp"
 
