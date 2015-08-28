@@ -13,10 +13,6 @@ private:
 
 public:
     using SuperClass::instantiateImplementation;
-
-private:
-    void apply(const SourceImageType&, DestinationImageType&) override {
-    }
 };
 
 #endif

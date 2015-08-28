@@ -10,8 +10,8 @@
 
 #include "DummyTypes.hpp"
 #include "FakeComplexFilter.hpp"
-#include "FakeFilterImplementation.hpp"
 #include "FakeImage.hpp"
+#include "SpiedFakeFilterImplementation.hpp"
 
 using namespace fakeit;
 
@@ -21,7 +21,7 @@ protected:
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationType = FakeFilterImplementation<SourceImageType,
+    using ImplementationType = SpiedFakeFilterImplementation<SourceImageType,
             DestinationImageType>;
     using DummyFilterType = ComplexFilter<SourceImageType, DestinationImageType,
             ImplementationType>;

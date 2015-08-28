@@ -30,3 +30,25 @@ TEST_F(ComplexFilterTest, hasMethodToInstatiateImplementation) {
     assertThat(storedSourceImage).isAtSameAddressAs(sourceImage);
     assertThat(storedDestinationImage).isAtSameAddressAs(destinationImage);
 }
+
+TEST_F(ComplexFilterTest, applyMethodUsesImplementation) {
+    FakeDummyFilterType filter;
+    Mock<FakeDummyFilterType> filterSpy(filter);
+
+    auto sourceImageMock = createSourceImageMock(101, 43);
+    auto destinationImageMock = createDestinationImageMock(79, 97);
+    const auto& sourceImage = sourceImageMock.get();
+    auto& destinationImage = destinationImageMock.get();
+
+    ImplementationType implementation(sourceImage, destinationImage);
+    auto& implementationSpy = implementation.getSpy();
+
+    When(Method(implementationSpy, apply)).Return();
+    When(Method(filterSpy, instantiateImplementation))
+        .Return(std::ref(implementation));
+
+    filter.apply(sourceImage, destinationImage);
+
+    Verify(Method(filterSpy, instantiateImplementation)
+            +  Method(implementationSpy, apply));
+}
