@@ -1,4 +1,5 @@
 #include "ComplexFilterTest.hpp"
+#include "FakeInstantiatingComplexFilter.hpp"
 
 TEST_F(ComplexFilterTest, classTemplateExists) {
     AssertThat<DummyFilterType>::isClassOrStruct();
@@ -62,4 +63,40 @@ TEST_F(ComplexFilterTest, doesntInstantiateImplementationWithParameters) {
             ImplementationType>;
 
     AssertThat<FilterType>::isNotConstructible(WithoutParameters());
+}
+
+TEST_F(ComplexFilterTest, applyMethodUsesImplementationWithParameters) {
+    using FirstParameterType = DummyTypes<3>;
+    using SecondParameterType = DummyTypes<4>;
+    using ImplementationType = SpiedFakeFilterImplementation<SourceImageType,
+            DestinationImageType,
+            FakeFilterImplementationWithConstructorParameters,
+            FirstParameterType, SecondParameterType>;
+    using FilterType = FakeInstantiatingComplexFilter<SourceImageType,
+            DestinationImageType, ImplementationType, FirstParameterType,
+            SecondParameterType>;
+
+    FirstParameterType firstParameter;
+    SecondParameterType secondParameter;
+
+    FilterType filter(firstParameter, secondParameter);
+    Mock<FilterType> filterSpy(filter);
+
+    auto sourceImageMock = createSourceImageMock(1022, 877);
+    auto destinationImageMock = createDestinationImageMock(10, 11);
+    const auto& sourceImage = sourceImageMock.get();
+    auto& destinationImage = destinationImageMock.get();
+
+    ImplementationType implementation(sourceImage, destinationImage,
+            firstParameter, secondParameter);
+    auto& implementationSpy = implementation.getSpy();
+
+    When(Method(implementationSpy, apply)).Return();
+    When(Method(filterSpy, instantiateImplementation))
+        .Return(std::ref(implementation));
+
+    filter.apply(sourceImage, destinationImage);
+
+    Verify(Method(filterSpy, instantiateImplementation)
+            +  Method(implementationSpy, apply));
 }

@@ -7,21 +7,25 @@
 
 using namespace fakeit;
 
-template <typename SourceImageType, typename DestinationImageType>
-class SpiedFakeFilterImplementation : public FakeFilterImplementation<
-        SourceImageType, DestinationImageType> {
+template <typename SourceImageType, typename DestinationImageType,
+        template <typename, typename, typename...> class SuperClassTemplate =
+                FakeFilterImplementation,
+        typename... ParameterTypes>
+class SpiedFakeFilterImplementation : public SuperClassTemplate<SourceImageType,
+        DestinationImageType, ParameterTypes...> {
 private:
-    using SuperClass = FakeFilterImplementation<SourceImageType,
-            DestinationImageType>;
+    using SuperClass = SuperClassTemplate<SourceImageType, DestinationImageType,
+            ParameterTypes...>;
     using ThisClass = SpiedFakeFilterImplementation<SourceImageType,
-            DestinationImageType>;
+            DestinationImageType, SuperClassTemplate, ParameterTypes...>;
 
     std::shared_ptr<Mock<ThisClass> > mock;
 
 public:
     SpiedFakeFilterImplementation(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage)
-            : SuperClass(sourceImage, destinationImage),
+            DestinationImageType& destinationImage,
+            const ParameterTypes&... parameters)
+            : SuperClass(sourceImage, destinationImage, parameters...),
             mock(new Mock<ThisClass>()) {
     }
 
