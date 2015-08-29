@@ -18,8 +18,8 @@ public:
 
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
-        using Implementation = WatershedImplementation<SourcePixelType,
-                DestinationPixelType, SourceImageType>;
+        using Implementation = WatershedImplementation<SourceImageType,
+                DestinationImageType>;
 
         Implementation(sourceImage, destinationImage).apply();
     }
