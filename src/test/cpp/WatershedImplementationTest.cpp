@@ -1,19 +1,11 @@
 #include "WatershedImplementationTest.hpp"
 #include "WatershedTests.hpp"
 
-TEST(WatershedImplementationTest, classTemplateExists) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyImplementation = WatershedImplementation<DummyType, DummyType,
-            ImageType>;
-
+TEST_F(WatershedImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
 
-TEST(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
-    using SourcePixelType = DummyTypes<2>;
-    using DestinationPixelType = DummyTypes<1>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SourceImageType = Image<SourcePixelType>;
+TEST_F(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
     using ImplicitType = WatershedImplementation<SourcePixelType,
             DestinationPixelType, DestinationImageType>;
     using ExplicitType = WatershedImplementation<SourcePixelType,
@@ -22,13 +14,7 @@ TEST(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST(WatershedImplementationTest, isConstructible) {
-    using SourcePixelType = DummyTypes<2>;
-    using DestinationPixelType = DummyTypes<1>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DummyImplementation = WatershedImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
+TEST_F(WatershedImplementationTest, isConstructible) {
     using SourceImageParameter = const SourceImageType&;
     using DestinationImageParameter = DestinationImageType&;
 
