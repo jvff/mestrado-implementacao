@@ -32,6 +32,14 @@ public:
         return this->height;
     }
 
+    unsigned int getMaxX() {
+        return this->maxX;
+    }
+
+    unsigned int getMaxY() {
+        return this->maxY;
+    }
+
     void apply() override {
     }
 };

@@ -38,3 +38,18 @@ TEST_F(FilterImplementationTest, storesDestinationImageDimensions) {
     assertThat(implementation.getWidth()).isEqualTo(width);
     assertThat(implementation.getHeight()).isEqualTo(height);
 }
+
+TEST_F(FilterImplementationTest, storesMaximumCoordinates) {
+    unsigned int width = 437;
+    unsigned int height = 289;
+
+    Mock<SourceImageType> sourceImageMock;
+    auto destinationImageMock = mockDestinationImage(width, height);
+    const auto& sourceImage = sourceImageMock.get();
+    auto& destinationImage = destinationImageMock.get();
+
+    FakeDummyImplementationType implementation(sourceImage, destinationImage);
+
+    assertThat(implementation.getMaxX()).isEqualTo(width - 1);
+    assertThat(implementation.getMaxY()).isEqualTo(height - 1);
+}
