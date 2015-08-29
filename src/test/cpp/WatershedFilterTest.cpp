@@ -14,11 +14,11 @@ TEST_F(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST_F(WatershedFilterTest, isSubClassOfFilter) {
+TEST_F(WatershedFilterTest, isSubClassOfComplexFilter) {
     using SubClass = WatershedFilter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = ComplexFilter<SourceImageType, DestinationImageType,
+            WatershedImplementation<SourceImageType, DestinationImageType> >;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
