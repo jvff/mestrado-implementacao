@@ -1,18 +1,11 @@
 #include "WatershedFilterTest.hpp"
 #include "WatershedTests.hpp"
 
-TEST(WatershedFilterTest, classTemplateExists) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyFilter = WatershedFilter<DummyType, DummyType, ImageType>;
-
+TEST_F(WatershedFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
-    using SourcePixelType = DummyTypes<2>;
-    using DestinationPixelType = DummyTypes<1>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SourceImageType = Image<SourcePixelType>;
+TEST_F(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
     using ImplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
             DestinationImageType>;
     using ExplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
@@ -21,11 +14,7 @@ TEST(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST(WatershedFilterTest, isSubClassOfFilter) {
-    using SourcePixelType = DummyTypes<2>;
-    using DestinationPixelType = DummyTypes<1>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SourceImageType = Image<SourcePixelType>;
+TEST_F(WatershedFilterTest, isSubClassOfFilter) {
     using SubClass = WatershedFilter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
@@ -34,10 +23,7 @@ TEST(WatershedFilterTest, isSubClassOfFilter) {
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
-TEST(WatershedFilterTest, isConstructible) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyFilter = WatershedFilter<DummyType, DummyType, ImageType>;
-
+TEST_F(WatershedFilterTest, isConstructible) {
     AssertThat<DummyFilter>::isConstructible(WithoutParameters());
 }
 

@@ -16,6 +16,16 @@
 #include "FakeImage.hpp"
 #include "WatershedTestData.hpp"
 
+class WatershedFilterTest : public testing::Test {
+protected:
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = WatershedFilter<SourcePixelType, DestinationPixelType,
+            DestinationImageType>;
+};
+
 #define IMAGE_PARAMS SourcePixelType, DestinationPixelType, \
     DestinationImageType, SourceImageType
 
