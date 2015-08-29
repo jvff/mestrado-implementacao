@@ -5,14 +5,18 @@
 #include <set>
 #include <tuple>
 
+#include "FilterImplementation.hpp"
 #include "Image.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class WatershedImplementation {
+class WatershedImplementation : public FilterImplementation<SourceImageType,
+        DestinationImageType> {
 private:
     using Coordinate = std::pair<unsigned int, unsigned int>;
     using SourcePixelType = typename SourceImageType::PixelType;
     using DestinationPixelType = typename DestinationImageType::PixelType;
+    using SuperClass = FilterImplementation<SourceImageType,
+            DestinationImageType>;
 
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
@@ -30,7 +34,8 @@ private:
 
 public:
     WatershedImplementation(const SourceImageType& source,
-            DestinationImageType& destination) : sourceImage(source),
+            DestinationImageType& destination)
+            : SuperClass(source, destination), sourceImage(source),
             destinationImage(destination), newestSegment(0),
             width(sourceImage.getWidth()), height(sourceImage.getHeight()),
             maxX(width - 1), maxY(height - 1) {
