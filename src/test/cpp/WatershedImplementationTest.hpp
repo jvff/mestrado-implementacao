@@ -19,8 +19,8 @@ protected:
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyImplementation = WatershedImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
+    using DummyImplementation = WatershedImplementation<SourceImageType,
+            DestinationImageType>;
 };
 
 #define IMAGE_PARAMS SourcePixelType, DestinationPixelType, \
@@ -32,7 +32,7 @@ template <typename SourcePixelType,
         typename SourceImageType = SimpleArrayImage<SourcePixelType> >
 using TestData = WatershedTestData<
         AbstractFilterImplementationTestData<
-            WatershedImplementation<IMAGE_PARAMS>, IMAGE_PARAMS>,
-        IMAGE_PARAMS>;
+                WatershedImplementation<SourceImageType, DestinationImageType>,
+                        IMAGE_PARAMS>, IMAGE_PARAMS>;
 
 #endif

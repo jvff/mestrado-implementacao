@@ -5,15 +5,6 @@ TEST_F(WatershedImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
 
-TEST_F(WatershedImplementationTest, defaultSourceImageTypeIsGenericImage) {
-    using ImplicitType = WatershedImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
-    using ExplicitType = WatershedImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
-}
-
 TEST_F(WatershedImplementationTest, isConstructible) {
     using SourceImageParameter = const SourceImageType&;
     using DestinationImageParameter = DestinationImageType&;
