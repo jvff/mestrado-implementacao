@@ -17,14 +17,6 @@ private:
 public:
     using ParentFilter::apply;
 
-    void apply(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) override {
-        using Implementation = WatershedImplementation<SourceImageType,
-                DestinationImageType>;
-
-        Implementation(sourceImage, destinationImage).apply();
-    }
-
 protected:
     DestinationImageType createDestinationImage(unsigned int width,
             unsigned int height) override {
