@@ -1,14 +1,15 @@
 #ifndef WATERSHED_FILTER_HPP
 #define WATERSHED_FILTER_HPP
 
-#include "Filter.hpp"
+#include "ComplexFilter.hpp"
 #include "WatershedImplementation.hpp"
 
 template <typename SourcePixelType, typename DestinationPixelType,
         class DestinationImageType,
         class SourceImageType = Image<SourcePixelType> >
-class WatershedFilter : public Filter<SourcePixelType, DestinationPixelType,
-        DestinationImageType, SourceImageType> {
+class WatershedFilter : public ComplexFilter<SourceImageType,
+        DestinationImageType, WatershedImplementation<SourceImageType,
+                DestinationImageType> > {
 private:
     using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
