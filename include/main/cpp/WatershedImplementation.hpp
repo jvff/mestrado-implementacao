@@ -18,27 +18,24 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    const SourceImageType& sourceImage;
-    DestinationImageType& destinationImage;
+    using SuperClass::sourceImage;
+    using SuperClass::destinationImage;
+
+    using SuperClass::width;
+    using SuperClass::height;
+    using SuperClass::maxX;
+    using SuperClass::maxY;
 
     SourcePixelType currentLevel;
     DestinationPixelType newestSegment;
-
-    unsigned int width;
-    unsigned int height;
-    unsigned int maxX;
-    unsigned int maxY;
 
     std::map<Coordinate, DestinationPixelType> erosionMap;
     std::set<Coordinate> currentSeparators;
 
 public:
-    WatershedImplementation(const SourceImageType& source,
-            DestinationImageType& destination)
-            : SuperClass(source, destination), sourceImage(source),
-            destinationImage(destination), newestSegment(0),
-            width(sourceImage.getWidth()), height(sourceImage.getHeight()),
-            maxX(width - 1), maxY(height - 1) {
+    WatershedImplementation(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage)
+            : SuperClass(sourceImage, destinationImage), newestSegment(0) {
     }
 
     void apply() {
