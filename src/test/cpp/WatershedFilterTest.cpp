@@ -5,18 +5,8 @@ TEST_F(WatershedFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST_F(WatershedFilterTest, defaultSourceImageTypeIsGenericImage) {
-    using ImplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType>;
-    using ExplicitType = WatershedFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
-}
-
 TEST_F(WatershedFilterTest, isSubClassOfComplexFilter) {
-    using SubClass = WatershedFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SubClass = DummyFilter;
     using SuperClass = ComplexFilter<SourceImageType, DestinationImageType,
             WatershedImplementation<SourceImageType, DestinationImageType> >;
 

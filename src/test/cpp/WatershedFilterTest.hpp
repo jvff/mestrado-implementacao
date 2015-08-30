@@ -22,8 +22,7 @@ protected:
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyFilter = WatershedFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType>;
+    using DummyFilter = WatershedFilter<SourceImageType, DestinationImageType>;
 };
 
 #define IMAGE_PARAMS SourcePixelType, DestinationPixelType, \
@@ -32,7 +31,7 @@ protected:
 template <typename SourcePixelType, typename DestinationPixelType,
         typename DestinationImageType, typename SourceImageType>
 class AbstractWatershedFilterTestData : public AbstractFilterTestData<
-        WatershedFilter<IMAGE_PARAMS>, IMAGE_PARAMS> {
+        WatershedFilter<SourceImageType, DestinationImageType>, IMAGE_PARAMS> {
 public:
     AbstractWatershedFilterTestData() {
         this->initializeFilter();
