@@ -11,8 +11,8 @@ class WatershedFilter : public ComplexFilter<SourceImageType,
         DestinationImageType, WatershedImplementation<SourceImageType,
                 DestinationImageType> > {
 private:
-    using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using ParentFilter = ComplexFilter<SourceImageType, DestinationImageType,
+            WatershedImplementation<SourceImageType, DestinationImageType> >;
 
 public:
     using ParentFilter::apply;
