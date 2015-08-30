@@ -10,7 +10,14 @@ template <typename SourceImageType, typename DestinationImageType,
 class AbstractComplexFilter : public Filter<typename SourceImageType::PixelType,
         typename DestinationImageType::PixelType, DestinationImageType,
         SourceImageType> {
+private:
+    using SuperClass = Filter<typename SourceImageType::PixelType,
+            typename DestinationImageType::PixelType, DestinationImageType,
+            SourceImageType>;
+
 public:
+    using SuperClass::apply;
+
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
         instantiateImplementation(sourceImage, destinationImage).apply();
