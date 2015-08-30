@@ -12,6 +12,7 @@ private:
             ImplementationType>;
 
 public:
+    using SuperClass::createDestinationImage;
     using SuperClass::instantiateImplementation;
 };
 

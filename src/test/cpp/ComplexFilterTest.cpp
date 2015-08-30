@@ -54,6 +54,40 @@ TEST_F(ComplexFilterTest, applyMethodUsesImplementation) {
             +  Method(implementationSpy, apply));
 }
 
+TEST_F(ComplexFilterTest, applyMethodCallsApplyMethodWithDestinationImage) {
+    using ApplyMethodSignature = void(const SourceImageType&,
+            DestinationImageType&);
+
+    FakeDummyFilterType filter;
+    Mock<FakeDummyFilterType> filterSpy(filter);
+
+    unsigned int width = 890;
+    unsigned int height = 234;
+
+    auto sourceImageMock = createSourceImageMock(239, 252);
+    const auto& sourceImage = sourceImageMock.get();
+    auto destinationImage = DestinationImageType(width, height);
+    auto destinationImageMock = Mock<DestinationImageType>(destinationImage);
+
+    ImplementationType implementation(sourceImage, destinationImage);
+    auto& implementationSpy = implementation.getSpy();
+
+    When(Method(implementationSpy, apply)).Return();
+    When(Method(filterSpy, instantiateImplementation))
+        .Return(std::ref(implementation));
+    When(Method(filterSpy, createDestinationImage)).Return(destinationImage);
+    Spy(OverloadedMethod(filterSpy, apply, ApplyMethodSignature));
+
+    auto result = filter.apply(sourceImage);
+
+    Verify(OverloadedMethod(filterSpy, apply, ApplyMethodSignature)
+            + Method(filterSpy, instantiateImplementation)
+            + Method(implementationSpy, apply));
+
+    assertThat(result.getWidth()).isEqualTo(width);
+    assertThat(result.getHeight()).isEqualTo(height);
+}
+
 TEST_F(ComplexFilterTest, doesntInstantiateImplementationWithParameters) {
     using ConstructorParameter = DummyType;
     using ImplementationType =
