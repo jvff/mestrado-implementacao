@@ -4,13 +4,12 @@
 #include "ComplexFilter.hpp"
 #include "WatershedImplementation.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        class DestinationImageType,
-        class SourceImageType = Image<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class WatershedFilter : public ComplexFilter<SourceImageType,
         DestinationImageType, WatershedImplementation<SourceImageType,
                 DestinationImageType> > {
 private:
+    using DestinationPixelType = typename DestinationImageType::PixelType;
     using ParentFilter = ComplexFilter<SourceImageType, DestinationImageType,
             WatershedImplementation<SourceImageType, DestinationImageType> >;
 
