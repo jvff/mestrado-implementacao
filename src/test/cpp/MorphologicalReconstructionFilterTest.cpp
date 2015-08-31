@@ -1,32 +1,19 @@
 #include "MorphologicalReconstructionFilterTest.hpp"
 #include "MorphologicalReconstructionTests.hpp"
 
-TEST(MorphologicalReconstructionFilterTest, classIsntAbstract) {
-    using PixelType = DummyType;
-    using ImageType = FakeImage<PixelType>;
-    using FilterClass = MorphologicalReconstructionFilter<PixelType, ImageType>;
-
-    AssertThat<FilterClass>::isConstructible(WithoutParameters());
+TEST_F(MorphologicalReconstructionFilterTest, classIsntAbstract) {
+    AssertThat<DummyFilterType>::isConstructible(WithoutParameters());
 }
 
-TEST(MorphologicalReconstructionFilterTest, isComplexFilter) {
-    using PixelType = DummyType;
-    using SourceImageType = Image<PixelType>;
-    using DestinationImageType = FakeImage<PixelType>;
-    using ImplementationType = MorphologicalReconstructionImplementation<
-            SourceImageType, DestinationImageType>;
-    using FilterClass = MorphologicalReconstructionFilter<PixelType,
-            DestinationImageType, SourceImageType>;
+TEST_F(MorphologicalReconstructionFilterTest, isComplexFilter) {
+    using FilterClass = DummyFilterType;
     using ParentFilterClass = ComplexFilter<SourceImageType,
             DestinationImageType, ImplementationType>;
 
     AssertThat<FilterClass>::isSubClass(Of<ParentFilterClass>());
 }
 
-TEST(MorphologicalReconstructionFilterTest, defaultSourceImageType) {
-    using PixelType = DummyType;
-    using DestinationImageType = FakeImage<PixelType>;
-    using SourceImageType = Image<PixelType>;
+TEST_F(MorphologicalReconstructionFilterTest, defaultSourceImageType) {
     using ImplicitType = MorphologicalReconstructionFilter<PixelType,
             DestinationImageType>;
     using ExplicitType = MorphologicalReconstructionFilter<PixelType,
@@ -35,9 +22,7 @@ TEST(MorphologicalReconstructionFilterTest, defaultSourceImageType) {
     AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
-TEST(MorphologicalReconstructionFilterTest, sourceImageTypeIsPropagated) {
-    using PixelType = DummyType;
-    using DestinationImageType = FakeImage<PixelType>;
+TEST_F(MorphologicalReconstructionFilterTest, sourceImageTypeIsPropagated) {
     using SourceImageType = FakeImage<PixelType>;
     using FilterClass = MorphologicalReconstructionFilter<PixelType,
             DestinationImageType, SourceImageType>;

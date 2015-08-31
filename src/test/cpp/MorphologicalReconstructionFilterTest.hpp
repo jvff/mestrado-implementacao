@@ -16,6 +16,17 @@
 #include "FakeImage.hpp"
 #include "MorphologicalReconstructionTestData.hpp"
 
+class MorphologicalReconstructionFilterTest : public testing::Test {
+protected:
+    using PixelType = DummyType;
+    using SourceImageType = Image<PixelType>;
+    using DestinationImageType = FakeImage<PixelType>;
+    using ImplementationType = MorphologicalReconstructionImplementation<
+            SourceImageType, DestinationImageType>;
+    using DummyFilterType = MorphologicalReconstructionFilter<PixelType,
+            DestinationImageType, SourceImageType>;
+};
+
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class AbstractMorphologicalReconstructionFilterTestData
         : public AbstractImageTransformationTestData<PixelType, PixelType,
