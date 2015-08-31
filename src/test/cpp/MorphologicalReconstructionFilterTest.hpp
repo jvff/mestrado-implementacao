@@ -31,12 +31,12 @@ protected:
 
 public:
     FilterType filter;
-    ImagePointer markerImage;
+    ImagePointer destinationImage;
 
 public:
     bool setDimensions(unsigned int newWidth, unsigned int newHeight) {
         if (SuperClass::setDimensions(newWidth, newHeight)) {
-            markerImage.reset(new ImageType(newWidth, newHeight));
+            destinationImage.reset(new ImageType(newWidth, newHeight));
 
             this->state = State::SETTING_UP;
 
@@ -47,9 +47,9 @@ public:
 
 private:
     ImageType transformImage() override {
-        filter.apply(*this->sourceImage, *markerImage);
+        filter.apply(*this->sourceImage, *destinationImage);
 
-        return *markerImage;
+        return *destinationImage;
     }
 };
 

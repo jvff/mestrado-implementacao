@@ -23,7 +23,7 @@ private:
 public:
     using SuperClass::sourceImage;
     using SuperClass::expectedImage;
-    using SuperClass::markerImage;
+    using SuperClass::destinationImage;
 
     PixelType background;
     PixelType foreground;
@@ -48,7 +48,7 @@ public:
             maxY = height - 1;
 
             sourceImage.reset(new ImageType(width, height));
-            markerImage.reset(new ImageType(width, height));
+            destinationImage.reset(new ImageType(width, height));
             expectedImage.reset(new ImageType(width, height));
 
             this->state = State::SETTING_UP;
@@ -59,7 +59,8 @@ public:
         if (stateIs(State::SETTING_UP)) {
             background = value;
 
-            *markerImage = [this] (unsigned int, unsigned int) -> PixelType {
+            *destinationImage = [this] (unsigned int, unsigned int)
+                    -> PixelType {
                 return background;
             };
         }
@@ -128,7 +129,7 @@ public:
     }
 
     void addMarker(unsigned int x, unsigned int y, PixelType depth) {
-        markerImage->setPixel(x, y, depth);
+        destinationImage->setPixel(x, y, depth);
     }
 
 private:
