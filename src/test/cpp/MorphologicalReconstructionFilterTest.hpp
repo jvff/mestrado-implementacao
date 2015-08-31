@@ -33,18 +33,6 @@ public:
     FilterType filter;
     ImagePointer destinationImage;
 
-public:
-    bool setDimensions(unsigned int newWidth, unsigned int newHeight) {
-        if (SuperClass::setDimensions(newWidth, newHeight)) {
-            destinationImage.reset(new ImageType(newWidth, newHeight));
-
-            this->state = State::SETTING_UP;
-
-            return true;
-        } else
-            return false;
-    }
-
 private:
     ImageType transformImage() override {
         filter.apply(*this->sourceImage, *destinationImage);
