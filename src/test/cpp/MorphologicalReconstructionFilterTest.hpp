@@ -23,8 +23,8 @@ protected:
     using DestinationImageType = FakeImage<PixelType>;
     using ImplementationType = MorphologicalReconstructionImplementation<
             SourceImageType, DestinationImageType>;
-    using DummyFilterType = MorphologicalReconstructionFilter<PixelType,
-            DestinationImageType, SourceImageType>;
+    using DummyFilterType = MorphologicalReconstructionFilter<SourceImageType,
+            DestinationImageType>;
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
@@ -32,7 +32,7 @@ class AbstractMorphologicalReconstructionFilterTestData
         : public AbstractImageTransformationTestData<PixelType, PixelType,
                 ImageType, ImageType> {
 private:
-    using FilterType = MorphologicalReconstructionFilter<PixelType, ImageType>;
+    using FilterType = MorphologicalReconstructionFilter<ImageType, ImageType>;
     using ImagePointer = std::unique_ptr<ImageType>;
     using SuperClass = AbstractImageTransformationTestData<PixelType, PixelType,
             ImageType, ImageType>;
