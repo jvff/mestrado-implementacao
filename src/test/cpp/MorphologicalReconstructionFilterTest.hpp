@@ -10,53 +10,54 @@
 #include "MorphologicalReconstructionFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractTestData.hpp"
+#include "AbstractImageTransformationTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class MorphologicalReconstructionFilterTestData : public AbstractTestData {
+class MorphologicalReconstructionFilterTestData
+        : public AbstractImageTransformationTestData<PixelType, PixelType,
+                ImageType, ImageType> {
 private:
     using FilterType = MorphologicalReconstructionFilter<PixelType, ImageType>;
     using ImagePointer = std::unique_ptr<ImageType>;
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
+    using SuperClass = AbstractImageTransformationTestData<PixelType, PixelType,
+            ImageType, ImageType>;
+    using State = typename SuperClass::State;
     using ThisType = MorphologicalReconstructionFilterTestData<PixelType,
             ImageType>;
 
 public:
     FilterType filter;
-    ImagePointer sourceImage;
     ImagePointer markerImage;
-    ImagePointer expectedImage;
 
     PixelType background;
     PixelType foreground;
     PixelType markerDepth;
 
-    unsigned int width;
-    unsigned int height;
     unsigned int maxX;
     unsigned int maxY;
 
+    using SuperClass::width;
+    using SuperClass::height;
+    using SuperClass::sourceImage;
+    using SuperClass::expectedImage;
+
 public:
     ~MorphologicalReconstructionFilterTestData<PixelType, ImageType>() {
-        tryToRunTest();
+        this->tryToRunTest();
     }
 
     CHAIN(setDimensions, unsigned int newWidth, unsigned int newHeight) {
-        if (stateIs(State::EMPTY)) {
-            width = newWidth;
-            height = newHeight;
-
+        if (SuperClass::setDimensions(newWidth, newHeight)) {
             maxX = width - 1;
             maxY = height - 1;
 
-            sourceImage.reset(new ImageType(width, height));
             markerImage.reset(new ImageType(width, height));
-            expectedImage.reset(new ImageType(width, height));
 
-            state = State::SETTING_UP;
+            this->state = State::SETTING_UP;
         }
     }
 
@@ -137,14 +138,16 @@ public:
     }
 
 private:
+    using SuperClass::stateIs;
+
     void finishSetUp() {
-        state = State::READY;
+        this->state = State::READY;
     }
 
-    void runTest() override {
+    ImageType transformImage() override {
         filter.apply(*sourceImage, *markerImage);
 
-        assertThat(*markerImage).isEqualTo(*expectedImage);
+        return *markerImage;
     }
 
     void useHorizontalLine() {
