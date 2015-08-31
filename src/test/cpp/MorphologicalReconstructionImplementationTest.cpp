@@ -1,30 +1,11 @@
-#include <gtest/gtest.h>
+#include "MorphologicalReconstructionImplementationTest.hpp"
 
-#include "asserts.hpp"
-
-#include "MorphologicalReconstructionImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(MorphologicalReconstructionImplementationTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyImplementationType = MorphologicalReconstructionImplementation<
-            SourceImageType, DestinationImageType>;
-
+TEST_F(MorphologicalReconstructionImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementationType>::isClassOrStruct();
 }
 
-TEST(MorphologicalReconstructionImplementationTest, isFilterImplementation) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SubClass = MorphologicalReconstructionImplementation<SourceImageType,
-            DestinationImageType>;
+TEST_F(MorphologicalReconstructionImplementationTest, isFilterImplementation) {
+    using SubClass = DummyImplementationType;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
