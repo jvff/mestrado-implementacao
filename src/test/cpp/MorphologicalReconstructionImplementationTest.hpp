@@ -7,8 +7,10 @@
 
 #include "MorphologicalReconstructionImplementation.hpp"
 
+#include "AbstractFilterImplementationTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "MorphologicalReconstructionTestData.hpp"
 
 class MorphologicalReconstructionImplementationTest : public testing::Test {
 protected:
@@ -19,5 +21,12 @@ protected:
     using DummyImplementationType = MorphologicalReconstructionImplementation<
             SourceImageType, DestinationImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = MorphologicalReconstructionTestData<
+        AbstractFilterImplementationTestData<
+                MorphologicalReconstructionImplementation<ImageType, ImageType>,
+                PixelType, PixelType, ImageType, ImageType>,
+        PixelType, ImageType>;
 
 #endif
