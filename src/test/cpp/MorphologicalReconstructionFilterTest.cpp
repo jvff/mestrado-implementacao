@@ -9,11 +9,16 @@ TEST(MorphologicalReconstructionFilterTest, classIsntAbstract) {
     AssertThat<FilterClass>::isConstructible(WithoutParameters());
 }
 
-TEST(MorphologicalReconstructionFilterTest, isFilter) {
+TEST(MorphologicalReconstructionFilterTest, isComplexFilter) {
     using PixelType = DummyType;
-    using ImageType = FakeImage<PixelType>;
-    using FilterClass = MorphologicalReconstructionFilter<PixelType, ImageType>;
-    using ParentFilterClass = Filter<PixelType, PixelType, ImageType>;
+    using SourceImageType = Image<PixelType>;
+    using DestinationImageType = FakeImage<PixelType>;
+    using ImplementationType = MorphologicalReconstructionImplementation<
+            SourceImageType, DestinationImageType>;
+    using FilterClass = MorphologicalReconstructionFilter<PixelType,
+            DestinationImageType, SourceImageType>;
+    using ParentFilterClass = ComplexFilter<SourceImageType,
+            DestinationImageType, ImplementationType>;
 
     AssertThat<FilterClass>::isSubClass(Of<ParentFilterClass>());
 }
