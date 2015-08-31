@@ -30,24 +30,62 @@ protected:
             DestinationImageType, ImplementationType>;
 
 protected:
-    Mock<SourceImageType> createSourceImageMock(unsigned int width,
-            unsigned int height) {
-        return createImageMock<SourceImageType>(width, height);
+    FakeDummyFilterType filter;
+    Mock<FakeDummyFilterType> filterSpy;
+
+    Mock<SourceImageType> sourceImageMock;
+    SourceImageType& sourceImage;
+
+    std::unique_ptr<DestinationImageType> destinationImagePtr;
+    std::unique_ptr<Mock<DestinationImageType> > destinationImageSpy;
+
+    std::unique_ptr<ImplementationType> implementationPtr;
+
+protected:
+    ComplexFilterTest() : filterSpy(filter),
+            sourceImage(sourceImageMock.get()) {
     }
 
-    Mock<DestinationImageType> createDestinationImageMock(unsigned int width,
-            unsigned int height) {
-        return createImageMock<DestinationImageType>(width, height);
+    ~ComplexFilterTest() noexcept {
     }
 
-    template <typename ImageType>
-    Mock<ImageType> createImageMock(unsigned int width, unsigned int height) {
-        Mock<ImageType> mock;
+    void setUpSourceImageMock(unsigned int width, unsigned int height) {
+        When(Method(sourceImageMock, getWidth)).Return(width);
+        When(Method(sourceImageMock, getHeight)).Return(height);
+    }
 
-        When(Method(mock, getWidth)).Return(width);
-        When(Method(mock, getHeight)).Return(height);
+    void setUpDestinationImageSpy(unsigned int width, unsigned int height) {
+        setUpSpy(destinationImagePtr, destinationImageSpy, width, height);
+    }
 
-        return mock;
+    Mock<ImplementationType>& setUpImplementationSpy() {
+        auto* instancePtr = new ImplementationType(sourceImage,
+                *destinationImagePtr);
+
+        implementationPtr.reset(instancePtr);
+
+        auto& spy = instancePtr->getSpy();
+
+        When(Method(spy, apply)).Return();
+
+        return spy;
+    }
+
+    template <typename Type, typename... ParameterTypes>
+    void setUpSpy(std::unique_ptr<Type>& objectPtr,
+            std::unique_ptr<Mock<Type> >& spyPtr,
+            ParameterTypes&... parameters) {
+        objectPtr.reset(new Type(parameters...));
+        spyPtr.reset(new Mock<Type>(*objectPtr));
+    }
+
+    void mockInstantiation() {
+        auto& genericImplementation = *implementationPtr;
+        auto& specificImplementation =
+                dynamic_cast<ImplementationType&>(genericImplementation);
+
+        When(Method(filterSpy, instantiateImplementation))
+            .Return(std::ref(specificImplementation));
     }
 };
 

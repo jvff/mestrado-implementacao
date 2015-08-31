@@ -15,40 +15,28 @@ TEST_F(ComplexFilterTest, isSubClassOfFilter) {
 }
 
 TEST_F(ComplexFilterTest, hasMethodToInstatiateImplementation) {
-    FakeDummyFilterType filter;
-
-    auto sourceImageMock = createSourceImageMock(101, 43);
-    auto destinationImageMock = createDestinationImageMock(79, 97);
-    const auto& sourceImage = sourceImageMock.get();
-    auto& destinationImage = destinationImageMock.get();
+    setUpSourceImageMock(101, 43);
+    setUpDestinationImageSpy(79, 97);
 
     auto result = filter.instantiateImplementation(sourceImage,
-            destinationImage);
+            *destinationImagePtr);
 
     auto& storedSourceImage = result.getSourceImage();
     auto& storedDestinationImage = result.getDestinationImage();
 
     assertThat(storedSourceImage).isAtSameAddressAs(sourceImage);
-    assertThat(storedDestinationImage).isAtSameAddressAs(destinationImage);
+    assertThat(storedDestinationImage).isAtSameAddressAs(*destinationImagePtr);
 }
 
 TEST_F(ComplexFilterTest, applyMethodUsesImplementation) {
-    FakeDummyFilterType filter;
-    Mock<FakeDummyFilterType> filterSpy(filter);
+    setUpSourceImageMock(101, 43);
+    setUpDestinationImageSpy(79, 97);
 
-    auto sourceImageMock = createSourceImageMock(101, 43);
-    auto destinationImageMock = createDestinationImageMock(79, 97);
-    const auto& sourceImage = sourceImageMock.get();
-    auto& destinationImage = destinationImageMock.get();
+    auto& implementationSpy = setUpImplementationSpy();
 
-    ImplementationType implementation(sourceImage, destinationImage);
-    auto& implementationSpy = implementation.getSpy();
+    mockInstantiation();
 
-    When(Method(implementationSpy, apply)).Return();
-    When(Method(filterSpy, instantiateImplementation))
-        .Return(std::ref(implementation));
-
-    filter.apply(sourceImage, destinationImage);
+    filter.apply(sourceImage, *destinationImagePtr);
 
     Verify(Method(filterSpy, instantiateImplementation)
             +  Method(implementationSpy, apply));
@@ -58,24 +46,18 @@ TEST_F(ComplexFilterTest, applyMethodCallsApplyMethodWithDestinationImage) {
     using ApplyMethodSignature = void(const SourceImageType&,
             DestinationImageType&);
 
-    FakeDummyFilterType filter;
-    Mock<FakeDummyFilterType> filterSpy(filter);
-
     unsigned int width = 890;
     unsigned int height = 234;
 
-    auto sourceImageMock = createSourceImageMock(239, 252);
-    const auto& sourceImage = sourceImageMock.get();
-    auto destinationImage = DestinationImageType(width, height);
-    auto destinationImageMock = Mock<DestinationImageType>(destinationImage);
+    setUpSourceImageMock(239, 252);
+    setUpDestinationImageSpy(width, height);
 
-    ImplementationType implementation(sourceImage, destinationImage);
-    auto& implementationSpy = implementation.getSpy();
+    auto& implementationSpy = setUpImplementationSpy();
 
-    When(Method(implementationSpy, apply)).Return();
-    When(Method(filterSpy, instantiateImplementation))
-        .Return(std::ref(implementation));
-    When(Method(filterSpy, createDestinationImage)).Return(destinationImage);
+    mockInstantiation();
+
+    When(Method(filterSpy, createDestinationImage))
+        .Return(*destinationImagePtr);
     Spy(OverloadedMethod(filterSpy, apply, ApplyMethodSignature));
 
     auto result = filter.apply(sourceImage);
@@ -116,12 +98,10 @@ TEST_F(ComplexFilterTest, applyMethodUsesImplementationWithParameters) {
     FilterType filter(firstParameter, secondParameter);
     Mock<FilterType> filterSpy(filter);
 
-    auto sourceImageMock = createSourceImageMock(1022, 877);
-    auto destinationImageMock = createDestinationImageMock(10, 11);
-    const auto& sourceImage = sourceImageMock.get();
-    auto& destinationImage = destinationImageMock.get();
+    setUpSourceImageMock(1022, 877);
+    setUpDestinationImageSpy(10, 11);
 
-    ImplementationType implementation(sourceImage, destinationImage,
+    auto implementation = ImplementationType(sourceImage, *destinationImagePtr,
             firstParameter, secondParameter);
     auto& implementationSpy = implementation.getSpy();
 
@@ -129,7 +109,7 @@ TEST_F(ComplexFilterTest, applyMethodUsesImplementationWithParameters) {
     When(Method(filterSpy, instantiateImplementation))
         .Return(std::ref(implementation));
 
-    filter.apply(sourceImage, destinationImage);
+    filter.apply(sourceImage, *destinationImagePtr);
 
     Verify(Method(filterSpy, instantiateImplementation)
             +  Method(implementationSpy, apply));
