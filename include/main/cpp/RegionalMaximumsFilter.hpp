@@ -11,8 +11,8 @@ class RegionalMaximumsFilter : public Filter<SourcePixelType,
         DestinationPixelType, DestinationImageType, SourceImageType> {
 private:
     using MorphologicalReconstructionFilterType =
-            MorphologicalReconstructionFilter<SourcePixelType,
-                    DestinationImageType, SourceImageType>;
+            MorphologicalReconstructionFilter<SourceImageType,
+                    DestinationImageType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 

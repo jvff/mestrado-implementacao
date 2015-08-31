@@ -4,15 +4,10 @@
 #include "ComplexFilter.hpp"
 #include "MorphologicalReconstructionImplementation.hpp"
 
-template <typename PixelType, class DestinationImageType,
-        class SourceImageType = Image<PixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class MorphologicalReconstructionFilter : public ComplexFilter<SourceImageType,
         DestinationImageType, MorphologicalReconstructionImplementation<
                 SourceImageType, DestinationImageType> > {
-private:
-    using ParentFilter = Filter<PixelType, PixelType, DestinationImageType,
-            SourceImageType>;
-
 public:
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
