@@ -1,10 +1,6 @@
 #include "MorphologicalReconstructionFilterTest.hpp"
 #include "MorphologicalReconstructionTests.hpp"
 
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MorphologicalReconstructionFilterTestData<PixelType,
-        ImageType>;
-
 TEST(MorphologicalReconstructionFilterTest, classIsntAbstract) {
     using PixelType = DummyType;
     using ImageType = FakeImage<PixelType>;
