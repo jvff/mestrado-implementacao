@@ -11,3 +11,11 @@ TEST_F(MorphologicalReconstructionImplementationTest, isFilterImplementation) {
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
+
+TEST_F(MorphologicalReconstructionImplementationTest, isConstructible) {
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<DummyImplementationType>::isConstructible(
+            With<SourceImageParameter, DestinationImageParameter>());
+}
