@@ -10,22 +10,9 @@
 
 TEST(AreaOpeningFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
-    using DummyFilter = AreaOpeningFilter<DummyType, DummyType, ImageType>;
+    using DummyFilter = AreaOpeningFilter<Image<DummyType>, ImageType>;
 
     AssertThat<DummyFilter>::isClassOrStruct();
-}
-
-TEST(AreaOpeningFilterTest, hasOptionalTemplateParameter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplicitType = AreaOpeningFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
-    using ExplicitType = AreaOpeningFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
 TEST(AreaOpeningFilterTest, isFilter) {
@@ -33,8 +20,7 @@ TEST(AreaOpeningFilterTest, isFilter) {
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SubClass = AreaOpeningFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType>;
+    using SubClass = AreaOpeningFilter<SourceImageType, DestinationImageType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 
@@ -44,9 +30,10 @@ TEST(AreaOpeningFilterTest, isFilter) {
 TEST(AreaOpeningFilterTest, isConstructibleWithParameter) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
-    using ImageType = FakeImage<DestinationPixelType>;
-    using DummyFilter = AreaOpeningFilter<SourcePixelType, DestinationPixelType,
-            ImageType>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = AreaOpeningFilter<SourceImageType,
+            DestinationImageType>;
     using AreaSizeParameter = unsigned int;
 
     AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
@@ -55,7 +42,7 @@ TEST(AreaOpeningFilterTest, isConstructibleWithParameter) {
 TEST(AreaOpeningFilterTest, bigPlateauIsntCleared) {
     using PixelType = unsigned char;
     using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = AreaOpeningFilter<PixelType, PixelType, ImageType>;
+    using FilterType = AreaOpeningFilter<Image<PixelType>, ImageType>;
 
     const unsigned int maximumPeakSize = 9;
     const unsigned int imageSize = 6;
