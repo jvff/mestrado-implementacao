@@ -3,11 +3,11 @@
 
 #include "Image.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        typename DestinationImageType,
-        typename SourceImageType = Image<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class AreaOpeningImplementation {
 private:
+    using DestinationPixelType = typename DestinationImageType::PixelType;
+
     const SourceImageType& sourceImage;
     DestinationImageType& destinationImage;
 
