@@ -21,10 +21,8 @@ protected:
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImageMockProxy<DestinationPixelType>;
-    using DummyFilter = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType>;
-    using FakeDummyFilter = FakeFilter<SourcePixelType, DestinationPixelType,
-            DestinationImageType>;
+    using DummyFilter = Filter<SourceImageType, DestinationImageType>;
+    using FakeDummyFilter = FakeFilter<SourceImageType, DestinationImageType>;
 
     unsigned int expectedWidth;
     unsigned int expectedHeight;

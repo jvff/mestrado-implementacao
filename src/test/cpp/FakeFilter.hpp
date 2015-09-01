@@ -7,14 +7,11 @@
 
 #include "Unused.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        class DestinationImageType,
-        class SourceImageType = Image<SourcePixelType> >
-class FakeFilter : public Filter<SourcePixelType, DestinationPixelType,
-        DestinationImageType, SourceImageType> {
+template <typename SourceImageType, typename DestinationImageType>
+class FakeFilter : public Filter<SourceImageType, DestinationImageType> {
 private:
-    using ParentFilter = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using ParentFilter = Filter<SourceImageType, DestinationImageType>;
+
 public:
     ~FakeFilter() noexcept {
     }

@@ -8,8 +8,7 @@ TEST_F(ComplexFilterTest, classTemplateExists) {
 TEST_F(ComplexFilterTest, isSubClassOfFilter) {
     using SubClass = ComplexFilter<SourceImageType, DestinationImageType,
             ImplementationType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }

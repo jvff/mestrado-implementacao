@@ -21,8 +21,7 @@ TEST(AreaClosingFilterTest, isFilter) {
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
     using SubClass = AreaClosingFilter<SourceImageType, DestinationImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }

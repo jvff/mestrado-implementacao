@@ -17,8 +17,7 @@ TEST(RegionalMaximumsFilterTest, isFilter) {
     using DestinationImageType = FakeImage<DestinationPixelType>;
     using SubClass = RegionalMaximumsFilter<SourceImageType,
             DestinationImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }

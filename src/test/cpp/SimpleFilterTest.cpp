@@ -6,8 +6,7 @@ TEST_F(SimpleFilterTest, classTemplateExists) {
 
 TEST_F(SimpleFilterTest, isSubClassOfFilter) {
     using SubClass = SimpleFilter<SourceImageType, DestinationImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
