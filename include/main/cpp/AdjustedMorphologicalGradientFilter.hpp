@@ -13,8 +13,7 @@ class AdjustedMorphologicalGradientFilter : public Filter<SourcePixelType,
         DestinationPixelType, DestinationImageType, SourceImageType> {
 private:
     using MorphologicalGradientFilterType = MorphologicalGradientFilter<
-            SourcePixelType, DestinationPixelType, DestinationImageType,
-            SourceImageType>;
+            SourceImageType, DestinationImageType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 

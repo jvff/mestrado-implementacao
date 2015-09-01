@@ -5,12 +5,11 @@
 
 #include "SimpleFilter.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        typename DestinationImageType,
-        typename SourceImageType = Image<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class MorphologicalGradientFilter : public SimpleFilter<SourceImageType,
         DestinationImageType> {
 private:
+    using DestinationPixelType = typename DestinationImageType::PixelType;
     using ParentFilter = SimpleFilter<SourceImageType, DestinationImageType>;
     using OperationType = const DestinationPixelType& (*)(
             const DestinationPixelType&, const DestinationPixelType&);
