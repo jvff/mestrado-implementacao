@@ -12,14 +12,13 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    const SourceImageType& sourceImage;
-    DestinationImageType& destinationImage;
+    using SuperClass::sourceImage;
+    using SuperClass::destinationImage;
 
 public:
     AreaOpeningImplementation(unsigned int, const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) :
-            SuperClass(sourceImage, destinationImage), sourceImage(sourceImage),
-            destinationImage(destinationImage) {
+            DestinationImageType& destinationImage)
+            : SuperClass(sourceImage, destinationImage) {
     }
 
     void apply() {
