@@ -4,14 +4,10 @@
 #include "Filter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class SimpleFilter : public Filter<typename SourceImageType::PixelType,
-        typename DestinationImageType::PixelType, DestinationImageType,
-        SourceImageType> {
+class SimpleFilter : public Filter<SourceImageType, DestinationImageType> {
 private:
-    using SourcePixelType = typename SourceImageType::PixelType;
     using DestinationPixelType = typename DestinationImageType::PixelType;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
 public:
     void apply(const SourceImageType& sourceImage,

@@ -7,13 +7,10 @@
 
 template <typename SourceImageType, typename DestinationImageType,
         typename ImplementationType>
-class AbstractComplexFilter : public Filter<typename SourceImageType::PixelType,
-        typename DestinationImageType::PixelType, DestinationImageType,
-        SourceImageType> {
+class AbstractComplexFilter : public Filter<SourceImageType,
+        DestinationImageType> {
 private:
-    using SuperClass = Filter<typename SourceImageType::PixelType,
-            typename DestinationImageType::PixelType, DestinationImageType,
-            SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
 public:
     using SuperClass::apply;

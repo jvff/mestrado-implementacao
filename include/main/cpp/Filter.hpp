@@ -3,9 +3,7 @@
 
 #include "Image.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        class DestinationImageType,
-        class SourceImageType = Image<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class Filter {
 public:
     virtual ~Filter() {

@@ -7,18 +7,15 @@
 #include "MorphologicalGradientFilter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class AdjustedMorphologicalGradientFilter : public Filter<
-        typename SourceImageType::PixelType,
-        typename DestinationImageType::PixelType, DestinationImageType,
-        SourceImageType> {
+class AdjustedMorphologicalGradientFilter : public Filter<SourceImageType,
+        DestinationImageType> {
 private:
     using SourcePixelType = typename SourceImageType::PixelType;
     using DestinationPixelType = typename DestinationImageType::PixelType;
 
     using MorphologicalGradientFilterType = MorphologicalGradientFilter<
             SourceImageType, DestinationImageType>;
-    using SuperClass = Filter<SourcePixelType, DestinationPixelType,
-            DestinationImageType, SourceImageType>;
+    using SuperClass = Filter<SourceImageType, DestinationImageType>;
 
     MorphologicalGradientFilterType unadjustedFilter;
     SourcePixelType activationThreshold;
