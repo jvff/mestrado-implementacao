@@ -5,22 +5,9 @@ using TestData = RegionalMaximumsFilterTestData<PixelType, ImageType>;
 
 TEST(RegionalMaximumsFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
-    using DummyFilter = RegionalMaximumsFilter<DummyType, DummyType, ImageType>;
+    using DummyFilter = RegionalMaximumsFilter<Image<DummyType>, ImageType>;
 
     AssertThat<DummyFilter>::isClassOrStruct();
-}
-
-TEST(RegionalMaximumsFilterTest, hasOptionalTemplateParameter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplicitType = RegionalMaximumsFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
-    using ExplicitType = RegionalMaximumsFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
 TEST(RegionalMaximumsFilterTest, isFilter) {
@@ -28,8 +15,8 @@ TEST(RegionalMaximumsFilterTest, isFilter) {
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SubClass = RegionalMaximumsFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
+    using SubClass = RegionalMaximumsFilter<SourceImageType,
+            DestinationImageType>;
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 
@@ -39,9 +26,10 @@ TEST(RegionalMaximumsFilterTest, isFilter) {
 TEST(RegionalMaximumsFilterTest, isConstructibleWithoutParameters) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
-    using ImageType = FakeImage<DestinationPixelType>;
-    using DummyFilter = RegionalMaximumsFilter<SourcePixelType,
-            DestinationPixelType, ImageType>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = RegionalMaximumsFilter<SourceImageType,
+            DestinationImageType>;
 
     AssertThat<DummyFilter>::isConstructible(WithoutParameters());
 }
