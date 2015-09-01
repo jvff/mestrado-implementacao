@@ -4,6 +4,13 @@ TEST_F(AreaOpeningImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
 }
 
+TEST_F(AreaOpeningImplementationTest, isFilterImplementation) {
+    using ParentImplementation = FilterImplementation<SourceImageType,
+            DestinationImageType>;
+
+    AssertThat<ImplementationClass>::isSubClass(Of<ParentImplementation>());
+}
+
 TEST_F(AreaOpeningImplementationTest, isConstructibleWithParameters) {
     using AreaSizeParameter = unsigned int;
     using SourceImageParameter = const Image<SourcePixelType>&;
