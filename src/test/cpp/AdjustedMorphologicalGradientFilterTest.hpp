@@ -17,11 +17,11 @@ template <typename PixelType = unsigned char,
         typename ImageType = SimpleArrayImage<PixelType> >
 class AdjustedMorphologicalGradientFilterTestData
         : public AbstractMorphologicalGradientTestData<
-                AdjustedMorphologicalGradientFilter<PixelType, PixelType,
+                AdjustedMorphologicalGradientFilter<Image<PixelType>,
                         ImageType>,
                 PixelType, ImageType> {
 private:
-    using FilterType = AdjustedMorphologicalGradientFilter<PixelType, PixelType,
+    using FilterType = AdjustedMorphologicalGradientFilter<Image<PixelType>,
             ImageType>;
     using State = AbstractTestData::State;
     using SuperClass = AbstractMorphologicalGradientTestData<FilterType,
