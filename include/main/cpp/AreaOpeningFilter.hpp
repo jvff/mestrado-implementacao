@@ -3,12 +3,14 @@
 
 #include "Filter.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        typename DestinationImageType,
-        typename SourceImageType = Image<SourcePixelType> >
-class AreaOpeningFilter : public Filter<SourcePixelType, DestinationPixelType,
+template <typename SourceImageType, typename DestinationImageType>
+class AreaOpeningFilter : public Filter<typename SourceImageType::PixelType,
+        typename DestinationImageType::PixelType,
         DestinationImageType, SourceImageType> {
 private:
+    using SourcePixelType = typename SourceImageType::PixelType;
+    using DestinationPixelType = typename DestinationImageType::PixelType;
+
     using SuperClass = Filter<SourcePixelType, DestinationPixelType,
             DestinationImageType, SourceImageType>;
 
