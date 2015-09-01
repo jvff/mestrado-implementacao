@@ -11,31 +11,19 @@
 TEST(AreaOpeningImplementationTest, classTemplateExists) {
     using PixelType = DummyType;
     using ImageType = FakeImage<PixelType>;
-    using ImplementationClass = AreaOpeningImplementation<PixelType,
-            PixelType, ImageType>;
+    using ImplementationClass = AreaOpeningImplementation<Image<PixelType>,
+            ImageType>;
 
     AssertThat<ImplementationClass>::isClassOrStruct();
-}
-
-TEST(AreaOpeningImplementationTest, hasOptionalTemplateParameter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplicitType = AreaOpeningImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
-    using ExplicitType = AreaOpeningImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
 TEST(AreaOpeningImplementationTest, isConstructibleWithParameters) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationType = AreaOpeningImplementation<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
+    using ImplementationType = AreaOpeningImplementation<SourceImageType,
+            DestinationImageType>;
     using AreaSizeParameter = unsigned int;
     using SourceImageParameter = const Image<SourcePixelType>&;
     using DestinationImageParameter = DestinationImageType&;
@@ -47,7 +35,7 @@ TEST(AreaOpeningImplementationTest, isConstructibleWithParameters) {
 TEST(AreaOpeningImplementationTest, bigPlateauIsntCleared) {
     using PixelType = unsigned char;
     using ImageType = SimpleArrayImage<PixelType>;
-    using ImplementationType = AreaOpeningImplementation<PixelType, PixelType,
+    using ImplementationType = AreaOpeningImplementation<Image<PixelType>,
             ImageType>;
 
     const unsigned int maximumPeakSize = 9;
