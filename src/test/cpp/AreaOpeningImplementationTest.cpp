@@ -1,38 +1,19 @@
-#include <gtest/gtest.h>
+#include "AreaOpeningImplementationTest.hpp"
 
-#include "asserts.hpp"
-
-#include "AreaOpeningImplementation.hpp"
-#include "SimpleArrayImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(AreaOpeningImplementationTest, classTemplateExists) {
-    using PixelType = DummyType;
-    using ImageType = FakeImage<PixelType>;
-    using ImplementationClass = AreaOpeningImplementation<Image<PixelType>,
-            ImageType>;
-
+TEST_F(AreaOpeningImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
 }
 
-TEST(AreaOpeningImplementationTest, isConstructibleWithParameters) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationType = AreaOpeningImplementation<SourceImageType,
-            DestinationImageType>;
+TEST_F(AreaOpeningImplementationTest, isConstructibleWithParameters) {
     using AreaSizeParameter = unsigned int;
     using SourceImageParameter = const Image<SourcePixelType>&;
     using DestinationImageParameter = DestinationImageType&;
 
-    AssertThat<ImplementationType>::isConstructible(With<AreaSizeParameter,
+    AssertThat<ImplementationClass>::isConstructible(With<AreaSizeParameter,
             SourceImageParameter, DestinationImageParameter>());
 }
 
-TEST(AreaOpeningImplementationTest, bigPlateauIsntCleared) {
+TEST_F(AreaOpeningImplementationTest, bigPlateauIsntCleared) {
     using PixelType = unsigned char;
     using ImageType = SimpleArrayImage<PixelType>;
     using ImplementationType = AreaOpeningImplementation<Image<PixelType>,
