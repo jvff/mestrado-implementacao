@@ -1,7 +1,7 @@
 #include "BinarizationFilterTest.hpp"
 
 TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
-    using DummyBinarizationFilter = BinarizationFilter<DummyType,
+    using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
             FakeImage<bool> >;
     using ThresholdParameter = const DummyType&;
 
@@ -10,7 +10,7 @@ TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
 }
 
 TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
-    using DummyBinarizationFilter = BinarizationFilter<DummyType,
+    using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
             FakeImage<bool> >;
     using ThresholdParameter = const DummyType&;
     using ComparatorParameter =
@@ -20,32 +20,15 @@ TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
             With<ThresholdParameter, ComparatorParameter>());
 }
 
-TEST(BinarizationFilterTest, destinationImageTypeTemplateParameterExists) {
-    using DummyFakeImage = FakeImage<DummyType>;
-    using DummyBinarizationFilter = BinarizationFilter<DummyType,
-            FakeImage<bool>, DummyFakeImage>;
-    using ThresholdParameter = const DummyType&;
-
-    AssertThat<DummyBinarizationFilter>::isConstructible(With<ThresholdParameter>());
-}
-
-TEST(BinarizationFilterTest, defaultDestinationImageTypeIsSimpleArrayImage) {
-    using ImplicitType = BinarizationFilter<DummyType, FakeImage<bool> >;
-    using ExplicitType = BinarizationFilter<DummyType, FakeImage<bool>,
-            Image<DummyType> >;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
-}
-
 TEST(BinarizationFilterTest, classIsSimpleFilter) {
     using SuperClass = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
-    using SubClass = BinarizationFilter<DummyType, FakeImage<bool> >;
+    using SubClass = BinarizationFilter<Image<DummyType>, FakeImage<bool> >;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
 TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
-    BinarizationFilter<DummyType, FakeImage<bool> > filter(DummyType{0});
+    BinarizationFilter<Image<DummyType>, FakeImage<bool> > filter(DummyType{0});
     unsigned int width = 10;
     unsigned int height = 24;
     const Image<DummyType>& sourceImage = FakeImage<DummyType>(width, height);
@@ -58,7 +41,7 @@ TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
 
 TEST(BinarizationFilterTest, filterResult) {
     int threshold = 0;
-    BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
+    BinarizationFilter<Image<int>, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(30, 40, threshold);
 
     auto result = filter.apply(test.sourceImage);
@@ -68,7 +51,7 @@ TEST(BinarizationFilterTest, filterResult) {
 
 TEST(BinarizationFilterTest, filterResultWithDifferentThreshold) {
     int threshold = 22;
-    BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
+    BinarizationFilter<Image<int>, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(33, 51, threshold);
 
     auto result = filter.apply(test.sourceImage);
@@ -78,7 +61,7 @@ TEST(BinarizationFilterTest, filterResultWithDifferentThreshold) {
 
 TEST(BinarizationFilterTest, filterResultWithNegativeThreshold) {
     int threshold = -9;
-    BinarizationFilter<int, SimpleArrayImage<bool> > filter(threshold);
+    BinarizationFilter<Image<int>, SimpleArrayImage<bool> > filter(threshold);
     TestImage<int> test(65, 37, threshold);
 
     auto result = filter.apply(test.sourceImage);
@@ -87,7 +70,7 @@ TEST(BinarizationFilterTest, filterResultWithNegativeThreshold) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithCustomComparator) {
-    using FilterType = BinarizationFilter<int, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
 
     int threshold = 0;
     auto comparator = [] (int pixelValue, int threshold) -> bool {
@@ -103,7 +86,7 @@ TEST(BinarizationFilterTest, filterResultWithCustomComparator) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithComparatorAndDifferentThreshold) {
-    using FilterType = BinarizationFilter<int, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
 
     int threshold = 22;
     auto comparator = [] (int pixelValue, int threshold) -> bool {
@@ -119,7 +102,7 @@ TEST(BinarizationFilterTest, filterResultWithComparatorAndDifferentThreshold) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithComparatorAndNegativeThreshold) {
-    using FilterType = BinarizationFilter<int, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
 
     int threshold = -9;
     auto comparator = [] (int pixelValue, int threshold) -> bool {
