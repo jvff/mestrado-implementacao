@@ -4,12 +4,15 @@
 #include "Filter.hpp"
 #include "MorphologicalReconstructionFilter.hpp"
 
-template <typename SourcePixelType, typename DestinationPixelType,
-        typename DestinationImageType,
-        typename SourceImageType = Image<SourcePixelType> >
-class RegionalMaximumsFilter : public Filter<SourcePixelType,
-        DestinationPixelType, DestinationImageType, SourceImageType> {
+template <typename SourceImageType, typename DestinationImageType>
+class RegionalMaximumsFilter : public Filter<
+        typename SourceImageType::PixelType,
+        typename DestinationImageType::PixelType, DestinationImageType,
+        SourceImageType> {
 private:
+    using SourcePixelType = typename SourceImageType::PixelType;
+    using DestinationPixelType = typename DestinationImageType::PixelType;
+
     using MorphologicalReconstructionFilterType =
             MorphologicalReconstructionFilter<SourceImageType,
                     DestinationImageType>;
