@@ -16,11 +16,10 @@
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class MorphologicalGradientFilterTestData
         : public AbstractMorphologicalGradientTestData<
-                MorphologicalGradientFilter<PixelType, PixelType, ImageType>,
+                MorphologicalGradientFilter<Image<PixelType>, ImageType>,
                 PixelType, ImageType> {
 private:
-    using FilterType = MorphologicalGradientFilter<PixelType, PixelType,
-            ImageType>;
+    using FilterType = MorphologicalGradientFilter<Image<PixelType>, ImageType>;
     using SuperClass = AbstractMorphologicalGradientTestData<FilterType,
             PixelType, ImageType>;
     using ThisType = MorphologicalGradientFilterTestData<PixelType, ImageType>;

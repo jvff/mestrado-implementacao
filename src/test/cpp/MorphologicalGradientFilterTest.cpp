@@ -4,24 +4,12 @@ template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MorphologicalGradientFilterTestData<PixelType, ImageType>;
 
 TEST(MorphologicalGradientFilterTest, classTemplateExists) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyFilter = MorphologicalGradientFilter<DummyType, DummyType,
-            ImageType>;
+    using SourceImageType = Image<DummyType>;
+    using DestinationImageType = FakeImage<DummyType>;
+    using DummyFilter = MorphologicalGradientFilter<SourceImageType,
+            DestinationImageType>;
 
     AssertThat<DummyFilter>::isClassOrStruct();
-}
-
-TEST(MorphologicalGradientFilterTest, hasOptionalTemplateParameter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplicitType = MorphologicalGradientFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
-    using ExplicitType = MorphologicalGradientFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
-
-    AssertThat<ImplicitType>::isTheSame(As<ExplicitType>());
 }
 
 TEST(MorphologicalGradientFilterTest, isSimpleFilter) {
@@ -29,17 +17,18 @@ TEST(MorphologicalGradientFilterTest, isSimpleFilter) {
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SubClass = MorphologicalGradientFilter<SourcePixelType,
-            DestinationPixelType, DestinationImageType>;
+    using SubClass = MorphologicalGradientFilter<SourceImageType,
+            DestinationImageType>;
     using SuperClass = SimpleFilter<SourceImageType, DestinationImageType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
 TEST(MorphologicalGradientFilterTest, isConstructibleWithParameter) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyFilter = MorphologicalGradientFilter<DummyType, DummyType,
-            ImageType>;
+    using SourceImageType = Image<DummyType>;
+    using DestinationImageType = FakeImage<DummyType>;
+    using DummyFilter = MorphologicalGradientFilter<SourceImageType,
+            DestinationImageType>;
     using StructureSizeParameter = unsigned int;
 
     AssertThat<DummyFilter>::isConstructible(With<StructureSizeParameter>());
