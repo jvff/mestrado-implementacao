@@ -4,11 +4,11 @@
 #include "SimpleFilter.hpp"
 #include "Image.hpp"
 
-template <typename SourcePixelType, typename DestinationImageType,
-        typename SourceImageType = Image<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class BinarizationFilter : public SimpleFilter<SourceImageType,
         DestinationImageType> {
 private:
+    using SourcePixelType = typename SourceImageType::PixelType;
     using SuperClass = SimpleFilter<SourceImageType, DestinationImageType>;
     using Comparator =
             std::function<bool(const SourcePixelType&, const SourcePixelType&)>;
