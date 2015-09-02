@@ -25,9 +25,6 @@ protected:
     using DummyFilter = WatershedFilter<SourceImageType, DestinationImageType>;
 };
 
-#define IMAGE_PARAMS SourcePixelType, DestinationPixelType, \
-    DestinationImageType, SourceImageType
-
 template <typename SourceImageType, typename DestinationImageType>
 class AbstractWatershedFilterTestData : public AbstractFilterTestData<
         WatershedFilter<SourceImageType, DestinationImageType>,
@@ -44,6 +41,6 @@ template <typename SourcePixelType,
         typename SourceImageType = SimpleArrayImage<SourcePixelType> >
 using TestData = WatershedTestData<
         AbstractWatershedFilterTestData<SourceImageType, DestinationImageType>,
-        IMAGE_PARAMS>;
+        SourceImageType, DestinationImageType>;
 
 #endif

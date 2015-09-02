@@ -4,20 +4,19 @@
 #include <initializer_list>
 #include <vector>
 
-#include "SimpleArrayImage.hpp"
-
 #include "AbstractTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 
-template <typename SuperClass, typename SourcePixelType,
-        typename DestinationPixelType = SourcePixelType,
-        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
-        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
+template <typename SuperClass, typename SourceImageType,
+        typename DestinationImageType>
 class WatershedTestData : public SuperClass {
 private:
+    using SourcePixelType = typename SourceImageType::PixelType;
+    using DestinationPixelType = typename DestinationImageType::PixelType;
+
     using State = AbstractTestData::State;
-    using ThisType = WatershedTestData<SuperClass, SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
+    using ThisType = WatershedTestData<SuperClass, SourceImageType,
+            DestinationImageType>;
 
     unsigned int gridRows = -1;
     unsigned int gridColumns = -1;

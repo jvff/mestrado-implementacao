@@ -33,6 +33,6 @@ template <typename SourcePixelType,
 using TestData = WatershedTestData<
         AbstractFilterImplementationTestData<
                 WatershedImplementation<SourceImageType, DestinationImageType>,
-                        IMAGE_PARAMS>, IMAGE_PARAMS>;
+                        IMAGE_PARAMS>, SourceImageType, DestinationImageType>;
 
 #endif
