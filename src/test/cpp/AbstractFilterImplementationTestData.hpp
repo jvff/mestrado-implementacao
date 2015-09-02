@@ -23,9 +23,13 @@ public:
     DestinationImagePointer destinationImage;
 
 public:
-    void setDimensions(unsigned int newWidth, unsigned int newHeight) {
-        if (SuperClass::setDimensions(newWidth, newHeight))
+    bool setDimensions(unsigned int newWidth, unsigned int newHeight) {
+        if (SuperClass::setDimensions(newWidth, newHeight)) {
             createDestinationImage();
+
+            return true;
+        } else
+            return false;
     }
 
 protected:
