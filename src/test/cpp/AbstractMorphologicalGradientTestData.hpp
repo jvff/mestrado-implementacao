@@ -1,9 +1,12 @@
 #ifndef ABSTRACT_MORPHOLOGICAL_GRADIENT_TEST_DATA_HPP
 #define ABSTRACT_MORPHOLOGICAL_GRADIENT_TEST_DATA_HPP
 
+#include <memory>
+
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractFilterTestData.hpp"
+#include "RectanglePainter.hpp"
 
 template <typename FilterType, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
@@ -16,6 +19,8 @@ private:
             PixelType, ImageType>;
 
 protected:
+    std::unique_ptr<RectanglePainter<ImageType> > painter;
+
     unsigned int structureSize;
 
 public:
@@ -25,6 +30,8 @@ public:
                     -> PixelType {
                 return 0;
             };
+
+            painter.reset(new RectanglePainter<ImageType>(*this->sourceImage));
 
             this->state = State::SETTING_UP;
         }
@@ -41,9 +48,7 @@ public:
 
     void setBackground(const PixelType& color) {
         if (stateIs(State::SETTING_UP)) {
-            *this->sourceImage = [=] (unsigned int, unsigned int) -> PixelType {
-                return color;
-            };
+            painter->fill(color);
 
             this->state = State::READY;
         }
@@ -52,15 +57,9 @@ public:
     void drawSquare(unsigned int x, unsigned int y, unsigned int size,
             const PixelType& color) {
         if (stateIs(State::READY)) {
-            Square square(x, y, size);
             Border border(x, y, size, structureSize);
 
-            *this->sourceImage = [&] (unsigned int x, unsigned y) -> PixelType {
-                if (square.contains(x, y))
-                    return color;
-                else
-                    return this->sourceImage->getPixel(x, y);
-            };
+            painter->drawSquare(x, y, size, color);
 
             *this->expectedImage = [&] (unsigned int x, unsigned int y)
                     -> PixelType {
