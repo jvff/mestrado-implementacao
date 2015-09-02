@@ -9,10 +9,8 @@
 
 #include "AbstractImageTransformationTestData.hpp"
 
-template <typename FilterType, typename SourcePixelType,
-        typename DestinationPixelType = SourcePixelType,
-        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
-        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
+template <typename FilterType, typename SourceImageType,
+        typename DestinationImageType>
 class AbstractFilterTestData : public AbstractImageTransformationTestData<
         SourceImageType, DestinationImageType> {
 private:

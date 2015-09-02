@@ -8,11 +8,10 @@
 template <typename FilterType, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
 class AbstractMorphologicalGradientTestData : public AbstractFilterTestData<
-        FilterType, PixelType, PixelType, ImageType, ImageType> {
+        FilterType, ImageType, ImageType> {
 private:
     using State = AbstractTestData::State;
-    using SuperClass = AbstractFilterTestData<FilterType, PixelType, PixelType,
-            ImageType, ImageType>;
+    using SuperClass = AbstractFilterTestData<FilterType, ImageType, ImageType>;
     using ThisType = AbstractMorphologicalGradientTestData<FilterType,
             PixelType, ImageType>;
 

@@ -31,7 +31,8 @@ protected:
 template <typename SourcePixelType, typename DestinationPixelType,
         typename DestinationImageType, typename SourceImageType>
 class AbstractWatershedFilterTestData : public AbstractFilterTestData<
-        WatershedFilter<SourceImageType, DestinationImageType>, IMAGE_PARAMS> {
+        WatershedFilter<SourceImageType, DestinationImageType>,
+        SourceImageType, DestinationImageType> {
 public:
     AbstractWatershedFilterTestData() {
         this->initializeFilter();

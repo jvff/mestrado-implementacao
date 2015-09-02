@@ -15,13 +15,12 @@
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class RegionalMaximumsFilterTestData : public AbstractFilterTestData<
-        RegionalMaximumsFilter<Image<PixelType>, ImageType>, PixelType,
-        PixelType, ImageType, ImageType> {
+        RegionalMaximumsFilter<Image<PixelType>, ImageType>, ImageType,
+        ImageType> {
 private:
     using FilterType = RegionalMaximumsFilter<Image<PixelType>, ImageType>;
     using State = AbstractTestData::State;
-    using SuperClass = AbstractFilterTestData<FilterType, PixelType, PixelType,
-            ImageType, ImageType>;
+    using SuperClass = AbstractFilterTestData<FilterType, ImageType, ImageType>;
     using ThisType = RegionalMaximumsFilterTestData<PixelType, ImageType>;
 
 public:
