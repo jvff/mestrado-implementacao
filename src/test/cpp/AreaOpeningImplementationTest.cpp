@@ -52,3 +52,43 @@ TEST_F(AreaOpeningImplementationTest, bigPlateauIsntCleared) {
 
     assertThat(resultingImage).isEqualTo(expectedImage);
 }
+
+TEST_F(AreaOpeningImplementationTest, smallPlateauIsCleared) {
+    using PixelType = unsigned char;
+    using ImageType = SimpleArrayImage<PixelType>;
+    using ImplementationType = AreaOpeningImplementation<Image<PixelType>,
+            ImageType>;
+
+    const unsigned int maximumPeakSize = 12;
+    const unsigned int imageSize = 6;
+    const unsigned int squareSize = 2;
+
+    const unsigned int squareStart = 1;
+    const unsigned int squareEnd = squareStart + squareSize - 1;
+
+    const PixelType plateauHeight = 201;
+    const PixelType floorHeight = 13;
+
+    ImageType sourceImage(imageSize, imageSize);
+    ImageType resultingImage(imageSize, imageSize);
+    ImageType expectedImage(imageSize, imageSize);
+
+    sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
+        if (x >= squareStart && x <= squareEnd && y >= squareStart
+                && y <= squareEnd) {
+            return plateauHeight;
+        } else
+            return floorHeight;
+    };
+
+    expectedImage = [] (unsigned int, unsigned int) -> PixelType {
+        return floorHeight;
+    };
+
+    ImplementationType implementation(maximumPeakSize, sourceImage,
+            resultingImage);
+
+    implementation.apply();
+
+    assertThat(resultingImage).isEqualTo(expectedImage);
+}
