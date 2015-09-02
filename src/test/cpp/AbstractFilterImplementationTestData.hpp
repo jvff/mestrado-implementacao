@@ -2,6 +2,7 @@
 #define ABSTRACT_FILTER_IMPLEMENTATION_TEST_DATA_HPP
 
 #include <memory>
+#include <type_traits>
 
 #include "asserts.hpp"
 
@@ -9,7 +10,7 @@
 
 template <typename FilterImplementationType, typename SourceImageType,
         typename DestinationImageType>
-class AbstractFilterImplementationTestData :
+class AbstractFilterImplementationTestDataCommonCode :
         public AbstractImageTransformationTestData<SourceImageType,
             DestinationImageType> {
 protected:
@@ -29,13 +30,17 @@ public:
 
 protected:
     DestinationImageType transformImage() override {
-        auto filterImplementation = FilterImplementationType(*this->sourceImage,
+        auto implementation = instantiateImplementation(*this->sourceImage,
                 *destinationImage);
 
-        filterImplementation.apply();
+        implementation.apply();
 
         return *destinationImage;
     }
+
+    virtual FilterImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) = 0;
 
 private:
     void createDestinationImage() {
@@ -43,6 +48,31 @@ private:
         auto height = this->expectedHeight;
 
         destinationImage.reset(new DestinationImageType(width, height));
+    }
+};
+
+template <typename FilterImplementationType, typename SourceImageType,
+        typename DestinationImageType, typename ShouldEnable = void>
+class AbstractFilterImplementationTestData
+        : public AbstractFilterImplementationTestDataCommonCode<
+                FilterImplementationType, SourceImageType,
+                DestinationImageType> {
+};
+
+template <typename FilterImplementationType, typename SourceImageType,
+        typename DestinationImageType>
+class AbstractFilterImplementationTestData<FilterImplementationType,
+        SourceImageType, DestinationImageType,
+        typename std::enable_if<std::is_constructible<FilterImplementationType,
+                const SourceImageType&, DestinationImageType&>::value>::type>
+        : public AbstractFilterImplementationTestDataCommonCode<
+                FilterImplementationType, SourceImageType,
+                DestinationImageType> {
+protected:
+    FilterImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) override {
+        return FilterImplementationType(sourceImage, destinationImage);
     }
 };
 
