@@ -35,3 +35,12 @@ TEST_F(AreaOpeningImplementationTest, smallPlateauIsCleared) {
         .setBackground(13)
         .drawSquare(1, 1, 2, 201);
 }
+
+TEST_F(AreaOpeningImplementationTest, twoSmallPlateausAreCleared) {
+    TestData<unsigned char>()
+        .setDimensions(10, 9)
+        .setMaximumPeakSize(11)
+        .setBackground(148)
+        .drawSquare(1, 1, 2, 252)
+        .drawSquare(4, 2, 3, 251);
+}
