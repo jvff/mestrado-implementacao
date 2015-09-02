@@ -14,11 +14,11 @@ template <typename FilterImplementationType, typename SourcePixelType,
         typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
         typename SourceImageType = SimpleArrayImage<SourcePixelType> >
 class AbstractFilterImplementationTestData :
-        public AbstractImageTransformationTestData<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType> {
+        public AbstractImageTransformationTestData<SourceImageType,
+            DestinationImageType> {
 protected:
-    using SuperClass = AbstractImageTransformationTestData<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
+    using SuperClass = AbstractImageTransformationTestData<SourceImageType,
+            DestinationImageType>;
     using DestinationImagePointer =
             typename SuperClass::DestinationImagePointer;
 

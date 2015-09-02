@@ -29,13 +29,12 @@ protected:
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class AbstractMorphologicalReconstructionFilterTestData
-        : public AbstractImageTransformationTestData<PixelType, PixelType,
-                ImageType, ImageType> {
+        : public AbstractImageTransformationTestData<ImageType, ImageType> {
 private:
     using FilterType = MorphologicalReconstructionFilter<ImageType, ImageType>;
     using ImagePointer = std::unique_ptr<ImageType>;
-    using SuperClass = AbstractImageTransformationTestData<PixelType, PixelType,
-            ImageType, ImageType>;
+    using SuperClass = AbstractImageTransformationTestData<ImageType,
+            ImageType>;
 
 protected:
     using State = typename SuperClass::State;

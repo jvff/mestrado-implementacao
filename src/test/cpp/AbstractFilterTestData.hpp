@@ -14,11 +14,10 @@ template <typename FilterType, typename SourcePixelType,
         typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
         typename SourceImageType = SimpleArrayImage<SourcePixelType> >
 class AbstractFilterTestData : public AbstractImageTransformationTestData<
-        SourcePixelType, DestinationPixelType, DestinationImageType,
-        SourceImageType> {
+        SourceImageType, DestinationImageType> {
 private:
-    using SuperClass = AbstractImageTransformationTestData<SourcePixelType,
-            DestinationPixelType, DestinationImageType, SourceImageType>;
+    using SuperClass = AbstractImageTransformationTestData<SourceImageType,
+            DestinationImageType>;
 
 public:
     std::unique_ptr<FilterType> filter;

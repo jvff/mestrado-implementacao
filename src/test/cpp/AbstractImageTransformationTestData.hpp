@@ -9,10 +9,7 @@
 
 #include "AbstractTestData.hpp"
 
-template <typename SourcePixelType,
-        typename DestinationPixelType = SourcePixelType,
-        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
-        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
+template <typename SourceImageType, typename DestinationImageType>
 class AbstractImageTransformationTestData : public AbstractTestData {
 protected:
     using SourceImagePointer = std::unique_ptr<SourceImageType>;
