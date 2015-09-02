@@ -20,6 +20,8 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
+    Coordinate noPeaksFound;
+
     RegionalMaximumsFilterType regionalMaximumsFilter;
     DestinationImageType regionalMaximums;
 
@@ -40,6 +42,7 @@ public:
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
+            noPeaksFound(std::make_pair(width, height)),
             regionalMaximums(width, height),
             maximumPeakSize(maximumPeakSize) {
     }
@@ -65,7 +68,10 @@ private:
     void clearPeaks() {
         auto startOfPeak = findStartOfPeak();
 
-        maybeClearPeak(startOfPeak);
+        while (startOfPeak != noPeaksFound) {
+            maybeClearPeak(startOfPeak);
+            startOfPeak = findStartOfPeak();
+        }
     }
 
     Coordinate findStartOfPeak() {
@@ -76,10 +82,13 @@ private:
             }
         }
 
-        return Coordinate(0, 0);
+        return noPeaksFound;
     }
 
     void maybeClearPeak(const Coordinate& startOfPeak) {
+        pixelsToUpdate.clear();
+        pixelsToCheck.clear();
+
         pixelsToCheck.insert(pixelAt(startOfPeak));
 
         collectPixelsToUpdate();
@@ -160,6 +169,7 @@ private:
         const auto y = std::get<2>(pixel);
 
         destinationImage.setPixel(x, y, value);
+        regionalMaximums.setPixel(x, y, 0);
     }
 
     Pixel pixelAt(const Coordinate& coordinate) {
