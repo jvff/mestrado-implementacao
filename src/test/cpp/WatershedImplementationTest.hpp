@@ -23,9 +23,6 @@ protected:
             DestinationImageType>;
 };
 
-#define IMAGE_PARAMS SourcePixelType, DestinationPixelType, \
-    DestinationImageType, SourceImageType
-
 template <typename SourcePixelType,
         typename DestinationPixelType = SourcePixelType,
         typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
@@ -33,6 +30,7 @@ template <typename SourcePixelType,
 using TestData = WatershedTestData<
         AbstractFilterImplementationTestData<
                 WatershedImplementation<SourceImageType, DestinationImageType>,
-                        IMAGE_PARAMS>, SourceImageType, DestinationImageType>;
+                SourceImageType, DestinationImageType>,
+        SourceImageType, DestinationImageType>;
 
 #endif

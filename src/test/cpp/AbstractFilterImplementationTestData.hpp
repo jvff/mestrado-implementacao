@@ -5,14 +5,10 @@
 
 #include "asserts.hpp"
 
-#include "SimpleArrayImage.hpp"
-
 #include "AbstractImageTransformationTestData.hpp"
 
-template <typename FilterImplementationType, typename SourcePixelType,
-        typename DestinationPixelType = SourcePixelType,
-        typename DestinationImageType = SimpleArrayImage<DestinationPixelType>,
-        typename SourceImageType = SimpleArrayImage<SourcePixelType> >
+template <typename FilterImplementationType, typename SourceImageType,
+        typename DestinationImageType>
 class AbstractFilterImplementationTestData :
         public AbstractImageTransformationTestData<SourceImageType,
             DestinationImageType> {

@@ -26,7 +26,6 @@ template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MorphologicalReconstructionTestData<
         AbstractFilterImplementationTestData<
                 MorphologicalReconstructionImplementation<ImageType, ImageType>,
-                PixelType, PixelType, ImageType, ImageType>,
-        PixelType, ImageType>;
+                ImageType, ImageType>, PixelType, ImageType>;
 
 #endif
