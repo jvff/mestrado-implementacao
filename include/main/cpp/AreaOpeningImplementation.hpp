@@ -21,6 +21,8 @@ private:
             DestinationImageType>;
 
     Coordinate noPeaksFound;
+    Coordinate startOfPeak;
+    DestinationPixelType peakValue;
 
     RegionalMaximumsFilterType regionalMaximumsFilter;
     DestinationImageType regionalMaximums;
@@ -66,10 +68,10 @@ private:
     }
 
     void clearPeaks() {
-        auto startOfPeak = findStartOfPeak();
+        startOfPeak = findStartOfPeak();
 
         while (startOfPeak != noPeaksFound) {
-            maybeClearPeak(startOfPeak);
+            maybeClearPeak();
             startOfPeak = findStartOfPeak();
         }
     }
@@ -77,15 +79,17 @@ private:
     Coordinate findStartOfPeak() {
         for (unsigned int x = 0; x < width; x++) {
             for (unsigned int y = 0; y < height; y++) {
-                if (regionalMaximums.getPixel(x, y) > 0)
+                if (regionalMaximums.getPixel(x, y) > 0) {
+                    peakValue = destinationImage.getPixel(x, y);
                     return Coordinate(x, y);
+                }
             }
         }
 
         return noPeaksFound;
     }
 
-    void maybeClearPeak(const Coordinate& startOfPeak) {
+    void maybeClearPeak() {
         pixelsToUpdate.clear();
         pixelsToCheck.clear();
 
@@ -96,13 +100,20 @@ private:
     }
 
     void collectPixelsToUpdate() {
-        while (thereAreMorePixelsToCollect()) {
+        DestinationPixelType currentLevel = peakValue;
+        DestinationPixelType level = peakValue;
+
+        while (thereAreMorePixelsToCollect() && level <= currentLevel) {
             auto firstPosition = pixelsToCheck.begin();
             auto pixel = *firstPosition;
 
             pixelsToCheck.erase(firstPosition);
 
-            collectPixel(pixel);
+            currentLevel = level;
+            level = std::get<0>(pixel);
+
+            if (level <= currentLevel)
+                collectPixel(pixel);
         }
     }
 
