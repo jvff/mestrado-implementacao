@@ -17,3 +17,13 @@ TEST(CoordinateTest, hasValueMembers) {
     assertThat(coordinate.x).isEqualTo(x);
     assertThat(coordinate.y).isEqualTo(y);
 }
+
+TEST(CoordinateTest, hasValueConstructor) {
+    unsigned int x = 100;
+    unsigned int y = 50;
+
+    auto coordinate = Coordinate(x, y);
+
+    assertThat(coordinate.x).isEqualTo(x);
+    assertThat(coordinate.y).isEqualTo(y);
+}
