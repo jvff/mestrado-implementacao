@@ -83,6 +83,22 @@ public:
         }
     }
 
+    CHAIN(drawPyramid, unsigned int x, unsigned int y, unsigned int size,
+            const PixelType& startHeight) {
+        auto height = startHeight;
+
+        if (stateIs(State::READY)) {
+            while (size >= 2) {
+                drawSquare(x, y, size, height);
+
+                x += 1;
+                y += 1;
+                size -= 2;
+                ++height;
+            }
+        }
+    }
+
 protected:
     using SuperClass::cancelTestExecution;
     using SuperClass::stateIs;

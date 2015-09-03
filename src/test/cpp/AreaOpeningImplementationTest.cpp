@@ -44,3 +44,11 @@ TEST_F(AreaOpeningImplementationTest, twoSmallPlateausAreCleared) {
         .drawSquare(1, 1, 2, 252)
         .drawSquare(4, 2, 3, 251);
 }
+
+TEST_F(AreaOpeningImplementationTest, peakIsPartiallyFlattened) {
+    TestData<unsigned char>()
+        .setDimensions(15, 15)
+        .setMaximumPeakSize(50)
+        .setBackground(3)
+        .drawPyramid(1, 1, 13, 10);
+}
