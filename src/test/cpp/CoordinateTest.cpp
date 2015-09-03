@@ -8,6 +8,10 @@ TEST(CoordinateTest, structExists) {
     AssertThat<Coordinate>::isClassOrStruct();
 }
 
+TEST(CoordinateTest, hasDefaultConstructor) {
+    AssertThat<Coordinate>::isConstructible(WithoutParameters());
+}
+
 TEST(CoordinateTest, hasValueMembers) {
     unsigned int x = 1;
     unsigned int y = 2;
