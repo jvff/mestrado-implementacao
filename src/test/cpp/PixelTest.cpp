@@ -10,6 +10,10 @@ TEST(PixelTest, structTemplateExists) {
     AssertThat<Pixel<DummyType> >::isClassOrStruct();
 }
 
+TEST(PixelTest, hasDefaultConstructor) {
+    AssertThat<Pixel<DummyType> >::isConstructible(WithoutParameters());
+}
+
 TEST(PixelTest, hasValueMembers) {
     unsigned int x = 1;
     unsigned int y = 2;
