@@ -7,6 +7,9 @@ struct Pixel {
     unsigned int y;
     Type value;
 
+    Pixel() {
+    }
+
     Pixel(unsigned int x, unsigned int y, const Type& value) : x(x), y(y),
             value(value) {
     }
