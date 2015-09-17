@@ -5,6 +5,7 @@
 #include <functional>
 
 #include "Coordinate.hpp"
+#include "Pixel.hpp"
 
 template <typename ImagePixelType>
 class Image {
@@ -55,8 +56,16 @@ public:
         return height;
     }
 
+    Pixel<PixelType> getPixel(unsigned int x, unsigned int y) const {
+        return Pixel<PixelType>(x, y, getPixelValue(x, y));
+    }
+
     void setPixel(const Coordinate& coordinate, const PixelType& value) {
         setPixel(coordinate.x, coordinate.y, value);
+    }
+
+    Pixel<PixelType> getPixel(const Coordinate& coordinate) const {
+        return Pixel<PixelType>(coordinate, getPixelValue(coordinate));
     }
 
     PixelType getPixelValue(const Coordinate& coordinate) const {
