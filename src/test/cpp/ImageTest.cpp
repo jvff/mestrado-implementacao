@@ -51,14 +51,14 @@ TEST_F(ImageTest, getHeightIsConstMethod) {
     assertThat(&DummyImage::getHeight).isConstMethod();
 }
 
-TEST_F(ImageTest, getPixelIsConstMethod) {
+TEST_F(ImageTest, getPixelValueIsConstMethod) {
     using Signature =
             DummyType (DummyImage::*)(unsigned int, unsigned int) const;
 
     assertThat((Signature)&DummyImage::getPixelValue).isConstMethod();
 }
 
-TEST_F(ImageTest, getPixelWithCoordinateIsConstMethod) {
+TEST_F(ImageTest, getPixelValueWithCoordinateIsConstMethod) {
     using Signature = DummyType (DummyImage::*)(const Coordinate&) const;
 
     assertThat((Signature)&DummyImage::getPixelValue).isConstMethod();
