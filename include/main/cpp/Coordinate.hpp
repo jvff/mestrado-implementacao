@@ -8,7 +8,7 @@ struct Coordinate {
     constexpr Coordinate() : x(0), y(0) {
     }
 
-    Coordinate(unsigned int x, unsigned int y) : x(x), y(y) {
+    constexpr Coordinate(unsigned int x, unsigned int y) : x(x), y(y) {
     }
 
     Coordinate operator+(const Coordinate& displacement) const {
