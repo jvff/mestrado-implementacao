@@ -31,3 +31,17 @@ TEST(CoordinateTest, hasValueConstructor) {
     assertThat(coordinate.x).isEqualTo(x);
     assertThat(coordinate.y).isEqualTo(y);
 }
+
+TEST(CoordinateTest, hasAdditionOperator) {
+    unsigned int firstX = 390;
+    unsigned int firstY = 342;
+    unsigned int secondX = 908;
+    unsigned int secondY = 939;
+
+    const auto first = Coordinate(firstX, firstY);
+    const auto second = Coordinate(secondX, secondY);
+    auto result = first + second;
+
+    assertThat(result.x).isEqualTo(firstX + secondX);
+    assertThat(result.y).isEqualTo(firstY + secondY);
+}
