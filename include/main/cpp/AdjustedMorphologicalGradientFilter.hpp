@@ -58,7 +58,7 @@ private:
     void maybeAdjustPixel(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        auto sourcePixel = sourceImage.getPixel(x, y);
+        auto sourcePixel = sourceImage.getPixelValue(x, y);
 
         if (sourcePixel < activationThreshold)
             adjustPixel(x, y, destinationImage);
@@ -66,7 +66,7 @@ private:
 
     void adjustPixel(unsigned int x, unsigned int y,
             DestinationImageType& destinationImage) {
-        float unadjustedValue = (float)destinationImage.getPixel(x, y);
+        float unadjustedValue = (float)destinationImage.getPixelValue(x, y);
         float normalizedUnadjustedValue = unadjustedValue * normalizationFactor;
         float normalizedAdjustedValue = std::pow(normalizedUnadjustedValue,
                 adjustmentExponent);

@@ -45,7 +45,7 @@ protected:
 
     DestinationPixelType selectPixelInStructure(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage, OperationType operation) {
-        auto pixel = sourceImage.getPixel(x, y);
+        auto pixel = sourceImage.getPixelValue(x, y);
         auto maxX = sourceImage.getWidth() - 1;
         auto maxY = sourceImage.getHeight() - 1;
 
@@ -56,7 +56,7 @@ protected:
 
         for (unsigned int u = startU; u <= endU; ++u) {
             for (unsigned int v = startV; v <= endV; ++v)
-                pixel = operation(pixel, sourceImage.getPixel(u, v));
+                pixel = operation(pixel, sourceImage.getPixelValue(u, v));
         }
 
         return pixel;

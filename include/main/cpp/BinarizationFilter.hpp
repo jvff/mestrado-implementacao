@@ -36,7 +36,7 @@ public:
 protected:
     bool apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) override {
-        return comparator(sourceImage.getPixel(x, y), threshold);
+        return comparator(sourceImage.getPixelValue(x, y), threshold);
     }
 };
 

@@ -42,9 +42,9 @@ private:
     void avoidMarkersBiggerThanSourcePixels() {
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y) {
-                const PixelType sourcePixel = sourceImage.getPixel(x, y);
-                const PixelType markerPixel = destinationImage.getPixel(x, y);
-                const PixelType truncatedMarkerPixel =
+                const auto sourcePixel = sourceImage.getPixelValue(x, y);
+                const auto markerPixel = destinationImage.getPixelValue(x, y);
+                const auto truncatedMarkerPixel =
                         std::min(markerPixel, sourcePixel);
 
                 destinationImage.setPixel(x, y, truncatedMarkerPixel);
@@ -119,13 +119,12 @@ private:
         if (coordinateIsInvalid(nextX, nextY))
             return false;
 
-        const PixelType markerCurrent = destinationImage.getPixel(x, y);
-        const PixelType markerNext = destinationImage.getPixel(nextX, nextY);
-        const PixelType sourcePixel = sourceImage.getPixel(nextX, nextY);
+        const auto markerCurrent = destinationImage.getPixelValue(x, y);
+        const auto markerNext = destinationImage.getPixelValue(nextX, nextY);
+        const auto sourcePixel = sourceImage.getPixelValue(nextX, nextY);
 
-        const PixelType propagatedPixel = std::min(markerCurrent, sourcePixel);
-        const PixelType destinationPixel = std::max(propagatedPixel,
-                markerNext);
+        const auto propagatedPixel = std::min(markerCurrent, sourcePixel);
+        const auto destinationPixel = std::max(propagatedPixel, markerNext);
 
         destinationImage.setPixel(nextX, nextY, destinationPixel);
 

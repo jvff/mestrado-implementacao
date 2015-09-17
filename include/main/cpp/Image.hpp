@@ -32,7 +32,7 @@ public:
 
         for (unsigned int x = 0; x < smallestWidth; ++x) {
             for (unsigned int y = 0; y < smallestHeight; ++y)
-                setPixel(x, y, image.getPixel(x, y));
+                setPixel(x, y, image.getPixelValue(x, y));
         }
 
         return *this;
@@ -59,12 +59,12 @@ public:
         setPixel(coordinate.x, coordinate.y, value);
     }
 
-    PixelType getPixel(const Coordinate& coordinate) const {
-        return getPixel(coordinate.x, coordinate.y);
+    PixelType getPixelValue(const Coordinate& coordinate) const {
+        return getPixelValue(coordinate.x, coordinate.y);
     }
 
     virtual void setPixel(unsigned int x, unsigned int y, PixelType value) = 0;
-    virtual PixelType getPixel(unsigned int x, unsigned int y) const = 0;
+    virtual PixelType getPixelValue(unsigned int x, unsigned int y) const = 0;
 };
 
 template <typename PixelType>
@@ -75,7 +75,7 @@ static bool allPixelsAreEqual(const Image<PixelType>& first,
 
     for (unsigned int x = 0; x < width; ++x) {
         for (unsigned int y = 0; y < height; ++y) {
-            if (first.getPixel(x, y) != second.getPixel(x, y))
+            if (first.getPixelValue(x, y) != second.getPixelValue(x, y))
                 return false;
         }
     }

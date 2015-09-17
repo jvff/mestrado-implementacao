@@ -59,7 +59,7 @@ private:
     void copySourceImage() {
         destinationImage = [&] (unsigned int x, unsigned int y)
                 -> DestinationPixelType {
-            return sourceImage.getPixel(x, y);
+            return sourceImage.getPixelValue(x, y);
         };
     }
 
@@ -79,8 +79,8 @@ private:
     Coordinate findStartOfPeak() {
         for (unsigned int x = 0; x < width; x++) {
             for (unsigned int y = 0; y < height; y++) {
-                if (regionalMaximums.getPixel(x, y) > 0) {
-                    peakValue = destinationImage.getPixel(x, y);
+                if (regionalMaximums.getPixelValue(x, y) > 0) {
+                    peakValue = destinationImage.getPixelValue(x, y);
                     return Coordinate(x, y);
                 }
             }
@@ -191,7 +191,7 @@ private:
     }
 
     Pixel pixelAt(unsigned int x, unsigned int y) {
-        const auto height = destinationImage.getPixel(x, y);
+        const auto height = destinationImage.getPixelValue(x, y);
 
         return Pixel(height, x, y);
     }

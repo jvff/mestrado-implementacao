@@ -25,11 +25,11 @@ public:
         pixels[getPixelIndex(x, y)] = value;
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) const override {
+    PixelType getPixelValue(unsigned int x, unsigned int y) const override {
         return pixels[getPixelIndex(x, y)];
     }
 
-    using Image<PixelType>::getPixel;
+    using Image<PixelType>::getPixelValue;
     using Image<PixelType>::setPixel;
 };
 

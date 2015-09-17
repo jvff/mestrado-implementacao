@@ -49,7 +49,7 @@ private:
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                levels.insert(sourceImage.getPixel(x, y));
+                levels.insert(sourceImage.getPixelValue(x, y));
         }
 
         return levels;
@@ -110,7 +110,7 @@ private:
 
     bool tryToErodePixel(unsigned int x, unsigned int y, unsigned int neighborX,
             unsigned int neighborY) {
-        auto neighbor = destinationImage.getPixel(neighborX, neighborY);
+        auto neighbor = destinationImage.getPixelValue(neighborX, neighborY);
 
         if (neighbor > 0) {
             auto coordinate = std::make_pair(x, y);
@@ -158,11 +158,11 @@ private:
     }
 
     bool pixelIsAtCurrentLevel(unsigned int x, unsigned int y) {
-        return sourceImage.getPixel(x, y) == currentLevel;
+        return sourceImage.getPixelValue(x, y) == currentLevel;
     }
 
     bool pixelHasntBeenSetYet(unsigned int x, unsigned int y) {
-        return destinationImage.getPixel(x, y) == 0;
+        return destinationImage.getPixelValue(x, y) == 0;
     }
 
     bool pixelIsntSeparator(unsigned int x, unsigned int y) {
@@ -177,8 +177,8 @@ private:
     }
 
     bool pixelIsntOldSeparator(unsigned int x, unsigned int y) {
-        auto level = sourceImage.getPixel(x, y);
-        auto pixelValue = destinationImage.getPixel(x, y);
+        auto level = sourceImage.getPixelValue(x, y);
+        auto pixelValue = destinationImage.getPixelValue(x, y);
         auto separatorValue = 0;
 
         return !(level < currentLevel && pixelValue != separatorValue);

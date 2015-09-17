@@ -30,14 +30,14 @@ public:
 private:
     DestinationPixelType apply(unsigned int x, unsigned int y,
             const SourceImageType& sourceImage) {
-        return sourceImage.getPixel(x, y);
+        return sourceImage.getPixelValue(x, y);
     }
 
     void moveImageDownToCreateMarkerImage(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
         destinationImage = [&] (unsigned int x, unsigned int y)
                 -> DestinationPixelType {
-            return sourceImage.getPixel(x, y) - 1;
+            return sourceImage.getPixelValue(x, y) - 1;
         };
     }
 
@@ -50,8 +50,8 @@ private:
             DestinationImageType& destinationImage) {
         destinationImage = [&] (unsigned int x, unsigned int y)
                 -> DestinationPixelType{
-            auto sourcePixel = sourceImage.getPixel(x, y);
-            auto destinationPixel = destinationImage.getPixel(x, y);
+            auto sourcePixel = sourceImage.getPixelValue(x, y);
+            auto destinationPixel = destinationImage.getPixelValue(x, y);
             auto difference = sourcePixel - destinationPixel;
 
             if (difference == 0)
