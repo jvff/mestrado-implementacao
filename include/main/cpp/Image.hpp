@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <functional>
 
+#include "Coordinate.hpp"
+
 template <typename ImagePixelType>
 class Image {
 public:
@@ -51,6 +53,14 @@ public:
 
     virtual unsigned int getHeight() const {
         return height;
+    }
+
+    void setPixel(const Coordinate& coordinate, const PixelType& value) {
+        setPixel(coordinate.x, coordinate.y, value);
+    }
+
+    PixelType getPixel(const Coordinate& coordinate) const {
+        return getPixel(coordinate.x, coordinate.y);
     }
 
     virtual void setPixel(unsigned int x, unsigned int y, PixelType value) = 0;

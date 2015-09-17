@@ -28,6 +28,9 @@ public:
     PixelType getPixel(unsigned int x, unsigned int y) const override {
         return pixels[getPixelIndex(x, y)];
     }
+
+    using Image<PixelType>::getPixel;
+    using Image<PixelType>::setPixel;
 };
 
 #endif
