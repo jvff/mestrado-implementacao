@@ -1,11 +1,13 @@
 #ifndef IMAGE_IMPLEMENTATION_TEST_MACROS_HPP
 #define IMAGE_IMPLEMENTATION_TEST_MACROS_HPP
 
+#include "ImageImplementationTestUsingCoordinates.hpp"
 #include "ImageImplementationTestUsingValues.hpp"
 
 #define IMAGE_IMPLEMENTATION_TEST_CASE(TestCaseName, PixelType, ...) \
     DECLARE_IMAGE_TYPES_ALIAS(TestCaseName, __VA_ARGS__); \
     DECLARE_PIXEL_TYPE_ALIAS(TestCaseName, PixelType); \
+    DECLARE_TEST_CASE(TestCaseName, UsingCoordinates); \
     DECLARE_TEST_CASE(TestCaseName, UsingValues)
 
 #define DECLARE_IMAGE_TYPES_ALIAS(TestCaseName, ...) \
@@ -43,6 +45,7 @@
     }
 
 #define REGISTER_TEST(TestCaseName, TestName) \
+    REGISTER_SUB_TEST(TestCaseName, TestName, UsingCoordinates); \
     REGISTER_SUB_TEST(TestCaseName, TestName, UsingValues)
 
 #define REGISTER_SUB_TEST(TestCaseName, TestName, TestType) \
