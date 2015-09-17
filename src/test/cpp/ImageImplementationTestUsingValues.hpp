@@ -7,8 +7,13 @@ template <typename ImageType, typename PixelType>
 class ImageImplementationTestUsingValues
         : public AbstractImageImplementationTest<ImageType, PixelType> {
 protected:
-    PixelType getPixel(const ImageType& image, unsigned int x, unsigned int y)
-            override {
+    Pixel<PixelType> getPixelObject(const ImageType& image, unsigned int x,
+            unsigned int y) override {
+        return image.getPixel(x, y);
+    }
+
+    PixelType getPixelValue(const ImageType& image, unsigned int x,
+            unsigned int y) override {
         return image.getPixelValue(x, y);
     }
 

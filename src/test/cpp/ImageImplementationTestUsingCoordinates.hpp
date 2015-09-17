@@ -7,8 +7,15 @@ template <typename ImageType, typename PixelType>
 class ImageImplementationTestUsingCoordinates
         : public AbstractImageImplementationTest<ImageType, PixelType> {
 protected:
-    PixelType getPixel(const ImageType& image, unsigned int x, unsigned int y)
-            override {
+    Pixel<PixelType> getPixelObject(const ImageType& image, unsigned int x,
+            unsigned int y) override {
+        auto coordinate = Coordinate(x, y);
+
+        return image.getPixel(coordinate);
+    }
+
+    PixelType getPixelValue(const ImageType& image, unsigned int x,
+            unsigned int y) override {
         auto coordinate = Coordinate(x, y);
 
         return image.getPixelValue(coordinate);

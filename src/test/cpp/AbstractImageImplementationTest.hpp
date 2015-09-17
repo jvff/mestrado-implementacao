@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+#include "asserts.hpp"
+
 #include "Image.hpp"
 
 template <typename ImageType, typename PixelType>
@@ -58,7 +60,20 @@ protected:
         return expected == actual;
     }
 
-    virtual PixelType getPixel(const ImageType& image, unsigned int x,
+    PixelType getPixel(const ImageType& image, unsigned int x, unsigned int y) {
+        auto pixel = getPixelObject(image, x, y);
+        auto value = getPixelValue(image, x, y);
+
+        assertThat(pixel.x).isEqualTo(x);
+        assertThat(pixel.y).isEqualTo(y);
+        assertThat(pixel.value).isEqualTo(value);
+
+        return value;
+    }
+
+    virtual Pixel<PixelType> getPixelObject(const ImageType& image,
+            unsigned int x, unsigned int y) = 0;
+    virtual PixelType getPixelValue(const ImageType& image, unsigned int x,
             unsigned int y) = 0;
     virtual void setPixel(ImageType& image, unsigned int x, unsigned int y,
             const PixelType& value) = 0;
