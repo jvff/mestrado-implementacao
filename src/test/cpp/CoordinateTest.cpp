@@ -12,6 +12,16 @@ TEST(CoordinateTest, hasDefaultConstructor) {
     AssertThat<Coordinate>::isConstructible(WithoutParameters());
 }
 
+TEST(CoordinateTest, defaultConstructorIsConstExpression) {
+    unsigned int initialX = 0;
+    unsigned int initialY = 0;
+
+    constexpr Coordinate coordinate;
+
+    assertThat(coordinate.x).isEqualTo(initialX);
+    assertThat(coordinate.y).isEqualTo(initialY);
+}
+
 TEST(CoordinateTest, hasValueMembers) {
     unsigned int x = 1;
     unsigned int y = 2;
