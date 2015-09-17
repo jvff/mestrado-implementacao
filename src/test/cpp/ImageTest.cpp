@@ -58,6 +58,12 @@ TEST_F(ImageTest, getPixelIsConstMethod) {
     assertThat((Signature)&DummyImage::getPixel).isConstMethod();
 }
 
+TEST_F(ImageTest, getPixelWithCoordinateIsConstMethod) {
+    using Signature = DummyType (DummyImage::*)(const Coordinate&) const;
+
+    assertThat((Signature)&DummyImage::getPixel).isConstMethod();
+}
+
 TEST_F(ImageTest, isSettableWithLambdaExpression) {
     unsigned int width = 3;
     unsigned int height = 5;
