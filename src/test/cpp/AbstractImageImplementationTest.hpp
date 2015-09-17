@@ -1,12 +1,12 @@
-#ifndef IMAGE_IMPLEMENTATION_TEST_HPP
-#define IMAGE_IMPLEMENTATION_TEST_HPP
+#ifndef ABSTRACT_IMAGE_IMPLEMENTATION_TEST_HPP
+#define ABSTRACT_IMAGE_IMPLEMENTATION_TEST_HPP
 
 #include <gtest/gtest.h>
 
 #include "Image.hpp"
 
 template <typename ImageType, typename PixelType>
-class ImageImplementationTest : public ::testing::Test {
+class AbstractImageImplementationTest : public ::testing::Test {
 protected:
     void testSinglePixel(PixelType value) {
         testPixelsWithSameValue(1, 1, value);
@@ -18,12 +18,12 @@ protected:
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                image.setPixel(x, y, value);
+                setPixel(image, x, y, value);
         }
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                comparePixel(image.getPixel(x, y), value);
+                comparePixel(getPixel(image, x, y), value);
         }
     }
 
@@ -34,14 +34,14 @@ protected:
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                image.setPixel(x, y, *(pixelIterator++));
+                setPixel(image, x, y, *(pixelIterator++));
         }
 
         pixelIterator = &values[0];
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                comparePixel(x, y, *(pixelIterator++), image.getPixel(x, y));
+                comparePixel(x, y, *(pixelIterator++), getPixel(image, x, y));
         }
     }
 
@@ -57,6 +57,11 @@ protected:
     virtual bool comparePixel(PixelType expected, PixelType actual) {
         return expected == actual;
     }
+
+    virtual PixelType getPixel(const ImageType& image, unsigned int x,
+            unsigned int y) = 0;
+    virtual void setPixel(ImageType& image, unsigned int x, unsigned int y,
+            const PixelType& value) = 0;
 };
 
 #endif

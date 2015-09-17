@@ -4,34 +4,33 @@
 
 #include "SimpleArrayImage.hpp"
 
-#include "IntImageTest.hpp"
+#include "ImageImplementationTestMacros.hpp"
 
-using ImageTypes = ::testing::Types<SimpleArrayImage<int> >;
-TYPED_TEST_CASE(IntImageTest, ImageTypes);
+IMAGE_IMPLEMENTATION_TEST_CASE(IntImageTest, int, SimpleArrayImage<int>);
 
-TYPED_TEST(IntImageTest, typeIsImage) {
-    AssertThat<TypeParam>::isSubClass(Of<Image<int> >());
+IMAGE_TEST(IntImageTest, typeIsImage) {
+    AssertThat<ImageType>::isSubClass(Of<Image<int> >());
 }
 
-TYPED_TEST(IntImageTest, testSinglePixel) {
+IMAGE_TEST(IntImageTest, testSinglePixel) {
     this->testSinglePixel(10);
 }
 
-TYPED_TEST(IntImageTest, testSinglePixelMaxValue) {
+IMAGE_TEST(IntImageTest, testSinglePixelMaxValue) {
     this->testSinglePixel(0xFFFFFFFF);
 }
 
-TYPED_TEST(IntImageTest, testTwoPixelsWithTheSameValue) {
+IMAGE_TEST(IntImageTest, testTwoPixelsWithTheSameValue) {
     this->testPixelsWithSameValue(2, 1, 10);
 }
 
-TYPED_TEST(IntImageTest, testTwoPixelsWithDifferentValues) {
+IMAGE_TEST(IntImageTest, testTwoPixelsWithDifferentValues) {
     int values[] = { 10, 20 };
 
     this->testPixels(2, 1, values);
 }
 
-TYPED_TEST(IntImageTest, testRedGreenBlueRect) {
+IMAGE_TEST(IntImageTest, testRedGreenBlueRect) {
     const unsigned int width = 9;
     const unsigned int height = 5;
     int values[width * height];

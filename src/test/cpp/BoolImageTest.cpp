@@ -1,23 +1,28 @@
-#include "BoolImageTest.hpp"
+#include <gtest/gtest.h>
 
-using ImageTypes = ::testing::Types<SimpleArrayImage<bool> >;
-TYPED_TEST_CASE(BoolImageTest, ImageTypes);
+#include "asserts.hpp"
 
-TYPED_TEST(BoolImageTest, typeIsImage) {
-    AssertThat<TypeParam>::isSubClass(Of<Image<bool> >());
+#include "SimpleArrayImage.hpp"
+
+#include "ImageImplementationTestMacros.hpp"
+
+IMAGE_IMPLEMENTATION_TEST_CASE(BoolImageTest, bool, SimpleArrayImage<bool>);
+
+IMAGE_TEST(BoolImageTest, typeIsImage) {
+    AssertThat<ImageType>::isSubClass(Of<Image<bool> >());
 }
 
-TYPED_TEST(BoolImageTest, typeIsntAbstract) {
-    AssertThat<TypeParam>::isConstructible(With<unsigned int, unsigned int>());
+IMAGE_TEST(BoolImageTest, typeIsntAbstract) {
+    AssertThat<ImageType>::isConstructible(With<unsigned int, unsigned int>());
 }
 
-TYPED_TEST(BoolImageTest, twoDifferentPixels) {
+IMAGE_TEST(BoolImageTest, twoDifferentPixels) {
     bool pixelValues[] = { true, false };
 
     this->testPixels(1, 2, pixelValues);
 }
 
-TYPED_TEST(BoolImageTest, verticalStripes) {
+IMAGE_TEST(BoolImageTest, verticalStripes) {
     const unsigned int width = 8;
     const unsigned int height = 4;
     bool pixelValues[width * height];
@@ -31,7 +36,7 @@ TYPED_TEST(BoolImageTest, verticalStripes) {
     this->testPixels(width, height, pixelValues);
 }
 
-TYPED_TEST(BoolImageTest, complexImage) {
+IMAGE_TEST(BoolImageTest, complexImage) {
     const unsigned int width = 32;
     const unsigned int height = 32;
     bool pixelValues[width * height];
