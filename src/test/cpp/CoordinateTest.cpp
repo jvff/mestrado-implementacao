@@ -33,10 +33,10 @@ TEST(CoordinateTest, hasValueMembers) {
 }
 
 TEST(CoordinateTest, hasValueConstructor) {
-    unsigned int x = 100;
-    unsigned int y = 50;
+    constexpr unsigned int x = 100;
+    constexpr unsigned int y = 50;
 
-    auto coordinate = Coordinate(x, y);
+    constexpr auto coordinate = Coordinate(x, y);
 
     assertThat(coordinate.x).isEqualTo(x);
     assertThat(coordinate.y).isEqualTo(y);
