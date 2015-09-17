@@ -56,12 +56,16 @@ public:
         return height;
     }
 
-    Pixel<PixelType> getPixel(unsigned int x, unsigned int y) const {
-        return Pixel<PixelType>(x, y, getPixelValue(x, y));
-    }
-
     void setPixel(const Coordinate& coordinate, const PixelType& value) {
         setPixel(coordinate.x, coordinate.y, value);
+    }
+
+    void setPixel(const Pixel<PixelType>& pixel) {
+        setPixel(pixel.x, pixel.y, pixel.value);
+    }
+
+    Pixel<PixelType> getPixel(unsigned int x, unsigned int y) const {
+        return Pixel<PixelType>(x, y, getPixelValue(x, y));
     }
 
     Pixel<PixelType> getPixel(const Coordinate& coordinate) const {
