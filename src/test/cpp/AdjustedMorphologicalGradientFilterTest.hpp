@@ -78,7 +78,7 @@ private:
     void adjustImage() {
         *this->expectedImage = [this] (unsigned int x, unsigned int y)
                 -> PixelType {
-            auto pixel = this->expectedImage->getPixel(x, y);
+            auto pixel = this->expectedImage->getPixelValue(x, y);
 
             if (shouldAdjustPixel(x, y))
                 adjustPixel(pixel);
@@ -88,7 +88,7 @@ private:
     }
 
     bool shouldAdjustPixel(unsigned int x, unsigned int y) {
-        return this->sourceImage->getPixel(x, y) < activationThreshold;
+        return this->sourceImage->getPixelValue(x, y) < activationThreshold;
     }
 
     void adjustPixel(PixelType& pixel) {

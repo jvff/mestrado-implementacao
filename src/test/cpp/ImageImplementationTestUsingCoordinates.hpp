@@ -11,7 +11,7 @@ protected:
             override {
         auto coordinate = Coordinate(x, y);
 
-        return image.getPixel(coordinate);
+        return image.getPixelValue(coordinate);
     }
 
     void setPixel(ImageType& image, unsigned int x, unsigned int y,

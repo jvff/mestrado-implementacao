@@ -29,7 +29,7 @@ TEST(SimpleArrayImageTest, isSettableWithLambdaExpression) {
 
     for (unsigned int y = 0; y < height; ++y) {
         for (unsigned int x = 0; x < width; ++x) {
-            assertThat(image.getPixel(x, y)).isEqualTo(pixelValue);
+            assertThat(image.getPixelValue(x, y)).isEqualTo(pixelValue);
 
             ++pixelValue.value;
         }

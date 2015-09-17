@@ -9,7 +9,7 @@ class ImageImplementationTestUsingValues
 protected:
     PixelType getPixel(const ImageType& image, unsigned int x, unsigned int y)
             override {
-        return image.getPixel(x, y);
+        return image.getPixelValue(x, y);
     }
 
     void setPixel(ImageType& image, unsigned int x, unsigned int y,

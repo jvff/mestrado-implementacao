@@ -41,10 +41,10 @@ protected:
     void verifyImageWasRead(Mock<FakeDummyImage>& mock) {
         for (unsigned int y = 0; y < smallestHeight; ++y) {
             for (unsigned int x = 0; x < smallestWidth; ++x)
-                Verify(Method(mock, getPixel).Using(x, y));
+                Verify(Method(mock, getPixelValue).Using(x, y));
         }
 
-        VerifyNoOtherInvocations(Method(mock, getPixel));
+        VerifyNoOtherInvocations(Method(mock, getPixelValue));
     }
 
     void verifyImageWasPainted(Mock<FakeDummyImage>& mock) {

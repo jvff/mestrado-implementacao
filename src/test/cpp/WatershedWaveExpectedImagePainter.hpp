@@ -31,7 +31,7 @@ public:
             grid(size, halfPeriods) {
     }
 
-    unsigned char getPixel(unsigned int x, unsigned int y) {
+    unsigned char getPixelValue(unsigned int x, unsigned int y) {
         this->x = x;
         this->y = y;
 

@@ -44,8 +44,8 @@ public:
 
     using Image<SourcePixel>::operator=;
 
-    SourcePixel getPixel(unsigned int x, unsigned int y) const override {
-        return sourceImage.getPixel(x, y);
+    SourcePixel getPixelValue(unsigned int x, unsigned int y) const override {
+        return sourceImage.getPixelValue(x, y);
     }
 
     void setPixel(unsigned int x, unsigned int y, SourcePixel value) override {

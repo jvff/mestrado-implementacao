@@ -49,7 +49,7 @@ private:
     }
 
     unsigned char drawExpectedImage(unsigned int x, unsigned int y) {
-        return expectedImagePainter.getPixel(x, y);
+        return expectedImagePainter.getPixelValue(x, y);
     }
 };
 

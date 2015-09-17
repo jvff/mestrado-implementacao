@@ -68,7 +68,7 @@ public:
                 else if (border.surrounds(x, y))
                     return 0;
                 else
-                    return this->expectedImage->getPixel(x, y);
+                    return this->expectedImage->getPixelValue(x, y);
             };
         }
     }
@@ -82,7 +82,7 @@ private:
     }
 
     PixelType getErodedPixel(unsigned int x, unsigned int y) {
-        auto pixel = this->sourceImage->getPixel(x, y);
+        auto pixel = this->sourceImage->getPixelValue(x, y);
         auto maxX = this->sourceImage->getWidth() - 1;
         auto maxY = this->sourceImage->getHeight() - 1;
 
@@ -93,7 +93,7 @@ private:
 
         for (unsigned int u = startU; u <= endU; ++u) {
             for (unsigned int v = startV; v <= endV; ++v)
-                pixel = std::min(pixel, this->sourceImage->getPixel(u, v));
+                pixel = std::min(pixel, this->sourceImage->getPixelValue(u, v));
         }
 
         return pixel;

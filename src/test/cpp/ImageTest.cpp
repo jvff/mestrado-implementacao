@@ -55,13 +55,13 @@ TEST_F(ImageTest, getPixelIsConstMethod) {
     using Signature =
             DummyType (DummyImage::*)(unsigned int, unsigned int) const;
 
-    assertThat((Signature)&DummyImage::getPixel).isConstMethod();
+    assertThat((Signature)&DummyImage::getPixelValue).isConstMethod();
 }
 
 TEST_F(ImageTest, getPixelWithCoordinateIsConstMethod) {
     using Signature = DummyType (DummyImage::*)(const Coordinate&) const;
 
-    assertThat((Signature)&DummyImage::getPixel).isConstMethod();
+    assertThat((Signature)&DummyImage::getPixelValue).isConstMethod();
 }
 
 TEST_F(ImageTest, isSettableWithLambdaExpression) {

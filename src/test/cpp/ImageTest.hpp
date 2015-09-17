@@ -26,7 +26,7 @@ protected:
         Mock<FakeDummyImage> spy(image);
 
         Spy(Method(spy, setPixel));
-        Spy(Method(spy, getPixel));
+        Spy(Method(spy, getPixelValue));
 
         return spy;
     }
@@ -39,14 +39,14 @@ protected:
 
         When(Method(mock, getWidth)).AlwaysReturn(width);
         When(Method(mock, getHeight)).AlwaysReturn(height);
-        When(Method(mock, getPixel)).AlwaysDo(returnPixel);
+        When(Method(mock, getPixelValue)).AlwaysDo(returnPixel);
 
         return mock;
     }
 
     void interceptPixel(Mock<FakeDummyImage>& mock, unsigned int x,
             unsigned int y, DummyType pixelValue) {
-        When(Method(mock, getPixel).Using(x, y)).Return(pixelValue);
+        When(Method(mock, getPixelValue).Using(x, y)).Return(pixelValue);
     }
 
     void verifyImageWasPainted(Mock<FakeDummyImage>& mock) {

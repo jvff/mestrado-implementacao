@@ -45,7 +45,7 @@ public:
             if (rectangle.contains(x, y))
                 return color;
             else
-                return image.getPixel(x, y);
+                return image.getPixelValue(x, y);
         };
     }
 

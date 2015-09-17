@@ -16,7 +16,7 @@ public:
         unused(x, y, pixel);
     }
 
-    PixelType getPixel(unsigned int x, unsigned int y) const override {
+    PixelType getPixelValue(unsigned int x, unsigned int y) const override {
         unused(x, y);
 
         return getDefaultPixelValue();
