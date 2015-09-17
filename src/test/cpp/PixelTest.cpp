@@ -37,3 +37,16 @@ TEST(PixelTest, hasValueConstructor) {
     assertThat(pixel.y).isEqualTo(y);
     assertThat(pixel.value).isEqualTo(value);
 }
+
+TEST(PixelTest, hasCoordinateConstructor) {
+    unsigned int x = 12;
+    unsigned int y = 6;
+    Coordinate coordinate(x, y);
+    DummyType value = { 1000 };
+
+    auto pixel = Pixel<DummyType>(coordinate, value);
+
+    assertThat(pixel.x).isEqualTo(x);
+    assertThat(pixel.y).isEqualTo(y);
+    assertThat(pixel.value).isEqualTo(value);
+}
