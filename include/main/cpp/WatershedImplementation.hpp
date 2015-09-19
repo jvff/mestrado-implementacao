@@ -3,8 +3,8 @@
 
 #include <map>
 #include <set>
-#include <tuple>
 
+#include "Coordinate.hpp"
 #include "FilterImplementation.hpp"
 #include "Image.hpp"
 
@@ -12,7 +12,7 @@ template <typename SourceImageType, typename DestinationImageType>
 class WatershedImplementation : public FilterImplementation<SourceImageType,
         DestinationImageType> {
 private:
-    using Coordinate = std::pair<unsigned int, unsigned int>;
+    using CoordinateComparator = Coordinate::AscendingComparator;
     using SourcePixelType = typename SourceImageType::PixelType;
     using DestinationPixelType = typename DestinationImageType::PixelType;
     using SuperClass = FilterImplementation<SourceImageType,
@@ -29,8 +29,8 @@ private:
     SourcePixelType currentLevel;
     DestinationPixelType newestSegment;
 
-    std::map<Coordinate, DestinationPixelType> erosionMap;
-    std::set<Coordinate> currentSeparators;
+    std::map<Coordinate, DestinationPixelType, CoordinateComparator> erosionMap;
+    std::set<Coordinate, CoordinateComparator> currentSeparators;
 
 public:
     WatershedImplementation(const SourceImageType& sourceImage,
@@ -82,12 +82,10 @@ private:
 
     void applyErosion() {
         for (auto pixel : erosionMap) {
+            Coordinate coordinate = pixel.first;
             DestinationPixelType value = pixel.second;
-            unsigned int x, y;
 
-            std::tie(x, y) = pixel.first;
-
-            destinationImage.setPixel(x, y, value);
+            destinationImage.setPixel(coordinate, value);
         }
     }
 
@@ -113,7 +111,7 @@ private:
         auto neighbor = destinationImage.getPixelValue(neighborX, neighborY);
 
         if (neighbor > 0) {
-            auto coordinate = std::make_pair(x, y);
+            auto coordinate = Coordinate(x, y);
             auto previousErosion = erosionMap.find(coordinate);
             auto notFound = erosionMap.end();
 
@@ -170,7 +168,7 @@ private:
     }
 
     bool pixelIsntCurrentSeparator(unsigned int x, unsigned int y) {
-        auto coordinate = std::make_pair(x, y);
+        auto coordinate = Coordinate(x, y);
         auto notFound = currentSeparators.end();
 
         return currentSeparators.find(coordinate) == notFound;
