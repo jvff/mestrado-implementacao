@@ -70,3 +70,35 @@ TEST(CoordinateTest, hasLessThanOperator) {
     assertThat(first).isNotLessThan(first);
     assertThat(second).isNotLessThan(second);
 }
+
+TEST(CoordinateTest, lessThanOperatorConsidersBothCoordinateValues) {
+    unsigned int left = 193;
+    unsigned int up = 982;
+    unsigned int right = 201;
+    unsigned int down = 989;
+
+    const auto topLeft = Coordinate(left, up);
+    const auto topRight = Coordinate(right, up);
+    const auto bottomLeft = Coordinate(left, down);
+    const auto bottomRight = Coordinate(right, down);
+
+    assertThat(topLeft).isLessThan(bottomRight);
+    assertThat(topLeft).isNotLessThan(topLeft);
+    assertThat(topLeft).isNotLessThan(topRight);
+    assertThat(topLeft).isNotLessThan(bottomLeft);
+
+    assertThat(topRight).isNotLessThan(topLeft);
+    assertThat(topRight).isNotLessThan(topRight);
+    assertThat(topRight).isNotLessThan(bottomLeft);
+    assertThat(topRight).isNotLessThan(bottomRight);
+
+    assertThat(bottomLeft).isNotLessThan(topLeft);
+    assertThat(bottomLeft).isNotLessThan(topRight);
+    assertThat(bottomLeft).isNotLessThan(bottomLeft);
+    assertThat(bottomLeft).isNotLessThan(bottomRight);
+
+    assertThat(bottomRight).isNotLessThan(topLeft);
+    assertThat(bottomRight).isNotLessThan(topRight);
+    assertThat(bottomRight).isNotLessThan(bottomLeft);
+    assertThat(bottomRight).isNotLessThan(bottomRight);
+}
