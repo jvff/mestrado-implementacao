@@ -56,6 +56,18 @@ TEST(CoordinateTest, hasAdditionOperator) {
     assertThat(result.y).isEqualTo(firstY + secondY);
 }
 
+TEST(CoordinateTest, isComparable) {
+    unsigned int x = 256;
+    unsigned int y = 789;
+
+    const auto first = Coordinate(x, y);
+    const auto second = Coordinate(x, y);
+
+    assertThat(first).isEqualTo(first);
+    assertThat(first).isEqualTo(second);
+    assertThat(second).isEqualTo(second);
+}
+
 TEST(CoordinateTest, hasLessThanOperator) {
     unsigned int firstX = 193;
     unsigned int firstY = 982;
