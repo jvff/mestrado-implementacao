@@ -2,20 +2,22 @@
 #define MORPHOLOGICAL_RECONSTRUCTION_IMPLEMENTATION_HPP
 
 #include <queue>
-#include <tuple>
 
+#include "Coordinate.hpp"
 #include "FilterImplementation.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
 class MorphologicalReconstructionImplementation
         : public FilterImplementation<SourceImageType, DestinationImageType> {
 private:
-    using Pixel = std::tuple<unsigned int, unsigned int>;
     using PixelType = typename DestinationImageType::PixelType;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    std::queue<Pixel> pixelsToBeUpdated;
+    enum class Direction { LEFT, RIGHT, UP, DOWN };
+
+private:
+    std::queue<Coordinate> pixelsToBeUpdated;
 
     using SuperClass::sourceImage;
     using SuperClass::destinationImage;
@@ -53,86 +55,93 @@ private:
     }
 
     void firstPass() {
-        for (unsigned int x = 0; x < maxX; ++x) {
-            for (unsigned int y = 0; y < maxY; ++y) {
-                propagateRight(x, y);
-                propagateDown(x, y);
+        auto pixel = Coordinate(0, 0);
+
+        for (pixel.x = 0; pixel.x < maxX; ++pixel.x) {
+            for (pixel.y = 0; pixel.y < maxY; ++pixel.y) {
+                propagate(pixel, Direction::RIGHT);
+                propagate(pixel, Direction::DOWN);
             }
         }
 
-        propagateRight(maxX - 1, maxY);
-        propagateDown(maxX, maxY - 1);
+        propagate(Coordinate(maxX - 1, maxY), Direction::RIGHT);
+        propagate(Coordinate(maxX, maxY - 1), Direction::DOWN);
     }
 
     void secondPass() {
-        for (unsigned int x = maxX; x > 0; --x) {
-            for (unsigned int y = maxY; y > 0; --y) {
-                if (propagateLeft(x, y))
-                    pixelsToBeUpdated.push(std::make_tuple(x - 1, y));
+        Coordinate pixel;
 
-                if (propagateUp(x, y))
-                    pixelsToBeUpdated.push(std::make_tuple(x, y - 1));
+        for (pixel.x = maxX; pixel.x > 0; --pixel.x) {
+            for (pixel.y = maxY; pixel.y > 0; --pixel.y) {
+                tryToPropagateAndQueue(pixel, Direction::LEFT);
+                tryToPropagateAndQueue(pixel, Direction::UP);
             }
         }
     }
 
     void thirdPass() {
-        unsigned int x, y;
-
         while (!pixelsToBeUpdated.empty()) {
-            std::tie(x, y) = pixelsToBeUpdated.front();
+            auto pixel = pixelsToBeUpdated.front();
 
-            if (propagateLeft(x, y))
-                pixelsToBeUpdated.push(std::make_tuple(x - 1, y));
-
-            if (propagateRight(x, y))
-                pixelsToBeUpdated.push(std::make_tuple(x + 1, y));
-
-            if (propagateUp(x, y))
-                pixelsToBeUpdated.push(std::make_tuple(x, y - 1));
-
-            if (propagateDown(x, y))
-                pixelsToBeUpdated.push(std::make_tuple(x, y + 1));
+            tryToPropagateAndQueue(pixel, Direction::LEFT);
+            tryToPropagateAndQueue(pixel, Direction::RIGHT);
+            tryToPropagateAndQueue(pixel, Direction::UP);
+            tryToPropagateAndQueue(pixel, Direction::DOWN);
 
             pixelsToBeUpdated.pop();
         }
     }
 
-    bool propagateRight(unsigned int x, unsigned int y) {
-        return propagatePixel(x, y, x + 1, y);
+    void propagate(const Coordinate& pixel, Direction direction) {
+        propagatePixel(pixel, getNeighbor(pixel, direction));
     }
 
-    bool propagateDown(unsigned int x, unsigned int y) {
-        return propagatePixel(x, y, x, y + 1);
+    void tryToPropagateAndQueue(const Coordinate& pixel, Direction direction) {
+        auto neighbor = getNeighbor(pixel, direction);
+
+        if (propagatePixel(pixel, neighbor))
+            pixelsToBeUpdated.push(neighbor);
     }
 
-    bool propagateLeft(unsigned int x, unsigned int y) {
-        return propagatePixel(x, y, x - 1, y);
+    Coordinate getNeighbor(const Coordinate& pixel, Direction direction) {
+        auto neighbor = pixel;
+
+        switch (direction) {
+            case Direction::LEFT:
+                neighbor.x -= 1;
+                break;
+            case Direction::RIGHT:
+                neighbor.x += 1;
+                break;
+            case Direction::UP:
+                neighbor.y -= 1;
+                break;
+            case Direction::DOWN:
+                neighbor.y += 1;
+                break;
+        };
+
+        return neighbor;
     }
 
-    bool propagateUp(unsigned int x, unsigned int y) {
-        return propagatePixel(x, y, x, y - 1);
-    }
-
-    bool propagatePixel(unsigned int x, unsigned int y, unsigned int nextX,
-            unsigned int nextY) {
-        if (coordinateIsInvalid(nextX, nextY))
+    bool propagatePixel(const Coordinate& source, const Coordinate& target) {
+        if (coordinateIsInvalid(target))
             return false;
 
-        const auto markerCurrent = destinationImage.getPixelValue(x, y);
-        const auto markerNext = destinationImage.getPixelValue(nextX, nextY);
-        const auto sourcePixel = sourceImage.getPixelValue(nextX, nextY);
+        const auto markerCurrent = destinationImage.getPixelValue(source);
+        const auto markerNext = destinationImage.getPixelValue(target);
+        const auto sourceValue = sourceImage.getPixelValue(target);
 
-        const auto propagatedPixel = std::min(markerCurrent, sourcePixel);
-        const auto destinationPixel = std::max(propagatedPixel, markerNext);
+        const auto propagatedValue = std::min(markerCurrent, sourceValue);
+        const auto destinationValue = std::max(propagatedValue, markerNext);
 
-        destinationImage.setPixel(nextX, nextY, destinationPixel);
+        destinationImage.setPixel(target, destinationValue);
 
-        return markerNext != destinationPixel;
+        return markerNext != destinationValue;
     }
 
-    bool coordinateIsInvalid(unsigned int x, unsigned int y) {
-        return x > maxX || y > maxY;
+    bool coordinateIsInvalid(const Coordinate& coordinate) {
+        return coordinate.x > maxX || coordinate.y > maxY;
     }
 };
 
