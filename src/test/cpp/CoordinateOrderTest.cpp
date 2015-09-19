@@ -37,3 +37,37 @@ TEST(CoordinateOrderTest, isOrderable) {
     assertThat(bottomRight).isAfter(bottomLeft);
     assertThat(bottomRight).isEqualTo(bottomRight);
 }
+
+TEST(CoordinateOrderTest, hasAscendingOrderComparator) {
+    unsigned int left = 193;
+    unsigned int up = 982;
+    unsigned int right = 201;
+    unsigned int down = 989;
+
+    const auto topLeft = Coordinate(left, up);
+    const auto topRight = Coordinate(right, up);
+    const auto bottomLeft = Coordinate(left, down);
+    const auto bottomRight = Coordinate(right, down);
+
+    const auto compare = Coordinate::AscendingComparator();
+
+    assertThat(compare(topLeft, topLeft)).isEqualTo(false);
+    assertThat(compare(topLeft, topRight)).isEqualTo(true);
+    assertThat(compare(topLeft, bottomLeft)).isEqualTo(true);
+    assertThat(compare(topLeft, bottomRight)).isEqualTo(true);
+
+    assertThat(compare(topRight, topLeft)).isEqualTo(false);
+    assertThat(compare(topRight, topRight)).isEqualTo(false);
+    assertThat(compare(topRight, bottomLeft)).isEqualTo(false);
+    assertThat(compare(topRight, bottomRight)).isEqualTo(true);
+
+    assertThat(compare(bottomLeft, topLeft)).isEqualTo(false);
+    assertThat(compare(bottomLeft, topRight)).isEqualTo(true);
+    assertThat(compare(bottomLeft, bottomLeft)).isEqualTo(false);
+    assertThat(compare(bottomLeft, bottomRight)).isEqualTo(true);
+
+    assertThat(compare(bottomRight, topLeft)).isEqualTo(false);
+    assertThat(compare(bottomRight, topRight)).isEqualTo(false);
+    assertThat(compare(bottomRight, bottomLeft)).isEqualTo(false);
+    assertThat(compare(bottomRight, bottomRight)).isEqualTo(false);
+}
