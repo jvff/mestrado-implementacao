@@ -68,6 +68,29 @@ TEST(CoordinateTest, isComparable) {
     assertThat(second).isEqualTo(second);
 }
 
+TEST(CoordinateTest, equalsOperatorConsidersBothCoordinateValues) {
+    unsigned int left = 193;
+    unsigned int up = 982;
+    unsigned int right = 201;
+    unsigned int down = 989;
+
+    const auto topLeft = Coordinate(left, up);
+    const auto topRight = Coordinate(right, up);
+    const auto bottomLeft = Coordinate(left, down);
+
+    assertThat(topLeft).isEqualTo(topLeft);
+    assertThat(topLeft).isNotEqualTo(topRight);
+    assertThat(topLeft).isNotEqualTo(bottomLeft);
+
+    assertThat(topRight).isNotEqualTo(topLeft);
+    assertThat(topRight).isEqualTo(topRight);
+    assertThat(topRight).isNotEqualTo(bottomLeft);
+
+    assertThat(bottomLeft).isNotEqualTo(topLeft);
+    assertThat(bottomLeft).isNotEqualTo(topRight);
+    assertThat(bottomLeft).isEqualTo(bottomLeft);
+}
+
 TEST(CoordinateTest, hasLessThanOperator) {
     unsigned int firstX = 193;
     unsigned int firstY = 982;
