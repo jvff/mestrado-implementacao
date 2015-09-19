@@ -55,3 +55,18 @@ TEST(CoordinateTest, hasAdditionOperator) {
     assertThat(result.x).isEqualTo(firstX + secondX);
     assertThat(result.y).isEqualTo(firstY + secondY);
 }
+
+TEST(CoordinateTest, hasLessThanOperator) {
+    unsigned int firstX = 193;
+    unsigned int firstY = 982;
+    unsigned int secondX = 201;
+    unsigned int secondY = 989;
+
+    const auto first = Coordinate(firstX, firstY);
+    const auto second = Coordinate(secondX, secondY);
+
+    assertThat(first).isLessThan(second);
+    assertThat(second).isNotLessThan(first);
+    assertThat(first).isNotLessThan(first);
+    assertThat(second).isNotLessThan(second);
+}
