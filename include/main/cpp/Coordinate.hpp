@@ -15,8 +15,8 @@ struct Coordinate {
         return Coordinate(x + displacement.x, y + displacement.y);
     }
 
-    bool operator==(const Coordinate&) const {
-        return true;
+    bool operator==(const Coordinate& other) const {
+        return x == other.x && y == other.y;
     }
 
     bool operator<(const Coordinate& other) const {
