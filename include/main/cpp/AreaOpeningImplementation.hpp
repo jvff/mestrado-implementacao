@@ -4,6 +4,7 @@
 #include <functional>
 #include <set>
 
+#include "Coordinate.hpp"
 #include "FilterImplementation.hpp"
 #include "Image.hpp"
 #include "RegionalMaximumsFilter.hpp"
@@ -12,7 +13,6 @@ template <typename SourceImageType, typename DestinationImageType>
 class AreaOpeningImplementation : public FilterImplementation<SourceImageType,
         DestinationImageType> {
 private:
-    using Coordinate = std::pair<unsigned int, unsigned int>;
     using DestinationPixelType = typename DestinationImageType::PixelType;
     using Pixel = std::tuple<DestinationPixelType, unsigned int, unsigned int>;
     using RegionalMaximumsFilterType = RegionalMaximumsFilter<SourceImageType,
@@ -44,8 +44,7 @@ public:
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
-            noPeaksFound(std::make_pair(width, height)),
-            regionalMaximums(width, height),
+            noPeaksFound(width, height), regionalMaximums(width, height),
             maximumPeakSize(maximumPeakSize) {
     }
 
@@ -184,10 +183,7 @@ private:
     }
 
     Pixel pixelAt(const Coordinate& coordinate) {
-        const auto x = std::get<0>(coordinate);
-        const auto y = std::get<1>(coordinate);
-
-        return pixelAt(x, y);
+        return pixelAt(coordinate.x, coordinate.y);
     }
 
     Pixel pixelAt(unsigned int x, unsigned int y) {
