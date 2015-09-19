@@ -36,6 +36,13 @@ struct Coordinate {
         else
             return y > other.y;
     }
+
+    struct AscendingComparator {
+        bool operator() (const Coordinate& first, const Coordinate& second)
+                const {
+            return first.isBefore(second);
+        }
+    };
 };
 
 #endif
