@@ -22,6 +22,20 @@ struct Coordinate {
     bool operator<(const Coordinate& other) const {
         return x < other.x && y < other.y;
     }
+
+    bool isBefore(const Coordinate& other) const {
+        if (x != other.x)
+            return x < other.x;
+        else
+            return y < other.y;
+    }
+
+    bool isAfter(const Coordinate& other) const {
+        if (x != other.x)
+            return x > other.x;
+        else
+            return y > other.y;
+    }
 };
 
 #endif
