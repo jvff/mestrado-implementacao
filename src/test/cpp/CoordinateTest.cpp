@@ -105,6 +105,29 @@ TEST(CoordinateTest, hasIsDifferentThanOperator) {
     assertThat(second).isNotDifferentThan(second);
 }
 
+TEST(CoordinateTest, isDifferentThanOperatorConsidersBothCoordinateValues) {
+    unsigned int left = 194;
+    unsigned int up = 981;
+    unsigned int right = 203;
+    unsigned int down = 987;
+
+    const auto topLeft = Coordinate(left, up);
+    const auto topRight = Coordinate(right, up);
+    const auto bottomLeft = Coordinate(left, down);
+
+    assertThat(topLeft).isNotDifferentThan(topLeft);
+    assertThat(topLeft).isDifferentThan(topRight);
+    assertThat(topLeft).isDifferentThan(bottomLeft);
+
+    assertThat(topRight).isDifferentThan(topLeft);
+    assertThat(topRight).isNotDifferentThan(topRight);
+    assertThat(topRight).isDifferentThan(bottomLeft);
+
+    assertThat(bottomLeft).isDifferentThan(topLeft);
+    assertThat(bottomLeft).isDifferentThan(topRight);
+    assertThat(bottomLeft).isNotDifferentThan(bottomLeft);
+}
+
 TEST(CoordinateTest, hasLessThanOperator) {
     unsigned int firstX = 193;
     unsigned int firstY = 982;
