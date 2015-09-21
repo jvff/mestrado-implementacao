@@ -19,6 +19,14 @@ struct Pixel {
     Pixel(const Coordinate& coordinate, const Type& value) : x(coordinate.x),
             y(coordinate.y), value(value) {
     }
+
+    bool isBefore(const Pixel<Type>& other) const {
+        return value < other.value;
+    }
+
+    bool isAfter(const Pixel<Type>& other) const {
+        return value > other.value;
+    }
 };
 
 #endif
