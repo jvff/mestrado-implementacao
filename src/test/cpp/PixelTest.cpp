@@ -4,6 +4,7 @@
 
 #include "Pixel.hpp"
 
+#include "AssertionsSpecificForPixel.hpp"
 #include "DummyTypes.hpp"
 
 TEST(PixelTest, structTemplateExists) {
@@ -49,4 +50,33 @@ TEST(PixelTest, hasCoordinateConstructor) {
     assertThat(pixel.x).isEqualTo(x);
     assertThat(pixel.y).isEqualTo(y);
     assertThat(pixel.value).isEqualTo(value);
+}
+
+TEST(PixelTest, isOrderable) {
+    const Pixel<unsigned char> first(0, 0, 10);
+    const Pixel<unsigned char> second(0, 0, 100);
+    const Pixel<unsigned char> third(0, 0, 101);
+
+    assertThat(first).isBefore(second);
+    assertThat(first).isBefore(third);
+    assertThat(second).isBefore(third);
+
+    assertThat(third).isAfter(first);
+    assertThat(third).isAfter(second);
+    assertThat(second).isAfter(first);
+
+    assertThat(first).isNotAfter(second);
+    assertThat(first).isNotAfter(third);
+    assertThat(second).isNotAfter(third);
+
+    assertThat(third).isNotBefore(first);
+    assertThat(third).isNotBefore(second);
+    assertThat(second).isNotBefore(first);
+
+    assertThat(first).isNotBefore(first);
+    assertThat(second).isNotBefore(second);
+    assertThat(third).isNotBefore(third);
+    assertThat(first).isNotAfter(first);
+    assertThat(second).isNotAfter(second);
+    assertThat(third).isNotAfter(third);
 }
