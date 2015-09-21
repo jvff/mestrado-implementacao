@@ -91,6 +91,20 @@ TEST(CoordinateTest, equalsOperatorConsidersBothCoordinateValues) {
     assertThat(bottomLeft).isEqualTo(bottomLeft);
 }
 
+TEST(CoordinateTest, hasIsDifferentThanOperator) {
+    unsigned int firstX = 167;
+    unsigned int firstY = 12;
+    unsigned int secondX = 911;
+    unsigned int secondY = 482;
+
+    const auto first = Coordinate(firstX, firstY);
+    const auto second = Coordinate(secondX, secondY);
+
+    assertThat(first).isDifferentThan(second);
+    assertThat(first).isNotDifferentThan(first);
+    assertThat(second).isNotDifferentThan(second);
+}
+
 TEST(CoordinateTest, hasLessThanOperator) {
     unsigned int firstX = 193;
     unsigned int firstY = 982;
