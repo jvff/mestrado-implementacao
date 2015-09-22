@@ -52,3 +52,23 @@ TEST_F(PixelTest, isOrderable) {
 
     verifyOrder({first, second, third});
 }
+
+TEST_F(PixelTest, orderChecksAllFields) {
+    const unsigned int left = 12;
+    const unsigned int right = 94;
+    const unsigned int up = 47;
+    const unsigned int down = 89;
+    const unsigned char deep = 2;
+    const unsigned char shallow = 100;
+
+    verifyOrder({
+        Pixel<unsigned char>(left, up, deep),
+        Pixel<unsigned char>(left, down, deep),
+        Pixel<unsigned char>(right, up, deep),
+        Pixel<unsigned char>(right, down, deep),
+        Pixel<unsigned char>(left, up, shallow),
+        Pixel<unsigned char>(left, down, shallow),
+        Pixel<unsigned char>(right, up, shallow),
+        Pixel<unsigned char>(right, down, shallow)
+    });
+}
