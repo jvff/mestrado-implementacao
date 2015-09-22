@@ -1,12 +1,5 @@
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
-
-#include "AreaOpeningFilter.hpp"
-#include "SimpleArrayImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "AreaOpeningFilterTest.hpp"
+#include "AreaOpeningTests.hpp"
 
 TEST(AreaOpeningFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
@@ -66,3 +59,6 @@ TEST(AreaOpeningFilterTest, bigPlateauIsntCleared) {
 
     assertThat(result).isEqualTo(expectedImage);
 }
+
+INSTANTIATE_TYPED_TEST_CASE_P(AreaOpeningFilterTest, AreaOpeningTests,
+        TestData<unsigned char>);
