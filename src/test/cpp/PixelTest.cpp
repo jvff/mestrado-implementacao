@@ -1,21 +1,14 @@
-#include <gtest/gtest.h>
+#include "PixelTest.hpp"
 
-#include "asserts.hpp"
-
-#include "Pixel.hpp"
-
-#include "AssertionsSpecificForPixel.hpp"
-#include "DummyTypes.hpp"
-
-TEST(PixelTest, structTemplateExists) {
+TEST_F(PixelTest, structTemplateExists) {
     AssertThat<Pixel<DummyType> >::isClassOrStruct();
 }
 
-TEST(PixelTest, hasDefaultConstructor) {
+TEST_F(PixelTest, hasDefaultConstructor) {
     AssertThat<Pixel<DummyType> >::isConstructible(WithoutParameters());
 }
 
-TEST(PixelTest, hasValueMembers) {
+TEST_F(PixelTest, hasValueMembers) {
     unsigned int x = 1;
     unsigned int y = 2;
     DummyType value = { 3 };
@@ -27,7 +20,7 @@ TEST(PixelTest, hasValueMembers) {
     assertThat(pixel.value).isEqualTo(value);
 }
 
-TEST(PixelTest, hasValueConstructor) {
+TEST_F(PixelTest, hasValueConstructor) {
     unsigned int x = 12;
     unsigned int y = 6;
     DummyType value = { 1000 };
@@ -39,7 +32,7 @@ TEST(PixelTest, hasValueConstructor) {
     assertThat(pixel.value).isEqualTo(value);
 }
 
-TEST(PixelTest, hasCoordinateConstructor) {
+TEST_F(PixelTest, hasCoordinateConstructor) {
     unsigned int x = 12;
     unsigned int y = 6;
     Coordinate coordinate(x, y);
@@ -52,31 +45,10 @@ TEST(PixelTest, hasCoordinateConstructor) {
     assertThat(pixel.value).isEqualTo(value);
 }
 
-TEST(PixelTest, isOrderable) {
+TEST_F(PixelTest, isOrderable) {
     const Pixel<unsigned char> first(0, 0, 10);
     const Pixel<unsigned char> second(0, 0, 100);
     const Pixel<unsigned char> third(0, 0, 101);
 
-    assertThat(first).isBefore(second);
-    assertThat(first).isBefore(third);
-    assertThat(second).isBefore(third);
-
-    assertThat(third).isAfter(first);
-    assertThat(third).isAfter(second);
-    assertThat(second).isAfter(first);
-
-    assertThat(first).isNotAfter(second);
-    assertThat(first).isNotAfter(third);
-    assertThat(second).isNotAfter(third);
-
-    assertThat(third).isNotBefore(first);
-    assertThat(third).isNotBefore(second);
-    assertThat(second).isNotBefore(first);
-
-    assertThat(first).isNotBefore(first);
-    assertThat(second).isNotBefore(second);
-    assertThat(third).isNotBefore(third);
-    assertThat(first).isNotAfter(first);
-    assertThat(second).isNotAfter(second);
-    assertThat(third).isNotAfter(third);
+    verifyOrder({first, second, third});
 }
