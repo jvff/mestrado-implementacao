@@ -28,12 +28,6 @@ public:
                 destinationImage);
     }
 
-    void apply(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) {
-        AreaOpeningImplementation<SourceImageType, DestinationImageType>(
-                maximumPeakSize, sourceImage, destinationImage).apply();
-    }
-
     using SuperClass::apply;
 };
 
