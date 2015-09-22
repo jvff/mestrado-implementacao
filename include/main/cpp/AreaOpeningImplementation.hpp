@@ -7,6 +7,7 @@
 #include "Coordinate.hpp"
 #include "FilterImplementation.hpp"
 #include "Image.hpp"
+#include "Pixel.hpp"
 #include "RegionalMaximumsFilter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
@@ -14,7 +15,11 @@ class AreaOpeningImplementation : public FilterImplementation<SourceImageType,
         DestinationImageType> {
 private:
     using DestinationPixelType = typename DestinationImageType::PixelType;
-    using Pixel = std::tuple<DestinationPixelType, unsigned int, unsigned int>;
+    using DestinationPixel = Pixel<DestinationPixelType>;
+    using AscendingPixelComparator =
+            typename DestinationPixel::AscendingComparator;
+    using DescendingPixelComparator =
+            typename DestinationPixel::DescendingComparator;
     using RegionalMaximumsFilterType = RegionalMaximumsFilter<SourceImageType,
             DestinationImageType>;
     using SuperClass = FilterImplementation<SourceImageType,
@@ -27,8 +32,8 @@ private:
     RegionalMaximumsFilterType regionalMaximumsFilter;
     DestinationImageType regionalMaximums;
 
-    std::set<Pixel, std::greater<Pixel> > pixelsToCheck;
-    std::set<Pixel> pixelsToUpdate;
+    std::set<DestinationPixel, DescendingPixelComparator> pixelsToCheck;
+    std::set<DestinationPixel, AscendingPixelComparator> pixelsToUpdate;
 
     unsigned int maximumPeakSize;
 
@@ -109,7 +114,7 @@ private:
             pixelsToCheck.erase(firstPosition);
 
             currentLevel = level;
-            level = std::get<0>(pixel);
+            level = pixel.value;
 
             if (level <= currentLevel)
                 collectPixel(pixel);
@@ -135,14 +140,14 @@ private:
         return !pixelsToCheck.empty();
     }
 
-    void collectPixel(const Pixel& pixel) {
+    void collectPixel(const DestinationPixel& pixel) {
         pixelsToUpdate.insert(pixel);
         queueNeighbors(pixel);
     }
 
-    void queueNeighbors(const Pixel& pixel) {
-        const auto x = std::get<1>(pixel);
-        const auto y = std::get<2>(pixel);
+    void queueNeighbors(const DestinationPixel& pixel) {
+        const auto x = pixel.x;
+        const auto y = pixel.y;
 
         maybeQueueNeighbor(x < maxX, x + 1, y);
         maybeQueueNeighbor(y < maxY, x, y + 1);
@@ -155,12 +160,12 @@ private:
             maybeQueuePixel(pixelAt(x, y));
     }
 
-    void maybeQueuePixel(const Pixel& pixel) {
+    void maybeQueuePixel(const DestinationPixel& pixel) {
         if (pixelHasntBeenProcessed(pixel))
             pixelsToCheck.insert(pixel);
     }
 
-    bool pixelHasntBeenProcessed(const Pixel& pixel) {
+    bool pixelHasntBeenProcessed(const DestinationPixel& pixel) {
         auto notFound = pixelsToUpdate.end();
 
         return pixelsToUpdate.find(pixel) == notFound;
@@ -169,27 +174,22 @@ private:
     DestinationPixelType getValueToClearPixels() {
         auto firstPosition = pixelsToUpdate.begin();
         auto pixel = *firstPosition;
-        auto value = std::get<0>(pixel);
 
-        return value;
+        return pixel.value;
     }
 
-    void updatePixel(const Pixel& pixel, const DestinationPixelType& value) {
-        const auto x = std::get<1>(pixel);
-        const auto y = std::get<2>(pixel);
-
-        destinationImage.setPixel(x, y, value);
-        regionalMaximums.setPixel(x, y, 0);
+    void updatePixel(const DestinationPixel& pixel,
+            const DestinationPixelType& value) {
+        destinationImage.setPixel(pixel.x, pixel.y, value);
+        regionalMaximums.setPixel(pixel.x, pixel.y, 0);
     }
 
-    Pixel pixelAt(const Coordinate& coordinate) {
-        return pixelAt(coordinate.x, coordinate.y);
+    DestinationPixel pixelAt(const Coordinate& coordinate) {
+        return destinationImage.getPixel(coordinate);
     }
 
-    Pixel pixelAt(unsigned int x, unsigned int y) {
-        const auto height = destinationImage.getPixelValue(x, y);
-
-        return Pixel(height, x, y);
+    DestinationPixel pixelAt(unsigned int x, unsigned int y) {
+        return destinationImage.getPixel(x, y);
     }
 };
 
