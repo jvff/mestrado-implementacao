@@ -61,3 +61,13 @@ TEST_F(AreaOpeningImplementationTest, oneOfTwoPlateausIsCleared) {
         .drawSquare(1, 1, 2, 252)
         .drawSquare(4, 2, 3, 251);
 }
+
+TEST_F(AreaOpeningImplementationTest, adjacentBigAndSmallPlateausAreCleared) {
+    TestData<unsigned char>()
+        .setDimensions(8, 8)
+        .setMaximumPeakSize(65)
+        .setBackground(30)
+        .drawSquare(1, 1, 6, 50)
+        .drawSquare(1, 6, 1, 45)
+        .drawSquare(1, 5, 2, 40);
+}
