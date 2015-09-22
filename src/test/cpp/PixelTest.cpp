@@ -72,3 +72,23 @@ TEST_F(PixelTest, orderChecksAllFields) {
         Pixel<unsigned char>(right, down, shallow)
     });
 }
+
+TEST_F(PixelTest, hasAscendingOrderComparator) {
+    const unsigned int left = 120;
+    const unsigned int right = 194;
+    const unsigned int up = 247;
+    const unsigned int down = 248;
+    const unsigned char deep = 200;
+    const unsigned char shallow = 201;
+
+    verifyOrderUsingComparator({
+        Pixel<unsigned char>(left, up, deep),
+        Pixel<unsigned char>(left, down, deep),
+        Pixel<unsigned char>(right, up, deep),
+        Pixel<unsigned char>(right, down, deep),
+        Pixel<unsigned char>(left, up, shallow),
+        Pixel<unsigned char>(left, down, shallow),
+        Pixel<unsigned char>(right, up, shallow),
+        Pixel<unsigned char>(right, down, shallow)
+    });
+}

@@ -18,55 +18,98 @@ protected:
     template <typename T>
     using Iterator = typename std::vector<Pixel<T> >::iterator;
 
+    template <typename T>
+    using PixelList = std::initializer_list<Pixel<T> >;
+
+private:
+    template <typename PixelType>
+    struct Comparator {
+        virtual void compareSinglePixel(const Pixel<PixelType>& pixel) const
+                = 0;
+        virtual void compareTwoPixels(const Pixel<PixelType>& before,
+                const Pixel<PixelType>& after) const = 0;
+    };
+
+    template <typename PixelType>
+    struct DirectComparator : public Comparator<PixelType> {
+        void compareSinglePixel(const Pixel<PixelType>& pixel) const override {
+            assertThat(pixel).isNotBefore(pixel);
+            assertThat(pixel).isNotAfter(pixel);
+        }
+
+        void compareTwoPixels(const Pixel<PixelType>& before,
+                const Pixel<PixelType>& after) const override {
+            assertThat(before).isBefore(after);
+            assertThat(before).isNotAfter(after);
+            assertThat(after).isAfter(before);
+            assertThat(after).isNotBefore(before);
+        }
+    };
+
+    template <typename PixelType>
+    struct IndirectAscendingComparator : public Comparator<PixelType> {
+        typename Pixel<PixelType>::AscendingComparator compare;
+
+        void compareSinglePixel(const Pixel<PixelType>& pixel) const override {
+            assertThat(compare(pixel, pixel)).isEqualTo(false);
+        }
+
+        void compareTwoPixels(const Pixel<PixelType>& before,
+                const Pixel<PixelType>& after) const override {
+            assertThat(compare(before, after)).isEqualTo(true);
+            assertThat(compare(after, before)).isEqualTo(false);
+        }
+    };
+
 protected:
     template <typename PixelType>
-    void verifyOrder(std::initializer_list<Pixel<PixelType> > orderedList) {
+    void verifyOrder(PixelList<PixelType> orderedList) {
+        verifyOrder(orderedList, DirectComparator<PixelType>());
+    }
+
+    template <typename PixelType>
+    void verifyOrderUsingComparator(PixelList<PixelType> orderedList) {
+        verifyOrder(orderedList, IndirectAscendingComparator<PixelType>());
+    }
+
+private:
+    template <typename PixelType>
+    void verifyOrder(PixelList<PixelType> orderedList,
+            const Comparator<PixelType>& comparator) {
         std::vector<Pixel<PixelType> > orderedPixels(orderedList);
         const auto start = orderedPixels.begin();
         const auto end = orderedPixels.end();
 
         for (auto position = start; position != end; ++position)
-            verifyOrderAtPosition<PixelType>(start, position, end);
+            verifyOrderAtPosition<PixelType>(start, position, end, comparator);
     }
 
     template <typename PixelType>
     void verifyOrderAtPosition(const Iterator<PixelType>& start,
             const Iterator<PixelType>& position,
-            const Iterator<PixelType>& end) {
+            const Iterator<PixelType>& end,
+            const Comparator<PixelType>& comparator) {
         auto pixel = *position;
 
-        verifyPixelsBeforePixel(pixel, start, position);
-        verifyOrderOfSinglePixel(pixel);
-        verifyPixelsAfterPixel(pixel, position + 1, end);
+        verifyPixelsBeforePixel(pixel, start, position, comparator);
+        comparator.compareSinglePixel(pixel);
+        verifyPixelsAfterPixel(pixel, position + 1, end, comparator);
     }
 
     template <typename PixelType>
     void verifyPixelsBeforePixel(const Pixel<PixelType>& pixel,
-            const Iterator<PixelType>& start, const Iterator<PixelType>& end) {
+            const Iterator<PixelType>& start, const Iterator<PixelType>& end,
+            const Comparator<PixelType>& comparator) {
         for (auto position = start; position != end; ++position)
-            verifyOrderOfTwoPixels(*position, pixel);
+            comparator.compareTwoPixels(*position, pixel);
     }
 
     template <typename PixelType>
     void verifyPixelsAfterPixel(const Pixel<PixelType>& pixel,
-            const Iterator<PixelType>& start, const Iterator<PixelType>& end) {
+            const Iterator<PixelType>& start, const Iterator<PixelType>& end,
+            const Comparator<PixelType>& comparator) {
         for (auto position = start; position != end; ++position)
-            verifyOrderOfTwoPixels(pixel, *position);
-    }
-
-    template <typename PixelType>
-    void verifyOrderOfSinglePixel(const Pixel<PixelType>& pixel) {
-        assertThat(pixel).isNotBefore(pixel);
-        assertThat(pixel).isNotAfter(pixel);
-    }
-
-    template <typename PixelType>
-    void verifyOrderOfTwoPixels(const Pixel<PixelType>& before,
-            const Pixel<PixelType>& after) {
-        assertThat(before).isBefore(after);
-        assertThat(before).isNotAfter(after);
-        assertThat(after).isAfter(before);
-        assertThat(after).isNotBefore(before);
+            comparator.compareTwoPixels(pixel, *position);
     }
 };
 
