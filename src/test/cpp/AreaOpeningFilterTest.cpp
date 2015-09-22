@@ -8,13 +8,16 @@ TEST(AreaOpeningFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST(AreaOpeningFilterTest, isFilter) {
+TEST(AreaOpeningFilterTest, isComplexFilter) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplementationType = AreaOpeningImplementation<SourceImageType,
+            DestinationImageType>;
     using SubClass = AreaOpeningFilter<SourceImageType, DestinationImageType>;
-    using SuperClass = Filter<SourceImageType, DestinationImageType>;
+    using SuperClass = ComplexFilter<SourceImageType, DestinationImageType,
+            ImplementationType>;
 
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
