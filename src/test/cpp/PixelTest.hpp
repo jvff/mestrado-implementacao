@@ -46,9 +46,9 @@ private:
         }
     };
 
-    template <typename PixelType>
-    struct IndirectAscendingComparator : public Comparator<PixelType> {
-        typename Pixel<PixelType>::AscendingComparator compare;
+    template <typename PixelType, typename ComparatorClass, bool isAscending>
+    struct IndirectComparator : public Comparator<PixelType> {
+        ComparatorClass compare;
 
         void compareSinglePixel(const Pixel<PixelType>& pixel) const override {
             assertThat(compare(pixel, pixel)).isEqualTo(false);
@@ -56,9 +56,21 @@ private:
 
         void compareTwoPixels(const Pixel<PixelType>& before,
                 const Pixel<PixelType>& after) const override {
-            assertThat(compare(before, after)).isEqualTo(true);
-            assertThat(compare(after, before)).isEqualTo(false);
+            const bool isDescending = !isAscending;
+
+            assertThat(compare(before, after)).isEqualTo(isAscending);
+            assertThat(compare(after, before)).isEqualTo(isDescending);
         }
+    };
+
+    template <typename PixelType>
+    struct IndirectAscendingComparator : public IndirectComparator<PixelType,
+            typename Pixel<PixelType>::AscendingComparator, true> {
+    };
+
+    template <typename PixelType>
+    struct IndirectDescendingComparator : public IndirectComparator<PixelType,
+            typename Pixel<PixelType>::DescendingComparator, false> {
     };
 
 protected:
@@ -68,8 +80,14 @@ protected:
     }
 
     template <typename PixelType>
-    void verifyOrderUsingComparator(PixelList<PixelType> orderedList) {
+    void verifyOrderUsingAscendingComparator(PixelList<PixelType> orderedList) {
         verifyOrder(orderedList, IndirectAscendingComparator<PixelType>());
+    }
+
+    template <typename PixelType>
+    void verifyOrderUsingDescendingComparator(
+            PixelList<PixelType> orderedList) {
+        verifyOrder(orderedList, IndirectDescendingComparator<PixelType>());
     }
 
 private:
