@@ -37,6 +37,13 @@ struct Pixel {
         else
             return y > other.y;
     }
+
+    struct AscendingComparator {
+        bool operator() (const Pixel<Type>& first, const Pixel<Type>& second)
+                const {
+            return first.isBefore(second);
+        }
+    };
 };
 
 #endif
