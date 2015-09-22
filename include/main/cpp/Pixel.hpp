@@ -21,11 +21,21 @@ struct Pixel {
     }
 
     bool isBefore(const Pixel<Type>& other) const {
-        return value < other.value;
+        if (value != other.value)
+            return value < other.value;
+        else if (x != other.x)
+            return x < other.x;
+        else
+            return y < other.y;
     }
 
     bool isAfter(const Pixel<Type>& other) const {
-        return value > other.value;
+        if (value != other.value)
+            return value > other.value;
+        else if (x != other.x)
+            return x > other.x;
+        else
+            return y > other.y;
     }
 };
 
