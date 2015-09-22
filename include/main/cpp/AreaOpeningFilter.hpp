@@ -1,20 +1,37 @@
 #ifndef AREA_OPENING_FILTER_HPP
 #define AREA_OPENING_FILTER_HPP
 
+#include "AreaOpeningImplementation.hpp"
 #include "Filter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class AreaOpeningFilter : public Filter<SourceImageType, DestinationImageType> {
+class AreaOpeningFilter : public ComplexFilter<SourceImageType,
+        DestinationImageType, AreaOpeningImplementation<SourceImageType,
+                DestinationImageType> > {
 private:
-    using SuperClass = Filter<SourceImageType, DestinationImageType>;
+    using ImplementationType = AreaOpeningImplementation<SourceImageType,
+            DestinationImageType>;
+    using SuperClass = ComplexFilter<SourceImageType, DestinationImageType,
+            ImplementationType>;
+
+    unsigned int maximumPeakSize;
 
 public:
-    AreaOpeningFilter(unsigned int) {
+    AreaOpeningFilter(unsigned int maximumPeakSize)
+            : maximumPeakSize(maximumPeakSize) {
+    }
+
+    ImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) {
+        return ImplementationType(maximumPeakSize, sourceImage,
+                destinationImage);
     }
 
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        destinationImage = sourceImage;
+        AreaOpeningImplementation<SourceImageType, DestinationImageType>(
+                maximumPeakSize, sourceImage, destinationImage).apply();
     }
 
     using SuperClass::apply;
