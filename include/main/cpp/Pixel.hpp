@@ -44,6 +44,13 @@ struct Pixel {
             return first.isBefore(second);
         }
     };
+
+    struct DescendingComparator {
+        bool operator() (const Pixel<Type>& first, const Pixel<Type>& second)
+                const {
+            return first.isAfter(second);
+        }
+    };
 };
 
 #endif
