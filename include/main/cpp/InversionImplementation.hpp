@@ -6,6 +6,15 @@
 template <typename SourceImageType, typename DestinationImageType>
 class InversionImplementation
         : public FilterImplementation<SourceImageType, DestinationImageType> {
+private:
+    using SuperClass = FilterImplementation<SourceImageType,
+            DestinationImageType>;
+
+public:
+    using SuperClass::FilterImplementation;
+
+    void apply() override {
+    }
 };
 
 #endif
