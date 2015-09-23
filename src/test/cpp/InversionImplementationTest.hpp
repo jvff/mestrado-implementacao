@@ -9,6 +9,7 @@
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "InversionTestData.hpp"
 
 class InversionImplementationTest : public ::testing::Test {
 protected:
@@ -19,5 +20,8 @@ protected:
     using DummyImplementation = InversionImplementation<SourceImageType,
             DestinationImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = InversionTestData<PixelType, ImageType>;
 
 #endif
