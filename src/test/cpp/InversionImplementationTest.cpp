@@ -1,40 +1,18 @@
-#include <gtest/gtest.h>
+#include "InversionImplementationTest.hpp"
 
-#include "asserts.hpp"
-
-#include "InversionImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(InversionImplementationTest, classTemplateExists) {
-    using ImageType = FakeImage<DummyType>;
-    using DummyImplementation = InversionImplementation<Image<DummyType>,
-            ImageType>;
-
+TEST_F(InversionImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
 
-TEST(InversionImplementationTest, isFilterImplementation) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationType = InversionImplementation<SourceImageType,
-            DestinationImageType>;
+TEST_F(InversionImplementationTest, isFilterImplementation) {
+    using ImplementationType = DummyImplementation;
     using FilterImplementationType = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
     AssertThat<ImplementationType>::isSubClass(Of<FilterImplementationType>());
 }
 
-TEST(InversionImplementationTest, canBeConstructedWithoutExtraParameters) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyImplementation = InversionImplementation<SourceImageType,
-            DestinationImageType>;
+TEST_F(InversionImplementationTest, canBeConstructedWithoutExtraParameters) {
     using SourceImageParameter = const SourceImageType&;
     using DestinationImageParameter = DestinationImageType&;
 
