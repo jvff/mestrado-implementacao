@@ -76,3 +76,13 @@ TEST_F(InversionImplementationTest, uniformImageIsDisplacedByCustomRange) {
         .setPixel(1, 0, 37)
         .setPixel(1, 1, 37);
 }
+
+TEST_F(InversionImplementationTest, imageWithDifferentPixelsAndCustomRange) {
+    TestData<unsigned char>()
+        .setDimensions(2, 2)
+        .setRange(22, 250)
+        .setPixel(0, 0, 40)
+        .setPixel(0, 1, 34)
+        .setPixel(1, 0, 89)
+        .setPixel(1, 1, 200);
+}
