@@ -14,6 +14,7 @@ private:
             DestinationImageType>;
 
 private:
+    bool rangeWasNotManuallySet;
     SourcePixelType minimumValue;
     SourcePixelType maximumValue;
 
@@ -23,17 +24,28 @@ private:
     using SuperClass::destinationImage;
 
 public:
-    using SuperClass::FilterImplementation;
+    InversionImplementation(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage)
+            : SuperClass(sourceImage, destinationImage),
+            rangeWasNotManuallySet(true) {
+    }
 
     InversionImplementation(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage, const SourcePixelType&,
-            const SourcePixelType&)
-            : SuperClass(sourceImage, destinationImage) {
+            DestinationImageType& destinationImage,
+            const SourcePixelType& minimum, const SourcePixelType& maximum)
+            : SuperClass(sourceImage, destinationImage),
+            rangeWasNotManuallySet(false), minimumValue(minimum),
+            maximumValue(maximum) {
     }
 
     void apply() override {
-        discoverRange();
+        discoverRangeIfNecessary();
         invert();
+    }
+
+    void discoverRangeIfNecessary() {
+        if (rangeWasNotManuallySet)
+            discoverRange();
     }
 
     void discoverRange() {
