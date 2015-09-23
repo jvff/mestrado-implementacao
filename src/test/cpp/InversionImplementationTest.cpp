@@ -19,3 +19,14 @@ TEST_F(InversionImplementationTest, canBeConstructedWithoutExtraParameters) {
     AssertThat<DummyImplementation>::isConstructible(With<SourceImageParameter,
             DestinationImageParameter>());
 }
+
+TEST_F(InversionImplementationTest, canBeConstructedWithOptionalParameters) {
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+    using MinimumValueParameter = const SourcePixelType&;
+    using MaximumValueParameter = const SourcePixelType&;
+
+    AssertThat<DummyImplementation>::isConstructible(With<SourceImageParameter,
+            DestinationImageParameter, MinimumValueParameter,
+            MaximumValueParameter>());
+}
