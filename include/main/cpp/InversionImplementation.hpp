@@ -11,6 +11,10 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
+private:
+    using SuperClass::sourceImage;
+    using SuperClass::destinationImage;
+
 public:
     using SuperClass::FilterImplementation;
 
@@ -21,6 +25,7 @@ public:
     }
 
     void apply() override {
+        destinationImage = sourceImage;
     }
 };
 
