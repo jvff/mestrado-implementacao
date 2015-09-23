@@ -48,3 +48,12 @@ TEST_F(InversionImplementationTest, pixelsAreSwapped) {
         .setPixel(1, 0, 200)
         .setPixel(1, 1, 12);
 }
+
+TEST_F(InversionImplementationTest, pixelsAreSwappedAndMiddleValueIsKept) {
+    TestData<unsigned char>()
+        .setDimensions(2, 2)
+        .setPixel(0, 0, 12)
+        .setPixel(0, 1, 106)
+        .setPixel(1, 0, 106)
+        .setPixel(1, 1, 200);
+}
