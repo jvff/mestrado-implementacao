@@ -27,3 +27,17 @@ TEST(InversionImplementationTest, isFilterImplementation) {
 
     AssertThat<ImplementationType>::isSubClass(Of<FilterImplementationType>());
 }
+
+TEST(InversionImplementationTest, canBeConstructedWithoutExtraParameters) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using DummyImplementation = InversionImplementation<SourceImageType,
+            DestinationImageType>;
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<DummyImplementation>::isConstructible(With<SourceImageParameter,
+            DestinationImageParameter>());
+}
