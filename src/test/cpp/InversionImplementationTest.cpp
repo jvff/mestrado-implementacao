@@ -14,3 +14,16 @@ TEST(InversionImplementationTest, classTemplateExists) {
 
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
+
+TEST(InversionImplementationTest, isFilterImplementation) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using ImplementationType = InversionImplementation<SourceImageType,
+            DestinationImageType>;
+    using FilterImplementationType = FilterImplementation<SourceImageType,
+            DestinationImageType>;
+
+    AssertThat<ImplementationType>::isSubClass(Of<FilterImplementationType>());
+}
