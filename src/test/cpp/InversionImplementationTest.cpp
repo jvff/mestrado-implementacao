@@ -39,3 +39,12 @@ TEST_F(InversionImplementationTest, uniformImageIsntChanged) {
         .setPixel(1, 0, 100)
         .setPixel(1, 1, 100);
 }
+
+TEST_F(InversionImplementationTest, pixelsAreSwapped) {
+    TestData<unsigned char>()
+        .setDimensions(2, 2)
+        .setPixel(0, 0, 12)
+        .setPixel(0, 1, 200)
+        .setPixel(1, 0, 200)
+        .setPixel(1, 1, 12);
+}
