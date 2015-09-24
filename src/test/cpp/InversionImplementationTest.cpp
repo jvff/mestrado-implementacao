@@ -101,3 +101,15 @@ TEST_F(InversionImplementationTest, floatingPointImage) {
         .setPixel(2, 0, 1.1e7f)
         .setPixel(2, 1, 9.2e7f);
 }
+
+TEST_F(InversionImplementationTest, floatingPointImageWithCustomRange) {
+    TestData<float>()
+        .setDimensions(2, 3)
+        .setRange(-1.3e7f, 9.3e7f)
+        .setPixel(0, 0, 0.008f)
+        .setPixel(0, 1, 12.75f)
+        .setPixel(0, 2, -100.2f)
+        .setPixel(1, 0, 1.1e4f)
+        .setPixel(1, 1, 1.1e7f)
+        .setPixel(1, 2, 9.2e7f);
+}
