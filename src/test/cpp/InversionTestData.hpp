@@ -1,22 +1,17 @@
 #ifndef INVERSION_TEST_DATA_HPP
 #define INVERSION_TEST_DATA_HPP
 
-#include "InversionImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterImplementationTestData.hpp"
 #include "AbstractTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class InversionTestData : public AbstractFilterImplementationTestData<
-        InversionImplementation<ImageType, ImageType>, ImageType, ImageType> {
+template <typename SuperClass, typename PixelType,
+        typename ImageType = SimpleArrayImage<PixelType> >
+class InversionTestData : public SuperClass {
 private:
-    using ImplementationType = InversionImplementation<ImageType, ImageType>;
     using State = AbstractTestData::State;
-    using SuperClass = AbstractFilterImplementationTestData<ImplementationType,
-            ImageType, ImageType>;
-    using ThisType = InversionTestData<PixelType, ImageType>;
+    using ThisType = InversionTestData<SuperClass, PixelType, ImageType>;
 
 private:
     bool rangeWasSet;
@@ -58,18 +53,25 @@ protected:
     void finishSetUp() override {
     }
 
-    ImplementationType instantiateImplementation(const ImageType& sourceImage,
-            ImageType& destinationImage) override {
+    void runTest() override {
         if (!rangeWasSet)
             discoverRange();
 
         prepareExpectedImage();
 
-        if (rangeWasSet) {
-            return ImplementationType(sourceImage, destinationImage,
-                    minimumValue, maximumValue);
-        } else
-            return ImplementationType(sourceImage, destinationImage);
+        SuperClass::runTest();
+    }
+
+    bool shouldUseManualRange() override {
+        return rangeWasSet;
+    }
+
+    PixelType getMinimumValue() override {
+        return minimumValue;
+    }
+
+    PixelType getMaximumValue() override {
+        return maximumValue;
     }
 
 private:
