@@ -60,11 +60,13 @@ TEST_F(InversionImplementationTest, pixelsAreSwappedAndMiddleValueIsKept) {
 
 TEST_F(InversionImplementationTest, imageWithDifferentPixels) {
     TestData<unsigned char>()
-        .setDimensions(2, 2)
+        .setDimensions(3, 2)
         .setPixel(0, 0, 92)
         .setPixel(0, 1, 100)
         .setPixel(1, 0, 145)
-        .setPixel(1, 1, 200);
+        .setPixel(1, 1, 140)
+        .setPixel(2, 0, 155)
+        .setPixel(2, 1, 200);
 }
 
 TEST_F(InversionImplementationTest, uniformImageIsDisplacedByCustomRange) {
@@ -79,10 +81,12 @@ TEST_F(InversionImplementationTest, uniformImageIsDisplacedByCustomRange) {
 
 TEST_F(InversionImplementationTest, imageWithDifferentPixelsAndCustomRange) {
     TestData<unsigned char>()
-        .setDimensions(2, 2)
+        .setDimensions(2, 3)
         .setRange(22, 250)
         .setPixel(0, 0, 40)
         .setPixel(0, 1, 34)
+        .setPixel(0, 2, 249)
         .setPixel(1, 0, 89)
-        .setPixel(1, 1, 200);
+        .setPixel(1, 1, 200)
+        .setPixel(1, 2, 111);
 }
