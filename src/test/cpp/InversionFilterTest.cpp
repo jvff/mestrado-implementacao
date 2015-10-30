@@ -11,3 +11,11 @@ TEST_F(InversionFilterTest, isComplexFilter) {
 
     AssertThat<FilterClass>::isSubClass(Of<ParentFilterClass>());
 }
+
+TEST_F(InversionFilterTest, hasConstructorForManualValues) {
+    using MinimumValueParameter = const SourcePixelType&;
+    using MaximumValueParameter = const SourcePixelType&;
+
+    AssertThat<DummyFilterType>::isConstructible(
+            With<MinimumValueParameter, MaximumValueParameter>());
+}

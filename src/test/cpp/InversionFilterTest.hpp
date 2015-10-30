@@ -13,8 +13,10 @@
 
 class InversionFilterTest : public ::testing::Test {
 protected:
-    using SourceImageType = Image<DummyTypes<1> >;
-    using DestinationImageType = FakeImage<DummyTypes<2> >;
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
     using ImplementationType = InversionImplementation<SourceImageType,
             DestinationImageType>;
     using DummyFilterType = InversionFilter<SourceImageType,
