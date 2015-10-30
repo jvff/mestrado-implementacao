@@ -13,6 +13,9 @@ private:
     using SourcePixelType = typename SourceImageType::PixelType;
 
 public:
+    InversionFilter() {
+    }
+
     InversionFilter(const SourcePixelType&, const SourcePixelType&) {
     }
 };
