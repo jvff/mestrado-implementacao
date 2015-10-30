@@ -10,13 +10,31 @@ class InversionFilter
                 InversionImplementation<SourceImageType,
                         DestinationImageType> > {
 private:
+    using ImplementationType = InversionImplementation<SourceImageType,
+            DestinationImageType>;
     using SourcePixelType = typename SourceImageType::PixelType;
 
+    bool wasManuallyConfigured;
+    SourcePixelType minimumValue;
+    SourcePixelType maximumValue;
+
 public:
-    InversionFilter() {
+    InversionFilter() : wasManuallyConfigured(false) {
     }
 
-    InversionFilter(const SourcePixelType&, const SourcePixelType&) {
+    InversionFilter(const SourcePixelType& minimumValue,
+            const SourcePixelType& maximumValue) : wasManuallyConfigured(true),
+            minimumValue(minimumValue), maximumValue(maximumValue) {
+    }
+
+    ImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) override {
+        if (wasManuallyConfigured) {
+            return ImplementationType(sourceImage, destinationImage,
+                    minimumValue, maximumValue);
+        } else
+            return ImplementationType(sourceImage, destinationImage);
     }
 };
 
