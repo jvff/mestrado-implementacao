@@ -1,4 +1,5 @@
 #include "InversionFilterTest.hpp"
+#include "InversionTests.hpp"
 
 TEST_F(InversionFilterTest, classTemplateExists) {
     AssertThat<DummyFilterType>::isClassOrStruct();
@@ -23,3 +24,6 @@ TEST_F(InversionFilterTest, hasConstructorForManualValues) {
     AssertThat<DummyFilterType>::isConstructible(
             With<MinimumValueParameter, MaximumValueParameter>());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(InversionFilterTest, InversionTests,
+        TestData);
