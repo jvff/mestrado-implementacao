@@ -9,6 +9,12 @@ class InversionFilter
         : public ComplexFilter<SourceImageType, DestinationImageType,
                 InversionImplementation<SourceImageType,
                         DestinationImageType> > {
+private:
+    using SourcePixelType = typename SourceImageType::PixelType;
+
+public:
+    InversionFilter(const SourcePixelType&, const SourcePixelType&) {
+    }
 };
 
 #endif
