@@ -1,16 +1,12 @@
 #ifndef MORPHOLOGICAL_RECONSTRUCTION_TESTS_HPP
 #define MORPHOLOGICAL_RECONSTRUCTION_TESTS_HPP
 
-#include <gtest/gtest.h>
+#include "ComplexFilterTestMacros.hpp"
 
-template <typename TestData>
-class MorphologicalReconstructionTests : public testing::Test {
-};
+COMPLEX_FILTER_TEST_CASE(MorphologicalReconstructionTests);
 
-TYPED_TEST_CASE_P(MorphologicalReconstructionTests);
-
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsRight) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsRight) {
+    TestData<unsigned char>()
         .setDimensions(5, 3)
         .setBackground(0)
         .setForeground(100)
@@ -18,8 +14,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsRight) {
         .useLeftToRightHorizontalLine();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsDown) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsDown) {
+    TestData<unsigned char>()
         .setDimensions(3, 5)
         .setBackground(0)
         .setForeground(100)
@@ -27,8 +23,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsDown) {
         .useTopToBottomVerticalLine();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsRightAndDown) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsRightAndDown) {
+    TestData<unsigned char>()
         .setDimensions(5, 5)
         .setBackground(0)
         .setForeground(92)
@@ -36,8 +32,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsRightAndDown) {
         .useRectangleWithTopLeftMarker();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsLeft) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsLeft) {
+    TestData<unsigned char>()
         .setDimensions(5, 3)
         .setBackground(0)
         .setForeground(100)
@@ -45,8 +41,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsLeft) {
         .useRightToLeftHorizontalLine();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsUp) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsUp) {
+    TestData<unsigned char>()
         .setDimensions(3, 5)
         .setBackground(0)
         .setForeground(100)
@@ -54,8 +50,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsUp) {
         .useBottomToTopVerticalLine();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsLeftAndUp) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsLeftAndUp) {
+    TestData<unsigned char>()
         .setDimensions(5, 5)
         .setBackground(0)
         .setForeground(250)
@@ -63,8 +59,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsLeftAndUp) {
         .useRectangleWithBottomRightMarker();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsEverywhere) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsEverywhere) {
+    TestData<unsigned char>()
         .setDimensions(5, 5)
         .setBackground(0)
         .setForeground(150)
@@ -72,8 +68,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsEverywhere) {
         .useRectangleWithCenterMarker();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsToTopLeftCorner) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsToTopLeftCorner) {
+    TestData<unsigned char>()
         .setDimensions(4, 4)
         .setBackground(0)
         .setForeground(111)
@@ -81,8 +77,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsToTopLeftCorner) {
         .useRectangleOnTheTopLeftCornerWithBottomRightMarker();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsToAllCorners) {
-    TypeParam()
+COMPLEX_FILTER_TEST(markerSpreadsToAllCorners) {
+    TestData<unsigned char>()
         .setDimensions(7, 7)
         .setBackground(0)
         .setForeground(100)
@@ -90,8 +86,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsToAllCorners) {
         .useFullImageWithCenterMarker();
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, middleIsntReconstructed) {
-    TypeParam test;
+COMPLEX_FILTER_TEST(middleIsntReconstructed) {
+    TestData<unsigned char> test;
 
     test.setDimensions(7, 7)
         .setBackground(0)
@@ -120,8 +116,8 @@ TYPED_TEST_P(MorphologicalReconstructionTests, middleIsntReconstructed) {
     };
 }
 
-TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsThroughSpiral) {
-    TypeParam test;
+COMPLEX_FILTER_TEST(markerSpreadsThroughSpiral) {
+    TestData<unsigned char> test;
 
     test.setDimensions(7, 7)
         .setBackground(0)
@@ -147,10 +143,11 @@ TYPED_TEST_P(MorphologicalReconstructionTests, markerSpreadsThroughSpiral) {
     *test.expectedImage = *test.sourceImage;
 }
 
-REGISTER_TYPED_TEST_CASE_P(MorphologicalReconstructionTests, markerSpreadsRight,
-        markerSpreadsDown, markerSpreadsRightAndDown, markerSpreadsLeft,
-        markerSpreadsUp, markerSpreadsLeftAndUp, markerSpreadsEverywhere,
-        markerSpreadsToTopLeftCorner, markerSpreadsToAllCorners,
-        middleIsntReconstructed, markerSpreadsThroughSpiral);
+REGISTER_COMPLEX_FILTER_TEST_CASE(MorphologicalReconstructionTests,
+        markerSpreadsRight, markerSpreadsDown, markerSpreadsRightAndDown,
+        markerSpreadsLeft, markerSpreadsUp, markerSpreadsLeftAndUp,
+        markerSpreadsEverywhere, markerSpreadsToTopLeftCorner,
+        markerSpreadsToAllCorners, middleIsntReconstructed,
+        markerSpreadsThroughSpiral);
 
 #endif

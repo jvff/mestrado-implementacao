@@ -21,5 +21,6 @@ TEST_F(MorphologicalReconstructionImplementationTest, isConstructible) {
             With<SourceImageParameter, DestinationImageParameter>());
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(MorphologicalReconstructionImplementationTest,
-        MorphologicalReconstructionTests, TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(
+        MorphologicalReconstructionImplementationTest,
+        MorphologicalReconstructionTests, TestData);

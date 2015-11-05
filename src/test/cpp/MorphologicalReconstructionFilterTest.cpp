@@ -13,5 +13,5 @@ TEST_F(MorphologicalReconstructionFilterTest, isComplexFilter) {
     AssertThat<FilterClass>::isSubClass(Of<ParentFilterClass>());
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(MorphologicalReconstructionFilterTest,
-        MorphologicalReconstructionTests, TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(MorphologicalReconstructionFilterTest,
+        MorphologicalReconstructionTests, TestData);
