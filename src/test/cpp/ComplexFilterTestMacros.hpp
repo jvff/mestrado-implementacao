@@ -47,6 +47,10 @@
     private: \
         using TestFixture = TestFixtureTemplate<gtest_TypeParam_>; \
         using TypeParam = gtest_TypeParam_; \
+\
+        template <typename T> \
+        using TestData = typename TestFixture::template TestData<T>; \
+\
         virtual void TestBody(); \
     }
 
