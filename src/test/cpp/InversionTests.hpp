@@ -5,7 +5,7 @@
 
 COMPLEX_FILTER_TEST_CASE(InversionTests);
 
-COMPLEX_FILTER_TEST(InversionTests, uniformImageIsntChanged) {
+COMPLEX_FILTER_TEST(uniformImageIsntChanged) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(2, 2)
         .setPixel(0, 0, 100)
@@ -14,7 +14,7 @@ COMPLEX_FILTER_TEST(InversionTests, uniformImageIsntChanged) {
         .setPixel(1, 1, 100);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, pixelsAreSwapped) {
+COMPLEX_FILTER_TEST(pixelsAreSwapped) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(2, 2)
         .setPixel(0, 0, 12)
@@ -23,7 +23,7 @@ COMPLEX_FILTER_TEST(InversionTests, pixelsAreSwapped) {
         .setPixel(1, 1, 12);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, pixelsAreSwappedAndMiddleValueIsKept) {
+COMPLEX_FILTER_TEST(pixelsAreSwappedAndMiddleValueIsKept) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(2, 2)
         .setPixel(0, 0, 12)
@@ -32,7 +32,7 @@ COMPLEX_FILTER_TEST(InversionTests, pixelsAreSwappedAndMiddleValueIsKept) {
         .setPixel(1, 1, 200);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, imageWithDifferentPixels) {
+COMPLEX_FILTER_TEST(imageWithDifferentPixels) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(3, 2)
         .setPixel(0, 0, 92)
@@ -43,7 +43,7 @@ COMPLEX_FILTER_TEST(InversionTests, imageWithDifferentPixels) {
         .setPixel(2, 1, 200);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, uniformImageIsDisplacedByCustomRange) {
+COMPLEX_FILTER_TEST(uniformImageIsDisplacedByCustomRange) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(2, 2)
         .setRange(36, 140)
@@ -53,7 +53,7 @@ COMPLEX_FILTER_TEST(InversionTests, uniformImageIsDisplacedByCustomRange) {
         .setPixel(1, 1, 37);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, imageWithDifferentPixelsAndCustomRange) {
+COMPLEX_FILTER_TEST(imageWithDifferentPixelsAndCustomRange) {
     typename TestFixture::template TestData<unsigned char>()
         .setDimensions(2, 3)
         .setRange(22, 250)
@@ -65,7 +65,7 @@ COMPLEX_FILTER_TEST(InversionTests, imageWithDifferentPixelsAndCustomRange) {
         .setPixel(1, 2, 111);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, floatingPointImage) {
+COMPLEX_FILTER_TEST(floatingPointImage) {
     typename TestFixture::template TestData<float>()
         .setDimensions(3, 2)
         .setPixel(0, 0, 0.008f)
@@ -76,7 +76,7 @@ COMPLEX_FILTER_TEST(InversionTests, floatingPointImage) {
         .setPixel(2, 1, 9.2e7f);
 }
 
-COMPLEX_FILTER_TEST(InversionTests, floatingPointImageWithCustomRange) {
+COMPLEX_FILTER_TEST(floatingPointImageWithCustomRange) {
     typename TestFixture::template TestData<float>()
         .setDimensions(2, 3)
         .setRange(-1.3e7f, 9.3e7f)
