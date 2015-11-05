@@ -63,5 +63,5 @@ TEST(AreaOpeningFilterTest, bigPlateauIsntCleared) {
     assertThat(result).isEqualTo(expectedImage);
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(AreaOpeningFilterTest, AreaOpeningTests,
-        TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaOpeningFilterTest, AreaOpeningTests,
+        TestData);

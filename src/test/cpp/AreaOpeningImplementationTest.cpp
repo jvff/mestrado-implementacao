@@ -21,5 +21,5 @@ TEST_F(AreaOpeningImplementationTest, isConstructibleWithParameters) {
             SourceImageParameter, DestinationImageParameter>());
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(AreaOpeningImplementationTest, AreaOpeningTests,
-        TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaOpeningImplementationTest,
+        AreaOpeningTests, TestData);

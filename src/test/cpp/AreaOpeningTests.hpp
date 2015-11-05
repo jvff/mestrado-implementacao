@@ -1,32 +1,28 @@
 #ifndef AREA_OPENING_TESTS_HPP
 #define AREA_OPENING_TESTS_HPP
 
-#include <gtest/gtest.h>
+#include "ComplexFilterTestMacros.hpp"
 
-template <typename TestData>
-class AreaOpeningTests : public testing::Test {
-};
+COMPLEX_FILTER_TEST_CASE(AreaOpeningTests);
 
-TYPED_TEST_CASE_P(AreaOpeningTests);
-
-TYPED_TEST_P(AreaOpeningTests, bigPlateauIsntCleared) {
-    TypeParam()
+COMPLEX_FILTER_TEST(bigPlateauIsntCleared) {
+    TestData<unsigned char>()
         .setDimensions(6, 6)
         .setMaximumPeakSize(9)
         .setBackground(102)
         .drawSquare(1, 1, 4, 167);
 }
 
-TYPED_TEST_P(AreaOpeningTests, smallPlateauIsCleared) {
-    TypeParam()
+COMPLEX_FILTER_TEST(smallPlateauIsCleared) {
+    TestData<unsigned char>()
         .setDimensions(6, 6)
         .setMaximumPeakSize(12)
         .setBackground(13)
         .drawSquare(1, 1, 2, 201);
 }
 
-TYPED_TEST_P(AreaOpeningTests, twoSmallPlateausAreCleared) {
-    TypeParam()
+COMPLEX_FILTER_TEST(twoSmallPlateausAreCleared) {
+    TestData<unsigned char>()
         .setDimensions(10, 9)
         .setMaximumPeakSize(11)
         .setBackground(148)
@@ -34,16 +30,16 @@ TYPED_TEST_P(AreaOpeningTests, twoSmallPlateausAreCleared) {
         .drawSquare(4, 2, 3, 251);
 }
 
-TYPED_TEST_P(AreaOpeningTests, peakIsPartiallyFlattened) {
-    TypeParam()
+COMPLEX_FILTER_TEST(peakIsPartiallyFlattened) {
+    TestData<unsigned char>()
         .setDimensions(15, 15)
         .setMaximumPeakSize(50)
         .setBackground(3)
         .drawPyramid(1, 1, 13, 10);
 }
 
-TYPED_TEST_P(AreaOpeningTests, oneOfTwoPlateausIsCleared) {
-    TypeParam()
+COMPLEX_FILTER_TEST(oneOfTwoPlateausIsCleared) {
+    TestData<unsigned char>()
         .setDimensions(10, 9)
         .setMaximumPeakSize(6)
         .setBackground(148)
@@ -51,8 +47,8 @@ TYPED_TEST_P(AreaOpeningTests, oneOfTwoPlateausIsCleared) {
         .drawSquare(4, 2, 3, 251);
 }
 
-TYPED_TEST_P(AreaOpeningTests, adjacentBigAndSmallPlateausAreCleared) {
-    TypeParam()
+COMPLEX_FILTER_TEST(adjacentBigAndSmallPlateausAreCleared) {
+    TestData<unsigned char>()
         .setDimensions(8, 8)
         .setMaximumPeakSize(65)
         .setBackground(30)
@@ -61,7 +57,7 @@ TYPED_TEST_P(AreaOpeningTests, adjacentBigAndSmallPlateausAreCleared) {
         .drawSquare(1, 5, 2, 40);
 }
 
-REGISTER_TYPED_TEST_CASE_P(AreaOpeningTests, bigPlateauIsntCleared,
+REGISTER_COMPLEX_FILTER_TEST_CASE(AreaOpeningTests, bigPlateauIsntCleared,
         smallPlateauIsCleared, twoSmallPlateausAreCleared,
         peakIsPartiallyFlattened, oneOfTwoPlateausIsCleared,
         adjacentBigAndSmallPlateausAreCleared);
