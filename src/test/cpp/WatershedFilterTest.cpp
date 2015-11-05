@@ -17,5 +17,5 @@ TEST_F(WatershedFilterTest, isConstructible) {
     AssertThat<DummyFilter>::isConstructible(WithoutParameters());
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(WatershedFilterTest, WatershedTests,
-        TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(WatershedFilterTest, WatershedTests,
+        TestData);

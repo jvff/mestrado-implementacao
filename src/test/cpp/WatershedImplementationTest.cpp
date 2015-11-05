@@ -21,5 +21,5 @@ TEST_F(WatershedImplementationTest, isFilterImplementation) {
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
-INSTANTIATE_TYPED_TEST_CASE_P(WatershedImplementationTest, WatershedTests,
-        TestData<unsigned char>);
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(WatershedImplementationTest,
+        WatershedTests, TestData);
