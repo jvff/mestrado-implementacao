@@ -1,8 +1,9 @@
-#ifndef AREA_OPENING_TEST_DATA_HPP
-#define AREA_OPENING_TEST_DATA_HPP
+#ifndef AREA_OPENING_AND_CLOSING_TEST_DATA_HPP
+#define AREA_OPENING_AND_CLOSING_TEST_DATA_HPP
 
 #include <memory>
 
+#include "AreaClosingFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractTestData.hpp"
@@ -11,19 +12,20 @@
 
 template <typename SuperClass, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
-class AreaOpeningTestData : public SuperClass {
+class AreaOpeningAndClosingTestData : public SuperClass {
 private:
     using PainterType = RectanglePainter<ImageType>;
     using State = AbstractTestData::State;
-    using ThisType = AreaOpeningTestData<SuperClass, PixelType, ImageType>;
+    using ThisType = AreaOpeningAndClosingTestData<SuperClass, PixelType,
+            ImageType>;
 
     std::unique_ptr<PainterType> sourcePainter;
     std::unique_ptr<PainterType> expectedPainter;
 
-    unsigned int maximumPeakSize;
+    unsigned int maximumExtremitySize;
 
 public:
-    ~AreaOpeningTestData() {
+    ~AreaOpeningAndClosingTestData() {
         tryToRunTest();
     }
 
@@ -36,9 +38,9 @@ public:
         }
     }
 
-    CHAIN(setMaximumPeakSize, unsigned int size) {
+    CHAIN(setMaximumExtremitySize, unsigned int size) {
         if (stateIs(State::SETTING_UP)) {
-            maximumPeakSize = size;
+            maximumExtremitySize = size;
 
             this->state = State::READY;
         }
@@ -58,7 +60,7 @@ public:
 
             sourcePainter->drawSquare(x, y, size, color);
 
-            if (area >= maximumPeakSize)
+            if (area >= maximumExtremitySize)
                 expectedPainter->drawSquare(x, y, size, color);
         }
     }
@@ -88,8 +90,8 @@ protected:
         cancelTestExecution();
     }
 
-    unsigned int getMaximumPeakSize() const override {
-        return maximumPeakSize;
+    unsigned int getMaximumExtremitySize() const override {
+        return maximumExtremitySize;
     }
 };
 

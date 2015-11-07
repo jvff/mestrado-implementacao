@@ -33,7 +33,7 @@ TEST(AreaClosingFilterTest, isConstructibleWithParameter) {
 TEST(AreaClosingFilterTest, bigHoleIsntFilled) {
     TestData<unsigned char>()
         .setDimensions(6, 6)
-        .setMaximumHoleSize(9)
+        .setMaximumExtremitySize(9)
         .setBackground(199)
         .drawSquare(1, 1, 4, 100);
 }

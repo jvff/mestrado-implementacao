@@ -9,7 +9,7 @@
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractFilterTestData.hpp"
-#include "AreaOpeningTestData.hpp"
+#include "AreaOpeningAndClosingTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
@@ -23,16 +23,16 @@ private:
 
 protected:
     void runTest() override {
-        this->initializeFilter(getMaximumPeakSize());
+        this->initializeFilter(getMaximumExtremitySize());
 
         SuperClass::runTest();
     }
 
-    virtual unsigned int getMaximumPeakSize() const = 0;
+    virtual unsigned int getMaximumExtremitySize() const = 0;
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = AreaOpeningTestData<
+using TestData = AreaOpeningAndClosingTestData<
         AbstractAreaOpeningFilterTestData<PixelType, ImageType>,
         PixelType, ImageType>;
 
