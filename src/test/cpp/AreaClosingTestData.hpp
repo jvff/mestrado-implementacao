@@ -6,19 +6,17 @@
 #include "AreaClosingFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterTestData.hpp"
+#include "AbstractTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "RectanglePainter.hpp"
 
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class AreaClosingTestData : public AbstractFilterTestData<
-        AreaClosingFilter<ImageType, ImageType>, ImageType, ImageType> {
+template <typename SuperClass, typename PixelType,
+        typename ImageType = SimpleArrayImage<PixelType> >
+class AreaClosingTestData : public SuperClass {
 private:
-    using FilterType = AreaClosingFilter<ImageType, ImageType>;
     using PainterType = RectanglePainter<ImageType>;
     using State = AbstractTestData::State;
-    using SuperClass = AbstractFilterTestData<FilterType, ImageType, ImageType>;
-    using ThisType = AreaClosingTestData<PixelType, ImageType>;
+    using ThisType = AreaClosingTestData<SuperClass, PixelType, ImageType>;
 
     std::unique_ptr<PainterType> sourcePainter;
     std::unique_ptr<PainterType> expectedPainter;
@@ -66,7 +64,7 @@ public:
         }
     }
 
-private:
+protected:
     using SuperClass::cancelTestExecution;
     using SuperClass::stateIs;
     using SuperClass::tryToRunTest;
@@ -75,10 +73,8 @@ private:
         cancelTestExecution();
     }
 
-    void runTest() override {
-        this->initializeFilter(maximumHoleSize);
-
-        SuperClass::runTest();
+    unsigned int getMaximumHoleSize() const override {
+        return maximumHoleSize;
     }
 };
 
