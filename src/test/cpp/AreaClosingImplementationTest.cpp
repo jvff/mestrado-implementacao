@@ -10,3 +10,12 @@ TEST_F(AreaClosingImplementationTest, isFilterImplementation) {
 
     AssertThat<ImplementationClass>::isSubClass(Of<ParentImplementation>());
 }
+
+TEST_F(AreaClosingImplementationTest, isConstructibleWithParameters) {
+    using AreaSizeParameter = unsigned int;
+    using SourceImageParameter = const Image<SourcePixelType>&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<ImplementationClass>::isConstructible(With<AreaSizeParameter,
+            SourceImageParameter, DestinationImageParameter>());
+}
