@@ -21,7 +21,16 @@ COMPLEX_FILTER_TEST(smallHoleIsFilled) {
         .drawSquare(1, 1, 2, 10);
 }
 
+COMPLEX_FILTER_TEST(twoSmallHolesAreFilled) {
+    TestData<unsigned char>()
+        .setDimensions(10, 9)
+        .setMaximumExtremitySize(11)
+        .setBackground(148)
+        .drawSquare(1, 1, 2, 1)
+        .drawSquare(4, 2, 3, 2);
+}
+
 REGISTER_COMPLEX_FILTER_TEST_CASE(AreaClosingTests, bigHoleIsntFilled,
-        smallHoleIsFilled);
+        smallHoleIsFilled, twoSmallHolesAreFilled);
 
 #endif
