@@ -1,4 +1,5 @@
 #include "AreaClosingImplementationTest.hpp"
+#include "AreaClosingTests.hpp"
 
 TEST_F(AreaClosingImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
@@ -19,3 +20,6 @@ TEST_F(AreaClosingImplementationTest, isConstructibleWithParameters) {
     AssertThat<ImplementationClass>::isConstructible(With<AreaSizeParameter,
             SourceImageParameter, DestinationImageParameter>());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaClosingImplementationTest,
+        AreaClosingTests, TestData);

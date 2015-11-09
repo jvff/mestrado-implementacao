@@ -8,6 +8,8 @@
 #include "AreaClosingImplementation.hpp"
 #include "FilterImplementation.hpp"
 
+#include "AbstractFilterImplementationTestData.hpp"
+#include "AreaOpeningAndClosingTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
@@ -20,5 +22,27 @@ protected:
     using ImplementationClass = AreaClosingImplementation<SourceImageType,
             DestinationImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+class AbstractAreaClosingImplementationTestData
+        : public AbstractFilterImplementationTestData<AreaClosingImplementation<
+                ImageType, ImageType>, ImageType, ImageType> {
+private:
+    using ImplementationType = AreaClosingImplementation<ImageType, ImageType>;
+
+protected:
+    ImplementationType instantiateImplementation(const ImageType& sourceImage,
+            ImageType& destinationImage) override {
+        return ImplementationType(getMaximumExtremitySize(), sourceImage,
+                destinationImage);
+    }
+
+    virtual unsigned int getMaximumExtremitySize() const = 0;
+};
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = AreaOpeningAndClosingTestData<
+        AbstractAreaClosingImplementationTestData<PixelType, ImageType>,
+        PixelType, ImageType>;
 
 #endif
