@@ -38,7 +38,17 @@ COMPLEX_FILTER_TEST(valleyIsPartiallyFlattened) {
         .drawPyramid(1, 1, 13, 10, -1);
 }
 
+COMPLEX_FILTER_TEST(oneOfTwoHolesIsFilled) {
+    TestData<unsigned char>()
+        .setDimensions(10, 9)
+        .setMaximumExtremitySize(6)
+        .setBackground(252)
+        .drawSquare(1, 1, 2, 101)
+        .drawSquare(4, 2, 3, 102);
+}
+
 REGISTER_COMPLEX_FILTER_TEST_CASE(AreaClosingTests, bigHoleIsntFilled,
-        smallHoleIsFilled, twoSmallHolesAreFilled, valleyIsPartiallyFlattened);
+        smallHoleIsFilled, twoSmallHolesAreFilled, valleyIsPartiallyFlattened,
+        oneOfTwoHolesIsFilled);
 
 #endif
