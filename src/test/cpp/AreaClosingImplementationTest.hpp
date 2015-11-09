@@ -6,6 +6,7 @@
 #include "asserts.hpp"
 
 #include "AreaClosingImplementation.hpp"
+#include "FilterImplementation.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
