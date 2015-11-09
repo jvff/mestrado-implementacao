@@ -30,7 +30,15 @@ COMPLEX_FILTER_TEST(twoSmallHolesAreFilled) {
         .drawSquare(4, 2, 3, 2);
 }
 
+COMPLEX_FILTER_TEST(valleyIsPartiallyFlattened) {
+    TestData<unsigned char>()
+        .setDimensions(15, 15)
+        .setMaximumExtremitySize(50)
+        .setBackground(30)
+        .drawPyramid(1, 1, 13, 10, -1);
+}
+
 REGISTER_COMPLEX_FILTER_TEST_CASE(AreaClosingTests, bigHoleIsntFilled,
-        smallHoleIsFilled, twoSmallHolesAreFilled);
+        smallHoleIsFilled, twoSmallHolesAreFilled, valleyIsPartiallyFlattened);
 
 #endif
