@@ -1,20 +1,31 @@
 #ifndef AREA_CLOSING_FILTER_HPP
 #define AREA_CLOSING_FILTER_HPP
 
-#include "Filter.hpp"
+#include "AreaClosingImplementation.hpp"
+#include "ComplexFilter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class AreaClosingFilter : public Filter<SourceImageType, DestinationImageType> {
+class AreaClosingFilter : public ComplexFilter<SourceImageType,
+        DestinationImageType, AreaClosingImplementation<SourceImageType,
+                DestinationImageType> > {
 private:
-    using SuperClass = Filter<SourceImageType, DestinationImageType>;
+    using ImplementationType = AreaClosingImplementation<SourceImageType,
+            DestinationImageType>;
+    using SuperClass = ComplexFilter<SourceImageType, DestinationImageType,
+            ImplementationType>;
+
+    unsigned int maximumHoleSize;
 
 public:
-    AreaClosingFilter(unsigned int) {
+    AreaClosingFilter(unsigned int maximumHoleSize)
+            : maximumHoleSize(maximumHoleSize) {
     }
 
-    void apply(const SourceImageType& sourceImage,
+    ImplementationType instantiateImplementation(
+            const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) {
-        destinationImage = sourceImage;
+        return ImplementationType(maximumHoleSize, sourceImage,
+                destinationImage);
     }
 
     using SuperClass::apply;
