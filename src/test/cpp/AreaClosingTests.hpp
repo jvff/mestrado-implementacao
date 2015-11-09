@@ -47,8 +47,18 @@ COMPLEX_FILTER_TEST(oneOfTwoHolesIsFilled) {
         .drawSquare(4, 2, 3, 102);
 }
 
+COMPLEX_FILTER_TEST(adjacentBigAndSmallHolesAreFilled) {
+    TestData<unsigned char>()
+        .setDimensions(8, 8)
+        .setMaximumExtremitySize(65)
+        .setBackground(51)
+        .drawSquare(1, 1, 6, 40)
+        .drawSquare(1, 6, 1, 45)
+        .drawSquare(1, 5, 2, 50);
+}
+
 REGISTER_COMPLEX_FILTER_TEST_CASE(AreaClosingTests, bigHoleIsntFilled,
         smallHoleIsFilled, twoSmallHolesAreFilled, valleyIsPartiallyFlattened,
-        oneOfTwoHolesIsFilled);
+        oneOfTwoHolesIsFilled, adjacentBigAndSmallHolesAreFilled);
 
 #endif
