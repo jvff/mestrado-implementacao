@@ -6,6 +6,8 @@
 #include "asserts.hpp"
 
 #include "AreaClosingFilter.hpp"
+#include "AreaClosingImplementation.hpp"
+#include "ComplexFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractFilterTestData.hpp"

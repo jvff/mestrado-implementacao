@@ -8,15 +8,19 @@ TEST(AreaClosingFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST(AreaClosingFilterTest, isFilter) {
+TEST(AreaClosingFilterTest, isComplexFilter) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using SubClass = AreaClosingFilter<SourceImageType, DestinationImageType>;
-    using SuperClass = Filter<SourceImageType, DestinationImageType>;
+    using FilterClass = AreaClosingFilter<SourceImageType,
+            DestinationImageType>;
+    using ImplementationClass = AreaClosingImplementation<SourceImageType,
+            DestinationImageType>;
+    using ParentFilter = ComplexFilter<SourceImageType, DestinationImageType,
+            ImplementationClass>;
 
-    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
+    AssertThat<FilterClass>::isSubClass(Of<ParentFilter>());
 }
 
 TEST(AreaClosingFilterTest, isConstructibleWithParameter) {
