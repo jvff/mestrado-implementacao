@@ -1,4 +1,5 @@
 #include "AreaClosingFilterTest.hpp"
+#include "AreaClosingTests.hpp"
 
 TEST(AreaClosingFilterTest, classTemplateExists) {
     using ImageType = FakeImage<DummyType>;
@@ -30,10 +31,5 @@ TEST(AreaClosingFilterTest, isConstructibleWithParameter) {
     AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
 }
 
-TEST(AreaClosingFilterTest, bigHoleIsntFilled) {
-    TestData<unsigned char>()
-        .setDimensions(6, 6)
-        .setMaximumExtremitySize(9)
-        .setBackground(199)
-        .drawSquare(1, 1, 4, 100);
-}
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaClosingFilterTest, AreaClosingTests,
+        TestData);
