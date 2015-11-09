@@ -35,7 +35,7 @@ COMPLEX_FILTER_TEST(peakIsPartiallyFlattened) {
         .setDimensions(15, 15)
         .setMaximumExtremitySize(50)
         .setBackground(3)
-        .drawPyramid(1, 1, 13, 10);
+        .drawPyramid(1, 1, 13, 10, 1);
 }
 
 COMPLEX_FILTER_TEST(oneOfTwoPlateausIsCleared) {

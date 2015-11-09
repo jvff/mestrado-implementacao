@@ -66,7 +66,7 @@ public:
     }
 
     CHAIN(drawPyramid, unsigned int x, unsigned int y, unsigned int size,
-            const PixelType& startHeight) {
+            const PixelType& startHeight, const PixelType& stepHeight) {
         auto height = startHeight;
 
         if (stateIs(State::READY)) {
@@ -76,7 +76,7 @@ public:
                 x += 1;
                 y += 1;
                 size -= 2;
-                ++height;
+                height += stepHeight;
             }
         }
     }
