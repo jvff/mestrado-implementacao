@@ -75,6 +75,12 @@ public:
             sourcePainter->drawSquare(x, y, size, color);
     }
 
+    CHAIN(drawExpectedSquare, unsigned int x, unsigned int y, unsigned int size,
+            const PixelType& color) {
+        if (stateIs(State::READY))
+            expectedPainter->drawSquare(x, y, size, color);
+    }
+
 protected:
     using SuperClass::cancelTestExecution;
     using SuperClass::stateIs;

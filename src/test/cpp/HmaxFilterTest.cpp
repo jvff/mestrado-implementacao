@@ -25,3 +25,13 @@ TEST_F(HmaxFilterTest, removesShallowHole) {
         .drawSquare(1, 1, 5, 121)
         .setExpectedBackground(120);
 }
+
+TEST_F(HmaxFilterTest, doesntRemoveDeepHole) {
+    TestData<unsigned char>()
+        .setDimensions(7, 7)
+        .setFeatureHeight(2)
+        .setBackground(224)
+        .drawSquare(1, 1, 5, 221)
+        .setExpectedBackground(222)
+        .drawExpectedSquare(1, 1, 5, 221);
+}
