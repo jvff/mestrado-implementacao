@@ -12,3 +12,12 @@ TEST_F(HminImplementationTest, isFilterImplementation) {
 
     AssertThat<ImplementationClass>::isSubClass(Of<ParentImplementation>());
 }
+
+TEST_F(HminImplementationTest, isConstructibleWithParameters) {
+    using FeatureSizeParameter = const SourcePixelType&;
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<DummyImplementation>::isConstructible(With<FeatureSizeParameter,
+            SourceImageParameter, DestinationImageParameter>());
+}
