@@ -30,3 +30,13 @@ TEST_F(HminImplementationTest, removesShallowHole) {
         .drawSquare(1, 1, 5, 21)
         .setExpectedBackground(25);
 }
+
+TEST_F(HminImplementationTest, doesntChangePeak) {
+    TestData<unsigned char>()
+        .setDimensions(7, 7)
+        .setFeatureHeight(2)
+        .setBackground(134)
+        .drawSquare(1, 1, 5, 231)
+        .setExpectedBackground(136)
+        .drawExpectedSquare(1, 1, 5, 231);
+}
