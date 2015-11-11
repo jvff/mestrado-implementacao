@@ -40,3 +40,19 @@ TEST_F(HminImplementationTest, doesntChangePeak) {
         .setExpectedBackground(136)
         .drawExpectedSquare(1, 1, 5, 231);
 }
+
+TEST_F(HminImplementationTest, shavesValleys) {
+    TestData<unsigned char>()
+        .setDimensions(6, 3)
+        .setFeatureHeight(3)
+        .setBackground(100)
+        .setExpectedBackground(100)
+        .drawSquare(1, 1, 1, 102)
+        .drawExpectedSquare(1, 1, 1, 102)
+        .drawSquare(3, 1, 1, 96)
+        .drawExpectedSquare(3, 1, 1, 99)
+        .drawSquare(5, 1, 1, 97)
+        .drawSquare(1, 3, 1, 98)
+        .drawSquare(3, 3, 1, 99)
+        .drawSquare(5, 3, 1, 100);
+}
