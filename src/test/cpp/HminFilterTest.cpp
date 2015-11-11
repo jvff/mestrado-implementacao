@@ -29,3 +29,14 @@ TEST(HminFilterTest, isComplexFilter) {
 
     AssertThat<FilterClass>::isSubClass(Of<ParentFilter>());
 }
+
+TEST(HminFilterTest, isConstructibleWithParameter) {
+    using SourcePixelType = DummyTypes<1>;
+    using DestinationPixelType = DummyTypes<2>;
+    using SourceImageType = Image<SourcePixelType>;
+    using DestinationImageType = FakeImage<DestinationPixelType>;
+    using DummyFilter = HminFilter<SourceImageType, DestinationImageType>;
+    using FeatureHeightParameter = const SourcePixelType&;
+
+    AssertThat<DummyFilter>::isConstructible(With<FeatureHeightParameter>());
+}
