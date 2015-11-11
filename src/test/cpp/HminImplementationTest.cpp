@@ -21,3 +21,12 @@ TEST_F(HminImplementationTest, isConstructibleWithParameters) {
     AssertThat<DummyImplementation>::isConstructible(With<FeatureSizeParameter,
             SourceImageParameter, DestinationImageParameter>());
 }
+
+TEST_F(HminImplementationTest, removesShallowHole) {
+    TestData<unsigned char>()
+        .setDimensions(7, 7)
+        .setFeatureHeight(4)
+        .setBackground(24)
+        .drawSquare(1, 1, 5, 21)
+        .setExpectedBackground(25);
+}
