@@ -13,6 +13,7 @@
 #include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "PaintableTestData.hpp"
 #include "RectanglePainter.hpp"
 
 class HmaxFilterTest : public ::testing::Test {
@@ -25,17 +26,18 @@ protected:
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class HmaxFilterTestData : public AbstractFilterTestData<
-        HmaxFilter<ImageType, ImageType>, ImageType, ImageType> {
+class HmaxFilterTestData : public PaintableTestData<
+        AbstractFilterTestData<HmaxFilter<ImageType, ImageType>, ImageType,
+                ImageType>,
+        ImageType, ImageType> {
 private:
     using FilterType = HmaxFilter<ImageType, ImageType>;
-    using PainterType = RectanglePainter<ImageType>;
     using State = AbstractTestData::State;
-    using SuperClass = AbstractFilterTestData<FilterType, ImageType, ImageType>;
+    using ParentTestDataType = AbstractFilterTestData<FilterType, ImageType,
+            ImageType>;
+    using SuperClass = PaintableTestData<ParentTestDataType, ImageType,
+            ImageType>;
     using ThisType = HmaxFilterTestData<PixelType, ImageType>;
-
-    std::unique_ptr<PainterType> sourcePainter;
-    std::unique_ptr<PainterType> expectedPainter;
 
 public:
     virtual ~HmaxFilterTestData() {
@@ -43,12 +45,8 @@ public:
     }
 
     CHAIN(setDimensions, unsigned int width, unsigned int height) {
-        if (SuperClass::setDimensions(width, height)) {
-            sourcePainter.reset(new PainterType(*this->sourceImage));
-            expectedPainter.reset(new PainterType(*this->expectedImage));
-
+        if (SuperClass::setDimensions(width, height))
             this->state = State::SETTING_UP;
-        }
     }
 
     CHAIN(setFeatureHeight, const PixelType& featureHeight) {
@@ -59,35 +57,14 @@ public:
         }
     }
 
-    CHAIN(setBackground, const PixelType& color) {
-        if (stateIs(State::READY))
-            sourcePainter->fill(color);
-    }
+    CHAIN_PARENT_METHOD(setBackground)
+    CHAIN_PARENT_METHOD(setExpectedBackground)
 
-    CHAIN(setExpectedBackground, const PixelType& color) {
-        if (stateIs(State::READY))
-            expectedPainter->fill(color);
-    }
-
-    CHAIN(drawSquare, unsigned int x, unsigned int y, unsigned int size,
-            const PixelType& color) {
-        if (stateIs(State::READY))
-            sourcePainter->drawSquare(x, y, size, color);
-    }
-
-    CHAIN(drawExpectedSquare, unsigned int x, unsigned int y, unsigned int size,
-            const PixelType& color) {
-        if (stateIs(State::READY))
-            expectedPainter->drawSquare(x, y, size, color);
-    }
+    CHAIN_PARENT_METHOD(drawSquare)
+    CHAIN_PARENT_METHOD(drawExpectedSquare)
 
 protected:
-    using SuperClass::cancelTestExecution;
     using SuperClass::stateIs;
-
-    void finishSetUp() override {
-        cancelTestExecution();
-    }
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
