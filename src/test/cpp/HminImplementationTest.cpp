@@ -1,29 +1,10 @@
-#include <gtest/gtest.h>
+#include "HminImplementationTest.hpp"
 
-#include "asserts.hpp"
-
-#include "FilterImplementation.hpp"
-#include "HminImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(HminImplementationTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyImplementation = HminImplementation<SourceImageType,
-            DestinationImageType>;
-
+TEST_F(HminImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementation>::isClassOrStruct();
 }
 
-TEST(HminImplementationTest, isFilterImplementation) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
+TEST_F(HminImplementationTest, isFilterImplementation) {
     using ImplementationClass = HminImplementation<SourceImageType,
             DestinationImageType>;
     using ParentImplementation = FilterImplementation<SourceImageType,
