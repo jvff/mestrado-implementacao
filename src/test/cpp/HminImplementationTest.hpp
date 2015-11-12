@@ -12,7 +12,7 @@
 #include "AbstractFilterImplementationTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-#include "PaintableTestData.hpp"
+#include "HminTestData.hpp"
 
 class HminImplementationTest : public ::testing::Test {
 protected:
@@ -25,55 +25,25 @@ protected:
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class HminImplementationTestData : public PaintableTestData<
-        AbstractFilterImplementationTestData<
-                HminImplementation<ImageType, ImageType>, ImageType, ImageType>,
-        ImageType, ImageType> {
+class HminImplementationTestData : public AbstractFilterImplementationTestData<
+                HminImplementation<ImageType, ImageType>, ImageType,
+                ImageType> {
 private:
     using ImplementationType = HminImplementation<ImageType, ImageType>;
-    using State = AbstractTestData::State;
-    using ParentTestDataType = AbstractFilterImplementationTestData<
-            ImplementationType, ImageType, ImageType>;
-    using SuperClass = PaintableTestData<ParentTestDataType, ImageType,
-            ImageType>;
-    using ThisType = HminImplementationTestData<PixelType, ImageType>;
-
-    PixelType featureHeight;
-
-public:
-    virtual ~HminImplementationTestData() {
-        this->tryToRunTest();
-    }
-
-    CHAIN(setDimensions, unsigned int width, unsigned int height) {
-        if (SuperClass::setDimensions(width, height))
-            this->state = State::SETTING_UP;
-    }
-
-    CHAIN(setFeatureHeight, const PixelType& featureHeight) {
-        if (stateIs(State::SETTING_UP)) {
-            this->featureHeight = featureHeight;
-
-            this->state = State::READY;
-        }
-    }
-
-    CHAIN_PARENT_METHOD(setBackground)
-    CHAIN_PARENT_METHOD(setExpectedBackground)
-
-    CHAIN_PARENT_METHOD(drawSquare)
-    CHAIN_PARENT_METHOD(drawExpectedSquare)
 
 protected:
-    using SuperClass::stateIs;
-
     ImplementationType instantiateImplementation(const ImageType& sourceImage,
             ImageType& destinationImage) override {
+        PixelType featureHeight = getFeatureHeight();
+
         return ImplementationType(featureHeight, sourceImage, destinationImage);
     }
+
+    virtual PixelType getFeatureHeight() = 0;
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = HminImplementationTestData<PixelType, ImageType>;
+using TestData = HminTestData<HminImplementationTestData<PixelType, ImageType>,
+        PixelType, ImageType>;
 
 #endif
