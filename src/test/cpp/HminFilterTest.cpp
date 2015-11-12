@@ -1,26 +1,10 @@
-#include <gtest/gtest.h>
+#include "HminFilterTest.hpp"
 
-#include "asserts.hpp"
-
-#include "ComplexFilter.hpp"
-#include "HminFilter.hpp"
-#include "HminImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(HminFilterTest, classTemplateExists) {
-    using DestinationImageType = FakeImage<DummyType>;
-    using DummyFilter = HminFilter<Image<DummyType>, DestinationImageType>;
-
+TEST_F(HminFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST(HminFilterTest, isComplexFilter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
+TEST_F(HminFilterTest, isComplexFilter) {
     using ImplementationType = HminImplementation<SourceImageType,
             DestinationImageType>;
     using FilterClass = HminFilter<SourceImageType, DestinationImageType>;
@@ -30,12 +14,7 @@ TEST(HminFilterTest, isComplexFilter) {
     AssertThat<FilterClass>::isSubClass(Of<ParentFilter>());
 }
 
-TEST(HminFilterTest, isConstructibleWithParameter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using DummyFilter = HminFilter<SourceImageType, DestinationImageType>;
+TEST_F(HminFilterTest, isConstructibleWithParameter) {
     using FeatureHeightParameter = const SourcePixelType&;
 
     AssertThat<DummyFilter>::isConstructible(With<FeatureHeightParameter>());
