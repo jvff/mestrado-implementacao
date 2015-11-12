@@ -1,4 +1,5 @@
 #include "HminFilterTest.hpp"
+#include "HminTests.hpp"
 
 TEST_F(HminFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
@@ -19,3 +20,5 @@ TEST_F(HminFilterTest, isConstructibleWithParameter) {
 
     AssertThat<DummyFilter>::isConstructible(With<FeatureHeightParameter>());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(HminFilterTest, HminTests, TestData);

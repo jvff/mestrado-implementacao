@@ -9,8 +9,10 @@
 #include "HminFilter.hpp"
 #include "HminImplementation.hpp"
 
+#include "AbstractFilterTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "HminTestData.hpp"
 
 class HminFilterTest : public ::testing::Test {
 protected:
@@ -20,5 +22,20 @@ protected:
     using DestinationImageType = FakeImage<DestinationPixelType>;
     using DummyFilter = HminFilter<SourceImageType, DestinationImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+class HminFilterTestData : public AbstractFilterTestData<
+        HminFilter<ImageType, ImageType>, ImageType, ImageType> {
+protected:
+    void runTest() override {
+        this->initializeFilter(getFeatureHeight());
+    }
+
+    virtual PixelType getFeatureHeight() = 0;
+};
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = HminTestData<HminFilterTestData<PixelType, ImageType>,
+        PixelType, ImageType>;
 
 #endif
