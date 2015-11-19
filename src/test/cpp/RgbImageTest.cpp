@@ -13,3 +13,12 @@ TEST(RgbImageTest, classTemplateExists) {
 
     AssertThat<DummyRgbImage>::isClassOrStruct();
 }
+
+TEST(RgbImageTest, isSubClassOfImage) {
+    using PixelType = DummyType;
+    using InternalImageType = FakeImage<PixelType>;
+    using RgbImageClass = RgbImage<InternalImageType>;
+    using ParentImageClass = Image<PixelType>;
+
+    AssertThat<RgbImageClass>::isSubClass(Of<ParentImageClass>());
+}
