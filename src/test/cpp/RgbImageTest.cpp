@@ -4,6 +4,12 @@
 
 #include "RgbImage.hpp"
 
-TEST(RgbImageTest, type) {
-    AssertThat<RgbImage>::isSubClass(Of<Image<int> >());
+#include "DummyTypes.hpp"
+#include "FakeImage.hpp"
+
+TEST(RgbImageTest, classTemplateExists) {
+    using InternalImageType = FakeImage<DummyType>;
+    using DummyRgbImage = RgbImage<InternalImageType>;
+
+    AssertThat<DummyRgbImage>::isClassOrStruct();
 }
