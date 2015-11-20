@@ -24,10 +24,12 @@ private:
     unsigned int redChannelShiftAmount;
     unsigned int greenChannelShiftAmount;
     unsigned int blueChannelShiftAmount;
+    unsigned int alphaChannelShiftAmount;
 
     unsigned int redChannelMask;
     unsigned int greenChannelMask;
     unsigned int blueChannelMask;
+    unsigned int alphaChannelMask;
 
 public:
     RgbImage(InternalImageType& internalImage, bool hasAlpha = false)
@@ -42,14 +44,17 @@ public:
         auto redChannelBits = bitsPerChannel;
         auto greenChannelBits = bitsPerChannel + remainingBits;
         auto blueChannelBits = bitsPerChannel;
+        auto alphaChannelBits = hasAlpha ? bitsPerChannel : 0;
 
-        redChannelShiftAmount = greenChannelBits + blueChannelBits;
-        greenChannelShiftAmount = blueChannelBits;
-        blueChannelShiftAmount = 0;
+        alphaChannelShiftAmount = 0;
+        blueChannelShiftAmount = alphaChannelShiftAmount + alphaChannelBits;
+        greenChannelShiftAmount = blueChannelShiftAmount + blueChannelBits;
+        redChannelShiftAmount = greenChannelShiftAmount + greenChannelBits;
 
         redChannelMask = (1 << redChannelBits) - 1;
         greenChannelMask = (1 << greenChannelBits) - 1;
         blueChannelMask = (1 << blueChannelBits) - 1;
+        alphaChannelMask = (1 << alphaChannelBits) - 1;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
@@ -71,6 +76,11 @@ public:
 
     PixelType getBlueComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, blueChannelShiftAmount, blueChannelMask);
+    }
+
+    PixelType getAlphaComponent(unsigned int x, unsigned int y) const {
+        return getColorComponent(x, y, alphaChannelShiftAmount,
+                alphaChannelMask);
     }
 
     using SuperClass::operator=;
