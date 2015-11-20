@@ -23,20 +23,53 @@ protected:
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
     const unsigned int totalBitDepth = sizeof(PixelType) * 8;
-    const unsigned int bitDepth = totalBitDepth / 3;
-    const unsigned int redChannelBitDepth = bitDepth;
-    const unsigned int greenChannelBitDepth = totalBitDepth - 2 * bitDepth;
-    const unsigned int blueChannelBitDepth = bitDepth;
 
-    const unsigned int maxRedValue = (1 << redChannelBitDepth) - 1;
-    const unsigned int maxGreenValue = (1 << blueChannelBitDepth) - 1;
-    const unsigned int maxBlueValue = (1 << blueChannelBitDepth) - 1;
+    unsigned int redChannelBitDepth;
+    unsigned int greenChannelBitDepth;
+    unsigned int blueChannelBitDepth;
+    unsigned int alphaChannelBitDepth;
 
-    const unsigned int redChannelMask = maxRedValue;
-    const unsigned int greenChannelMask = maxGreenValue;
-    const unsigned int blueChannelMask = maxBlueValue;
+    unsigned int maxRedValue;
+    unsigned int maxGreenValue;
+    unsigned int maxBlueValue;
+    unsigned int maxAlphaValue;
+
+    unsigned int redChannelMask;
+    unsigned int greenChannelMask;
+    unsigned int blueChannelMask;
+    unsigned int alphaChannelMask;
+
+    unsigned int redChannelShiftAmount;
+    unsigned int greenChannelShiftAmount;
+    unsigned int blueChannelShiftAmount;
+    unsigned int alphaChannelShiftAmount;
 
 protected:
+    void calculateChannelParameters(bool withAlpha = false) {
+        unsigned int numChannels = withAlpha ? 4 : 3;
+        unsigned int bitDepth = totalBitDepth / numChannels;
+
+        redChannelBitDepth = bitDepth;
+        greenChannelBitDepth = totalBitDepth - (numChannels - 1) * bitDepth;
+        blueChannelBitDepth = bitDepth;
+        alphaChannelBitDepth = withAlpha ? bitDepth : 0;
+
+        maxRedValue = (1 << redChannelBitDepth) - 1;
+        maxGreenValue = (1 << blueChannelBitDepth) - 1;
+        maxBlueValue = (1 << blueChannelBitDepth) - 1;
+        maxAlphaValue = (1 << alphaChannelBitDepth) - 1;
+
+        redChannelMask = maxRedValue;
+        greenChannelMask = maxGreenValue;
+        blueChannelMask = maxBlueValue;
+        alphaChannelMask = maxAlphaValue;
+
+        alphaChannelShiftAmount = 0;
+        blueChannelShiftAmount = alphaChannelShiftAmount + alphaChannelBitDepth;
+        greenChannelShiftAmount = blueChannelShiftAmount + blueChannelBitDepth;
+        redChannelShiftAmount = greenChannelShiftAmount + greenChannelBitDepth;
+    }
+
     Mock<InternalImageType> mockSimpleInternalImage(unsigned int width,
             unsigned int height) {
         return mockInternalImage(width, height, getSimplePaintFunction(width));
@@ -79,6 +112,7 @@ protected:
 
         float maxDistance = topLeftCorner.distanceTo(bottomRightCorner) / 2.f;
         float conversionFactor = 1.f / maxDistance;
+        float alphaConversionFactor = conversionFactor / 4.f;
 
         return [=] (unsigned int x, unsigned int y) -> PixelType {
             Coordinate coordinate(x, y);
@@ -91,17 +125,20 @@ protected:
                     coordinate.distanceTo(bottomLeftCorner));
             float blueComponent = std::min(distanceToTopLeftCorner,
                     coordinate.distanceTo(bottomRightCorner));
+            float alphaComponent = distanceToTopLeftCorner;
 
             redComponent = 1.f - redComponent * conversionFactor;
             greenComponent = 1.f - greenComponent * conversionFactor;
             blueComponent = 1.f - blueComponent * conversionFactor;
+            alphaComponent = 1.f - alphaComponent * alphaConversionFactor;
 
-            return makePixelValue(redComponent, greenComponent, blueComponent);
+            return makePixelValue(redComponent, greenComponent, blueComponent,
+                    alphaComponent);
         };
     }
 
     PixelType makePixelValue(float redComponent, float greenComponent,
-            float blueComponent) {
+            float blueComponent, float alphaComponent) {
         PixelType pixel = 0;
 
         redComponent = std::max(1.f, std::abs(redComponent));
@@ -112,34 +149,38 @@ protected:
         greenComponent *= maxGreenValue;
         blueComponent *= maxBlueValue;
 
-        pixel |= ((PixelType)redComponent) & redChannelMask;
         pixel <<= redChannelBitDepth;
+        pixel |= ((PixelType)redComponent) & redChannelMask;
 
-        pixel |= ((PixelType)greenComponent) & greenChannelMask;
         pixel <<= greenChannelBitDepth;
+        pixel |= ((PixelType)greenComponent) & greenChannelMask;
 
-        pixel |= ((PixelType)blueComponent) & blueChannelMask;
         pixel <<= blueChannelBitDepth;
+        pixel |= ((PixelType)blueComponent) & blueChannelMask;
+
+        pixel <<= alphaChannelBitDepth;
+        pixel |= ((PixelType)alphaComponent) & alphaChannelMask;
 
         return pixel;
     }
 
     PixelType getRedComponentOf(PixelType value) {
-        unsigned int shiftAmount = greenChannelBitDepth + blueChannelBitDepth;
-
-        return getColorComponent(value, shiftAmount, redChannelMask);
+        return getColorComponent(value, redChannelShiftAmount, redChannelMask);
     }
 
     PixelType getGreenComponentOf(PixelType value) {
-        unsigned int shiftAmount = blueChannelBitDepth;
-
-        return getColorComponent(value, shiftAmount, greenChannelMask);
+        return getColorComponent(value, greenChannelShiftAmount,
+                greenChannelMask);
     }
 
     PixelType getBlueComponentOf(PixelType value) {
-        unsigned int shiftAmount = 0;
+        return getColorComponent(value, blueChannelShiftAmount,
+                blueChannelMask);
+    }
 
-        return getColorComponent(value, shiftAmount, blueChannelMask);
+    PixelType getAlphaComponentOf(PixelType value) {
+        return getColorComponent(value, alphaChannelShiftAmount,
+                blueChannelMask);
     }
 
     PixelType getColorComponent(PixelType value, unsigned int shiftAmount,

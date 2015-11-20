@@ -80,6 +80,8 @@ TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
     unsigned int width = 20;
     unsigned int height = 17;
 
+    calculateChannelParameters();
+
     auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
@@ -100,6 +102,40 @@ TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
             assertThat(redComponent).isEqualTo(expectedRedComponent);
             assertThat(greenComponent).isEqualTo(expectedGreenComponent);
             assertThat(blueComponent).isEqualTo(expectedBlueComponent);
+        }
+    }
+}
+
+TEST_F(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
+    unsigned int width = 15;
+    unsigned int height = 18;
+    bool withAlpha = true;
+
+    calculateChannelParameters(withAlpha);
+
+    auto mockImage = mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    const RgbImageType rgbImage(internalImage, withAlpha);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            PixelType pixelValue = internalImage.getPixelValue(x, y);
+
+            PixelType expectedRedComponent = getRedComponentOf(pixelValue);
+            PixelType expectedGreenComponent = getGreenComponentOf(pixelValue);
+            PixelType expectedBlueComponent = getBlueComponentOf(pixelValue);
+            PixelType expectedAlphaComponent = getAlphaComponentOf(pixelValue);
+
+            PixelType redComponent = rgbImage.getRedComponent(x, y);
+            PixelType greenComponent = rgbImage.getGreenComponent(x, y);
+            PixelType blueComponent = rgbImage.getBlueComponent(x, y);
+            PixelType alphaComponent = rgbImage.getAlphaComponent(x, y);
+
+            assertThat(redComponent).isEqualTo(expectedRedComponent);
+            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
+            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
+            assertThat(alphaComponent).isEqualTo(expectedAlphaComponent);
         }
     }
 }
