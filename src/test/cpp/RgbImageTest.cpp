@@ -18,6 +18,15 @@ TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImage) {
     AssertThat<IntRgbImageClass>::isConstructible(With<IntImageParameter>());
 }
 
+TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImageAndAlphaFlag) {
+    using IntRgbImageClass = RgbImageType;
+    using IntImageParameter = InternalImageType&;
+    using HasAlphaFlag = bool;
+
+    AssertThat<IntRgbImageClass>::isConstructible(
+            With<IntImageParameter, HasAlphaFlag>());
+}
+
 TEST_F(RgbImageTest, usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
