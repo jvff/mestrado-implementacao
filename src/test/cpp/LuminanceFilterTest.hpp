@@ -7,6 +7,7 @@
 
 #include "Filter.hpp"
 #include "LuminanceFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
