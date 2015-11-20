@@ -1,45 +1,26 @@
-#include <gtest/gtest.h>
-
-#include "fakeit.hpp"
-
-#include "asserts.hpp"
-
-#include "RgbImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "RgbImageTest.hpp"
 
 using namespace fakeit;
 
-TEST(RgbImageTest, classTemplateExists) {
-    using InternalImageType = FakeImage<unsigned int>;
-    using DummyRgbImage = RgbImage<InternalImageType>;
-
-    AssertThat<DummyRgbImage>::isClassOrStruct();
+TEST_F(RgbImageTest, classTemplateExists) {
+    AssertThat<RgbImageType>::isClassOrStruct();
 }
 
-TEST(RgbImageTest, isSubClassOfImage) {
-    using PixelType = unsigned int;
-    using InternalImageType = FakeImage<PixelType>;
-    using RgbImageClass = RgbImage<InternalImageType>;
+TEST_F(RgbImageTest, isSubClassOfImage) {
+    using RgbImageClass = RgbImageType;
     using ParentImageClass = Image<PixelType>;
 
     AssertThat<RgbImageClass>::isSubClass(Of<ParentImageClass>());
 }
 
-TEST(RgbImageTest, isConstructibleWithUnsignedIntImage) {
-    using PixelType = unsigned int;
-    using InternalImageType = FakeImage<PixelType>;
-    using IntRgbImageClass = RgbImage<InternalImageType>;
+TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImage) {
+    using IntRgbImageClass = RgbImageType;
     using IntImageParameter = InternalImageType&;
 
     AssertThat<IntRgbImageClass>::isConstructible(With<IntImageParameter>());
 }
 
-TEST(RgbImageTest, usesInternalImage) {
-    using PixelType = unsigned int;
-    using InternalImageType = FakeImage<PixelType>;
-
+TEST_F(RgbImageTest, usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
 
@@ -54,7 +35,7 @@ TEST(RgbImageTest, usesInternalImage) {
     When(Method(mockImage, getHeight)).AlwaysReturn(height);
     When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
 
-    RgbImage<InternalImageType> rgbImage(internalImage);
+    RgbImageType rgbImage(internalImage);
 
     assertThat(rgbImage.getWidth()).isEqualTo(width);
     assertThat(rgbImage.getHeight()).isEqualTo(height);
