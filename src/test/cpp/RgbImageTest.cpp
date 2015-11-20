@@ -22,7 +22,7 @@ TEST_F(RgbImageTest, usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
 
-    auto mockImage = mockInternalImage(width, height);
+    auto mockImage = mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
@@ -44,7 +44,7 @@ TEST_F(RgbImageTest, updatesInternalImage) {
     unsigned int width = 4;
     unsigned int height = 7;
 
-    auto mockImage = mockInternalImage(width, height);
+    auto mockImage = mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
@@ -63,6 +63,34 @@ TEST_F(RgbImageTest, updatesInternalImage) {
             Verify(Method(mockImage, setPixel).Using(x, y, pixelValue));
 
             ++pixelValue;
+        }
+    }
+}
+
+TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
+    unsigned int width = 20;
+    unsigned int height = 17;
+
+    auto mockImage = mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    const RgbImageType rgbImage(internalImage);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            PixelType pixelValue = internalImage.getPixelValue(x, y);
+
+            PixelType expectedRedComponent = getRedComponentOf(pixelValue);
+            PixelType expectedGreenComponent = getGreenComponentOf(pixelValue);
+            PixelType expectedBlueComponent = getBlueComponentOf(pixelValue);
+
+            PixelType redComponent = rgbImage.getRedComponent(x, y);
+            PixelType greenComponent = rgbImage.getGreenComponent(x, y);
+            PixelType blueComponent = rgbImage.getBlueComponent(x, y);
+
+            assertThat(redComponent).isEqualTo(expectedRedComponent);
+            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
+            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
         }
     }
 }
