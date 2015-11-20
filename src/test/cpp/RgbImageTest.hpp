@@ -30,6 +30,8 @@ protected:
         When(Method(mockImage, getWidth)).AlwaysReturn(width);
         When(Method(mockImage, getHeight)).AlwaysReturn(height);
         When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
+        When(Method(mockImage, setPixel).Using(Lt(width), Lt(height), _))
+            .AlwaysReturn();
 
         return mockImage;
     }

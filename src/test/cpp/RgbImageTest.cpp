@@ -39,3 +39,30 @@ TEST_F(RgbImageTest, usesInternalImage) {
         }
     }
 }
+
+TEST_F(RgbImageTest, updatesInternalImage) {
+    unsigned int width = 4;
+    unsigned int height = 7;
+
+    auto mockImage = mockInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    RgbImageType rgbImage(internalImage);
+
+    rgbImage = [height] (unsigned int x, unsigned int y) -> PixelType {
+        return y + x * height;
+    };
+
+    assertThat(rgbImage.getWidth()).isEqualTo(width);
+    assertThat(rgbImage.getHeight()).isEqualTo(height);
+
+    PixelType pixelValue = 0;
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            Verify(Method(mockImage, setPixel).Using(x, y, pixelValue));
+
+            ++pixelValue;
+        }
+    }
+}
