@@ -2,6 +2,7 @@
 #define RGB_IMAGE_TEST_HPP
 
 #include <cmath>
+#include <cstdint>
 
 #include <gtest/gtest.h>
 
@@ -15,9 +16,10 @@
 
 using namespace fakeit;
 
+template <typename PixelTypeParameter>
 class RgbImageTest : public ::testing::Test {
 protected:
-    using PixelType = unsigned int;
+    using PixelType = PixelTypeParameter;
     using InternalImageType = FakeImage<PixelType>;
     using RgbImageType = RgbImage<InternalImageType>;
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;

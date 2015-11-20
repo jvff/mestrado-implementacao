@@ -1,25 +1,36 @@
 #include "RgbImageTest.hpp"
 
-TEST_F(RgbImageTest, classTemplateExists) {
+using PixelTypes = ::testing::Types<unsigned char, unsigned short, unsigned int,
+        unsigned long, unsigned long long, char, short, int, long, long long,
+        std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, std::int8_t,
+        std::int16_t, std::int32_t, std::int64_t>;
+TYPED_TEST_CASE(RgbImageTest, PixelTypes);
+
+TYPED_TEST(RgbImageTest, classTemplateExists) {
+    using RgbImageType = typename TestFixture::RgbImageType;
+
     AssertThat<RgbImageType>::isClassOrStruct();
 }
 
-TEST_F(RgbImageTest, isSubClassOfImage) {
-    using RgbImageClass = RgbImageType;
+TYPED_TEST(RgbImageTest, isSubClassOfImage) {
+    using PixelType = typename TestFixture::PixelType;
+    using RgbImageClass = typename TestFixture::RgbImageType;
     using ParentImageClass = Image<PixelType>;
 
     AssertThat<RgbImageClass>::isSubClass(Of<ParentImageClass>());
 }
 
-TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImage) {
-    using IntRgbImageClass = RgbImageType;
+TYPED_TEST(RgbImageTest, isConstructibleWithUnsignedIntImage) {
+    using InternalImageType = typename TestFixture::InternalImageType;
+    using IntRgbImageClass = typename TestFixture::RgbImageType;
     using IntImageParameter = InternalImageType&;
 
     AssertThat<IntRgbImageClass>::isConstructible(With<IntImageParameter>());
 }
 
-TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImageAndAlphaFlag) {
-    using IntRgbImageClass = RgbImageType;
+TYPED_TEST(RgbImageTest, isConstructibleWithUnsignedIntImageAndAlphaFlag) {
+    using InternalImageType = typename TestFixture::InternalImageType;
+    using IntRgbImageClass = typename TestFixture::RgbImageType;
     using IntImageParameter = InternalImageType&;
     using HasAlphaFlag = bool;
 
@@ -27,11 +38,13 @@ TEST_F(RgbImageTest, isConstructibleWithUnsignedIntImageAndAlphaFlag) {
             With<IntImageParameter, HasAlphaFlag>());
 }
 
-TEST_F(RgbImageTest, usesInternalImage) {
+TYPED_TEST(RgbImageTest, usesInternalImage) {
+    using RgbImageType = typename TestFixture::RgbImageType;
+
     unsigned int width = 8;
     unsigned int height = 5;
 
-    auto mockImage = mockSimpleInternalImage(width, height);
+    auto mockImage = this->mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
@@ -49,11 +62,14 @@ TEST_F(RgbImageTest, usesInternalImage) {
     }
 }
 
-TEST_F(RgbImageTest, updatesInternalImage) {
+TYPED_TEST(RgbImageTest, updatesInternalImage) {
+    using PixelType = typename TestFixture::PixelType;
+    using RgbImageType = typename TestFixture::RgbImageType;
+
     unsigned int width = 4;
     unsigned int height = 7;
 
-    auto mockImage = mockSimpleInternalImage(width, height);
+    auto mockImage = this->mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
@@ -76,13 +92,16 @@ TEST_F(RgbImageTest, updatesInternalImage) {
     }
 }
 
-TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
+TYPED_TEST(RgbImageTest, hasRedGreenAndBlueChannels) {
+    using PixelType = typename TestFixture::PixelType;
+    using RgbImageType = typename TestFixture::RgbImageType;
+
     unsigned int width = 20;
     unsigned int height = 17;
 
-    calculateChannelParameters();
+    this->calculateChannelParameters();
 
-    auto mockImage = mockColorInternalImage(width, height);
+    auto mockImage = this->mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage);
@@ -91,9 +110,9 @@ TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
         for (unsigned int y = 0; y < height; ++y) {
             PixelType pixelValue = internalImage.getPixelValue(x, y);
 
-            PixelType expectedRedComponent = getRedComponentOf(pixelValue);
-            PixelType expectedGreenComponent = getGreenComponentOf(pixelValue);
-            PixelType expectedBlueComponent = getBlueComponentOf(pixelValue);
+            auto expectedRedComponent = this->getRedComponentOf(pixelValue);
+            auto expectedGreenComponent = this->getGreenComponentOf(pixelValue);
+            auto expectedBlueComponent = this->getBlueComponentOf(pixelValue);
 
             PixelType redComponent = rgbImage.getRedComponent(x, y);
             PixelType greenComponent = rgbImage.getGreenComponent(x, y);
@@ -106,14 +125,17 @@ TEST_F(RgbImageTest, hasRedGreenAndBlueChannels) {
     }
 }
 
-TEST_F(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
+TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
+    using PixelType = typename TestFixture::PixelType;
+    using RgbImageType = typename TestFixture::RgbImageType;
+
     unsigned int width = 15;
     unsigned int height = 18;
     bool withAlpha = true;
 
-    calculateChannelParameters(withAlpha);
+    this->calculateChannelParameters(withAlpha);
 
-    auto mockImage = mockColorInternalImage(width, height);
+    auto mockImage = this->mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage, withAlpha);
@@ -122,10 +144,10 @@ TEST_F(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
         for (unsigned int y = 0; y < height; ++y) {
             PixelType pixelValue = internalImage.getPixelValue(x, y);
 
-            PixelType expectedRedComponent = getRedComponentOf(pixelValue);
-            PixelType expectedGreenComponent = getGreenComponentOf(pixelValue);
-            PixelType expectedBlueComponent = getBlueComponentOf(pixelValue);
-            PixelType expectedAlphaComponent = getAlphaComponentOf(pixelValue);
+            auto expectedRedComponent = this->getRedComponentOf(pixelValue);
+            auto expectedGreenComponent = this->getGreenComponentOf(pixelValue);
+            auto expectedBlueComponent = this->getBlueComponentOf(pixelValue);
+            auto expectedAlphaComponent = this->getAlphaComponentOf(pixelValue);
 
             PixelType redComponent = rgbImage.getRedComponent(x, y);
             PixelType greenComponent = rgbImage.getGreenComponent(x, y);
