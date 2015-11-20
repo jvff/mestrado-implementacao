@@ -56,6 +56,25 @@ TEST(CoordinateTest, hasAdditionOperator) {
     assertThat(result.y).isEqualTo(firstY + secondY);
 }
 
+TEST(CoordinateTest, hasDistanceToMethod) {
+    unsigned int firstX = 1390;
+    unsigned int firstY = 2342;
+    unsigned int secondX = 908;
+    unsigned int secondY = 9039;
+
+    float deltaX = firstX - secondX;
+    float deltaY = secondY - firstY;
+    float expectedDistance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    const auto first = Coordinate(firstX, firstY);
+    const auto second = Coordinate(secondX, secondY);
+    auto firstResult = first.distanceTo(second);
+    auto secondResult = second.distanceTo(first);
+
+    assertThat(firstResult).isEqualTo(expectedDistance);
+    assertThat(secondResult).isEqualTo(expectedDistance);
+}
+
 TEST(CoordinateTest, isComparable) {
     unsigned int x = 256;
     unsigned int y = 789;
