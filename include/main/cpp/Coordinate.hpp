@@ -1,6 +1,8 @@
 #ifndef COORDINATE_HPP
 #define COORDINATE_HPP
 
+#include <cmath>
+
 struct Coordinate {
     unsigned int x;
     unsigned int y;
@@ -9,6 +11,16 @@ struct Coordinate {
     }
 
     constexpr Coordinate(unsigned int x, unsigned int y) : x(x), y(y) {
+    }
+
+    float distanceTo(Coordinate other) const {
+        float deltaX = (float)x - (float)other.x;
+        float deltaY = (float)y - (float)other.y;
+
+        float squaredDeltaX = deltaX * deltaX;
+        float squaredDeltaY = deltaY * deltaY;
+
+        return std::sqrt(squaredDeltaX + squaredDeltaY);
     }
 
     Coordinate operator+(const Coordinate& displacement) const {
