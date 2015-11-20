@@ -30,11 +30,11 @@ private:
     unsigned int blueChannelMask;
 
 public:
-    RgbImage(InternalImageType& internalImage)
+    RgbImage(InternalImageType& internalImage, bool hasAlpha = false)
             : SuperClass(internalImage.getWidth(), internalImage.getHeight()),
             internalImage(internalImage) {
         unsigned int availableBits = 8 * sizeof(PixelType);
-        unsigned int numberOfChannels = 3;
+        unsigned int numberOfChannels = hasAlpha ? 4 : 3;
 
         auto bitsPerChannel = availableBits / numberOfChannels;
         auto remainingBits = availableBits - numberOfChannels * bitsPerChannel;
