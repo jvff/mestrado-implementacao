@@ -22,3 +22,12 @@ TEST(RgbImageTest, isSubClassOfImage) {
 
     AssertThat<RgbImageClass>::isSubClass(Of<ParentImageClass>());
 }
+
+TEST(RgbImageTest, isConstructibleWithUnsignedIntImage) {
+    using PixelType = unsigned int;
+    using InternalImageType = FakeImage<PixelType>;
+    using IntRgbImageClass = RgbImage<InternalImageType>;
+    using IntImageParameter = InternalImageType&;
+
+    AssertThat<IntRgbImageClass>::isConstructible(With<IntImageParameter>());
+}
