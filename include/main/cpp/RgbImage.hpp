@@ -9,6 +9,7 @@ template <typename InternalImageType>
 class RgbImage : public Image<typename InternalImageType::PixelType> {
 private:
     using PixelType = typename InternalImageType::PixelType;
+    using SuperClass = Image<PixelType>;
 
     static constexpr bool pixelTypeIsSupported() {
         return std::is_integral<PixelType>::value
@@ -17,15 +18,20 @@ private:
 
     static_assert(pixelTypeIsSupported(), "Unsupported pixel type");
 
+private:
+    InternalImageType& internalImage;
+
 public:
-    RgbImage(InternalImageType&) {
+    RgbImage(InternalImageType& internalImage)
+            : SuperClass(internalImage.getWidth(), internalImage.getHeight()),
+            internalImage(internalImage) {
     }
 
-    void setPixel(unsigned int x, unsigned int y, PixelType value) override {
+    void setPixel(unsigned int, unsigned int, PixelType) override {
     }
 
     PixelType getPixelValue(unsigned int x, unsigned int y) const override {
-        return 0;
+        return internalImage.getPixelValue(x, y);
     }
 };
 
