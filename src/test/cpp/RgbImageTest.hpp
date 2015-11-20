@@ -11,11 +11,34 @@
 
 #include "FakeImage.hpp"
 
+using namespace fakeit;
+
 class RgbImageTest : public ::testing::Test {
 protected:
     using PixelType = unsigned int;
     using InternalImageType = FakeImage<PixelType>;
     using RgbImageType = RgbImage<InternalImageType>;
+    using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
+
+protected:
+    Mock<InternalImageType> mockInternalImage(unsigned int width,
+            unsigned int height) {
+        Mock<InternalImageType> mockImage;
+
+        auto returnPixel = getPaintFunction(width);
+
+        When(Method(mockImage, getWidth)).AlwaysReturn(width);
+        When(Method(mockImage, getHeight)).AlwaysReturn(height);
+        When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
+
+        return mockImage;
+    }
+
+    PaintFunction getPaintFunction(unsigned int width) {
+        return [width] (unsigned int x, unsigned int y) -> PixelType {
+            return x + y * width;
+        };
+    }
 };
 
 #endif

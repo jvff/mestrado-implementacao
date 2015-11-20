@@ -1,7 +1,5 @@
 #include "RgbImageTest.hpp"
 
-using namespace fakeit;
-
 TEST_F(RgbImageTest, classTemplateExists) {
     AssertThat<RgbImageType>::isClassOrStruct();
 }
@@ -24,16 +22,8 @@ TEST_F(RgbImageTest, usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
 
-    Mock<InternalImageType> mockImage;
-    InternalImageType& internalImage = mockImage.get();
-
-    auto returnPixel = [width] (unsigned int x, unsigned int y) -> PixelType {
-        return y * width + x;
-    };
-
-    When(Method(mockImage, getWidth)).AlwaysReturn(width);
-    When(Method(mockImage, getHeight)).AlwaysReturn(height);
-    When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
+    auto mockImage = mockInternalImage(width, height);
+    auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
 
