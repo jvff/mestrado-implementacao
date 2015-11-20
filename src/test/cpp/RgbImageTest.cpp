@@ -8,14 +8,14 @@
 #include "FakeImage.hpp"
 
 TEST(RgbImageTest, classTemplateExists) {
-    using InternalImageType = FakeImage<DummyType>;
+    using InternalImageType = FakeImage<unsigned int>;
     using DummyRgbImage = RgbImage<InternalImageType>;
 
     AssertThat<DummyRgbImage>::isClassOrStruct();
 }
 
 TEST(RgbImageTest, isSubClassOfImage) {
-    using PixelType = DummyType;
+    using PixelType = unsigned int;
     using InternalImageType = FakeImage<PixelType>;
     using RgbImageClass = RgbImage<InternalImageType>;
     using ParentImageClass = Image<PixelType>;
