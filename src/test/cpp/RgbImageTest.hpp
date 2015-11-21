@@ -170,14 +170,32 @@ protected:
         return getColorComponent(value, redChannelShiftAmount, redChannelMask);
     }
 
+    float getRelativeRedComponentOf(PixelType value) {
+        float redComponent = getRedComponentOf(value);
+
+        return redComponent / (float)maxRedValue;
+    }
+
     PixelType getGreenComponentOf(PixelType value) {
         return getColorComponent(value, greenChannelShiftAmount,
                 greenChannelMask);
     }
 
+    float getRelativeGreenComponentOf(PixelType value) {
+        float greenComponent = getGreenComponentOf(value);
+
+        return greenComponent / (float)maxGreenValue;
+    }
+
     PixelType getBlueComponentOf(PixelType value) {
         return getColorComponent(value, blueChannelShiftAmount,
                 blueChannelMask);
+    }
+
+    float getRelativeBlueComponentOf(PixelType value) {
+        float blueComponent = getBlueComponentOf(value);
+
+        return blueComponent / (float)maxBlueValue;
     }
 
     PixelType getAlphaComponentOf(PixelType value) {

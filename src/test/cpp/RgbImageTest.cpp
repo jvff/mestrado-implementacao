@@ -125,6 +125,42 @@ TYPED_TEST(RgbImageTest, hasRedGreenAndBlueChannels) {
     }
 }
 
+TYPED_TEST(RgbImageTest, hasRedGreenAndBlueRelativeValues) {
+    using PixelType = typename TestFixture::PixelType;
+    using RgbImageType = typename TestFixture::RgbImageType;
+
+    unsigned int width = 20;
+    unsigned int height = 17;
+
+    this->calculateChannelParameters();
+
+    auto mockImage = this->mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    const RgbImageType rgbImage(internalImage);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            PixelType pixelValue = internalImage.getPixelValue(x, y);
+
+            float expectedRedComponent =
+                    this->getRelativeRedComponentOf(pixelValue);
+            float expectedGreenComponent =
+                    this->getRelativeGreenComponentOf(pixelValue);
+            float expectedBlueComponent =
+                    this->getRelativeBlueComponentOf(pixelValue);
+
+            float redComponent = rgbImage.getRelativeRedComponent(x, y);
+            float greenComponent = rgbImage.getRelativeGreenComponent(x, y);
+            float blueComponent = rgbImage.getRelativeBlueComponent(x, y);
+
+            assertThat(redComponent).isEqualTo(expectedRedComponent);
+            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
+            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
+        }
+    }
+}
+
 TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
     using PixelType = typename TestFixture::PixelType;
     using RgbImageType = typename TestFixture::RgbImageType;
