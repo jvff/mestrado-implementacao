@@ -153,3 +153,26 @@ TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
             this->checkChannels(x, y, internalImage, rgbImage);
     }
 }
+
+TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaRelativeValues) {
+    using RgbImageType = typename TestFixture::RgbImageType;
+
+    const bool WITH_ALPHA = true;
+
+    unsigned int width = 20;
+    unsigned int height = 17;
+
+    this->calculateChannelParameters(WITH_ALPHA);
+
+    auto mockImage = this->mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    const RgbImageType rgbImage(internalImage, WITH_ALPHA);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            this->checkRelativeChannels(x, y, WITH_ALPHA, internalImage,
+                    rgbImage);
+        }
+    }
+}
