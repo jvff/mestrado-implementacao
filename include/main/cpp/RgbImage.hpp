@@ -65,20 +65,20 @@ public:
         return internalImage.getPixelValue(x, y);
     }
 
-    PixelType getRedComponent(unsigned int x, unsigned int y) const {
+    virtual PixelType getRedComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, redChannelShiftAmount, redChannelMask);
     }
 
-    PixelType getGreenComponent(unsigned int x, unsigned int y) const {
+    virtual PixelType getGreenComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, greenChannelShiftAmount,
                 greenChannelMask);
     }
 
-    PixelType getBlueComponent(unsigned int x, unsigned int y) const {
+    virtual PixelType getBlueComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, blueChannelShiftAmount, blueChannelMask);
     }
 
-    PixelType getAlphaComponent(unsigned int x, unsigned int y) const {
+    virtual PixelType getAlphaComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, alphaChannelShiftAmount,
                 alphaChannelMask);
     }
