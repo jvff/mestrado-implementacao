@@ -34,6 +34,7 @@ private:
     float inverseMaximumRedChannelValue;
     float inverseMaximumGreenChannelValue;
     float inverseMaximumBlueChannelValue;
+    float inverseMaximumAlphaChannelValue;
 
 public:
     RgbImage(InternalImageType& internalImage, bool hasAlpha = false)
@@ -63,6 +64,7 @@ public:
         inverseMaximumRedChannelValue = 1.f / (float)redChannelMask;
         inverseMaximumGreenChannelValue = 1.f / (float)greenChannelMask;
         inverseMaximumBlueChannelValue = 1.f / (float)blueChannelMask;
+        inverseMaximumAlphaChannelValue = 1.f / (float)alphaChannelMask;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
@@ -110,6 +112,13 @@ public:
         float blueComponent = getBlueComponent(x, y);
 
         return blueComponent * inverseMaximumBlueChannelValue;
+    }
+
+    virtual float getRelativeAlphaComponent(unsigned int x, unsigned int y)
+            const {
+        float alphaComponent = getAlphaComponent(x, y);
+
+        return alphaComponent * inverseMaximumAlphaChannelValue;
     }
 
     using SuperClass::operator=;
