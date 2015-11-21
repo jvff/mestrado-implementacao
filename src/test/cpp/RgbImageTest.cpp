@@ -105,10 +105,7 @@ TYPED_TEST(RgbImageTest, hasRedGreenAndBlueChannels) {
 
     const RgbImageType rgbImage(internalImage);
 
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y)
-            this->checkChannels(x, y, internalImage, rgbImage);
-    }
+    this->checkChannelsOfAllPixels(internalImage, rgbImage);
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenAndBlueRelativeValues) {
@@ -126,12 +123,8 @@ TYPED_TEST(RgbImageTest, hasRedGreenAndBlueRelativeValues) {
 
     const RgbImageType rgbImage(internalImage);
 
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y) {
-            this->checkRelativeChannels(x, y, WITHOUT_ALPHA, internalImage,
-                    rgbImage);
-        }
-    }
+    this->checkRelativeChannelsOfAllPixels(internalImage, rgbImage,
+            WITHOUT_ALPHA);
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
@@ -148,10 +141,7 @@ TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
 
     const RgbImageType rgbImage(internalImage, withAlpha);
 
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y)
-            this->checkChannels(x, y, internalImage, rgbImage);
-    }
+    this->checkChannelsOfAllPixels(internalImage, rgbImage);
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaRelativeValues) {
@@ -169,10 +159,5 @@ TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaRelativeValues) {
 
     const RgbImageType rgbImage(internalImage, WITH_ALPHA);
 
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y) {
-            this->checkRelativeChannels(x, y, WITH_ALPHA, internalImage,
-                    rgbImage);
-        }
-    }
+    this->checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITH_ALPHA);
 }

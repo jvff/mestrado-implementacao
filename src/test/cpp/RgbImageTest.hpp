@@ -128,6 +128,17 @@ protected:
         return pixel;
     }
 
+    void checkChannelsOfAllPixels(const InternalImageType& internalImage,
+            const RgbImageType& rgbImage) {
+        unsigned int width = internalImage.getWidth();
+        unsigned int height = internalImage.getHeight();
+
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
+                checkChannels(x, y, internalImage, rgbImage);
+        }
+    }
+
     void checkChannels(unsigned int x, unsigned int y,
             const InternalImageType& internalImage,
             const RgbImageType& rgbImage) {
@@ -144,9 +155,20 @@ protected:
         assertThat(channelValue).isEqualTo(channel->getComponent(pixelValue));
     }
 
-    void checkRelativeChannels(unsigned int x, unsigned int y, bool withAlpha,
+    void checkRelativeChannelsOfAllPixels(const InternalImageType& internalImage,
+            const RgbImageType& rgbImage, bool withAlpha) {
+        unsigned int width = internalImage.getWidth();
+        unsigned int height = internalImage.getHeight();
+
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
+                checkRelativeChannels(x, y, internalImage, rgbImage, withAlpha);
+        }
+    }
+
+    void checkRelativeChannels(unsigned int x, unsigned int y,
             const InternalImageType& internalImage,
-            const RgbImageType& rgbImage) {
+            const RgbImageType& rgbImage, bool withAlpha) {
         PixelType fullValue = internalImage.getPixelValue(x, y);
 
         checkRelativeChannel(redChannel, fullValue,
