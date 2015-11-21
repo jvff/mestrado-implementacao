@@ -31,6 +31,10 @@ private:
     unsigned int blueChannelMask;
     unsigned int alphaChannelMask;
 
+    float inverseMaximumRedChannelValue;
+    float inverseMaximumGreenChannelValue;
+    float inverseMaximumBlueChannelValue;
+
 public:
     RgbImage(InternalImageType& internalImage, bool hasAlpha = false)
             : SuperClass(internalImage.getWidth(), internalImage.getHeight()),
@@ -55,6 +59,10 @@ public:
         greenChannelMask = (1 << greenChannelBits) - 1;
         blueChannelMask = (1 << blueChannelBits) - 1;
         alphaChannelMask = (1 << alphaChannelBits) - 1;
+
+        inverseMaximumRedChannelValue = 1.f / (float)redChannelMask;
+        inverseMaximumGreenChannelValue = 1.f / (float)greenChannelMask;
+        inverseMaximumBlueChannelValue = 1.f / (float)blueChannelMask;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
@@ -81,6 +89,27 @@ public:
     virtual PixelType getAlphaComponent(unsigned int x, unsigned int y) const {
         return getColorComponent(x, y, alphaChannelShiftAmount,
                 alphaChannelMask);
+    }
+
+    virtual float getRelativeRedComponent(unsigned int x, unsigned int y)
+            const {
+        float redComponent = getRedComponent(x, y);
+
+        return redComponent * inverseMaximumRedChannelValue;
+    }
+
+    virtual float getRelativeGreenComponent(unsigned int x, unsigned int y)
+            const {
+        float greenComponent = getGreenComponent(x, y);
+
+        return greenComponent * inverseMaximumGreenChannelValue;
+    }
+
+    virtual float getRelativeBlueComponent(unsigned int x, unsigned int y)
+            const {
+        float blueComponent = getBlueComponent(x, y);
+
+        return blueComponent * inverseMaximumBlueChannelValue;
     }
 
     using SuperClass::operator=;
