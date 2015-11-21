@@ -93,7 +93,6 @@ TYPED_TEST(RgbImageTest, updatesInternalImage) {
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenAndBlueChannels) {
-    using PixelType = typename TestFixture::PixelType;
     using RgbImageType = typename TestFixture::RgbImageType;
 
     unsigned int width = 20;
@@ -107,27 +106,15 @@ TYPED_TEST(RgbImageTest, hasRedGreenAndBlueChannels) {
     const RgbImageType rgbImage(internalImage);
 
     for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y) {
-            PixelType pixelValue = internalImage.getPixelValue(x, y);
-
-            auto expectedRedComponent = this->getRedComponentOf(pixelValue);
-            auto expectedGreenComponent = this->getGreenComponentOf(pixelValue);
-            auto expectedBlueComponent = this->getBlueComponentOf(pixelValue);
-
-            PixelType redComponent = rgbImage.getRedComponent(x, y);
-            PixelType greenComponent = rgbImage.getGreenComponent(x, y);
-            PixelType blueComponent = rgbImage.getBlueComponent(x, y);
-
-            assertThat(redComponent).isEqualTo(expectedRedComponent);
-            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
-            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
-        }
+        for (unsigned int y = 0; y < height; ++y)
+            this->checkChannels(x, y, internalImage, rgbImage);
     }
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenAndBlueRelativeValues) {
-    using PixelType = typename TestFixture::PixelType;
     using RgbImageType = typename TestFixture::RgbImageType;
+
+    const bool WITHOUT_ALPHA = false;
 
     unsigned int width = 20;
     unsigned int height = 17;
@@ -141,28 +128,13 @@ TYPED_TEST(RgbImageTest, hasRedGreenAndBlueRelativeValues) {
 
     for (unsigned int x = 0; x < width; ++x) {
         for (unsigned int y = 0; y < height; ++y) {
-            PixelType pixelValue = internalImage.getPixelValue(x, y);
-
-            float expectedRedComponent =
-                    this->getRelativeRedComponentOf(pixelValue);
-            float expectedGreenComponent =
-                    this->getRelativeGreenComponentOf(pixelValue);
-            float expectedBlueComponent =
-                    this->getRelativeBlueComponentOf(pixelValue);
-
-            float redComponent = rgbImage.getRelativeRedComponent(x, y);
-            float greenComponent = rgbImage.getRelativeGreenComponent(x, y);
-            float blueComponent = rgbImage.getRelativeBlueComponent(x, y);
-
-            assertThat(redComponent).isEqualTo(expectedRedComponent);
-            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
-            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
+            this->checkRelativeChannels(x, y, WITHOUT_ALPHA, internalImage,
+                    rgbImage);
         }
     }
 }
 
 TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
-    using PixelType = typename TestFixture::PixelType;
     using RgbImageType = typename TestFixture::RgbImageType;
 
     unsigned int width = 15;
@@ -177,23 +149,7 @@ TYPED_TEST(RgbImageTest, hasRedGreenBlueAndAlphaChannels) {
     const RgbImageType rgbImage(internalImage, withAlpha);
 
     for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y) {
-            PixelType pixelValue = internalImage.getPixelValue(x, y);
-
-            auto expectedRedComponent = this->getRedComponentOf(pixelValue);
-            auto expectedGreenComponent = this->getGreenComponentOf(pixelValue);
-            auto expectedBlueComponent = this->getBlueComponentOf(pixelValue);
-            auto expectedAlphaComponent = this->getAlphaComponentOf(pixelValue);
-
-            PixelType redComponent = rgbImage.getRedComponent(x, y);
-            PixelType greenComponent = rgbImage.getGreenComponent(x, y);
-            PixelType blueComponent = rgbImage.getBlueComponent(x, y);
-            PixelType alphaComponent = rgbImage.getAlphaComponent(x, y);
-
-            assertThat(redComponent).isEqualTo(expectedRedComponent);
-            assertThat(greenComponent).isEqualTo(expectedGreenComponent);
-            assertThat(blueComponent).isEqualTo(expectedBlueComponent);
-            assertThat(alphaComponent).isEqualTo(expectedAlphaComponent);
-        }
+        for (unsigned int y = 0; y < height; ++y)
+            this->checkChannels(x, y, internalImage, rgbImage);
     }
 }

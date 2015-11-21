@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -12,6 +13,7 @@
 
 #include "RgbImage.hpp"
 
+#include "ColorChannel.hpp"
 #include "FakeImage.hpp"
 
 using namespace fakeit;
@@ -24,52 +26,27 @@ protected:
     using RgbImageType = RgbImage<InternalImageType>;
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
-    const unsigned int totalBitDepth = sizeof(PixelType) * 8;
-
-    unsigned int redChannelBitDepth;
-    unsigned int greenChannelBitDepth;
-    unsigned int blueChannelBitDepth;
-    unsigned int alphaChannelBitDepth;
-
-    unsigned int maxRedValue;
-    unsigned int maxGreenValue;
-    unsigned int maxBlueValue;
-    unsigned int maxAlphaValue;
-
-    unsigned int redChannelMask;
-    unsigned int greenChannelMask;
-    unsigned int blueChannelMask;
-    unsigned int alphaChannelMask;
-
-    unsigned int redChannelShiftAmount;
-    unsigned int greenChannelShiftAmount;
-    unsigned int blueChannelShiftAmount;
-    unsigned int alphaChannelShiftAmount;
+    std::unique_ptr<ColorChannel<PixelType> > redChannel;
+    std::unique_ptr<ColorChannel<PixelType> > greenChannel;
+    std::unique_ptr<ColorChannel<PixelType> > blueChannel;
+    std::unique_ptr<ColorChannel<PixelType> > alphaChannel;
 
 protected:
     void calculateChannelParameters(bool withAlpha = false) {
         unsigned int numChannels = withAlpha ? 4 : 3;
-        unsigned int bitDepth = totalBitDepth / numChannels;
 
-        redChannelBitDepth = bitDepth;
-        greenChannelBitDepth = totalBitDepth - (numChannels - 1) * bitDepth;
-        blueChannelBitDepth = bitDepth;
-        alphaChannelBitDepth = withAlpha ? bitDepth : 0;
+        redChannel.reset(new ColorChannel<PixelType>(numChannels, false));
+        greenChannel.reset(new ColorChannel<PixelType>(numChannels, true));
+        blueChannel.reset(new ColorChannel<PixelType>(numChannels, false));
 
-        maxRedValue = (1 << redChannelBitDepth) - 1;
-        maxGreenValue = (1 << blueChannelBitDepth) - 1;
-        maxBlueValue = (1 << blueChannelBitDepth) - 1;
-        maxAlphaValue = (1 << alphaChannelBitDepth) - 1;
+        if (withAlpha) {
+            alphaChannel.reset(new ColorChannel<PixelType>(numChannels, false));
+            blueChannel->isAfter(*alphaChannel);
+        } else
+            alphaChannel.reset(new ColorChannel<PixelType>(0, false));
 
-        redChannelMask = maxRedValue;
-        greenChannelMask = maxGreenValue;
-        blueChannelMask = maxBlueValue;
-        alphaChannelMask = maxAlphaValue;
-
-        alphaChannelShiftAmount = 0;
-        blueChannelShiftAmount = alphaChannelShiftAmount + alphaChannelBitDepth;
-        greenChannelShiftAmount = blueChannelShiftAmount + blueChannelBitDepth;
-        redChannelShiftAmount = greenChannelShiftAmount + greenChannelBitDepth;
+        greenChannel->isAfter(*blueChannel);
+        redChannel->isAfter(*greenChannel);
     }
 
     Mock<InternalImageType> mockSimpleInternalImage(unsigned int width,
@@ -143,69 +120,56 @@ protected:
             float blueComponent, float alphaComponent) {
         PixelType pixel = 0;
 
-        redComponent = std::max(1.f, std::abs(redComponent));
-        greenComponent = std::max(1.f, std::abs(greenComponent));
-        blueComponent = std::max(1.f, std::abs(blueComponent));
-
-        redComponent *= maxRedValue;
-        greenComponent *= maxGreenValue;
-        blueComponent *= maxBlueValue;
-
-        pixel <<= redChannelBitDepth;
-        pixel |= ((PixelType)redComponent) & redChannelMask;
-
-        pixel <<= greenChannelBitDepth;
-        pixel |= ((PixelType)greenComponent) & greenChannelMask;
-
-        pixel <<= blueChannelBitDepth;
-        pixel |= ((PixelType)blueComponent) & blueChannelMask;
-
-        pixel <<= alphaChannelBitDepth;
-        pixel |= ((PixelType)alphaComponent) & alphaChannelMask;
+        redChannel->apply(std::abs(redComponent), pixel);
+        greenChannel->apply(std::abs(greenComponent), pixel);
+        blueChannel->apply(std::abs(blueComponent), pixel);
+        alphaChannel->apply(std::abs(alphaComponent), pixel);
 
         return pixel;
     }
 
-    PixelType getRedComponentOf(PixelType value) {
-        return getColorComponent(value, redChannelShiftAmount, redChannelMask);
+    void checkChannels(unsigned int x, unsigned int y,
+            const InternalImageType& internalImage,
+            const RgbImageType& rgbImage) {
+        PixelType fullValue = internalImage.getPixelValue(x, y);
+
+        checkChannel(redChannel, fullValue, rgbImage.getRedComponent(x, y));
+        checkChannel(greenChannel, fullValue, rgbImage.getGreenComponent(x, y));
+        checkChannel(blueChannel, fullValue, rgbImage.getBlueComponent(x, y));
+        checkChannel(alphaChannel, fullValue, rgbImage.getAlphaComponent(x, y));
     }
 
-    float getRelativeRedComponentOf(PixelType value) {
-        float redComponent = getRedComponentOf(value);
-
-        return redComponent / (float)maxRedValue;
+    void checkChannel(std::unique_ptr<ColorChannel<PixelType> >& channel,
+            PixelType pixelValue, PixelType channelValue) {
+        assertThat(channelValue).isEqualTo(channel->getComponent(pixelValue));
     }
 
-    PixelType getGreenComponentOf(PixelType value) {
-        return getColorComponent(value, greenChannelShiftAmount,
-                greenChannelMask);
+    void checkRelativeChannels(unsigned int x, unsigned int y, bool withAlpha,
+            const InternalImageType& internalImage,
+            const RgbImageType& rgbImage) {
+        PixelType fullValue = internalImage.getPixelValue(x, y);
+
+        checkRelativeChannel(redChannel, fullValue,
+                rgbImage.getRelativeRedComponent(x, y));
+
+        checkRelativeChannel(greenChannel, fullValue,
+                rgbImage.getRelativeGreenComponent(x, y));
+
+        checkRelativeChannel(blueChannel, fullValue,
+                rgbImage.getRelativeBlueComponent(x, y));
+
+        if (withAlpha) {
+            checkRelativeChannel(alphaChannel, fullValue,
+                    rgbImage.getRelativeAlphaComponent(x, y));
+        }
     }
 
-    float getRelativeGreenComponentOf(PixelType value) {
-        float greenComponent = getGreenComponentOf(value);
+    void checkRelativeChannel(
+            std::unique_ptr<ColorChannel<PixelType> >& channel,
+            PixelType pixelValue, float relativeChannelValue) {
+        float expectedValue = channel->getRelativeComponent(pixelValue);
 
-        return greenComponent / (float)maxGreenValue;
-    }
-
-    PixelType getBlueComponentOf(PixelType value) {
-        return getColorComponent(value, blueChannelShiftAmount,
-                blueChannelMask);
-    }
-
-    float getRelativeBlueComponentOf(PixelType value) {
-        float blueComponent = getBlueComponentOf(value);
-
-        return blueComponent / (float)maxBlueValue;
-    }
-
-    PixelType getAlphaComponentOf(PixelType value) {
-        return getColorComponent(value, alphaChannelShiftAmount,
-                blueChannelMask);
-    }
-
-    PixelType getColorComponent(PixelType value, unsigned int shiftAmount,
-            unsigned int mask) {
-        return (value >> shiftAmount) & mask;
+        assertThat(relativeChannelValue).isAlmostEqualTo(expectedValue);
     }
 };
 
