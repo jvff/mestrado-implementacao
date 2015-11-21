@@ -10,6 +10,16 @@ TEST_F(LuminanceFilterTest, isSubClassOfFilter) {
     AssertThat<DummyFilter>::isSubClass(Of<ParentFilter>());
 }
 
+TEST_F(LuminanceFilterTest, rgbSpecializationIsSubClassOfSimpleFilter) {
+    using SourcePixelType = unsigned char;
+    using InternalImageType = Image<SourcePixelType>;
+    using SourceImageType = RgbImage<InternalImageType>;
+    using DummyFilter = LuminanceFilter<SourceImageType, DestinationImageType>;
+    using ParentFilter = SimpleFilter<SourceImageType, DestinationImageType>;
+
+    AssertThat<DummyFilter>::isSubClass(Of<ParentFilter>());
+}
+
 TEST_F(LuminanceFilterTest, doesntChangeImage) {
     using PixelType = DummyType;
     using SourceImageType = Image<PixelType>;
