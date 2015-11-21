@@ -1,7 +1,12 @@
 #ifndef LUMINANCE_FILTER_TEST_HPP
 #define LUMINANCE_FILTER_TEST_HPP
 
+#include <cstdint>
+#include <limits>
+
 #include <gtest/gtest.h>
+
+#include "fakeit.hpp"
 
 #include "asserts.hpp"
 
@@ -13,6 +18,8 @@
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+
+using namespace fakeit;
 
 class LuminanceFilterTest : public ::testing::Test {
 protected:
