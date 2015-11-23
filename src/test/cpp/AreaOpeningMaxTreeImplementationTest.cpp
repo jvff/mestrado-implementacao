@@ -10,3 +10,12 @@ TEST_F(AreaOpeningMaxTreeImplementationTest, isFilterImplementation) {
 
     AssertThat<ImplementationClass>::isSubClass(Of<ParentImplementation>());
 }
+
+TEST_F(AreaOpeningMaxTreeImplementationTest, isConstructibleWithParameters) {
+    using AreaSizeParameter = unsigned int;
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<ImplementationClass>::isConstructible(With<AreaSizeParameter,
+            SourceImageParameter, DestinationImageParameter>());
+}
