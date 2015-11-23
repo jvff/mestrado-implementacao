@@ -34,34 +34,5 @@ TEST(AreaOpeningFilterTest, isConstructibleWithParameter) {
     AssertThat<DummyFilter>::isConstructible(With<AreaSizeParameter>());
 }
 
-TEST(AreaOpeningFilterTest, bigPlateauIsntCleared) {
-    using PixelType = unsigned char;
-    using ImageType = SimpleArrayImage<PixelType>;
-    using FilterType = AreaOpeningFilter<Image<PixelType>, ImageType>;
-
-    const unsigned int maximumPeakSize = 9;
-    const unsigned int imageSize = 6;
-    const unsigned int squareSize = 4;
-
-    const unsigned int squareStart = 1;
-    const unsigned int squareEnd = squareStart + squareSize - 1;
-
-    FilterType filter(maximumPeakSize);
-    ImageType sourceImage(imageSize, imageSize);
-    ImageType& expectedImage = sourceImage;
-
-    sourceImage = [] (unsigned int x, unsigned int y) {
-        if (x >= squareStart && x <= squareEnd && y >= squareStart
-                && y <= squareEnd) {
-            return 167;
-        } else
-            return 102;
-    };
-
-    auto result = filter.apply(sourceImage);
-
-    assertThat(result).isEqualTo(expectedImage);
-}
-
 INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaOpeningFilterTest, AreaOpeningTests,
         TestData);
