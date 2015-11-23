@@ -1,31 +1,10 @@
-#include <gtest/gtest.h>
+#include "AreaOpeningMaxTreeImplementationTest.hpp"
 
-#include "asserts.hpp"
-
-#include "AreaOpeningMaxTreeImplementation.hpp"
-#include "FilterImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(AreaOpeningMaxTreeImplementationTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationClass = AreaOpeningMaxTreeImplementation<
-            SourceImageType, DestinationImageType>;
-
+TEST_F(AreaOpeningMaxTreeImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
 }
 
-TEST(AreaOpeningMaxTreeImplementationTest, isFilterImplementation) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationClass = AreaOpeningMaxTreeImplementation<
-            SourceImageType, DestinationImageType>;
+TEST_F(AreaOpeningMaxTreeImplementationTest, isFilterImplementation) {
     using ParentImplementation = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
