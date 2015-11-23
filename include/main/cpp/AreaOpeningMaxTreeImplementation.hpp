@@ -6,6 +6,13 @@
 template <typename SourceImageType, typename DestinationImageType>
 class AreaOpeningMaxTreeImplementation
         : public FilterImplementation<SourceImageType, DestinationImageType> {
+public:
+    AreaOpeningMaxTreeImplementation(unsigned int, const SourceImageType&,
+            DestinationImageType&) {
+    }
+
+    void apply() override {
+    }
 };
 
 #endif
