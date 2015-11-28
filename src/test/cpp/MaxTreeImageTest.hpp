@@ -27,6 +27,12 @@ protected:
                 image.setPixel(x, y, PixelType{ (int)(x + y * width) });
         }
     }
+
+    void fillImage(Image<PixelType>& image, PixelType color) {
+        image = [color] (unsigned int, unsigned int) -> PixelType {
+            return color;
+        };
+    }
 };
 
 #endif

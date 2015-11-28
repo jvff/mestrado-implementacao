@@ -45,3 +45,28 @@ TEST_F(MaxTreeImageTest, updatesInternalImage) {
         }
     }
 }
+
+TEST_F(MaxTreeImageTest, allowsAssigningToRootNode) {
+    unsigned int width = 3;
+    unsigned int height = 2;
+    PixelType rootNodeLevel = { 10 };
+
+    DummyMaxTreeImageType image(width, height);
+
+    fillImage(image, rootNodeLevel);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y)
+            image.assignPixelToLatestNode(x, y);
+    }
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            auto node = image.getNodeOfPixel(x, y);
+
+            assertThat(node.id).isEqualTo((unsigned int)0);
+            assertThat(node.level).isEqualTo(rootNodeLevel);
+            assertThat((bool)node.parent).isEqualTo(false);
+        }
+    }
+}
