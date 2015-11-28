@@ -2,6 +2,7 @@
 
 #include "asserts.hpp"
 
+#include "Image.hpp"
 #include "MaxTreeImage.hpp"
 
 #include "DummyTypes.hpp"
@@ -13,4 +14,13 @@ TEST(MaxTreeImageTest, classTemplateExists) {
     using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
 
     AssertThat<DummyMaxTreeImageType>::isClassOrStruct();
+}
+
+TEST(MaxTreeImageTest, isImage) {
+    using PixelType = DummyType;
+    using InternalImageType = FakeImage<PixelType>;
+    using DummyMaxTreeImageClass = MaxTreeImage<InternalImageType>;
+    using ParentImageClass = Image<PixelType>;
+
+    AssertThat<DummyMaxTreeImageClass>::isSubClass(Of<ParentImageClass>());
 }
