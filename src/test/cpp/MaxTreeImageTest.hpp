@@ -16,6 +16,17 @@ protected:
     using PixelType = DummyType;
     using InternalImageType = SimpleArrayImage<PixelType>;
     using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
+
+protected:
+    void paintImage(Image<PixelType>& image) {
+        unsigned int width = image.getWidth();
+        unsigned int height = image.getHeight();
+
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
+                image.setPixel(x, y, PixelType{ (int)(x + y * width) });
+        }
+    }
 };
 
 #endif

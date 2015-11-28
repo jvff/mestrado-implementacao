@@ -34,10 +34,7 @@ TEST_F(MaxTreeImageTest, updatesInternalImage) {
 
     DummyMaxTreeImageType image(width, height);
 
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y)
-            image.setPixel(x, y, PixelType{ (int)(x + y * width) });
-    }
+    paintImage(image);
 
     for (unsigned int x = 0; x < width; ++x) {
         for (unsigned int y = 0; y < height; ++y) {
