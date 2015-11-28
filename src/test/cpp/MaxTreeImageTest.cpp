@@ -1,26 +1,11 @@
-#include <gtest/gtest.h>
+#include "MaxTreeImageTest.hpp"
 
-#include "asserts.hpp"
-
-#include "Image.hpp"
-#include "MaxTreeImage.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(MaxTreeImageTest, classTemplateExists) {
-    using PixelType = DummyType;
-    using InternalImageType = FakeImage<PixelType>;
-    using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
-
+TEST_F(MaxTreeImageTest, classTemplateExists) {
     AssertThat<DummyMaxTreeImageType>::isClassOrStruct();
 }
 
-TEST(MaxTreeImageTest, isImage) {
-    using PixelType = DummyType;
-    using InternalImageType = FakeImage<PixelType>;
-    using DummyMaxTreeImageClass = MaxTreeImage<InternalImageType>;
+TEST_F(MaxTreeImageTest, isImage) {
     using ParentImageClass = Image<PixelType>;
 
-    AssertThat<DummyMaxTreeImageClass>::isSubClass(Of<ParentImageClass>());
+    AssertThat<DummyMaxTreeImageType>::isSubClass(Of<ParentImageClass>());
 }
