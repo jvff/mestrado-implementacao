@@ -70,3 +70,38 @@ TEST_F(MaxTreeImageTest, allowsAssigningToRootNode) {
         }
     }
 }
+
+TEST_F(MaxTreeImageTest, nodeParentChain) {
+    unsigned int width = 2;
+    unsigned int height = 2;
+
+    DummyMaxTreeImageType image(width, height);
+
+    paintImage(image);
+
+    for (unsigned int y = 0; y < height; ++y) {
+        for (unsigned int x = 0; x < width; ++x)
+            image.assignPixelToLatestNode(x, y);
+    }
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            const auto& node = image.getNodeOfPixel(x, y);
+            std::shared_ptr<MaxTreeNode<PixelType> > parent = node.parent;
+            PixelType level = { (int)(x + y * width) };
+
+            assertThat(node.id).isEqualTo((unsigned int)0);
+            assertThat(node.level).isEqualTo(level);
+
+            for (--level.value; level.value >= 0; --level.value) {
+                assertThat((bool)parent).isEqualTo(true);
+                assertThat(parent->id).isEqualTo((unsigned int)0);
+                assertThat(parent->level).isEqualTo(level);
+
+                parent = parent->parent;
+            }
+
+            assertThat((bool)parent).isEqualTo(false);
+        }
+    }
+}
