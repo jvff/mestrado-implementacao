@@ -27,3 +27,24 @@ TEST_F(MaxTreeImageTest, setsDimensions) {
     assertThat(image.getWidth()).isEqualTo(width);
     assertThat(image.getHeight()).isEqualTo(height);
 }
+
+TEST_F(MaxTreeImageTest, updatesInternalImage) {
+    unsigned int width = 6;
+    unsigned int height = 4;
+
+    DummyMaxTreeImageType image(width, height);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y)
+            image.setPixel(x, y, PixelType{ (int)(x + y * width) });
+    }
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            auto pixelValue = image.getPixelValue(x, y);
+            auto expectedPixelValue = PixelType{ (int)(x + y * width) };
+
+            assertThat(pixelValue).isEqualTo(expectedPixelValue);
+        }
+    }
+}

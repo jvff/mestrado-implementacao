@@ -7,14 +7,14 @@
 
 #include "Image.hpp"
 #include "MaxTreeImage.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
-#include "FakeImage.hpp"
 
 class MaxTreeImageTest : public ::testing::Test {
 protected:
     using PixelType = DummyType;
-    using InternalImageType = FakeImage<PixelType>;
+    using InternalImageType = SimpleArrayImage<PixelType>;
     using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
 };
 
