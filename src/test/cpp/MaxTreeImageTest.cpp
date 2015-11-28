@@ -17,3 +17,13 @@ TEST_F(MaxTreeImageTest, isConstructible) {
     AssertThat<DummyMaxTreeImageType>::isConstructible(With<WidthParameter,
             HeightParameter>());
 }
+
+TEST_F(MaxTreeImageTest, setsDimensions) {
+    unsigned int width = 7539;
+    unsigned int height = 401;
+
+    DummyMaxTreeImageType image(width, height);
+
+    assertThat(image.getWidth()).isEqualTo(width);
+    assertThat(image.getHeight()).isEqualTo(height);
+}
