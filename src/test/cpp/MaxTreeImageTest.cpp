@@ -9,3 +9,11 @@ TEST_F(MaxTreeImageTest, isImage) {
 
     AssertThat<DummyMaxTreeImageType>::isSubClass(Of<ParentImageClass>());
 }
+
+TEST_F(MaxTreeImageTest, isConstructible) {
+    using WidthParameter = unsigned int;
+    using HeightParameter = unsigned int;
+
+    AssertThat<DummyMaxTreeImageType>::isConstructible(With<WidthParameter,
+            HeightParameter>());
+}
