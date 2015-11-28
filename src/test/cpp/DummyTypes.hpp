@@ -15,6 +15,7 @@ bool operator op(const DummyTypes<discriminator>& lhs, \
 
 OPERATOR(==)
 OPERATOR(!=)
+OPERATOR(<)
 OPERATOR(>=)
 
 #undef OPERATOR
