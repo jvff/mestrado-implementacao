@@ -115,3 +115,14 @@ TEST_F(MaxTreeImageTest, imagesAreComparable) {
 
     assertThat(firstImage).isEqualTo(secondImage);
 }
+
+TEST_F(MaxTreeImageTest, imagesWithDifferentWidthsArentEqual) {
+    unsigned int firstWidth = 3;
+    unsigned int secondWidth = 4;
+    unsigned int height = 7;
+
+    DummyMaxTreeImageType firstImage(firstWidth, height);
+    DummyMaxTreeImageType secondImage(secondWidth, height);
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+}
