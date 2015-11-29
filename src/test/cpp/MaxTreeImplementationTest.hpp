@@ -8,6 +8,7 @@
 #include "FilterImplementation.hpp"
 #include "MaxTreeImage.hpp"
 #include "MaxTreeImplementation.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
