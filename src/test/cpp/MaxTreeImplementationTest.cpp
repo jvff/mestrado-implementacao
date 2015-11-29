@@ -10,3 +10,11 @@ TEST_F(MaxTreeImplementationTest, isFilterImplementation) {
 
     AssertThat<DummyImplementationType>::isSubClass(Of<ParentClass>());
 }
+
+TEST_F(MaxTreeImplementationTest, isConstructibleWithParameters) {
+    using SourceImageParameter = const SourceImageType&;
+    using DestinationImageParameter = DestinationImageType&;
+
+    AssertThat<DummyImplementationType>::isConstructible(With<
+            SourceImageParameter, DestinationImageParameter>());
+}
