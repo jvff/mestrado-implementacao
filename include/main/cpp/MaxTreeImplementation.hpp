@@ -12,10 +12,23 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
+    using SuperClass::sourceImage;
+    using SuperClass::destinationImage;
+    using SuperClass::width;
+    using SuperClass::height;
+
 public:
     using SuperClass::SuperClass;
 
     void apply() override {
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y) {
+                auto pixelValue = sourceImage.getPixelValue(x, y);
+
+                destinationImage.setPixel(x, y, pixelValue);
+                destinationImage.assignPixelToLatestNode(x, y);
+            }
+        }
     }
 };
 
