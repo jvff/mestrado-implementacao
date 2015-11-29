@@ -105,3 +105,13 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
         }
     }
 }
+
+TEST_F(MaxTreeImageTest, imagesAreComparable) {
+    unsigned int width = 3;
+    unsigned int height = 7;
+
+    DummyMaxTreeImageType firstImage(width, height);
+    DummyMaxTreeImageType secondImage(width, height);
+
+    assertThat(firstImage).isEqualTo(secondImage);
+}
