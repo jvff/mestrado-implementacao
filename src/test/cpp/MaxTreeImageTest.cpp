@@ -106,6 +106,28 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
     }
 }
 
+TEST_F(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
+    unsigned int width = 8;
+    unsigned int height = 7;
+
+    DummyMaxTreeImageType image(width, height);
+
+    auto paintFunction = [width] (unsigned int x, unsigned int y) -> PixelType {
+        return PixelType{ (int)(x + y * width * 2) };
+    };
+
+    image = paintFunction;
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            auto pixelValue = image.getPixelValue(x, y);
+            auto expectedPixelValue = paintFunction(x, y);
+
+            assertThat(pixelValue).isEqualTo(expectedPixelValue);
+        }
+    }
+}
+
 TEST_F(MaxTreeImageTest, imagesAreComparable) {
     unsigned int width = 3;
     unsigned int height = 7;
