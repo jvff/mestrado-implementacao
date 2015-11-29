@@ -30,6 +30,8 @@ public:
             nodeIdImage(width, height) {
     }
 
+    using SuperClass::operator=;
+
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
         internalImage.setPixel(x, y, value);
     }
