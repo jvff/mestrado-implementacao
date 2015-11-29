@@ -159,3 +159,22 @@ TEST_F(MaxTreeImageTest, imagesWithDifferentHeightsArentEqual) {
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
+
+TEST_F(MaxTreeImageTest, imagesWithDifferentPixelsAtZeroZeroArentEqual) {
+    unsigned int width = 4;
+    unsigned int height = 3;
+
+    auto firstImage = DummyMaxTreeImageType(width, height);
+    auto secondImage = DummyMaxTreeImageType(width, height);
+
+    auto painter = [height] (unsigned int x, unsigned int y) -> PixelType {
+        return PixelType{ (int)(y + x * height) };
+    };
+
+    firstImage = painter;
+    secondImage = painter;
+
+    secondImage.setPixel(0, 0, PixelType{ (int)(width * height) });
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+}
