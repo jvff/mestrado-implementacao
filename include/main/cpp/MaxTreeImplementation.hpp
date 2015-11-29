@@ -7,6 +7,16 @@
 template <typename SourceImageType, typename InternalImageType>
 class MaxTreeImplementation : public FilterImplementation<SourceImageType,
         MaxTreeImage<InternalImageType> > {
+private:
+    using DestinationImageType = MaxTreeImage<InternalImageType>;
+    using SuperClass = FilterImplementation<SourceImageType,
+            DestinationImageType>;
+
+public:
+    using SuperClass::SuperClass;
+
+    void apply() override {
+    }
 };
 
 #endif
