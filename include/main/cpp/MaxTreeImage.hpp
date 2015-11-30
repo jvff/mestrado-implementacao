@@ -64,6 +64,9 @@ public:
         return *nodePointer;
     }
 
+    using SuperClass::getPixelValue;
+    using SuperClass::setPixel;
+
 private:
     const NodePointerType& getNode(PixelType level, unsigned int nodeId) const {
         auto& nodesAtLevel = getNodesAtLevel(level);
