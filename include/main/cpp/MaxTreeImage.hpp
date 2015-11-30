@@ -47,6 +47,13 @@ public:
         nodeIdImage.setPixel(x, y, latestNode->id);
     }
 
+    void assignPixelToNewNode(unsigned int x, unsigned int y) {
+        auto level = getPixelValue(x, y);
+        auto& newNode = createNodeAtLevel(level);
+
+        nodeIdImage.setPixel(x, y, newNode->id);
+    }
+
     const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) const {
         auto level = internalImage.getPixelValue(x, y);
         auto nodeId = nodeIdImage.getPixelValue(x, y);
@@ -66,6 +73,16 @@ private:
         auto& nodesAtLevel = getNodesAtLevelOrCreateLevel(level);
 
         return nodesAtLevel.back();
+    }
+
+    NodePointerType& createNodeAtLevel(PixelType level) {
+        bool levelWasCreated = treeDoesNotHaveLevel(level);
+        auto& nodesAtLevel = getNodesAtLevelOrCreateLevel(level);
+
+        if (levelWasCreated)
+            return nodesAtLevel.back();
+        else
+            return createNodeIn(level, nodesAtLevel);
     }
 
     const NodeList& getNodesAtLevel(PixelType level) const {
@@ -100,6 +117,20 @@ private:
         nodesAtLevel.push_back(newNode);
 
         treeLevels[level] = nodesAtLevel;
+    }
+
+    NodePointerType& createNodeIn(PixelType level, NodeList& nodesAtLevel) {
+        NodePointerType newNode(new NodeType);
+        auto& parent = getLatestNodeAtLevelBefore(level);
+        auto id = nodesAtLevel.size();
+
+        newNode->level = level;
+        newNode->id = id;
+        newNode->parent = parent;
+
+        nodesAtLevel.push_back(newNode);
+
+        return nodesAtLevel[id];
     }
 
     NodePointerType& getLatestNodeAtLevelBefore(PixelType level) {
