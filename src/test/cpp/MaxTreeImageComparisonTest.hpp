@@ -16,6 +16,17 @@ protected:
     using PixelType = DummyType;
     using InternalImageType = SimpleArrayImage<PixelType>;
     using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
+
+protected:
+    void createDefaultTreeFor(DummyMaxTreeImageType& image) {
+        auto width = image.getWidth();
+        auto height = image.getHeight();
+
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0l; y < height; ++y)
+                image.assignPixelToLatestNode(x, y);
+        }
+    }
 };
 
 #endif
