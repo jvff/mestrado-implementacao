@@ -74,28 +74,19 @@ TEST_F(MaxTreeImageComparisonTest, imagesWithDifferentNodesArentEqual) {
     auto firstImage = DummyMaxTreeImageType(width, height);
     auto secondImage = DummyMaxTreeImageType(width, height);
 
-    auto painter = [background] (unsigned int, unsigned int) -> PixelType {
-        return background;
-    };
+    for (auto imagePointer : { &firstImage, &secondImage }) {
+        *imagePointer = [background] (unsigned int, unsigned int) -> PixelType {
+            return background;
+        };
 
-    firstImage = painter;
-    secondImage = painter;
+        imagePointer->setPixel(0, 0, foreground);
+        imagePointer->setPixel(2, 0, foreground);
 
-    firstImage.setPixel(0, 0, foreground);
-    firstImage.setPixel(2, 0, foreground);
-
-    secondImage.setPixel(0, 0, foreground);
-    secondImage.setPixel(2, 0, foreground);
-
-    firstImage.assignPixelToLatestNode(1, 0);
-    firstImage.assignPixelToLatestNode(0, 1);
-    firstImage.assignPixelToLatestNode(1, 1);
-    firstImage.assignPixelToLatestNode(2, 1);
-
-    secondImage.assignPixelToLatestNode(1, 0);
-    secondImage.assignPixelToLatestNode(0, 1);
-    secondImage.assignPixelToLatestNode(1, 1);
-    secondImage.assignPixelToLatestNode(2, 1);
+        imagePointer->assignPixelToLatestNode(1, 0);
+        imagePointer->assignPixelToLatestNode(0, 1);
+        imagePointer->assignPixelToLatestNode(1, 1);
+        imagePointer->assignPixelToLatestNode(2, 1);
+    }
 
     firstImage.assignPixelToLatestNode(0, 0);
     firstImage.assignPixelToNewNode(2, 0);
