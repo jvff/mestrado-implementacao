@@ -24,3 +24,10 @@ TEST_F(MaxTreeImplementationTest, allNodesAreAssignedToRootNode) {
         .setDimensions(4, 2)
         .setBackground(8);
 }
+
+TEST_F(MaxTreeImplementationTest, higherRegionIsAssignedToChildNode) {
+    TestData<unsigned char>()
+        .setDimensions(4, 4)
+        .setBackground(100)
+        .drawSquare(1, 1, 2, 200);
+}
