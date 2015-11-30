@@ -42,13 +42,28 @@ public:
         SuperClass::setBackground(color);
         SuperClass::setExpectedBackground(color);
 
-        initializeExpectedNodes();
+        updateExpectedNodes(0, 0, width, height);
+    }
+
+    CHAIN(drawSquare, unsigned int x, unsigned int y, unsigned int size,
+            const PixelType& color) {
+        if (stateIs(State::READY)) {
+            SuperClass::drawSquare(x, y, size, color);
+            SuperClass::drawExpectedSquare(x, y, size, color);
+
+            updateExpectedNodes(x, y, x + size, y + size);
+        }
     }
 
 private:
-    void initializeExpectedNodes() {
-        for (unsigned int x = 0; x < width; ++x) {
-            for (unsigned int y = 0; y < height; ++y)
+    using SuperClass::stateIs;
+
+    void updateExpectedNodes(unsigned int startX, unsigned int startY,
+            unsigned int endX, unsigned int endY) {
+        expectedImage->assignPixelToNewNode(startX, startY);
+
+        for (auto x = startX; x < endX; ++x) {
+            for (auto y = startY; y < endY; ++y)
                 expectedImage->assignPixelToLatestNode(x, y);
         }
     }
