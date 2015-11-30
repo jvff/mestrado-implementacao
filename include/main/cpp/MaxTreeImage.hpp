@@ -42,12 +42,12 @@ public:
 
     void assignPixelToLatestNode(unsigned int x, unsigned int y) {
         auto level = getPixelValue(x, y);
-        auto& latestNode = getLatestNodeAtLevel(level);
+        auto& latestNode = getLatestNodeOrCreateFirstNodeAtLevel(level);
 
         nodeIdImage.setPixel(x, y, latestNode->id);
     }
 
-    const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) {
+    const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) const {
         auto level = internalImage.getPixelValue(x, y);
         auto nodeId = nodeIdImage.getPixelValue(x, y);
         auto& nodePointer = getNode(level, nodeId);
@@ -56,26 +56,33 @@ public:
     }
 
 private:
-    NodePointerType& getNode(PixelType level, unsigned int nodeId) {
+    const NodePointerType& getNode(PixelType level, unsigned int nodeId) const {
         auto& nodesAtLevel = getNodesAtLevel(level);
 
         return nodesAtLevel[nodeId];
     }
 
-    NodePointerType& getLatestNodeAtLevel(PixelType level) {
-        auto& nodesAtLevel = getNodesAtLevel(level);
+    NodePointerType& getLatestNodeOrCreateFirstNodeAtLevel(PixelType level) {
+        auto& nodesAtLevel = getNodesAtLevelOrCreateLevel(level);
 
         return nodesAtLevel.back();
     }
 
-    NodeList& getNodesAtLevel(PixelType level) {
+    const NodeList& getNodesAtLevel(PixelType level) const {
+        if (treeDoesNotHaveLevel(level))
+            throw std::string("Unavailable tree level");
+
+        return treeLevels.at(level);
+    }
+
+    NodeList& getNodesAtLevelOrCreateLevel(PixelType level) {
         if (treeDoesNotHaveLevel(level))
             createNewLevel(level);
 
         return treeLevels[level];
     }
 
-    bool treeDoesNotHaveLevel(PixelType level) {
+    bool treeDoesNotHaveLevel(PixelType level) const {
         auto notFound = treeLevels.end();
 
         return treeLevels.find(level) == notFound;
@@ -101,7 +108,7 @@ private:
 
         auto previousLevel = getLevelBefore(level);
 
-        return getLatestNodeAtLevel(previousLevel);
+        return getLatestNodeOrCreateFirstNodeAtLevel(previousLevel);
     }
 
     PixelType getFirstLevel() {
