@@ -10,6 +10,12 @@ TEST_F(MaxTreeImageTest, isImage) {
     AssertThat<DummyMaxTreeImageType>::isSubClass(Of<ParentImageClass>());
 }
 
+TEST_F(MaxTreeImageTest, pixelTypeIsPubliclyAccessible) {
+    using ImagePixelType = typename DummyMaxTreeImageType::PixelType;
+
+    AssertThat<ImagePixelType>::isTheSame(As<PixelType>());
+}
+
 TEST_F(MaxTreeImageTest, isConstructible) {
     using WidthParameter = unsigned int;
     using HeightParameter = unsigned int;
