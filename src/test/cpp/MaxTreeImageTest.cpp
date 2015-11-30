@@ -90,12 +90,12 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
             std::shared_ptr<MaxTreeNode<PixelType> > parent = node.parent;
             PixelType level = { (int)(x + y * width) };
 
-            assertThat(node.id).isEqualTo((unsigned int)0);
+            assertThat(node.id).isEqualTo(0u);
             assertThat(node.level).isEqualTo(level);
 
             for (--level.value; level.value >= 0; --level.value) {
                 assertThat((bool)parent).isEqualTo(true);
-                assertThat(parent->id).isEqualTo((unsigned int)0);
+                assertThat(parent->id).isEqualTo(0u);
                 assertThat(parent->level).isEqualTo(level);
 
                 parent = parent->parent;
