@@ -10,8 +10,10 @@
 
 template <typename InternalImageType>
 class MaxTreeImage : public Image<typename InternalImageType::PixelType> {
-private:
+public:
     using PixelType = typename InternalImageType::PixelType;
+
+private:
     using NodeType = MaxTreeNode<PixelType>;
     using NodePointerType = std::shared_ptr<NodeType>;
     using NodeList = std::vector<NodePointerType>;
