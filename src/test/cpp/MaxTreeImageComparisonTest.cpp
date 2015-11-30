@@ -32,7 +32,8 @@ TEST_F(MaxTreeImageComparisonTest, imagesWithDifferentHeightsArentEqual) {
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
 
-TEST_F(MaxTreeImageComparisonTest, imagesWithDifferentPixelsAtZeroZeroArentEqual) {
+TEST_F(MaxTreeImageComparisonTest,
+        imagesWithDifferentPixelsAtZeroZeroArentEqual) {
     unsigned int width = 4;
     unsigned int height = 3;
 
