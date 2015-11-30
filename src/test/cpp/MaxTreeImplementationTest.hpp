@@ -12,6 +12,7 @@
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "MaxTreeTestData.hpp"
 
 class MaxTreeImplementationTest : public ::testing::Test {
 protected:
@@ -23,5 +24,8 @@ protected:
     using DummyImplementationType = MaxTreeImplementation<SourceImageType,
             InternalImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = MaxTreeTestData<PixelType, ImageType>;
 
 #endif
