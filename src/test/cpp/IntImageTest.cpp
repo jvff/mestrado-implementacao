@@ -2,11 +2,13 @@
 
 #include "asserts.hpp"
 
+#include "MaxTreeImage.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "ImageImplementationTestMacros.hpp"
 
-IMAGE_IMPLEMENTATION_TEST_CASE(IntImageTest, int, SimpleArrayImage<int>);
+IMAGE_IMPLEMENTATION_TEST_CASE(IntImageTest, int, SimpleArrayImage<int>,
+        MaxTreeImage<SimpleArrayImage<int> >);
 
 IMAGE_TEST(IntImageTest, typeIsImage) {
     AssertThat<ImageType>::isSubClass(Of<Image<int> >());

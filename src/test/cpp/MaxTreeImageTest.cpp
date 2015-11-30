@@ -184,8 +184,13 @@ TEST_F(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
 }
 
 TEST_F(MaxTreeImageTest, getterMethodsAreConstQualified) {
+    using GetPixelValueMethodSignature =
+            PixelType (DummyMaxTreeImageType::*) (unsigned int, unsigned int)
+                    const;
+
     assertThat(&DummyMaxTreeImageType::getWidth).isConstMethod();
     assertThat(&DummyMaxTreeImageType::getHeight).isConstMethod();
-    assertThat(&DummyMaxTreeImageType::getPixelValue).isConstMethod();
+    assertThat((GetPixelValueMethodSignature)
+            &DummyMaxTreeImageType::getPixelValue).isConstMethod();
     assertThat(&DummyMaxTreeImageType::getNodeOfPixel).isConstMethod();
 }
