@@ -106,6 +106,55 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
     }
 }
 
+TEST_F(MaxTreeImageTest, forkingCreatesTreeBranch) {
+    unsigned int width = 2;
+    unsigned int height = 2;
+
+    DummyMaxTreeImageType image(width, height);
+    auto background = PixelType{ 100 };
+    auto foreground = PixelType{ 1000 };
+
+    image.setPixel(0, 0, background);
+    image.setPixel(1, 0, foreground);
+    image.setPixel(0, 1, foreground);
+    image.setPixel(1, 1, background);
+
+    image.assignPixelToLatestNode(0, 0);
+    image.assignPixelToLatestNode(1, 1);
+
+    image.assignPixelToNewNode(1, 0);
+    image.assignPixelToNewNode(0, 1);
+
+    for (unsigned int x = 0; x < width; ++x) {
+        for (unsigned int y = 0; y < height; ++y) {
+            const auto& node = image.getNodeOfPixel(x, y);
+            auto parent = node.parent;
+
+            if (x != y) {
+                if (x == 1)
+                    assertThat(node.id).isEqualTo(0u);
+                else
+                    assertThat(node.id).isEqualTo(1u);
+
+                assertThat(node.level).isEqualTo(foreground);
+
+                assertThat((bool)parent).isEqualTo(true);
+                assertThat(parent->id).isEqualTo(0u);
+                assertThat(parent->level).isEqualTo(background);
+
+                auto grandParent = parent->parent;
+
+                assertThat((bool)grandParent).isEqualTo(false);
+            } else {
+                assertThat(node.id).isEqualTo(0u);
+                assertThat(node.level).isEqualTo(background);
+
+                assertThat((bool)parent).isEqualTo(false);
+            }
+        }
+    }
+}
+
 TEST_F(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
     unsigned int width = 8;
     unsigned int height = 7;
