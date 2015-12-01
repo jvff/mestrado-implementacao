@@ -31,3 +31,11 @@ TEST_F(MaxTreeImplementationTest, higherRegionIsAssignedToChildNode) {
         .setBackground(100)
         .drawSquare(1, 1, 2, 200);
 }
+
+TEST_F(MaxTreeImplementationTest, twoRegionsAreAssignedToDifferentNodes) {
+    TestData<unsigned char>()
+        .setDimensions(7, 4)
+        .setBackground(100)
+        .drawSquare(1, 1, 2, 200)
+        .drawSquare(4, 1, 2, 200);
+}
