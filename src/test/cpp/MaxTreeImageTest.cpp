@@ -51,13 +51,11 @@ TEST_F(MaxTreeImageTest, allowsAssigningToRootNode) {
     PixelType rootNodeLevel = { 10 };
 
     DummyMaxTreeImageType image(width, height);
-    MaxTreeNode<PixelType> expectedRootNode;
 
     fillImage(image, rootNodeLevel);
     assignPixelsToLatestNodes(image);
 
-    expectedRootNode.id = 0u;
-    expectedRootNode.level = rootNodeLevel;
+    auto expectedRootNode = makeNode(0u, rootNodeLevel);
 
     verifyNodes(image, expectedRootNode);
 }
@@ -71,27 +69,22 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
     paintImage(image);
     assignPixelsToLatestNodes(image);
 
-    verifyNodes(image, [width] (unsigned int x, unsigned int y)
-            -> MaxTreeNode<PixelType> {
-        std::shared_ptr<MaxTreeNode<PixelType> > parent;
-        MaxTreeNode<PixelType> expectedNode;
+    verifyNodes(image, [&] (unsigned int x, unsigned int y)
+            -> TreeNodeType {
+        TreeNodePointer parent;
         int level = x + y * width;
 
-        expectedNode.id = 0u;
-        expectedNode.level = PixelType{ level };
+        auto expectedNode = makeNode(0u, PixelType{ level });
 
         for (auto parentLevel = 0; parentLevel < level; ++parentLevel) {
-            auto grandParent = parent;
+            auto newParent = makeNode(0u, PixelType{ parentLevel }, parent);
 
-            parent.reset(new MaxTreeNode<PixelType>);
-            parent->id = 0u;
-            parent->level = PixelType{ parentLevel };
-            parent->parent = grandParent;
+            parent = newParent;
         }
 
-        expectedNode.parent = parent;
+        expectedNode->parent = parent;
 
-        return expectedNode;
+        return *expectedNode;
     });
 }
 
@@ -114,27 +107,15 @@ TEST_F(MaxTreeImageTest, forkingCreatesTreeBranch) {
     image.assignPixelToNewNode(1, 0);
     image.assignPixelToNewNode(0, 1);
 
-    verifyNodes(image, [background, foreground] (unsigned int x, unsigned int y)
-            -> MaxTreeNode<PixelType> {
-        MaxTreeNode<PixelType> expectedNode;
+    auto rootNode = makeNode(0u, background);
 
-        if (x == y) {
-            expectedNode.id = 0u;
-            expectedNode.level = background;
-        } else {
-            if (x == 1)
-                expectedNode.id = 0u;
-            else
-                expectedNode.id = 1u;
-
-            expectedNode.level = foreground;
-
-            expectedNode.parent.reset(new MaxTreeNode<PixelType>);
-            expectedNode.parent->id = 0u;
-            expectedNode.parent->level = background;
-        }
-
-        return expectedNode;
+    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
+        if (x == y)
+            return *rootNode;
+        else if (x == 1)
+            return *makeNode(0u, foreground, rootNode);
+        else
+            return *makeNode(1u, foreground, rootNode);
     });
 }
 
@@ -177,9 +158,9 @@ TEST_F(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
     auto middlePixelNode = makeNode(0u, middlePixelColor, leftPixelNode);
     auto rightPixelNode = makeNode(0u, rightPixelColor, leftPixelNode);
 
-    verifyNode(image.getNodeOfPixel(0, 0), *leftPixelNode);
-    verifyNode(image.getNodeOfPixel(1, 0), *middlePixelNode);
-    verifyNode(image.getNodeOfPixel(2, 0), *rightPixelNode);
+    verifyNode(image.getNodeOfPixel(0, 0), leftPixelNode);
+    verifyNode(image.getNodeOfPixel(1, 0), middlePixelNode);
+    verifyNode(image.getNodeOfPixel(2, 0), rightPixelNode);
 }
 
 TEST_F(MaxTreeImageTest, getterMethodsAreConstQualified) {

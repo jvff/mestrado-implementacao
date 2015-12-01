@@ -16,8 +16,10 @@ protected:
     using PixelType = DummyType;
     using InternalImageType = SimpleArrayImage<PixelType>;
     using DummyMaxTreeImageType = MaxTreeImage<InternalImageType>;
+    using TreeNodeType = MaxTreeNode<PixelType>;
+    using TreeNodePointer = std::shared_ptr<TreeNodeType>;
     using MaxTreeNodeFunction =
-            std::function<MaxTreeNode<PixelType>(unsigned int, unsigned int)>;
+            std::function<TreeNodeType(unsigned int, unsigned int)>;
 
 protected:
     void paintImage(Image<PixelType>& image) {
@@ -60,9 +62,8 @@ protected:
         }
     }
 
-    std::shared_ptr<MaxTreeNode<PixelType> > makeNode(unsigned int id,
-            PixelType level) {
-        auto node = std::make_shared<MaxTreeNode<PixelType> >();
+    TreeNodePointer makeNode(unsigned int id, PixelType level) {
+        auto node = std::make_shared<TreeNodeType>();
 
         node->id = id;
         node->level = level;
@@ -70,8 +71,8 @@ protected:
         return node;
     }
 
-    std::shared_ptr<MaxTreeNode<PixelType> > makeNode(unsigned int id,
-            PixelType level, std::shared_ptr<MaxTreeNode<PixelType> > parent) {
+    TreeNodePointer makeNode(unsigned int id, PixelType level,
+            TreeNodePointer parent) {
         auto node = makeNode(id, level);
 
         node->parent = parent;
@@ -80,9 +81,14 @@ protected:
     }
 
     void verifyNodes(const MaxTreeImage<InternalImageType>& image,
-            const MaxTreeNode<PixelType> expectedRootNode) {
+            const TreeNodePointer& expectedRootNodePointer) {
+        verifyNodes(image, *expectedRootNodePointer);
+    }
+
+    void verifyNodes(const MaxTreeImage<InternalImageType>& image,
+            const TreeNodeType& expectedRootNode) {
         auto expectedNodeFunction = [expectedRootNode] (unsigned int,
-                unsigned int) -> MaxTreeNode<PixelType> {
+                unsigned int) -> TreeNodeType {
             return expectedRootNode;
         };
 
@@ -103,20 +109,25 @@ protected:
         }
     }
 
-    void verifyNode(const MaxTreeNode<PixelType> node,
-            const MaxTreeNode<PixelType> expectedNode) {
+    void verifyNode(const TreeNodeType& node,
+            const TreeNodePointer& expectedNodePointer) {
+        verifyNode(node, *expectedNodePointer);
+    }
+
+    void verifyNode(const TreeNodeType& node,
+            const TreeNodeType& expectedNode) {
         verifyNodeData(node, expectedNode);
         verifyNodeParents(node, expectedNode);
     }
 
-    void verifyNodeData(const MaxTreeNode<PixelType> node,
-            const MaxTreeNode<PixelType> expectedNode) {
+    void verifyNodeData(const TreeNodeType& node,
+            const TreeNodeType& expectedNode) {
         assertThat(node.id).isEqualTo(expectedNode.id);
         assertThat(node.level).isEqualTo(expectedNode.level);
     }
 
-    void verifyNodeParents(const MaxTreeNode<PixelType> node,
-            const MaxTreeNode<PixelType> expectedNode) {
+    void verifyNodeParents(const TreeNodeType& node,
+            const TreeNodeType& expectedNode) {
         auto parent = node.parent;
         auto expectedParent = expectedNode.parent;
         auto parentExists = (bool)parent;
