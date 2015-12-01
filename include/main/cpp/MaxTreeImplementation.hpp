@@ -105,7 +105,7 @@ private:
 
         auto neighbor = getPixelNeighbor(pixel, direction);
 
-        return pixelHasBeenProcessed(neighbor);
+        return queuedOrFinishedPixels.getPixelValue(neighbor);
     }
 
     bool neighborIsValid(Pixel<PixelType> pixel, Direction direction) {
@@ -126,10 +126,6 @@ private:
             case Direction::DOWN:   return Coordinate(pixel.x, pixel.y + 1);
             default:                return Coordinate(pixel.x, pixel.y);
         };
-    }
-
-    bool pixelHasBeenProcessed(Coordinate pixelCoordinate) {
-        return queuedOrFinishedPixels.getPixelValue(pixelCoordinate);
     }
 
     void queueHighestNeighbor(Pixel<PixelType> pixel) {
@@ -182,8 +178,12 @@ private:
 
         if (pixel.value < neighbor.value)
             destinationImage.assignPixelToNewNode(x, y);
-        else
+        else {
             destinationImage.assignPixelToLatestNode(x, y);
+
+            if (pixel.value > neighbor.value)
+                destinationImage.connectPixels(pixel.x, pixel.y, x, y);
+        }
     }
 
     void setFirstDestinationPixel(Pixel<PixelType> pixel) {
