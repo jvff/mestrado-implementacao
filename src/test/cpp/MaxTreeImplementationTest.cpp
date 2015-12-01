@@ -39,3 +39,12 @@ TEST_F(MaxTreeImplementationTest, twoRegionsAreAssignedToDifferentNodes) {
         .drawSquare(1, 1, 2, 200)
         .drawSquare(4, 1, 2, 200);
 }
+
+TEST_F(MaxTreeImplementationTest, twoConnectedRegionsAreAssignedToSameNode) {
+    TestData<unsigned char>()
+        .setDimensions(4, 7)
+        .setBackground(200)
+        .drawSquare(1, 1, 2, 201)
+        .drawSquareOnSameNode(1, 4, 2, 201)
+        .drawSquare(2, 3, 1, 205);
+}

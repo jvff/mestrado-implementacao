@@ -42,11 +42,25 @@ public:
         SuperClass::setBackground(color);
         SuperClass::setExpectedBackground(color);
 
+        expectedImage->assignPixelToNewNode(0, 0);
+
         updateExpectedNodes(0, 0, width, height);
     }
 
     CHAIN(drawSquare, unsigned int x, unsigned int y, unsigned int size,
             const PixelType& color) {
+        if (stateIs(State::READY)) {
+            SuperClass::drawSquare(x, y, size, color);
+            SuperClass::drawExpectedSquare(x, y, size, color);
+
+            expectedImage->assignPixelToNewNode(x, y);
+
+            updateExpectedNodes(x, y, x + size, y + size);
+        }
+    }
+
+    CHAIN(drawSquareOnSameNode, unsigned int x, unsigned int y,
+            unsigned int size, const PixelType& color) {
         if (stateIs(State::READY)) {
             SuperClass::drawSquare(x, y, size, color);
             SuperClass::drawExpectedSquare(x, y, size, color);
@@ -60,8 +74,6 @@ private:
 
     void updateExpectedNodes(unsigned int startX, unsigned int startY,
             unsigned int endX, unsigned int endY) {
-        expectedImage->assignPixelToNewNode(startX, startY);
-
         for (auto x = startX; x < endX; ++x) {
             for (auto y = startY; y < endY; ++y)
                 expectedImage->assignPixelToLatestNode(x, y);
