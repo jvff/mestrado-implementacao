@@ -153,6 +153,29 @@ TEST_F(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
     image.setPixel(2, 0, rightPixelColor);
 
     assignPixelsToLatestNodes(image);
+    image.connectPixels(1, 0, 2, 0);
+
+    auto leftPixelNode = makeNode(0u, leftPixelColor);
+    auto rightPixelNode = makeNode(0u, rightPixelColor, leftPixelNode);
+    auto middlePixelNode = makeNode(0u, middlePixelColor, rightPixelNode);
+
+    verifyNode(image.getNodeOfPixel(0, 0), *leftPixelNode);
+    verifyNode(image.getNodeOfPixel(1, 0), *middlePixelNode);
+    verifyNode(image.getNodeOfPixel(2, 0), *rightPixelNode);
+}
+
+TEST_F(MaxTreeImageTest, nodesAreMergedWhenPixelsAreConnected) {
+    DummyMaxTreeImageType image(3, 1);
+
+    auto leftPixelColor = PixelType{ 14 };
+    auto middlePixelColor = PixelType{ 16 };
+    auto rightPixelColor = PixelType{ 15 };
+
+    image.setPixel(0, 0, leftPixelColor);
+    image.setPixel(1, 0, middlePixelColor);
+    image.setPixel(2, 0, rightPixelColor);
+
+    assignPixelsToLatestNodes(image);
 
     auto leftPixelNode = makeNode(0u, leftPixelColor);
     auto middlePixelNode = makeNode(0u, middlePixelColor, leftPixelNode);
