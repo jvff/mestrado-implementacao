@@ -57,3 +57,13 @@ TEST_F(MaxTreeImplementationTest, twoConnectedRegionsAreChained) {
         .drawSquare(1, 4, 2, 202)
         .drawSquare(2, 3, 1, 205);
 }
+
+TEST_F(MaxTreeImplementationTest, complexConnectedRegionsAreChained) {
+    TestData<unsigned char>()
+        .setDimensions(4, 7)
+        .setBackground(200)
+        .drawSquare(1, 1, 2, 201)
+        .drawSquareOnSameNode(1, 4, 2, 201)
+        .drawSquare(2, 4, 1, 203)
+        .drawSquare(2, 3, 1, 205);
+}
