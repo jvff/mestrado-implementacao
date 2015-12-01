@@ -13,3 +13,7 @@ TEST_F(MaxTreeFilterTest, isComplexFilter) {
 
     AssertThat<DummyMaxTreeFilter>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_F(MaxTreeFilterTest, isConstructible) {
+    AssertThat<DummyMaxTreeFilter>::isConstructible(WithoutParameters());
+}
