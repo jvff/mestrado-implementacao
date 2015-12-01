@@ -60,6 +60,25 @@ protected:
         }
     }
 
+    std::shared_ptr<MaxTreeNode<PixelType> > makeNode(unsigned int id,
+            PixelType level) {
+        auto node = std::make_shared<MaxTreeNode<PixelType> >();
+
+        node->id = id;
+        node->level = level;
+
+        return node;
+    }
+
+    std::shared_ptr<MaxTreeNode<PixelType> > makeNode(unsigned int id,
+            PixelType level, std::shared_ptr<MaxTreeNode<PixelType> > parent) {
+        auto node = makeNode(id, level);
+
+        node->parent = parent;
+
+        return node;
+    }
+
     void verifyNodes(const MaxTreeImage<InternalImageType>& image,
             const MaxTreeNode<PixelType> expectedRootNode) {
         auto expectedNodeFunction = [expectedRootNode] (unsigned int,

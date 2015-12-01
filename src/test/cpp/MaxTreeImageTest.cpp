@@ -160,6 +160,28 @@ TEST_F(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
     }
 }
 
+TEST_F(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
+    DummyMaxTreeImageType image(3, 1);
+
+    auto leftPixelColor = PixelType{ 14 };
+    auto middlePixelColor = PixelType{ 16 };
+    auto rightPixelColor = PixelType{ 15 };
+
+    image.setPixel(0, 0, leftPixelColor);
+    image.setPixel(1, 0, middlePixelColor);
+    image.setPixel(2, 0, rightPixelColor);
+
+    assignPixelsToLatestNodes(image);
+
+    auto leftPixelNode = makeNode(0u, leftPixelColor);
+    auto middlePixelNode = makeNode(0u, middlePixelColor, leftPixelNode);
+    auto rightPixelNode = makeNode(0u, rightPixelColor, leftPixelNode);
+
+    verifyNode(image.getNodeOfPixel(0, 0), *leftPixelNode);
+    verifyNode(image.getNodeOfPixel(1, 0), *middlePixelNode);
+    verifyNode(image.getNodeOfPixel(2, 0), *rightPixelNode);
+}
+
 TEST_F(MaxTreeImageTest, getterMethodsAreConstQualified) {
     using GetPixelValueMethodSignature =
             PixelType (DummyMaxTreeImageType::*) (unsigned int, unsigned int)
