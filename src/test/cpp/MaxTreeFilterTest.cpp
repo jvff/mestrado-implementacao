@@ -1,34 +1,11 @@
-#include <gtest/gtest.h>
+#include "MaxTreeFilterTest.hpp"
 
-#include "asserts.hpp"
-
-#include "ComplexFilter.hpp"
-#include "MaxTreeFilter.hpp"
-#include "MaxTreeImage.hpp"
-#include "MaxTreeImplementation.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(MaxTreeFilterTest, classTemplateExists) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using InternalImageType = FakeImage<DestinationPixelType>;
-    using DummyMaxTreeFilter = MaxTreeFilter<SourceImageType,
-            InternalImageType>;
-
+TEST_F(MaxTreeFilterTest, classTemplateExists) {
     AssertThat<DummyMaxTreeFilter>::isClassOrStruct();
 }
 
-TEST(MaxTreeFilterTest, isComplexFilter) {
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using InternalImageType = FakeImage<DestinationPixelType>;
+TEST_F(MaxTreeFilterTest, isComplexFilter) {
     using DestinationImageType = MaxTreeImage<InternalImageType>;
-    using DummyMaxTreeFilter = MaxTreeFilter<SourceImageType,
-            InternalImageType>;
     using ImplementationType = MaxTreeImplementation<SourceImageType,
             InternalImageType>;
     using ParentFilter = ComplexFilter<SourceImageType, DestinationImageType,
