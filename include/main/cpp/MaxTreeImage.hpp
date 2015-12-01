@@ -56,10 +56,17 @@ public:
         nodeIdImage.setPixel(x, y, newNode->id);
     }
 
+    void connectPixels(unsigned int firstX, unsigned int firstY,
+            unsigned int secondX, unsigned int secondY) {
+        auto& firstNode = getPixelNode(firstX, firstY);
+        auto& secondNode = getPixelNode(secondX, secondY);
+
+        if (secondNode->level > firstNode->parent->level)
+            firstNode->parent = secondNode;
+    }
+
     const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) const {
-        auto level = internalImage.getPixelValue(x, y);
-        auto nodeId = nodeIdImage.getPixelValue(x, y);
-        auto& nodePointer = getNode(level, nodeId);
+        auto& nodePointer = getPixelNode(x, y);
 
         return *nodePointer;
     }
@@ -68,6 +75,14 @@ public:
     using SuperClass::setPixel;
 
 private:
+    const NodePointerType& getPixelNode(unsigned int x, unsigned int y) const {
+        auto level = internalImage.getPixelValue(x, y);
+        auto nodeId = nodeIdImage.getPixelValue(x, y);
+        auto& nodePointer = getNode(level, nodeId);
+
+        return nodePointer;
+    }
+
     const NodePointerType& getNode(PixelType level, unsigned int nodeId) const {
         auto& nodesAtLevel = getNodesAtLevel(level);
 
