@@ -4,24 +4,21 @@
 #include "MaxTreeImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterImplementationTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "PaintableTestData.hpp"
 
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-class MaxTreeTestData : public PaintableTestData<
-        AbstractFilterImplementationTestData<
-            MaxTreeImplementation<ImageType, ImageType>,
-            ImageType, MaxTreeImage<ImageType> >,
+template <typename PaintableTestDataSuperClass, typename PixelType,
+        typename ImageType = SimpleArrayImage<PixelType> >
+class MaxTreeTestData : public PaintableTestData<PaintableTestDataSuperClass,
         ImageType, MaxTreeImage<ImageType> > {
 private:
     using ImplementationType = MaxTreeImplementation<ImageType, ImageType>;
     using DestinationImageType = MaxTreeImage<ImageType>;
     using State = AbstractTestData::State;
-    using SuperClass = PaintableTestData<
-            AbstractFilterImplementationTestData<ImplementationType, ImageType,
-                DestinationImageType>, ImageType, DestinationImageType>;
-    using ThisType = MaxTreeTestData<PixelType, ImageType>;
+    using SuperClass = PaintableTestData<PaintableTestDataSuperClass, ImageType,
+            DestinationImageType>;
+    using ThisType = MaxTreeTestData<PaintableTestDataSuperClass, PixelType,
+            ImageType>;
 
     using SuperClass::state;
     using SuperClass::width;

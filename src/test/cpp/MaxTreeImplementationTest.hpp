@@ -10,6 +10,7 @@
 #include "MaxTreeImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
+#include "AbstractFilterImplementationTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 #include "MaxTreeTestData.hpp"
@@ -26,6 +27,9 @@ protected:
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MaxTreeTestData<PixelType, ImageType>;
+using TestData = MaxTreeTestData<AbstractFilterImplementationTestData<
+            MaxTreeImplementation<ImageType, ImageType>,
+            ImageType, MaxTreeImage<ImageType> >,
+        PixelType, ImageType>;
 
 #endif
