@@ -156,7 +156,11 @@ private:
     }
 
     PixelType getLevelBefore(PixelType level) {
-        auto position = treeLevels.find(level);
+        auto position = treeLevels.begin();
+        auto end = treeLevels.end();
+
+        while (position->first < level && position != end)
+            ++position;
 
         --position;
 
