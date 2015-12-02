@@ -2,13 +2,19 @@
 #define MAX_TREE_HPP
 
 #include <map>
+#include <memory>
+#include <vector>
 
 #include "MaxTreeNode.hpp"
 
 template <typename T>
 class MaxTree {
 private:
-    std::map<T, unsigned int> levels;
+    using NodeType = MaxTreeNode<T>;
+    using NodePointer = std::shared_ptr<NodeType>;
+    using NodeList = std::vector<NodePointer>;
+
+    std::map<T, NodeList> levels;
 
 public:
     bool isEmpty() {
@@ -21,17 +27,17 @@ public:
 
     void addNode(const T& level) {
         auto& levelNodes = getOrCreateLevel(level);
+        auto newNodeId = levelNodes.size();
+        auto newNode = makeNode(level, newNodeId);
 
-        ++levelNodes;
+        levelNodes.push_back(newNode);
     }
 
     MaxTreeNode<T> getNode(const T& level, unsigned int id) {
-        MaxTreeNode<T> node;
+        auto& levelNodes = getLevel(level);
+        auto nodePointer = levelNodes[id];
 
-        node.level = level;
-        node.id = id;
-
-        return node;
+        return *nodePointer;
     }
 
     void removeNode(const T& level, unsigned int) {
@@ -40,21 +46,21 @@ public:
 
         auto& levelNodes = getLevel(level);
 
-        --levelNodes;
+        levelNodes.pop_back();
 
-        if (levelNodes == 0)
+        if (levelNodes.size() == 0)
             levels.erase(level);
     }
 
 private:
-    unsigned int& getOrCreateLevel(const T& level) {
+    NodeList& getOrCreateLevel(const T& level) {
         if (!levelExists(level))
             createLevel(level);
 
         return getLevel(level);
     }
 
-    unsigned int& getLevel(const T& level) {
+    NodeList& getLevel(const T& level) {
         return levels.at(level);
     }
 
@@ -66,7 +72,41 @@ private:
     }
 
     void createLevel(const T& level) {
-        levels[level] = 0u;
+        levels[level] = NodeList();
+    }
+
+    NodePointer makeNode(const T& level, unsigned int id) {
+        auto node = std::make_shared<NodeType>();
+
+        node->level = level;
+        node->id = id;
+
+        if (level != getFirstLevel())
+            updateParentOf(node);
+
+        return node;
+    }
+
+    T getFirstLevel() {
+        auto firstPosition = levels.begin();
+        auto firstLevel = firstPosition->first;
+
+        return firstLevel;
+    }
+
+    void updateParentOf(NodePointer node) {
+        auto& nodeListOfLevelBelow = findLevelBefore(node->level);
+        auto& latestNodeAtLevelBelow = nodeListOfLevelBelow.back();
+
+        node->parent = latestNodeAtLevelBelow;
+    }
+
+    NodeList& findLevelBefore(const T& level) {
+        auto levelPosition = levels.find(level);
+
+        --levelPosition;
+
+        return levelPosition->second;
     }
 };
 
