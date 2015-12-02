@@ -14,6 +14,10 @@ public:
     void addNode(const T&) {
         empty = false;
     }
+
+    void removeNode(const T&, unsigned int) {
+        empty = true;
+    }
 };
 
 #endif
