@@ -40,6 +40,16 @@ TEST(MaxTreeTest, hasOneLevelAfterInsertingNode) {
     assertThat(tree.numberOfLevels()).isEqualTo(1u);
 }
 
+TEST(MaxTreeTest, hasOneLevelAfterInsertingNodesAtSameLevel) {
+    MaxTree<DummyType> tree;
+
+    tree.addNode(DummyType{ 70 });
+    tree.addNode(DummyType{ 70 });
+    tree.addNode(DummyType{ 70 });
+
+    assertThat(tree.numberOfLevels()).isEqualTo(1u);
+}
+
 TEST(MaxTreeTest, isEmptyAfterInsertingThenRemovingNode) {
     MaxTree<DummyType> tree;
 
