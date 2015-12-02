@@ -80,3 +80,18 @@ TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
     assertThat(node.id).isEqualTo(0u);
     assertThat(hasParent).isEqualTo(false);
 }
+
+TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
+    tree.addNode(DummyType{ 1000 });
+    tree.addNode(DummyType{ 2000 });
+
+    auto childNode = tree.getNode(DummyType{ 2000 }, 0u);
+    auto parentNode = *childNode.parent;
+    auto hasGrandParent = (bool)parentNode.parent;
+
+    assertThat(childNode.level).isEqualTo(DummyType{ 2000 });
+    assertThat(childNode.id).isEqualTo(0u);
+    assertThat(parentNode.level).isEqualTo(DummyType{ 1000 });
+    assertThat(parentNode.id).isEqualTo(0u);
+    assertThat(hasGrandParent).isEqualTo(false);
+}
