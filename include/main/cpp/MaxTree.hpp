@@ -3,9 +3,16 @@
 
 template <typename T>
 class MaxTree {
+private:
+    bool empty = true;
+
 public:
     bool isEmpty() {
-        return true;
+        return empty;
+    }
+
+    void addNode(const T&) {
+        empty = false;
     }
 };
 
