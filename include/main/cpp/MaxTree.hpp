@@ -11,6 +11,10 @@ public:
         return nodes == 0u;
     }
 
+    unsigned int numberOfLevels() {
+        return nodes;
+    }
+
     void addNode(const T&) {
         ++nodes;
     }
