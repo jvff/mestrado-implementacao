@@ -3,6 +3,10 @@
 
 template <typename T>
 class MaxTree {
+public:
+    bool isEmpty() {
+        return true;
+    }
 };
 
 #endif
