@@ -25,3 +25,12 @@ TEST(MaxTreeTest, isNotEmptyAfterInsertingNode) {
 
     assertThat(tree.isEmpty()).isEqualTo(false);
 }
+
+TEST(MaxTreeTest, isEmptyAfterInsertingThenRemovingNode) {
+    MaxTree<DummyType> tree;
+
+    tree.addNode(DummyType{ 0 });
+    tree.removeNode(DummyType{ 0 }, 0);
+
+    assertThat(tree.isEmpty()).isEqualTo(true);
+}
