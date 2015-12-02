@@ -69,3 +69,14 @@ TEST_F(MaxTreeTest, isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
 
     assertThat(tree.isEmpty()).isEqualTo(false);
 }
+
+TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
+    tree.addNode(DummyType{ 1 });
+
+    auto node = tree.getNode(DummyType{ 1 }, 0u);
+    auto hasParent = (bool)node.parent;
+
+    assertThat(node.level).isEqualTo(DummyType{ 1 });
+    assertThat(node.id).isEqualTo(0u);
+    assertThat(hasParent).isEqualTo(false);
+}
