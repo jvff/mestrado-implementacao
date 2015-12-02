@@ -4,19 +4,19 @@
 template <typename T>
 class MaxTree {
 private:
-    bool empty = true;
+    unsigned int nodes = 0u;
 
 public:
     bool isEmpty() {
-        return empty;
+        return nodes == 0u;
     }
 
     void addNode(const T&) {
-        empty = false;
+        ++nodes;
     }
 
     void removeNode(const T&, unsigned int) {
-        empty = true;
+        --nodes;
     }
 };
 
