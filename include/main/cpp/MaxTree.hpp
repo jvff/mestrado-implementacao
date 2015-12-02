@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include "MaxTreeNode.hpp"
+
 template <typename T>
 class MaxTree {
 private:
@@ -21,6 +23,15 @@ public:
         auto& levelNodes = getOrCreateLevel(level);
 
         ++levelNodes;
+    }
+
+    MaxTreeNode<T> getNode(const T& level, unsigned int id) {
+        MaxTreeNode<T> node;
+
+        node.level = level;
+        node.id = id;
+
+        return node;
     }
 
     void removeNode(const T& level, unsigned int) {
