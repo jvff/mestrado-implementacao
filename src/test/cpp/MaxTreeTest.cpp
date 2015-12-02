@@ -11,3 +11,9 @@ TEST(MaxTreeTest, classTemplateExists) {
 
     AssertThat<DummyMaxTreeType>::isClassOrStruct();
 }
+
+TEST(MaxTreeTest, isInitiallyEmpty) {
+    MaxTree<DummyType> tree;
+
+    assertThat(tree.isEmpty()).isEqualTo(true);
+}
