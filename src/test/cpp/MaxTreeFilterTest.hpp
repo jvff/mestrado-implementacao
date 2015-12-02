@@ -10,8 +10,10 @@
 #include "MaxTreeImage.hpp"
 #include "MaxTreeImplementation.hpp"
 
+#include "AbstractFilterTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
+#include "MaxTreeTestData.hpp"
 
 class MaxTreeFilterTest : public ::testing::Test {
 protected:
@@ -22,5 +24,19 @@ protected:
     using DummyMaxTreeFilter = MaxTreeFilter<SourceImageType,
             InternalImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+class AbstractMaxTreeFilterTestData : public AbstractFilterTestData<
+        MaxTreeFilter<ImageType, ImageType>, ImageType,
+        MaxTreeImage<ImageType> > {
+public:
+    AbstractMaxTreeFilterTestData() {
+        this->initializeFilter();
+    }
+};
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = MaxTreeTestData<AbstractMaxTreeFilterTestData<PixelType,
+            ImageType>, PixelType, ImageType>;
 
 #endif

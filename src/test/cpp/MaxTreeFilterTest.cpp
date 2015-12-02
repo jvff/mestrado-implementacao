@@ -1,4 +1,5 @@
 #include "MaxTreeFilterTest.hpp"
+#include "MaxTreeTests.hpp"
 
 TEST_F(MaxTreeFilterTest, classTemplateExists) {
     AssertThat<DummyMaxTreeFilter>::isClassOrStruct();
@@ -17,3 +18,5 @@ TEST_F(MaxTreeFilterTest, isComplexFilter) {
 TEST_F(MaxTreeFilterTest, isConstructible) {
     AssertThat<DummyMaxTreeFilter>::isConstructible(WithoutParameters());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(MaxTreeFilterTest, MaxTreeTests, TestData);
