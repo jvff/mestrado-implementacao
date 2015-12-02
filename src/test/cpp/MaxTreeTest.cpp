@@ -18,6 +18,12 @@ TEST(MaxTreeTest, isInitiallyEmpty) {
     assertThat(tree.isEmpty()).isEqualTo(true);
 }
 
+TEST(MaxTreeTest, initiallyHasZeroLevels) {
+    MaxTree<DummyType> tree;
+
+    assertThat(tree.numberOfLevels()).isEqualTo(0u);
+}
+
 TEST(MaxTreeTest, isNotEmptyAfterInsertingNode) {
     MaxTree<DummyType> tree;
 
