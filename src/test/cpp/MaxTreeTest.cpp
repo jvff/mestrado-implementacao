@@ -17,3 +17,11 @@ TEST(MaxTreeTest, isInitiallyEmpty) {
 
     assertThat(tree.isEmpty()).isEqualTo(true);
 }
+
+TEST(MaxTreeTest, isNotEmptyAfterInsertingNode) {
+    MaxTree<DummyType> tree;
+
+    tree.addNode(DummyType{ 0 });
+
+    assertThat(tree.isEmpty()).isEqualTo(false);
+}
