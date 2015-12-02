@@ -1,26 +1,61 @@
 #ifndef MAX_TREE_HPP
 #define MAX_TREE_HPP
 
+#include <map>
+
 template <typename T>
 class MaxTree {
 private:
-    unsigned int nodes = 0u;
+    std::map<T, unsigned int> levels;
 
 public:
     bool isEmpty() {
-        return nodes == 0u;
+        return levels.empty();
     }
 
     unsigned int numberOfLevels() {
-        return nodes;
+        return levels.size();
     }
 
-    void addNode(const T&) {
-        ++nodes;
+    void addNode(const T& level) {
+        auto& levelNodes = getOrCreateLevel(level);
+
+        ++levelNodes;
     }
 
-    void removeNode(const T&, unsigned int) {
-        --nodes;
+    void removeNode(const T& level, unsigned int) {
+        if (!levelExists(level))
+            return;
+
+        auto& levelNodes = getLevel(level);
+
+        --levelNodes;
+
+        if (levelNodes == 0)
+            levels.erase(level);
+    }
+
+private:
+    unsigned int& getOrCreateLevel(const T& level) {
+        if (!levelExists(level))
+            createLevel(level);
+
+        return getLevel(level);
+    }
+
+    unsigned int& getLevel(const T& level) {
+        return levels.at(level);
+    }
+
+    bool levelExists(const T& level) {
+        const auto notFound = levels.end();
+        auto searchResult = levels.find(level);
+
+        return searchResult != notFound;
+    }
+
+    void createLevel(const T& level) {
+        levels[level] = 0u;
     }
 };
 
