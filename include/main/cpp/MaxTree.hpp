@@ -41,18 +41,13 @@ public:
     }
 
     void removeNode(const T& level, unsigned int id) {
-        if (!levelExists(level))
-            return;
+        if (levelExists(level)) {
+            auto& levelNodes = getLevel(level);
+            auto removedNode = removeNodeFromLevel(id, levelNodes);
 
-        auto& levelNodes = getLevel(level);
-        auto removedNode = levelNodes[id];
-
-        levelNodes.erase(levelNodes.begin() + id);
-
-        replaceParents(removedNode, removedNode->parent);
-
-        if (levelNodes.size() == 0)
-            levels.erase(level);
+            replaceParents(removedNode, removedNode->parent);
+            removeLevelIfEmpty(level, levelNodes);
+        }
     }
 
 private:
@@ -127,6 +122,19 @@ private:
             if (node->parent == oldParent)
                 node->parent = newParent;
         }
+    }
+
+    NodePointer removeNodeFromLevel(unsigned int id, NodeList& levelNodes) {
+        auto nodeToRemove = levelNodes[id];
+
+        levelNodes.erase(levelNodes.begin() + id);
+
+        return nodeToRemove;
+    }
+
+    void removeLevelIfEmpty(const T& level, NodeList& levelNodes) {
+        if (levelNodes.size() == 0)
+            levels.erase(level);
     }
 };
 
