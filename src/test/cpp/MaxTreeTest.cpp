@@ -98,6 +98,21 @@ TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
             DummyType{ 0 }, 0u);
 }
 
+TEST_F(MaxTreeTest, nodeParentCanBeChanged) {
+    tree.addNode(DummyType{ 981 });
+    tree.addNode(DummyType{ 982 });
+    tree.addNode(DummyType{ 983 });
+
+    auto nodeToChange = tree.getNode(DummyType{ 983 }, 0u);
+    auto newParent = tree.getNode(DummyType{ 981 }, 0u);
+
+    tree.setNodeParent(nodeToChange, newParent);
+
+    verifyNodeChain(
+            DummyType{ 983 }, 0u,
+            DummyType{ 981 }, 0u);
+}
+
 TEST_F(MaxTreeTest, latestNodeIsRetrievable) {
     tree.addNode(DummyType{ 100 });
     tree.addNode(DummyType{ 101 });
