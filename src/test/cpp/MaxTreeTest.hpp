@@ -19,6 +19,34 @@ protected:
 public:
     MaxTreeTest() : constTree(tree) {
     }
+
+    template <typename T, typename... RemainingParameterTypes>
+    void verifyNodeChain(const MaxTreeNode<T>& node, const T& expectedLevel,
+            unsigned int expectedId,
+            const RemainingParameterTypes&... remainingParameters) {
+        auto& parent = *node.parent;
+
+        verifyNode(node, expectedLevel, expectedId);
+
+        verifyNodeChain(parent, remainingParameters...);
+    }
+
+    template <typename T>
+    void verifyNodeChain(const MaxTreeNode<T>& node, const T& expectedLevel,
+            unsigned int expectedId) {
+        auto hasParent = (bool)node.parent;
+
+        verifyNode(node, expectedLevel, expectedId);
+
+        assertThat(hasParent).isEqualTo(false);
+    }
+
+    template <typename T>
+    void verifyNode(const MaxTreeNode<T>& node, const T& expectedLevel,
+            unsigned int expectedId) {
+        assertThat(node.level).isEqualTo(expectedLevel);
+        assertThat(node.id).isEqualTo(expectedId);
+    }
 };
 
 #endif

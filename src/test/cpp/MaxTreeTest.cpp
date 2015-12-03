@@ -74,11 +74,8 @@ TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
     tree.addNode(DummyType{ 1 });
 
     auto node = tree.getNode(DummyType{ 1 }, 0u);
-    auto hasParent = (bool)node.parent;
 
-    assertThat(node.level).isEqualTo(DummyType{ 1 });
-    assertThat(node.id).isEqualTo(0u);
-    assertThat(hasParent).isEqualTo(false);
+    verifyNodeChain(node, DummyType{ 1 }, 0u);
 }
 
 TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
@@ -86,14 +83,10 @@ TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
     tree.addNode(DummyType{ 2000 });
 
     auto childNode = tree.getNode(DummyType{ 2000 }, 0u);
-    auto parentNode = *childNode.parent;
-    auto hasGrandParent = (bool)parentNode.parent;
 
-    assertThat(childNode.level).isEqualTo(DummyType{ 2000 });
-    assertThat(childNode.id).isEqualTo(0u);
-    assertThat(parentNode.level).isEqualTo(DummyType{ 1000 });
-    assertThat(parentNode.id).isEqualTo(0u);
-    assertThat(hasGrandParent).isEqualTo(false);
+    verifyNodeChain(childNode,
+            DummyType{ 2000 }, 0u,
+            DummyType{ 1000 }, 0u);
 }
 
 TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
@@ -104,15 +97,9 @@ TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
     tree.addNode(DummyType{ 2000 });
 
     auto childNode = tree.getNode(DummyType{ 2000 }, 0u);
-    auto parentNode = *childNode.parent;
-    auto grandParentNode = *parentNode.parent;
-    auto hasGreatGrandParent = (bool)grandParentNode.parent;
 
-    assertThat(childNode.level).isEqualTo(DummyType{ 2000 });
-    assertThat(childNode.id).isEqualTo(0u);
-    assertThat(parentNode.level).isEqualTo(DummyType{ 1000 });
-    assertThat(parentNode.id).isEqualTo(2u);
-    assertThat(grandParentNode.level).isEqualTo(DummyType{ 0 });
-    assertThat(grandParentNode.id).isEqualTo(0u);
-    assertThat(hasGreatGrandParent).isEqualTo(false);
+    verifyNodeChain(childNode,
+            DummyType{ 2000 }, 0u,
+            DummyType{ 1000 }, 2u,
+            DummyType{ 0 }, 0u);
 }
