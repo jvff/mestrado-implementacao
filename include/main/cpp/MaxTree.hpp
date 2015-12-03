@@ -45,8 +45,11 @@ public:
             return;
 
         auto& levelNodes = getLevel(level);
+        auto removedNode = levelNodes.back();
 
         levelNodes.pop_back();
+
+        replaceParents(removedNode, removedNode->parent);
 
         if (levelNodes.size() == 0)
             levels.erase(level);
@@ -107,6 +110,23 @@ private:
         --levelPosition;
 
         return levelPosition->second;
+    }
+
+    void replaceParents(NodePointer oldParent, NodePointer newParent) {
+        auto startLevel = oldParent->level;
+        auto startPosition = levels.find(startLevel);
+        auto endPosition = levels.end();
+
+        for (auto position = startPosition; position != endPosition; ++position)
+            replaceParentsInLevel(oldParent, newParent, position->second);
+    }
+
+    void replaceParentsInLevel(NodePointer oldParent, NodePointer newParent,
+            NodeList& levelNodes) {
+        for (auto& node : levelNodes) {
+            if (node->parent == oldParent)
+                node->parent = newParent;
+        }
     }
 };
 
