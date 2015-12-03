@@ -34,8 +34,7 @@ public:
     }
 
     MaxTreeNode<T> getNode(const T& level, unsigned int id) {
-        auto& levelNodes = getLevel(level);
-        auto nodePointer = levelNodes[id];
+        auto nodePointer = getNodePointer(level, id);
 
         return *nodePointer;
     }
@@ -45,6 +44,13 @@ public:
         auto nodePointer = levelNodes.back();
 
         return *nodePointer;
+    }
+
+    void setNodeParent(MaxTreeNode<T> nodeToChange, MaxTreeNode<T> newParent) {
+        auto nodePointerToChange = getNodePointer(nodeToChange);
+        auto newParentPointer = getNodePointer(newParent);
+
+        nodePointerToChange->parent = newParentPointer;
     }
 
     void removeNode(const T& level, unsigned int id) {
@@ -57,6 +63,16 @@ public:
     }
 
 private:
+    NodePointer getNodePointer(const MaxTreeNode<T>& node) {
+        return getNodePointer(node.level, node.id);
+    }
+
+    NodePointer getNodePointer(const T& level, unsigned int id) {
+        auto& nodeList = getLevel(level);
+
+        return nodeList[id];
+    }
+
     NodeList& getOrCreateLevel(const T& level) {
         if (!levelExists(level))
             createLevel(level);
