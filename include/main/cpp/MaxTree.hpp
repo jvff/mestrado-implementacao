@@ -21,7 +21,7 @@ public:
         return levels.empty();
     }
 
-    unsigned int numberOfLevels() {
+    unsigned int numberOfLevels() const {
         return levels.size();
     }
 
