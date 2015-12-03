@@ -161,3 +161,20 @@ TEST_F(MaxTreeTest, cantRemoveFromInexistentLevels) {
             DummyType{ 3 }, 0u,
             DummyType{ 1 }, 0u);
 }
+
+TEST_F(MaxTreeTest, cantRemoveInexistentNode) {
+    tree.addNode(DummyType{ 1 });
+    tree.addNode(DummyType{ 3 });
+    tree.addNode(DummyType{ 3 });
+    tree.removeNode(DummyType{ 3 }, 2u);
+
+    auto firstChild = tree.getNode(DummyType{ 3 }, 0u);
+    auto secondChild = tree.getNode(DummyType{ 3 }, 1u);
+
+    verifyNodeChain(firstChild,
+            DummyType{ 3 }, 0u,
+            DummyType{ 1 }, 0u);
+    verifyNodeChain(secondChild,
+            DummyType{ 3 }, 1u,
+            DummyType{ 1 }, 0u);
+}
