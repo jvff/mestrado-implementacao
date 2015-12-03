@@ -40,6 +40,13 @@ public:
         return *nodePointer;
     }
 
+    MaxTreeNode<T> getLatestNodeOnLevel(const T& level) {
+        auto& levelNodes = getLevel(level);
+        auto nodePointer = levelNodes.back();
+
+        return *nodePointer;
+    }
+
     void removeNode(const T& level, unsigned int id) {
         if (levelExists(level)) {
             auto& levelNodes = getLevel(level);
