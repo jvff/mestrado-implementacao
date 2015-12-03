@@ -147,3 +147,17 @@ TEST_F(MaxTreeTest, correctNodeIsRemoved) {
             DummyType{ 21 }, 0u,
             DummyType{ 1 }, 0u);
 }
+
+TEST_F(MaxTreeTest, cantRemoveFromInexistentLevels) {
+    tree.addNode(DummyType{ 1 });
+    tree.addNode(DummyType{ 3 });
+    tree.removeNode(DummyType{ 0 }, 0u);
+    tree.removeNode(DummyType{ 2 }, 0u);
+    tree.removeNode(DummyType{ 4 }, 0u);
+
+    auto childNode = tree.getNode(DummyType{ 3 }, 0u);
+
+    verifyNodeChain(childNode,
+            DummyType{ 3 }, 0u,
+            DummyType{ 1 }, 0u);
+}
