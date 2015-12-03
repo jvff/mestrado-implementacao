@@ -5,7 +5,7 @@ TEST_F(MaxTreeTest, classTemplateExists) {
 }
 
 TEST_F(MaxTreeTest, isInitiallyEmpty) {
-    assertThat(tree.isEmpty()).isEqualTo(true);
+    assertThat(constTree.isEmpty()).isEqualTo(true);
 }
 
 TEST_F(MaxTreeTest, initiallyHasZeroLevels) {
@@ -15,7 +15,7 @@ TEST_F(MaxTreeTest, initiallyHasZeroLevels) {
 TEST_F(MaxTreeTest, isNotEmptyAfterInsertingNode) {
     tree.addNode(DummyType{ 0 });
 
-    assertThat(tree.isEmpty()).isEqualTo(false);
+    assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
 TEST_F(MaxTreeTest, hasOneLevelAfterInsertingNode) {
@@ -59,7 +59,7 @@ TEST_F(MaxTreeTest, isEmptyAfterInsertingThenRemovingNode) {
     tree.addNode(DummyType{ 0 });
     tree.removeNode(DummyType{ 0 }, 0);
 
-    assertThat(tree.isEmpty()).isEqualTo(true);
+    assertThat(constTree.isEmpty()).isEqualTo(true);
 }
 
 TEST_F(MaxTreeTest, isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
@@ -67,7 +67,7 @@ TEST_F(MaxTreeTest, isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
     tree.addNode(DummyType{ 0 });
     tree.removeNode(DummyType{ 0 }, 0);
 
-    assertThat(tree.isEmpty()).isEqualTo(false);
+    assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
 TEST_F(MaxTreeTest, nodeCanBeRetrieved) {

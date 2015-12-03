@@ -14,6 +14,11 @@ protected:
     using DummyMaxTreeType = MaxTree<DummyType>;
 
     DummyMaxTreeType tree;
+    const DummyMaxTreeType& constTree;
+
+public:
+    MaxTreeTest() : constTree(tree) {
+    }
 };
 
 #endif
