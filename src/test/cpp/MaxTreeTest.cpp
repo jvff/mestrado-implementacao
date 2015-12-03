@@ -97,3 +97,22 @@ TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
             DummyType{ 1000 }, 2u,
             DummyType{ 0 }, 0u);
 }
+
+TEST_F(MaxTreeTest, latestNodeIsRetrievable) {
+    tree.addNode(DummyType{ 100 });
+    tree.addNode(DummyType{ 101 });
+    tree.addNode(DummyType{ 102 });
+    tree.addNode(DummyType{ 102 });
+    tree.addNode(DummyType{ 102 });
+    tree.addNode(DummyType{ 101 });
+
+    verifyNodeChain(tree.getLatestNodeOnLevel(DummyType{ 100 }),
+            DummyType{ 100 }, 0u);
+    verifyNodeChain(tree.getLatestNodeOnLevel(DummyType{ 101 }),
+            DummyType{ 101 }, 1u,
+            DummyType{ 100 }, 0u);
+    verifyNodeChain(tree.getLatestNodeOnLevel(DummyType{ 102 }),
+            DummyType{ 102 }, 2u,
+            DummyType{ 101 }, 0u,
+            DummyType{ 100 }, 0u);
+}
