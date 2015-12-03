@@ -73,18 +73,14 @@ TEST_F(MaxTreeTest, isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
 TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
     tree.addNode(DummyType{ 1 });
 
-    auto node = tree.getNode(DummyType{ 1 }, 0u);
-
-    verifyNodeChain(node, DummyType{ 1 }, 0u);
+    verifyNodeChain(DummyType{ 1 }, 0u);
 }
 
 TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
     tree.addNode(DummyType{ 1000 });
     tree.addNode(DummyType{ 2000 });
 
-    auto childNode = tree.getNode(DummyType{ 2000 }, 0u);
-
-    verifyNodeChain(childNode,
+    verifyNodeChain(
             DummyType{ 2000 }, 0u,
             DummyType{ 1000 }, 0u);
 }
@@ -96,9 +92,7 @@ TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
     tree.addNode(DummyType{ 1000 });
     tree.addNode(DummyType{ 2000 });
 
-    auto childNode = tree.getNode(DummyType{ 2000 }, 0u);
-
-    verifyNodeChain(childNode,
+    verifyNodeChain(
             DummyType{ 2000 }, 0u,
             DummyType{ 1000 }, 2u,
             DummyType{ 0 }, 0u);
@@ -112,17 +106,13 @@ TEST_F(MaxTreeTest, removingNodeUpdatesParentOfChildren) {
     tree.addNode(DummyType{ 30 });
     tree.removeNode(DummyType{ 27 }, 0u);
 
-    auto firstChild = tree.getNode(DummyType{ 30 }, 0u);
-    auto secondChild = tree.getNode(DummyType{ 30 }, 1u);
-    auto thirdChild = tree.getNode(DummyType{ 33 }, 0u);
-
-    verifyNodeChain(firstChild,
+    verifyNodeChain(
             DummyType{ 30 }, 0u,
             DummyType{ 20 }, 0u);
-    verifyNodeChain(secondChild,
+    verifyNodeChain(
             DummyType{ 30 }, 1u,
             DummyType{ 20 }, 0u);
-    verifyNodeChain(thirdChild,
+    verifyNodeChain(
             DummyType{ 33 }, 0u,
             DummyType{ 20 }, 0u);
 }
@@ -141,9 +131,7 @@ TEST_F(MaxTreeTest, correctNodeIsRemoved) {
 
     tree.removeNode(DummyType{ 10 }, 1u);
 
-    auto middleChild = tree.getNode(DummyType{ 21 }, 0u);
-
-    verifyNodeChain(middleChild,
+    verifyNodeChain(
             DummyType{ 21 }, 0u,
             DummyType{ 1 }, 0u);
 }
@@ -155,9 +143,7 @@ TEST_F(MaxTreeTest, cantRemoveFromInexistentLevels) {
     tree.removeNode(DummyType{ 2 }, 0u);
     tree.removeNode(DummyType{ 4 }, 0u);
 
-    auto childNode = tree.getNode(DummyType{ 3 }, 0u);
-
-    verifyNodeChain(childNode,
+    verifyNodeChain(
             DummyType{ 3 }, 0u,
             DummyType{ 1 }, 0u);
 }
@@ -168,13 +154,10 @@ TEST_F(MaxTreeTest, cantRemoveInexistentNode) {
     tree.addNode(DummyType{ 3 });
     tree.removeNode(DummyType{ 3 }, 2u);
 
-    auto firstChild = tree.getNode(DummyType{ 3 }, 0u);
-    auto secondChild = tree.getNode(DummyType{ 3 }, 1u);
-
-    verifyNodeChain(firstChild,
+    verifyNodeChain(
             DummyType{ 3 }, 0u,
             DummyType{ 1 }, 0u);
-    verifyNodeChain(secondChild,
+    verifyNodeChain(
             DummyType{ 3 }, 1u,
             DummyType{ 1 }, 0u);
 }
