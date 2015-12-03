@@ -110,6 +110,7 @@ private:
             NodeList& levelNodes) {
         auto removedNode = removeNodeFromLevel(id, levelNodes);
 
+        updateNodeIds(id, levelNodes);
         replaceParents(removedNode, removedNode->parent);
         removeLevelIfEmpty(level, levelNodes);
     }
@@ -120,6 +121,13 @@ private:
         levelNodes.erase(levelNodes.begin() + id);
 
         return nodeToRemove;
+    }
+
+    void updateNodeIds(unsigned int startId, NodeList& levelNodes) {
+        auto numberOfNodes = levelNodes.size();
+
+        for (auto id = startId; id < numberOfNodes; ++id)
+            levelNodes[id]->id = id;
     }
 
     void replaceParents(NodePointer oldParent, NodePointer newParent) {
