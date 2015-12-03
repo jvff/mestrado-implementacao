@@ -40,14 +40,14 @@ public:
         return *nodePointer;
     }
 
-    void removeNode(const T& level, unsigned int) {
+    void removeNode(const T& level, unsigned int id) {
         if (!levelExists(level))
             return;
 
         auto& levelNodes = getLevel(level);
-        auto removedNode = levelNodes.back();
+        auto removedNode = levelNodes[id];
 
-        levelNodes.pop_back();
+        levelNodes.erase(levelNodes.begin() + id);
 
         replaceParents(removedNode, removedNode->parent);
 
