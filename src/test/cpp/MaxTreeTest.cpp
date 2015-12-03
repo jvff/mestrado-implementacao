@@ -9,7 +9,7 @@ TEST_F(MaxTreeTest, isInitiallyEmpty) {
 }
 
 TEST_F(MaxTreeTest, initiallyHasZeroLevels) {
-    assertThat(tree.numberOfLevels()).isEqualTo(0u);
+    assertThat(constTree.numberOfLevels()).isEqualTo(0u);
 }
 
 TEST_F(MaxTreeTest, isNotEmptyAfterInsertingNode) {
@@ -21,7 +21,7 @@ TEST_F(MaxTreeTest, isNotEmptyAfterInsertingNode) {
 TEST_F(MaxTreeTest, hasOneLevelAfterInsertingNode) {
     tree.addNode(DummyType{ 0 });
 
-    assertThat(tree.numberOfLevels()).isEqualTo(1u);
+    assertThat(constTree.numberOfLevels()).isEqualTo(1u);
 }
 
 TEST_F(MaxTreeTest, hasOneLevelAfterInsertingNodesAtSameLevel) {
@@ -29,7 +29,7 @@ TEST_F(MaxTreeTest, hasOneLevelAfterInsertingNodesAtSameLevel) {
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
 
-    assertThat(tree.numberOfLevels()).isEqualTo(1u);
+    assertThat(constTree.numberOfLevels()).isEqualTo(1u);
 }
 
 TEST_F(MaxTreeTest, hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
@@ -38,7 +38,7 @@ TEST_F(MaxTreeTest, hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
 
-    assertThat(tree.numberOfLevels()).isEqualTo(2u);
+    assertThat(constTree.numberOfLevels()).isEqualTo(2u);
 }
 
 TEST_F(MaxTreeTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
@@ -52,7 +52,7 @@ TEST_F(MaxTreeTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
     tree.addNode(DummyType{ 1000 });
     tree.removeNode(DummyType{ 8 }, 0u);
 
-    assertThat(tree.numberOfLevels()).isEqualTo(3u);
+    assertThat(constTree.numberOfLevels()).isEqualTo(3u);
 }
 
 TEST_F(MaxTreeTest, isEmptyAfterInsertingThenRemovingNode) {
