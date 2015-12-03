@@ -103,3 +103,26 @@ TEST_F(MaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
             DummyType{ 1000 }, 2u,
             DummyType{ 0 }, 0u);
 }
+
+TEST_F(MaxTreeTest, removingNodeUpdatesParentOfChildren) {
+    tree.addNode(DummyType{ 20 });
+    tree.addNode(DummyType{ 27 });
+    tree.addNode(DummyType{ 33 });
+    tree.addNode(DummyType{ 30 });
+    tree.addNode(DummyType{ 30 });
+    tree.removeNode(DummyType{ 27 }, 0u);
+
+    auto firstChild = tree.getNode(DummyType{ 30 }, 0u);
+    auto secondChild = tree.getNode(DummyType{ 30 }, 1u);
+    auto thirdChild = tree.getNode(DummyType{ 33 }, 0u);
+
+    verifyNodeChain(firstChild,
+            DummyType{ 30 }, 0u,
+            DummyType{ 20 }, 0u);
+    verifyNodeChain(secondChild,
+            DummyType{ 30 }, 1u,
+            DummyType{ 20 }, 0u);
+    verifyNodeChain(thirdChild,
+            DummyType{ 33 }, 0u,
+            DummyType{ 20 }, 0u);
+}
