@@ -161,3 +161,37 @@ TEST_F(MaxTreeTest, cantRemoveInexistentNode) {
             DummyType{ 3 }, 1u,
             DummyType{ 1 }, 0u);
 }
+
+TEST_F(MaxTreeTest, nodeIdsAreUpdatedAfterRemoval) {
+    tree.addNode(DummyType{ 1 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 50 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 40 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 30 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 20 });
+
+    tree.removeNode(DummyType{ 10 }, 1u);
+
+    verifyNodeChain(
+            DummyType{ 50 }, 0u,
+            DummyType{ 10 }, 0u,
+            DummyType{ 1 }, 0u);
+    verifyNodeChain(
+            DummyType{ 40 }, 0u,
+            DummyType{ 1 }, 0u);
+    verifyNodeChain(
+            DummyType{ 30 }, 0u,
+            DummyType{ 10 }, 1u,
+            DummyType{ 1 }, 0u);
+    verifyNodeChain(
+            DummyType{ 20 }, 0u,
+            DummyType{ 10 }, 2u,
+            DummyType{ 1 }, 0u);
+}
