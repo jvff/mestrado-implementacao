@@ -126,3 +126,24 @@ TEST_F(MaxTreeTest, removingNodeUpdatesParentOfChildren) {
             DummyType{ 33 }, 0u,
             DummyType{ 20 }, 0u);
 }
+
+TEST_F(MaxTreeTest, correctNodeIsRemoved) {
+    tree.addNode(DummyType{ 1 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 22 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 21 });
+
+    tree.addNode(DummyType{ 10 });
+    tree.addNode(DummyType{ 20 });
+
+    tree.removeNode(DummyType{ 10 }, 1u);
+
+    auto middleChild = tree.getNode(DummyType{ 21 }, 0u);
+
+    verifyNodeChain(middleChild,
+            DummyType{ 21 }, 0u,
+            DummyType{ 1 }, 0u);
+}
