@@ -17,7 +17,7 @@ private:
     std::map<T, NodeList> levels;
 
 public:
-    bool isEmpty() {
+    bool isEmpty() const {
         return levels.empty();
     }
 
