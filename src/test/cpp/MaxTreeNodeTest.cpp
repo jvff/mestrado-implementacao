@@ -38,7 +38,7 @@ TEST(MaxTreeNodeTest, hasValueMembers) {
     DummyType level = { 7 };
     unsigned int id = 10;
 
-    MaxTreeNode<DummyType> node = { parent, level, id };
+    auto node = MaxTreeNode<DummyType>{ parent, level, id };
 
     assertThat(node.id).isEqualTo(id);
     assertThat(node.level).isEqualTo(level);
@@ -57,17 +57,17 @@ TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
 }
 
 TEST(MaxTreeNodeTest, hasParentMember) {
-    std::shared_ptr<MaxTreeNode<DummyType> > noParent;
-    std::shared_ptr<MaxTreeNode<DummyType> > rootNode;
+    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >();
 
-    DummyType parentLevel = { 90 };
-    unsigned int parentId = 3;
-    MaxTreeNode<DummyType> parent = { noParent, parentLevel, parentId };
+    auto parentLevel = DummyType{ 90 };
+    auto parentId = 3u;
 
-    rootNode.reset(new MaxTreeNode<DummyType>(parent));
+    auto childLevel = DummyType{ 91 };
+    auto childId = 10u;
 
-    DummyType childLevel = { 91 };
-    unsigned int childId = 10;
+    rootNode->level = parentLevel;
+    rootNode->id = parentId;
+
     MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
 
     assertThat(child.level).isEqualTo(childLevel);
