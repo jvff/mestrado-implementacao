@@ -59,3 +59,28 @@ TEST(MaxTreeNodeTest, hasParentMember) {
     assertThat(child.parent->id).isEqualTo(parentId);
     assertThat((bool)child.parent->parent).isEqualTo(false);
 }
+
+TEST(MaxTreeNodeTest, copyConstructorCreatesDeepCopy) {
+    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >();
+
+    auto parentLevel = DummyType{ 90 };
+    auto parentId = 3u;
+
+    auto childLevel = DummyType{ 91 };
+    auto childId = 10u;
+
+    rootNode->level = parentLevel;
+    rootNode->id = parentId;
+
+    MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
+    MaxTreeNode<DummyType> copy(child);
+
+    assertThat(copy.level).isEqualTo(childLevel);
+    assertThat(copy.id).isEqualTo(childId);
+
+    assertThat((bool)copy.parent).isEqualTo(true);
+    assertThat(copy.parent).isNotEqualTo(rootNode);
+    assertThat(copy.parent->level).isEqualTo(parentLevel);
+    assertThat(copy.parent->id).isEqualTo(parentId);
+    assertThat((bool)copy.parent->parent).isEqualTo(false);
+}
