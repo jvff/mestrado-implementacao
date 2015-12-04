@@ -33,6 +33,14 @@ TEST(MaxTreeNodeTest, hasValueConstructorWithoutParent) {
             With<LevelParameter, IdParameter>());
 }
 
+TEST(MaxTreeNodeTest, hasGetIdMethod) {
+    auto level = DummyType{ 1390 };
+    auto id = 15u;
+    auto node = MaxTreeNode<DummyType>{ level, id };
+
+    assertThat(node.getId()).isEqualTo(id);
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
