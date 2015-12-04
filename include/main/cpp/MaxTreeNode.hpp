@@ -32,6 +32,10 @@ struct MaxTreeNode {
         return id;
     }
 
+    PixelType getLevel() {
+        return level;
+    }
+
 private:
     void copyParentFrom(const MaxTreeNode<PixelType>& copySource) {
         auto parentExists = (bool)copySource.parent;
