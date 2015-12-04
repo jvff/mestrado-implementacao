@@ -8,6 +8,14 @@ struct MaxTreeNode {
     std::shared_ptr<MaxTreeNode<PixelType> > parent;
     PixelType level;
     unsigned int id;
+
+    MaxTreeNode() {
+    }
+
+    MaxTreeNode(const std::shared_ptr<MaxTreeNode<PixelType> >& parent,
+            const PixelType& level, unsigned int id)
+            : parent(parent), level(level), id(id) {
+    }
 };
 
 #endif
