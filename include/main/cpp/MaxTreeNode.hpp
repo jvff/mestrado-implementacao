@@ -16,6 +16,23 @@ struct MaxTreeNode {
             const PixelType& level, unsigned int id)
             : parent(parent), level(level), id(id) {
     }
+
+    MaxTreeNode(const MaxTreeNode<PixelType>& copySource) {
+        level = copySource.level;
+        id = copySource.id;
+
+        copyParentFrom(copySource);
+    }
+
+private:
+    void copyParentFrom(const MaxTreeNode<PixelType>& copySource) {
+        auto parentExists = (bool)copySource.parent;
+
+        if (parentExists) {
+            parent = std::make_shared<MaxTreeNode<PixelType> >(
+                    *copySource.parent);
+        }
+    }
 };
 
 #endif
