@@ -12,6 +12,10 @@ TEST(MaxTreeNodeTest, structTemplateExists) {
     AssertThat<MaxTreeNode<DummyType> >::isClassOrStruct();
 }
 
+TEST(MaxTreeNodeTest, hasDefaultConstructor) {
+    AssertThat<MaxTreeNode<DummyType> >::isConstructible(WithoutParameters());
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
