@@ -41,6 +41,14 @@ TEST(MaxTreeNodeTest, hasGetIdMethod) {
     assertThat(node.getId()).isEqualTo(id);
 }
 
+TEST(MaxTreeNodeTest, hasGetLevelMethod) {
+    auto level = DummyType{ 1390 };
+    auto id = 15u;
+    auto node = MaxTreeNode<DummyType>{ level, id };
+
+    assertThat(node.getLevel()).isEqualTo(level);
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
