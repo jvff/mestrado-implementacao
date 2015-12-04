@@ -16,6 +16,15 @@ TEST(MaxTreeNodeTest, hasDefaultConstructor) {
     AssertThat<MaxTreeNode<DummyType> >::isConstructible(WithoutParameters());
 }
 
+TEST(MaxTreeNodeTest, hasValueConstructor) {
+    using ParentParameter = const std::shared_ptr<MaxTreeNode<DummyType> >&;
+    using LevelParameter = const DummyType&;
+    using IdParameter = unsigned int;
+
+    AssertThat<MaxTreeNode<DummyType> >::isConstructible(
+            With<ParentParameter, LevelParameter, IdParameter>());
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
