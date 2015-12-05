@@ -46,14 +46,14 @@ public:
         auto level = getPixelValue(x, y);
         auto& latestNode = getLatestNodeOrCreateFirstNodeAtLevel(level);
 
-        nodeIdImage.setPixel(x, y, latestNode->id);
+        nodeIdImage.setPixel(x, y, latestNode->getId());
     }
 
     void assignPixelToNewNode(unsigned int x, unsigned int y) {
         auto level = getPixelValue(x, y);
         auto& newNode = createNodeAtLevel(level);
 
-        nodeIdImage.setPixel(x, y, newNode->id);
+        nodeIdImage.setPixel(x, y, newNode->getId());
     }
 
     void connectPixels(unsigned int firstX, unsigned int firstY,
@@ -61,8 +61,8 @@ public:
         auto& firstNode = getPixelNode(firstX, firstY);
         auto& secondNode = getPixelNode(secondX, secondY);
 
-        if (secondNode->level > firstNode->parent->level)
-            firstNode->parent = secondNode;
+        if (secondNode->getLevel() > firstNode->getParent().getLevel())
+            firstNode->setParent(secondNode);
     }
 
     const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) const {
@@ -130,9 +130,9 @@ private:
         NodePointerType newNode(new NodeType);
         auto& parent = getLatestNodeAtLevelBefore(level);
 
-        newNode->level = level;
-        newNode->id = 0;
-        newNode->parent = parent;
+        newNode->setLevel(level);
+        newNode->setId(0);
+        newNode->setParent(parent);
 
         nodesAtLevel.push_back(newNode);
 
@@ -144,9 +144,9 @@ private:
         auto& parent = getLatestNodeAtLevelBefore(level);
         auto id = nodesAtLevel.size();
 
-        newNode->level = level;
-        newNode->id = id;
-        newNode->parent = parent;
+        newNode->setLevel(level);
+        newNode->setId(id);
+        newNode->setParent(parent);
 
         nodesAtLevel.push_back(newNode);
 
