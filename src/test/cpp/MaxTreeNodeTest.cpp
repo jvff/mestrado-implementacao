@@ -41,6 +41,17 @@ TEST(MaxTreeNodeTest, hasGetIdMethod) {
     assertThat(node.getId()).isEqualTo(id);
 }
 
+TEST(MaxTreeNodeTest, hasSetIdMethod) {
+    auto level = DummyType{ 1390 };
+    auto id = 15u;
+    auto newId = 761u;
+    auto node = MaxTreeNode<DummyType>{ level, id };
+
+    node.setId(newId);
+
+    assertThat(node.getId()).isEqualTo(newId);
+}
+
 TEST(MaxTreeNodeTest, hasGetLevelMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
