@@ -36,7 +36,7 @@ TEST(MaxTreeNodeTest, hasValueConstructorWithoutParent) {
 TEST(MaxTreeNodeTest, hasGetIdMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
-    auto node = MaxTreeNode<DummyType>{ level, id };
+    const auto node = MaxTreeNode<DummyType>{ level, id };
 
     assertThat(node.getId()).isEqualTo(id);
 }
@@ -44,7 +44,7 @@ TEST(MaxTreeNodeTest, hasGetIdMethod) {
 TEST(MaxTreeNodeTest, hasGetLevelMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
-    auto node = MaxTreeNode<DummyType>{ level, id };
+    const auto node = MaxTreeNode<DummyType>{ level, id };
 
     assertThat(node.getLevel()).isEqualTo(level);
 }
@@ -57,9 +57,10 @@ TEST(MaxTreeNodeTest, hasGetParentMethod) {
 
     auto parentNode = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
             parentId);
-    auto childNode = MaxTreeNode<DummyType>(parentNode, childLevel, childId);
+    const auto childNode = MaxTreeNode<DummyType>(parentNode, childLevel,
+            childId);
 
-    auto result = childNode.getParent();
+    auto& result = childNode.getParent();
 
     assertThat(result.getLevel()).isEqualTo(parentLevel);
     assertThat(result.getId()).isEqualTo(parentId);
@@ -68,7 +69,7 @@ TEST(MaxTreeNodeTest, hasGetParentMethod) {
 TEST(MaxTreeNodeTest, getParentMethodReturnsConstReference) {
     auto level = DummyType{ 932 };
     auto id = 901u;
-    auto node = MaxTreeNode<DummyType>(level, id);
+    const auto node = MaxTreeNode<DummyType>(level, id);
 
     AssertThat<decltype(node.getParent())>::isConstReference();
 }
