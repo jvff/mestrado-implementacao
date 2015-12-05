@@ -28,15 +28,15 @@ struct MaxTreeNode {
         copyParentFrom(copySource);
     }
 
-    unsigned int getId() {
+    unsigned int getId() const {
         return id;
     }
 
-    PixelType getLevel() {
+    PixelType getLevel() const {
         return level;
     }
 
-    const MaxTreeNode<PixelType>& getParent() {
+    const MaxTreeNode<PixelType>& getParent() const {
         return *parent;
     }
 
