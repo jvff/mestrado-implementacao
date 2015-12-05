@@ -96,10 +96,7 @@ private:
     }
 
     NodePointer makeNode(const T& level, unsigned int id) {
-        auto node = std::make_shared<NodeType>();
-
-        node->level = level;
-        node->id = id;
+        auto node = std::make_shared<NodeType>(level, id);
 
         if (level != getFirstLevel())
             updateParentOf(node);
