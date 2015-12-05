@@ -96,6 +96,28 @@ TEST(MaxTreeNodeTest, getParentMethodReturnsConstReference) {
     AssertThat<decltype(node.getParent())>::isConstReference();
 }
 
+TEST(MaxTreeNodeTest, hasSetParentMethod) {
+    auto parentLevel = DummyType{ 6178 };
+    auto parentId = 21u;
+    auto childLevel = DummyType{ 10401 };
+    auto childId = 30u;
+    auto newParentLevel = DummyType{ 3 };
+    auto newParentId = 784u;
+
+    auto parentNode = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
+    auto childNode = MaxTreeNode<DummyType>(parentNode, childLevel, childId);
+    auto newParentNode = std::make_shared<MaxTreeNode<DummyType> >(
+            newParentLevel, newParentId);
+
+    childNode.setParent(newParentNode);
+
+    auto& result = childNode.getParent();
+
+    assertThat(result.getLevel()).isEqualTo(newParentLevel);
+    assertThat(result.getId()).isEqualTo(newParentId);
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
