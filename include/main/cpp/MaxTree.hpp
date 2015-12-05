@@ -50,7 +50,7 @@ public:
         auto nodePointerToChange = getNodePointer(nodeToChange);
         auto newParentPointer = getNodePointer(newParent);
 
-        nodePointerToChange->parent = newParentPointer;
+        nodePointerToChange->setParent(newParentPointer);
     }
 
     void removeNode(const T& level, unsigned int id) {
@@ -64,7 +64,7 @@ public:
 
 private:
     NodePointer getNodePointer(const MaxTreeNode<T>& node) {
-        return getNodePointer(node.level, node.id);
+        return getNodePointer(node.getLevel(), node.getId());
     }
 
     NodePointer getNodePointer(const T& level, unsigned int id) {
@@ -112,10 +112,10 @@ private:
     }
 
     void updateParentOf(NodePointer node) {
-        auto& nodeListOfLevelBelow = findLevelBefore(node->level);
+        auto& nodeListOfLevelBelow = findLevelBefore(node->getLevel());
         auto& latestNodeAtLevelBelow = nodeListOfLevelBelow.back();
 
-        node->parent = latestNodeAtLevelBelow;
+        node->setParent(latestNodeAtLevelBelow);
     }
 
     NodeList& findLevelBefore(const T& level) {
@@ -147,11 +147,11 @@ private:
         auto numberOfNodes = levelNodes.size();
 
         for (auto id = startId; id < numberOfNodes; ++id)
-            levelNodes[id]->id = id;
+            levelNodes[id]->setId(id);
     }
 
     void replaceParents(NodePointer oldParent, NodePointer newParent) {
-        auto startLevel = oldParent->level;
+        auto startLevel = oldParent->getLevel();
         auto startPosition = levels.find(startLevel);
         auto endPosition = levels.end();
 
@@ -163,7 +163,7 @@ private:
             NodeList& levelNodes) {
         for (auto& node : levelNodes) {
             if (node->parent == oldParent)
-                node->parent = newParent;
+                node->setParent(newParent);
         }
     }
 
