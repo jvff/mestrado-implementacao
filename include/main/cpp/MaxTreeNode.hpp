@@ -36,7 +36,7 @@ struct MaxTreeNode {
         return level;
     }
 
-    MaxTreeNode<PixelType> getParent() {
+    const MaxTreeNode<PixelType>& getParent() {
         return *parent;
     }
 
