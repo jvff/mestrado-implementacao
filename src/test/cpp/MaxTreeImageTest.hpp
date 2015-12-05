@@ -113,8 +113,8 @@ protected:
 
     void verifyNodeData(const TreeNodeType& node,
             const TreeNodeType& expectedNode) {
-        assertThat(node.id).isEqualTo(expectedNode.id);
-        assertThat(node.level).isEqualTo(expectedNode.level);
+        assertThat(node.getId()).isEqualTo(expectedNode.getId());
+        assertThat(node.getLevel()).isEqualTo(expectedNode.getLevel());
     }
 
     void verifyNodeParents(const TreeNodeType& node,
