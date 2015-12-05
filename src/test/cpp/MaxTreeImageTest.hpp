@@ -63,21 +63,12 @@ protected:
     }
 
     TreeNodePointer makeNode(unsigned int id, PixelType level) {
-        auto node = std::make_shared<TreeNodeType>();
-
-        node->id = id;
-        node->level = level;
-
-        return node;
+        return std::make_shared<TreeNodeType>(level, id);
     }
 
     TreeNodePointer makeNode(unsigned int id, PixelType level,
             TreeNodePointer parent) {
-        auto node = makeNode(id, level);
-
-        node->parent = parent;
-
-        return node;
+        return std::make_shared<TreeNodeType>(parent, level, id);
     }
 
     void verifyNodes(const MaxTreeImage<InternalImageType>& image,
