@@ -49,6 +49,22 @@ TEST(MaxTreeNodeTest, hasGetLevelMethod) {
     assertThat(node.getLevel()).isEqualTo(level);
 }
 
+TEST(MaxTreeNodeTest, hasGetParentMethod) {
+    auto parentLevel = DummyType{ 6178 };
+    auto parentId = 21u;
+    auto childLevel = DummyType{ 10401 };
+    auto childId = 30u;
+
+    auto parentNode = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
+    auto childNode = MaxTreeNode<DummyType>(parentNode, childLevel, childId);
+
+    auto result = childNode.getParent();
+
+    assertThat(result.getLevel()).isEqualTo(parentLevel);
+    assertThat(result.getId()).isEqualTo(parentId);
+}
+
 TEST(MaxTreeNodeTest, hasValueMembers) {
     std::shared_ptr<MaxTreeNode<DummyType> > parent;
     DummyType level = { 7 };
