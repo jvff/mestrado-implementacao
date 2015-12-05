@@ -10,8 +10,8 @@ static bool parentNodesAreEqual(const MaxTreeNode<PixelType>& firstNode,
     bool secondParentExists = (bool)secondParent;
 
     while (firstParentExists && secondParentExists) {
-        bool levelsDiffer = firstParent->level != secondParent->level;
-        bool idsDiffer = firstParent->id != secondParent->id;
+        bool levelsDiffer = firstParent->getLevel() != secondParent->getLevel();
+        bool idsDiffer = firstParent->getId() != secondParent->getId();
 
         if (levelsDiffer || idsDiffer)
             return false;
@@ -38,7 +38,7 @@ static bool allNodesAreEqual(const MaxTreeImage<InternalImageType>& first,
             bool nodeParentsDiffer = !parentNodesAreEqual(firstNode,
                     secondNode);
 
-            if (firstNode.id != secondNode.id || nodeParentsDiffer)
+            if (firstNode.getId() != secondNode.getId() || nodeParentsDiffer)
                 return false;
         }
     }
