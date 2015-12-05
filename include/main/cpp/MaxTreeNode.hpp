@@ -32,6 +32,10 @@ struct MaxTreeNode {
         return id;
     }
 
+    void setId(unsigned int newId) {
+        id = newId;
+    }
+
     PixelType getLevel() const {
         return level;
     }
