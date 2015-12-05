@@ -48,6 +48,10 @@ struct MaxTreeNode {
         return *parent;
     }
 
+    void setParent(const std::shared_ptr<MaxTreeNode>& newParent) {
+        parent = newParent;
+    }
+
 private:
     void copyParentFrom(const MaxTreeNode<PixelType>& copySource) {
         auto parentExists = (bool)copySource.parent;
