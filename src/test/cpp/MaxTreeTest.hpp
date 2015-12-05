@@ -53,8 +53,8 @@ public:
     template <typename T>
     void verifyNode(const MaxTreeNode<T>& node, const T& expectedLevel,
             unsigned int expectedId) {
-        assertThat(node.level).isEqualTo(expectedLevel);
-        assertThat(node.id).isEqualTo(expectedId);
+        assertThat(node.getLevel()).isEqualTo(expectedLevel);
+        assertThat(node.getId()).isEqualTo(expectedId);
     }
 };
 
