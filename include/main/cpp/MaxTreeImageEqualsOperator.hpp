@@ -4,25 +4,21 @@
 template <typename PixelType>
 static bool parentNodesAreEqual(const MaxTreeNode<PixelType>& firstNode,
         const MaxTreeNode<PixelType>& secondNode) {
-    auto firstParent = firstNode.parent;
-    auto secondParent = secondNode.parent;
-    bool firstParentExists = (bool)firstParent;
-    bool secondParentExists = (bool)secondParent;
+    if (firstNode.hasParent() != secondNode.hasParent())
+        return false;
 
-    while (firstParentExists && secondParentExists) {
-        bool levelsDiffer = firstParent->getLevel() != secondParent->getLevel();
-        bool idsDiffer = firstParent->getId() != secondParent->getId();
+    if (firstNode.hasParent()) {
+        auto& firstParent = firstNode.getParent();
+        auto& secondParent = secondNode.getParent();
+        bool levelsDiffer = firstParent.getLevel() != secondParent.getLevel();
+        bool idsDiffer = firstParent.getId() != secondParent.getId();
 
         if (levelsDiffer || idsDiffer)
             return false;
-
-        firstParent = firstParent->parent;
-        secondParent = secondParent->parent;
-        firstParentExists = (bool)firstParent;
-        secondParentExists = (bool)secondParent;
-    }
-
-    return !firstParentExists && !secondParentExists;
+        else
+            return parentNodesAreEqual(firstParent, secondParent);
+    } else
+        return true;
 }
 
 template <typename InternalImageType>
