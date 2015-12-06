@@ -92,3 +92,14 @@ TEST(MaxTreeNodeComparisonTest, nodeWithSameParentAreEqual) {
     assertThat(firstNode).isEqualTo(secondNode);
     assertThat(secondNode).isEqualTo(firstNode);
 }
+
+TEST(MaxTreeNodeComparisonTest, isComparableToEquivalentNode) {
+    auto level = DummyType{ 371 };
+    auto id = 85u;
+
+    const auto firstNode = MaxTreeNode<DummyType>{ level, id };
+    const auto secondNode = MaxTreeNode<DummyType>{ level, id };
+
+    assertThat(firstNode.isEquivalentTo(secondNode)).isEqualTo(true);
+    assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(true);
+}
