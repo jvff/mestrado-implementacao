@@ -148,7 +148,7 @@ TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
 
     assertThat(node.getId()).isEqualTo(id);
     assertThat(node.getLevel()).isEqualTo(level);
-    assertThat((bool)node.parent).isEqualTo(false);
+    assertThat(node.hasParent()).isEqualTo(false);
 }
 
 TEST(MaxTreeNodeTest, hasParentMember) {
@@ -166,10 +166,10 @@ TEST(MaxTreeNodeTest, hasParentMember) {
     assertThat(child.getLevel()).isEqualTo(childLevel);
     assertThat(child.getId()).isEqualTo(childId);
 
-    assertThat((bool)child.parent).isEqualTo(true);
-    assertThat(child.parent->getLevel()).isEqualTo(parentLevel);
-    assertThat(child.parent->getId()).isEqualTo(parentId);
-    assertThat((bool)child.parent->parent).isEqualTo(false);
+    assertThat(child.hasParent()).isEqualTo(true);
+    assertThat(child.getParent().getLevel()).isEqualTo(parentLevel);
+    assertThat(child.getParent().getId()).isEqualTo(parentId);
+    assertThat(child.getParent().hasParent()).isEqualTo(false);
 }
 
 TEST(MaxTreeNodeTest, copyConstructorCreatesDeepCopy) {
@@ -188,9 +188,9 @@ TEST(MaxTreeNodeTest, copyConstructorCreatesDeepCopy) {
     assertThat(copy.getLevel()).isEqualTo(childLevel);
     assertThat(copy.getId()).isEqualTo(childId);
 
-    assertThat((bool)copy.parent).isEqualTo(true);
-    assertThat(copy.parent).isNotEqualTo(rootNode);
-    assertThat(copy.parent->getLevel()).isEqualTo(parentLevel);
-    assertThat(copy.parent->getId()).isEqualTo(parentId);
-    assertThat((bool)copy.parent->parent).isEqualTo(false);
+    assertThat(copy.hasParent()).isEqualTo(true);
+    assertThat(copy.getParent()).isNotAtSameAddressAs(*rootNode);
+    assertThat(copy.getParent().getLevel()).isEqualTo(parentLevel);
+    assertThat(copy.getParent().getId()).isEqualTo(parentId);
+    assertThat(copy.getParent().hasParent()).isEqualTo(false);
 }
