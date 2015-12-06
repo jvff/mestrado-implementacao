@@ -56,3 +56,22 @@ TEST(MaxTreeNodeComparisonTest, nodeWithParentAndNodeWithoutArentEqual) {
     assertThat(firstNode).isNotEqualTo(secondNode);
     assertThat(secondNode).isNotEqualTo(firstNode);
 }
+
+TEST(MaxTreeNodeComparisonTest, nodeWithDifferentParentsArentEqual) {
+    auto parentLevel = DummyType{ 92 };
+    auto parentId = 12u;
+
+    auto level = DummyType{ 794 };
+    auto id = 279u;
+
+    auto firstParent = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
+    auto secondParent = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
+
+    auto firstNode = MaxTreeNode<DummyType>{ firstParent, level, id };
+    auto secondNode = MaxTreeNode<DummyType>{ secondParent, level, id };
+
+    assertThat(firstNode).isNotEqualTo(secondNode);
+    assertThat(secondNode).isNotEqualTo(firstNode);
+}
