@@ -171,3 +171,14 @@ TEST(MaxTreeNodeTest, canBeConstructedWithParent) {
     assertThat(child.getParent().getId()).isEqualTo(parentId);
     assertThat(child.getParent().hasParent()).isEqualTo(false);
 }
+
+TEST(MaxTreeNodeTest, isComparable) {
+    auto level = DummyType{ 371 };
+    auto id = 85u;
+
+    auto firstNode = MaxTreeNode<DummyType>{ level, id };
+    auto secondNode = MaxTreeNode<DummyType>{ level, id };
+
+    assertThat(firstNode).isEqualTo(secondNode);
+    assertThat(secondNode).isEqualTo(firstNode);
+}
