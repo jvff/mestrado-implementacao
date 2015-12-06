@@ -50,4 +50,9 @@ public:
     }
 };
 
+template <typename T>
+bool operator==(const MaxTreeNode<T>&, const MaxTreeNode<T>&) {
+    return true;
+}
+
 #endif
