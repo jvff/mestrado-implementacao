@@ -52,9 +52,17 @@ public:
 
 template <typename T>
 bool operator==(const MaxTreeNode<T>& first, const MaxTreeNode<T>& second) {
+    bool haveParents = first.hasParent() && second.hasParent();
+    bool parentsAreEqual;
+
+    if (haveParents)
+        parentsAreEqual = &first.getParent() == &second.getParent();
+    else
+        parentsAreEqual = !first.hasParent() && !second.hasParent();
+
     return first.getLevel() == second.getLevel()
         && first.getId() == second.getId()
-        && first.hasParent() == second.hasParent();
+        && parentsAreEqual;
 }
 
 #endif
