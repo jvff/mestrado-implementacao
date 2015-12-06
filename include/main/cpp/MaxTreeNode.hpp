@@ -3,24 +3,22 @@
 
 #include <memory>
 
-template <typename PixelType>
+template <typename T>
 class MaxTreeNode {
 private:
-    std::shared_ptr<MaxTreeNode<PixelType> > parent;
-    PixelType level;
+    std::shared_ptr<MaxTreeNode<T> > parent;
+    T level;
     unsigned int id;
 
 public:
     MaxTreeNode() {
     }
 
-    MaxTreeNode(const PixelType& level, unsigned int id)
-            : level(level), id(id) {
+    MaxTreeNode(const T& level, unsigned int id) : level(level), id(id) {
     }
 
-    MaxTreeNode(const std::shared_ptr<MaxTreeNode<PixelType> >& parent,
-            const PixelType& level, unsigned int id)
-            : parent(parent), level(level), id(id) {
+    MaxTreeNode(const std::shared_ptr<MaxTreeNode<T> >& parent, const T& level,
+            unsigned int id) : parent(parent), level(level), id(id) {
     }
 
     unsigned int getId() const {
@@ -31,11 +29,11 @@ public:
         id = newId;
     }
 
-    PixelType getLevel() const {
+    T getLevel() const {
         return level;
     }
 
-    void setLevel(const PixelType& newLevel) {
+    void setLevel(const T& newLevel) {
         level = newLevel;
     }
 
@@ -43,7 +41,7 @@ public:
         return (bool)parent;
     }
 
-    const MaxTreeNode<PixelType>& getParent() const {
+    const MaxTreeNode<T>& getParent() const {
         return *parent;
     }
 
