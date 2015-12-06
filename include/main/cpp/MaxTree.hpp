@@ -128,19 +128,16 @@ private:
 
     void safelyRemoveNode(const T& level, unsigned int id,
             NodeList& levelNodes) {
-        auto removedNode = removeNodeFromLevel(id, levelNodes);
+        auto nodeToRemove = levelNodes[id];
 
+        updateChildrenOfRemovedNode(nodeToRemove);
+        removeNodeFromLevel(id, levelNodes);
         updateNodeIds(id, levelNodes);
-        replaceParents(removedNode, removedNode->parent);
         removeLevelIfEmpty(level, levelNodes);
     }
 
-    NodePointer removeNodeFromLevel(unsigned int id, NodeList& levelNodes) {
-        auto nodeToRemove = levelNodes[id];
-
+    void removeNodeFromLevel(unsigned int id, NodeList& levelNodes) {
         levelNodes.erase(levelNodes.begin() + id);
-
-        return nodeToRemove;
     }
 
     void updateNodeIds(unsigned int startId, NodeList& levelNodes) {
@@ -148,6 +145,21 @@ private:
 
         for (auto id = startId; id < numberOfNodes; ++id)
             levelNodes[id]->setId(id);
+    }
+
+    void updateChildrenOfRemovedNode(NodePointer oldParent) {
+        NodePointer newParent;
+
+        if (oldParent->hasParent())
+            newParent = getParentOf(oldParent);
+
+        replaceParents(oldParent, newParent);
+    }
+
+    NodePointer getParentOf(NodePointer child) {
+        auto& parent = child->getParent();
+
+        return getNodePointer(parent.getLevel(), parent.getId());
     }
 
     void replaceParents(NodePointer oldParent, NodePointer newParent) {
@@ -162,7 +174,7 @@ private:
     void replaceParentsInLevel(NodePointer oldParent, NodePointer newParent,
             NodeList& levelNodes) {
         for (auto& node : levelNodes) {
-            if (node->parent == oldParent)
+            if (node->hasParent() && getParentOf(node) == oldParent)
                 node->setParent(newParent);
         }
     }
