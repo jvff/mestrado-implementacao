@@ -119,21 +119,15 @@ protected:
 
     void verifyNodeParents(const TreeNodeType& node,
             const TreeNodeType& expectedNode) {
-        auto parent = node.parent;
-        auto expectedParent = expectedNode.parent;
-        auto parentExists = (bool)parent;
-        auto expectedParentExists = (bool)expectedParent;
+        assertThat(node.hasParent()).isEqualTo(expectedNode.hasParent());
 
-        while (parentExists && expectedParentExists) {
-            verifyNodeData(*parent, *expectedParent);
+        if (node.hasParent()) {
+            auto& parent = node.getParent();
+            auto& expectedParent = expectedNode.getParent();
 
-            parent = parent->parent;
-            expectedParent = expectedParent->parent;
-            parentExists = (bool)parent;
-            expectedParentExists = (bool)expectedParent;
+            verifyNodeData(parent, expectedParent);
+            verifyNodeParents(parent, expectedParent);
         }
-
-        assertThat(parentExists).isEqualTo(expectedParentExists);
     }
 };
 
