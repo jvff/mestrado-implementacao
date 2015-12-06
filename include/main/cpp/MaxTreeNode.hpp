@@ -45,7 +45,7 @@ struct MaxTreeNode {
     }
 
     bool hasParent() const {
-        return false;
+        return (bool)parent;
     }
 
     const MaxTreeNode<PixelType>& getParent() const {
