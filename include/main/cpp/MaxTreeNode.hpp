@@ -48,6 +48,10 @@ public:
     void setParent(const std::shared_ptr<MaxTreeNode>& newParent) {
         parent = newParent;
     }
+
+    bool isEquivalentTo(const MaxTreeNode<T>&) const {
+        return true;
+    }
 };
 
 template <typename T>
