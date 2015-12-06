@@ -49,8 +49,8 @@ public:
         parent = newParent;
     }
 
-    bool isEquivalentTo(const MaxTreeNode<T>&) const {
-        return true;
+    bool isEquivalentTo(const MaxTreeNode<T>& otherNode) const {
+        return *this == otherNode;
     }
 };
 
