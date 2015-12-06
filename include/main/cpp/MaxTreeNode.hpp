@@ -44,6 +44,10 @@ struct MaxTreeNode {
         level = newLevel;
     }
 
+    bool hasParent() const {
+        return false;
+    }
+
     const MaxTreeNode<PixelType>& getParent() const {
         return *parent;
     }
