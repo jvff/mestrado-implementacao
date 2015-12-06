@@ -142,16 +142,14 @@ TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
 }
 
 TEST(MaxTreeNodeTest, hasParentMember) {
-    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >();
-
     auto parentLevel = DummyType{ 90 };
     auto parentId = 3u;
 
     auto childLevel = DummyType{ 91 };
     auto childId = 10u;
 
-    rootNode->level = parentLevel;
-    rootNode->id = parentId;
+    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
 
     MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
 
@@ -165,16 +163,14 @@ TEST(MaxTreeNodeTest, hasParentMember) {
 }
 
 TEST(MaxTreeNodeTest, copyConstructorCreatesDeepCopy) {
-    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >();
-
     auto parentLevel = DummyType{ 90 };
     auto parentId = 3u;
 
     auto childLevel = DummyType{ 91 };
     auto childId = 10u;
 
-    rootNode->level = parentLevel;
-    rootNode->id = parentId;
+    auto rootNode = std::make_shared<MaxTreeNode<DummyType> >(parentLevel,
+            parentId);
 
     MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
     MaxTreeNode<DummyType> copy(child);
