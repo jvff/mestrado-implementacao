@@ -4,11 +4,13 @@
 #include <memory>
 
 template <typename PixelType>
-struct MaxTreeNode {
+class MaxTreeNode {
+private:
     std::shared_ptr<MaxTreeNode<PixelType> > parent;
     PixelType level;
     unsigned int id;
 
+public:
     MaxTreeNode() {
     }
 
