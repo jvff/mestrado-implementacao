@@ -182,3 +182,15 @@ TEST(MaxTreeNodeTest, isComparable) {
     assertThat(firstNode).isEqualTo(secondNode);
     assertThat(secondNode).isEqualTo(firstNode);
 }
+
+TEST(MaxTreeNodeTest, nodesWithDifferentLevelsArentEqual) {
+    auto firstLevel = DummyType{ 371 };
+    auto secondLevel = DummyType{ 794 };
+    auto id = 85u;
+
+    auto firstNode = MaxTreeNode<DummyType>{ firstLevel, id };
+    auto secondNode = MaxTreeNode<DummyType>{ secondLevel, id };
+
+    assertThat(firstNode).isNotEqualTo(secondNode);
+    assertThat(secondNode).isNotEqualTo(firstNode);
+}
