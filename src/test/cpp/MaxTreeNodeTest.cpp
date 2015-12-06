@@ -136,8 +136,8 @@ TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
 
     auto node = MaxTreeNode<DummyType>{ level, id };
 
-    assertThat(node.id).isEqualTo(id);
-    assertThat(node.level).isEqualTo(level);
+    assertThat(node.getId()).isEqualTo(id);
+    assertThat(node.getLevel()).isEqualTo(level);
     assertThat((bool)node.parent).isEqualTo(false);
 }
 
@@ -153,12 +153,12 @@ TEST(MaxTreeNodeTest, hasParentMember) {
 
     MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
 
-    assertThat(child.level).isEqualTo(childLevel);
-    assertThat(child.id).isEqualTo(childId);
+    assertThat(child.getLevel()).isEqualTo(childLevel);
+    assertThat(child.getId()).isEqualTo(childId);
 
     assertThat((bool)child.parent).isEqualTo(true);
-    assertThat(child.parent->level).isEqualTo(parentLevel);
-    assertThat(child.parent->id).isEqualTo(parentId);
+    assertThat(child.parent->getLevel()).isEqualTo(parentLevel);
+    assertThat(child.parent->getId()).isEqualTo(parentId);
     assertThat((bool)child.parent->parent).isEqualTo(false);
 }
 
@@ -175,12 +175,12 @@ TEST(MaxTreeNodeTest, copyConstructorCreatesDeepCopy) {
     MaxTreeNode<DummyType> child = { rootNode, childLevel, childId };
     MaxTreeNode<DummyType> copy(child);
 
-    assertThat(copy.level).isEqualTo(childLevel);
-    assertThat(copy.id).isEqualTo(childId);
+    assertThat(copy.getLevel()).isEqualTo(childLevel);
+    assertThat(copy.getId()).isEqualTo(childId);
 
     assertThat((bool)copy.parent).isEqualTo(true);
     assertThat(copy.parent).isNotEqualTo(rootNode);
-    assertThat(copy.parent->level).isEqualTo(parentLevel);
-    assertThat(copy.parent->id).isEqualTo(parentId);
+    assertThat(copy.parent->getLevel()).isEqualTo(parentLevel);
+    assertThat(copy.parent->getId()).isEqualTo(parentId);
     assertThat((bool)copy.parent->parent).isEqualTo(false);
 }
