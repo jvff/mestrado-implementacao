@@ -74,15 +74,13 @@ TEST_F(MaxTreeImageTest, nodeParentChain) {
         TreeNodePointer parent;
         int level = x + y * width;
 
-        auto expectedNode = makeNode(0u, PixelType{ level });
-
         for (auto parentLevel = 0; parentLevel < level; ++parentLevel) {
             auto newParent = makeNode(0u, PixelType{ parentLevel }, parent);
 
             parent = newParent;
         }
 
-        expectedNode->parent = parent;
+        auto expectedNode = makeNode(0u, PixelType{ level }, parent);
 
         return *expectedNode;
     });
