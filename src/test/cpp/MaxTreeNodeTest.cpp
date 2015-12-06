@@ -71,6 +71,14 @@ TEST(MaxTreeNodeTest, hasSetLevelMethod) {
     assertThat(node.getLevel()).isEqualTo(newLevel);
 }
 
+TEST(MaxTreeNodeTest, hasParentMethodReturnsFalseForNewNode) {
+    auto level = DummyType{ 1390 };
+    auto id = 15u;
+    const auto node = MaxTreeNode<DummyType>{ level, id };
+
+    assertThat(node.hasParent()).isEqualTo(false);
+}
+
 TEST(MaxTreeNodeTest, hasGetParentMethod) {
     auto parentLevel = DummyType{ 6178 };
     auto parentId = 21u;
