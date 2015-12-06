@@ -51,8 +51,8 @@ public:
 };
 
 template <typename T>
-bool operator==(const MaxTreeNode<T>&, const MaxTreeNode<T>&) {
-    return true;
+bool operator==(const MaxTreeNode<T>& first, const MaxTreeNode<T>& second) {
+    return first.getLevel() == second.getLevel();
 }
 
 #endif
