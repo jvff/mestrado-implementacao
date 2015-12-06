@@ -23,13 +23,6 @@ public:
             : parent(parent), level(level), id(id) {
     }
 
-    MaxTreeNode(const MaxTreeNode<PixelType>& copySource) {
-        level = copySource.level;
-        id = copySource.id;
-
-        copyParentFrom(copySource);
-    }
-
     unsigned int getId() const {
         return id;
     }
@@ -56,16 +49,6 @@ public:
 
     void setParent(const std::shared_ptr<MaxTreeNode>& newParent) {
         parent = newParent;
-    }
-
-private:
-    void copyParentFrom(const MaxTreeNode<PixelType>& copySource) {
-        auto parentExists = (bool)copySource.parent;
-
-        if (parentExists) {
-            parent = std::make_shared<MaxTreeNode<PixelType> >(
-                    *copySource.parent);
-        }
     }
 };
 
