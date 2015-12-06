@@ -33,7 +33,7 @@ public:
     void verifyNodeChain(const MaxTreeNode<T>& node, const T& expectedLevel,
             unsigned int expectedId,
             const RemainingParameterTypes&... remainingParameters) {
-        auto& parent = *node.parent;
+        auto& parent = node.getParent();
 
         verifyNode(node, expectedLevel, expectedId);
 
@@ -43,11 +43,9 @@ public:
     template <typename T>
     void verifyNodeChain(const MaxTreeNode<T>& node, const T& expectedLevel,
             unsigned int expectedId) {
-        auto hasParent = (bool)node.parent;
-
         verifyNode(node, expectedLevel, expectedId);
 
-        assertThat(hasParent).isEqualTo(false);
+        assertThat(node.hasParent()).isEqualTo(false);
     }
 
     template <typename T>
