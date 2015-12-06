@@ -151,7 +151,7 @@ TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
     assertThat(node.hasParent()).isEqualTo(false);
 }
 
-TEST(MaxTreeNodeTest, hasParentMember) {
+TEST(MaxTreeNodeTest, canBeConstructedWithParent) {
     auto parentLevel = DummyType{ 90 };
     auto parentId = 3u;
 
@@ -165,8 +165,8 @@ TEST(MaxTreeNodeTest, hasParentMember) {
 
     assertThat(child.getLevel()).isEqualTo(childLevel);
     assertThat(child.getId()).isEqualTo(childId);
-
     assertThat(child.hasParent()).isEqualTo(true);
+
     assertThat(child.getParent().getLevel()).isEqualTo(parentLevel);
     assertThat(child.getParent().getId()).isEqualTo(parentId);
     assertThat(child.getParent().hasParent()).isEqualTo(false);
