@@ -118,18 +118,6 @@ TEST(MaxTreeNodeTest, hasSetParentMethod) {
     assertThat(result.getId()).isEqualTo(newParentId);
 }
 
-TEST(MaxTreeNodeTest, hasValueMembers) {
-    std::shared_ptr<MaxTreeNode<DummyType> > parent;
-    DummyType level = { 7 };
-    unsigned int id = 10;
-
-    auto node = MaxTreeNode<DummyType>{ parent, level, id };
-
-    assertThat(node.id).isEqualTo(id);
-    assertThat(node.level).isEqualTo(level);
-    assertThat((bool)node.parent).isEqualTo(false);
-}
-
 TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
     DummyType level = { 4119 };
     unsigned int id = 109;
