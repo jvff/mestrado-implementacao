@@ -65,6 +65,10 @@ public:
             && id == otherNode.id
             && parentsAreEquivalent;
     }
+
+    bool operator<(const MaxTreeNode<T>& otherNode) const {
+        return level < otherNode.level;
+    }
 };
 
 template <typename T>
