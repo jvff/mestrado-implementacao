@@ -53,14 +53,14 @@ public:
 
     void connectPixels(unsigned int firstX, unsigned int firstY,
             unsigned int secondX, unsigned int secondY) {
-        auto& firstNode = getNodeOfPixel(firstX, firstY);
-        auto& secondNode = getNodeOfPixel(secondX, secondY);
+        auto& firstNode = getPixelNode(firstX, firstY);
+        auto& secondNode = getPixelNode(secondX, secondY);
 
         if (secondNode.getLevel() > firstNode.getParent().getLevel())
             maxTree.setNodeParent(firstNode, secondNode);
     }
 
-    const NodeType& getNodeOfPixel(unsigned int x, unsigned int y) const {
+    const NodeType& getPixelNode(unsigned int x, unsigned int y) const {
         auto level = internalImage.getPixelValue(x, y);
         auto id = nodeIdImage.getPixelValue(x, y);
 
@@ -85,8 +85,8 @@ static bool allNodesAreEqual(const MaxTreeImage<InternalImageType>& first,
 
     for (unsigned int x = 0; x < width; ++x) {
         for (unsigned int y = 0; y < height; ++y) {
-            auto firstNode = first.getNodeOfPixel(x, y);
-            auto secondNode = second.getNodeOfPixel(x, y);
+            auto firstNode = first.getPixelNode(x, y);
+            auto secondNode = second.getPixelNode(x, y);
 
             if (!firstNode.isEquivalentTo(secondNode))
                 return false;
