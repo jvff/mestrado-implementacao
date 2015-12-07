@@ -115,3 +115,15 @@ TEST(MaxTreeNodeComparisonTest, nodesWithDifferentLevelsArentEquivalent) {
     assertThat(firstNode.isEquivalentTo(secondNode)).isEqualTo(false);
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
+
+TEST(MaxTreeNodeComparisonTest, nodesWithDifferentIdsArentEquivalent) {
+    auto level = DummyType{ 794 };
+    auto firstId = 239u;
+    auto secondId = 840u;
+
+    const auto firstNode = MaxTreeNode<DummyType>{ level, firstId };
+    const auto secondNode = MaxTreeNode<DummyType>{ level, secondId };
+
+    assertThat(firstNode.isEquivalentTo(secondNode)).isEqualTo(false);
+    assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
+}
