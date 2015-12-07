@@ -41,3 +41,38 @@ TEST_F(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
     assertThat(image.getPixelValue(0, 1)).isEqualTo(lowerPixelColor);
     assertThat(image.getPixelValue(1, 1)).isEqualTo(lowerPixelColor);
 }
+
+TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
+    auto width = 2u;
+
+    DummyMaxTreeImageType image(width, 2);
+
+    paintImage(image);
+    assignPixelsToLatestNodes(image);
+
+    auto& node = image.getPixelNode(0, 1);
+
+    image.removeNode(node);
+
+    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
+        if (x == 0 && y == 1) {
+            x = 1;
+            y = 0;
+        }
+
+        TreeNodePointer parent;
+        auto pixelLevel = (int)(x + y * width);
+        auto maxLevel = pixelLevel;
+
+        if (x == 1 && y == 1)
+            maxLevel -= 1;
+
+        for (auto level = 0; level < maxLevel; ++level) {
+            auto node = makeNode(0u, PixelType{ level }, parent);
+
+            parent = node;
+        }
+
+        return TreeNodeType(parent, PixelType{ pixelLevel }, 0u);
+    });
+}
