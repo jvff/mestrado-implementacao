@@ -159,3 +159,19 @@ TEST_F(MaxTreeTest, addNodeReturnsConstReference) {
 
     AssertThat<decltype(tree.addNode(level))>::isConstReference();
 }
+
+TEST_F(MaxTreeTest, addNodeReturnsNewNode) {
+    tree.addNode(DummyType{ 15001 });
+    tree.addNode(DummyType{ 15002 });
+    tree.addNode(DummyType{ 15003 });
+    tree.addNode(DummyType{ 15004 });
+
+    auto& leafNode = tree.addNode(DummyType{ 16000 });
+
+    verifyNodeChain(leafNode,
+            DummyType{ 16000 }, 0u,
+            DummyType{ 15004 }, 0u,
+            DummyType{ 15003 }, 0u,
+            DummyType{ 15002 }, 0u,
+            DummyType{ 15001 }, 0u);
+}
