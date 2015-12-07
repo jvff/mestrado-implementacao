@@ -70,10 +70,18 @@ TEST_F(MaxTreeTest, isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
     assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
+
 TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
     tree.addNode(DummyType{ 1 });
 
     verifyNodeChain(DummyType{ 1 }, 0u);
+}
+
+TEST_F(MaxTreeTest, getNodeReturnsConstReference) {
+    auto level = DummyType{ 21890 };
+    auto id = 890432u;
+
+    AssertThat<decltype(tree.getNode(level, id))>::isConstReference();
 }
 
 TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
