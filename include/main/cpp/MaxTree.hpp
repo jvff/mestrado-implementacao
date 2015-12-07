@@ -33,7 +33,7 @@ public:
         levelNodes.push_back(newNode);
     }
 
-    MaxTreeNode<T> getNode(const T& level, unsigned int id) {
+    const MaxTreeNode<T>& getNode(const T& level, unsigned int id) {
         auto nodePointer = getNodePointer(level, id);
 
         return *nodePointer;
