@@ -67,7 +67,12 @@ public:
     }
 
     bool operator<(const MaxTreeNode<T>& otherNode) const {
-        return level < otherNode.level;
+        if (level < otherNode.level)
+            return true;
+        else if (level > otherNode.level)
+            return false;
+        else
+            return id < otherNode.id;
     }
 };
 
