@@ -143,3 +143,9 @@ TEST_F(MaxTreeTest, latestNodeIsRetrievable) {
             DummyType{ 101 }, 0u,
             DummyType{ 100 }, 0u);
 }
+
+TEST_F(MaxTreeTest, getLatestNodeOnLevelReturnsConstReference) {
+    auto level = DummyType{ 21890 };
+
+    AssertThat<decltype(tree.getLatestNodeOnLevel(level))>::isConstReference();
+}
