@@ -84,6 +84,10 @@ TEST_F(MaxTreeTest, getNodeReturnsConstReference) {
     AssertThat<decltype(tree.getNode(level, id))>::isConstReference();
 }
 
+TEST_F(MaxTreeTest, getNodeIsConstMethod) {
+    assertThat(&MaxTree<DummyType>::getNode).isConstMethod();
+}
+
 TEST_F(MaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
     tree.addNode(DummyType{ 1000 });
     tree.addNode(DummyType{ 2000 });
