@@ -77,26 +77,6 @@ private:
     }
 };
 
-template <typename PixelType>
-static bool parentNodesAreEqual(const MaxTreeNode<PixelType>& firstNode,
-        const MaxTreeNode<PixelType>& secondNode) {
-    if (firstNode.hasParent() != secondNode.hasParent())
-        return false;
-
-    if (firstNode.hasParent()) {
-        auto& firstParent = firstNode.getParent();
-        auto& secondParent = secondNode.getParent();
-        bool levelsDiffer = firstParent.getLevel() != secondParent.getLevel();
-        bool idsDiffer = firstParent.getId() != secondParent.getId();
-
-        if (levelsDiffer || idsDiffer)
-            return false;
-        else
-            return parentNodesAreEqual(firstParent, secondParent);
-    } else
-        return true;
-}
-
 template <typename InternalImageType>
 static bool allNodesAreEqual(const MaxTreeImage<InternalImageType>& first,
         const MaxTreeImage<InternalImageType>& second) {
@@ -107,10 +87,8 @@ static bool allNodesAreEqual(const MaxTreeImage<InternalImageType>& first,
         for (unsigned int y = 0; y < height; ++y) {
             auto firstNode = first.getNodeOfPixel(x, y);
             auto secondNode = second.getNodeOfPixel(x, y);
-            bool nodeParentsDiffer = !parentNodesAreEqual(firstNode,
-                    secondNode);
 
-            if (firstNode.getId() != secondNode.getId() || nodeParentsDiffer)
+            if (!firstNode.isEquivalentTo(secondNode))
                 return false;
         }
     }
