@@ -121,7 +121,7 @@ protected:
             const TreeNodeType& expectedNode) {
         assertThat(node.hasParent()).isEqualTo(expectedNode.hasParent());
 
-        if (node.hasParent()) {
+        if (node.hasParent() && expectedNode.hasParent()) {
             auto& parent = node.getParent();
             auto& expectedParent = expectedNode.getParent();
 
