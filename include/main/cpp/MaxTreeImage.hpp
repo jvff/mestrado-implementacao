@@ -91,10 +91,16 @@ private:
 
     void updatePixelIfAssignedToNode(unsigned int x, unsigned int y,
             const NodeType& node, PixelType newColor) {
-        auto& pixelNode = getPixelNode(x, y);
-
-        if (pixelNode == node)
+        if (pixelIsAssignedToNode(x, y, node))
             internalImage.setPixel(x, y, newColor);
+    }
+
+    bool pixelIsAssignedToNode(unsigned int x, unsigned int y,
+            const NodeType& node) {
+        auto pixelNodeId = nodeIdImage.getPixelValue(x, y);
+        auto pixelNodeLevel = internalImage.getPixelValue(x, y);
+
+        return pixelNodeId == node.getId() && pixelNodeLevel == node.getLevel();
     }
 };
 
