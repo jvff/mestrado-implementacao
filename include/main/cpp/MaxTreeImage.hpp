@@ -20,6 +20,9 @@ private:
 
     MaxTree<PixelType> maxTree;
 
+    using SuperClass::width;
+    using SuperClass::height;
+
 public:
     MaxTreeImage(unsigned int width, unsigned int height)
             : SuperClass(width, height), internalImage(width, height),
@@ -67,6 +70,16 @@ public:
         return maxTree.getNode(level, id);
     }
 
+    void removeNode(const NodeType& node) {
+        auto& parent = node.getParent();
+        auto newColor = parent.getLevel();
+
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y)
+                updatePixelIfAssignedToNode(x, y, node, newColor);
+        }
+    }
+
     using SuperClass::getPixelValue;
     using SuperClass::setPixel;
 
@@ -74,6 +87,14 @@ private:
     void assignPixelToNode(unsigned int x, unsigned int y,
             const MaxTreeNode<PixelType>& node) {
         nodeIdImage.setPixel(x, y, node.getId());
+    }
+
+    void updatePixelIfAssignedToNode(unsigned int x, unsigned int y,
+            const NodeType& node, PixelType newColor) {
+        auto& pixelNode = getPixelNode(x, y);
+
+        if (pixelNode == node)
+            internalImage.setPixel(x, y, newColor);
     }
 };
 
