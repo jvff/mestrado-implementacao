@@ -39,7 +39,7 @@ public:
         return *nodePointer;
     }
 
-    const MaxTreeNode<T>& getLatestNodeOnLevel(const T& level) {
+    const MaxTreeNode<T>& getLatestNodeOnLevel(const T& level) const {
         auto& levelNodes = getLevel(level);
         auto nodePointer = levelNodes.back();
 
