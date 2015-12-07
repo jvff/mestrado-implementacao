@@ -149,3 +149,7 @@ TEST_F(MaxTreeTest, getLatestNodeOnLevelReturnsConstReference) {
 
     AssertThat<decltype(tree.getLatestNodeOnLevel(level))>::isConstReference();
 }
+
+TEST_F(MaxTreeTest, getLatestNodeOnLevelIsConstMethod) {
+    assertThat(&MaxTree<DummyType>::getLatestNodeOnLevel).isConstMethod();
+}
