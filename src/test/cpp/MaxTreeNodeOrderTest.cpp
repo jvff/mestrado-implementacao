@@ -13,3 +13,13 @@ TEST(MaxTreeNodeOrderTest, nodeOnLowerLevelComesBeforeNodeOnHigherLevel) {
     assertThat(nodeOnLowerLevel).isLessThan(nodeOnHigherLevel);
     assertThat(nodeOnHigherLevel).isNotLessThan(nodeOnLowerLevel);
 }
+
+TEST(MaxTreeNodeOrderTest, nodeWithSmallerIdComesBeforeNodeWithLargerId) {
+    auto level = DummyType{ 83921 };
+
+    const auto nodeWithSmallerId = MaxTreeNode<DummyType>(level, 75199u);
+    const auto nodeWithLargerId = MaxTreeNode<DummyType>(level, 75200u);
+
+    assertThat(nodeWithSmallerId).isLessThan(nodeWithLargerId);
+    assertThat(nodeWithLargerId).isNotLessThan(nodeWithSmallerId);
+}
