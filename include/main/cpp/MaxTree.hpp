@@ -25,12 +25,14 @@ public:
         return levels.size();
     }
 
-    void addNode(const T& level) {
+    const MaxTreeNode<T>& addNode(const T& level) {
         auto& levelNodes = getOrCreateLevel(level);
         auto newNodeId = levelNodes.size();
         auto newNode = makeNode(level, newNodeId);
 
         levelNodes.push_back(newNode);
+
+        return *newNode;
     }
 
     const MaxTreeNode<T>& getNode(const T& level, unsigned int id) const {
