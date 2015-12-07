@@ -163,3 +163,18 @@ TEST_F(MaxTreeNodeComparisonTest, nodeChainWithDifferentIdsArentEquivalent) {
     assertThat(firstNode.isEquivalentTo(secondNode)).isEqualTo(false);
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
+
+TEST_F(MaxTreeNodeComparisonTest, nodeChainWithDifferentLevelsArentEquivalent) {
+    auto parentLevel = DummyType{ 732 };
+    auto parentId = 32u;
+
+    auto id = 1000u;
+
+    const auto firstNode = makeNodeChain(parentLevel, parentId,
+            DummyType{ 2044 }, id);
+    const auto secondNode = makeNodeChain(parentLevel, parentId,
+            DummyType{ 15183 }, id);
+
+    assertThat(firstNode.isEquivalentTo(secondNode)).isEqualTo(false);
+    assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
+}
