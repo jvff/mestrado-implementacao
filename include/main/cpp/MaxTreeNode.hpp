@@ -50,7 +50,20 @@ public:
     }
 
     bool isEquivalentTo(const MaxTreeNode<T>& otherNode) const {
-        return *this == otherNode;
+        if (*this == otherNode)
+            return true;
+
+        bool haveParents = hasParent() && otherNode.hasParent();
+        bool parentsAreEquivalent;
+
+        if (haveParents)
+            parentsAreEquivalent = parent->isEquivalentTo(*otherNode.parent);
+        else
+            parentsAreEquivalent = !hasParent() && !otherNode.hasParent();
+
+        return level == otherNode.level
+            && id == otherNode.id
+            && parentsAreEquivalent;
     }
 };
 
