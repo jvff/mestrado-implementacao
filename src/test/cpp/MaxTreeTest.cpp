@@ -187,3 +187,13 @@ TEST_F(MaxTreeTest, hasLevelReturnsFalseForUnknownLevels) {
     assertThat(tree.hasLevel(DummyType{ 15005 })).isEqualTo(false);
     assertThat(tree.hasLevel(DummyType{ 999999 })).isEqualTo(false);
 }
+
+TEST_F(MaxTreeTest, hasLevelReturnsFalseForKnownLevels) {
+    tree.addNode(DummyType{ 15001 });
+    tree.addNode(DummyType{ 15002 });
+    tree.addNode(DummyType{ 15004 });
+
+    assertThat(tree.hasLevel(DummyType{ 15001 })).isEqualTo(true);
+    assertThat(tree.hasLevel(DummyType{ 15002 })).isEqualTo(true);
+    assertThat(tree.hasLevel(DummyType{ 15004 })).isEqualTo(true);
+}
