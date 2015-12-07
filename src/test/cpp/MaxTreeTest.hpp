@@ -23,7 +23,7 @@ public:
     template <typename T, typename... RemainingParameterTypes>
     void verifyNodeChain(const T& startingLevel, unsigned int startingId,
             const RemainingParameterTypes&... remainingParameters) {
-        auto node = tree.getNode(startingLevel, startingId);
+        const auto& node = tree.getNode(startingLevel, startingId);
 
         verifyNodeChain(node, startingLevel, startingId,
                 remainingParameters...);
@@ -33,7 +33,7 @@ public:
     void verifyNodeChain(const MaxTreeNode<T>& node, const T& expectedLevel,
             unsigned int expectedId,
             const RemainingParameterTypes&... remainingParameters) {
-        auto& parent = node.getParent();
+        const auto& parent = node.getParent();
 
         verifyNode(node, expectedLevel, expectedId);
 
