@@ -95,7 +95,7 @@ protected:
             for (auto y = 0u; y < height; ++y) {
                 auto expectedNode = expectedNodeFunction(x, y);
 
-                verifyNode(image.getNodeOfPixel(x, y), expectedNode);
+                verifyNode(image.getPixelNode(x, y), expectedNode);
             }
         }
     }

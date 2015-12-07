@@ -157,9 +157,9 @@ TEST_F(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
     auto rightPixelNode = makeNode(0u, rightPixelColor, leftPixelNode);
     auto middlePixelNode = makeNode(0u, middlePixelColor, rightPixelNode);
 
-    verifyNode(image.getNodeOfPixel(0, 0), *leftPixelNode);
-    verifyNode(image.getNodeOfPixel(1, 0), *middlePixelNode);
-    verifyNode(image.getNodeOfPixel(2, 0), *rightPixelNode);
+    verifyNode(image.getPixelNode(0, 0), *leftPixelNode);
+    verifyNode(image.getPixelNode(1, 0), *middlePixelNode);
+    verifyNode(image.getPixelNode(2, 0), *rightPixelNode);
 }
 
 TEST_F(MaxTreeImageTest, nodesAreMergedWhenPixelsAreConnected) {
@@ -179,9 +179,9 @@ TEST_F(MaxTreeImageTest, nodesAreMergedWhenPixelsAreConnected) {
     auto middlePixelNode = makeNode(0u, middlePixelColor, leftPixelNode);
     auto rightPixelNode = makeNode(0u, rightPixelColor, leftPixelNode);
 
-    verifyNode(image.getNodeOfPixel(0, 0), leftPixelNode);
-    verifyNode(image.getNodeOfPixel(1, 0), middlePixelNode);
-    verifyNode(image.getNodeOfPixel(2, 0), rightPixelNode);
+    verifyNode(image.getPixelNode(0, 0), leftPixelNode);
+    verifyNode(image.getPixelNode(1, 0), middlePixelNode);
+    verifyNode(image.getPixelNode(2, 0), rightPixelNode);
 }
 
 TEST_F(MaxTreeImageTest, getterMethodsAreConstQualified) {
@@ -193,5 +193,5 @@ TEST_F(MaxTreeImageTest, getterMethodsAreConstQualified) {
     assertThat(&DummyMaxTreeImageType::getHeight).isConstMethod();
     assertThat((GetPixelValueMethodSignature)
             &DummyMaxTreeImageType::getPixelValue).isConstMethod();
-    assertThat(&DummyMaxTreeImageType::getNodeOfPixel).isConstMethod();
+    assertThat(&DummyMaxTreeImageType::getPixelNode).isConstMethod();
 }
