@@ -175,3 +175,15 @@ TEST_F(MaxTreeTest, addNodeReturnsNewNode) {
             DummyType{ 15002 }, 0u,
             DummyType{ 15001 }, 0u);
 }
+
+TEST_F(MaxTreeTest, hasLevelReturnsFalseForUnknownLevels) {
+    tree.addNode(DummyType{ 15001 });
+    tree.addNode(DummyType{ 15002 });
+    tree.addNode(DummyType{ 15004 });
+
+    assertThat(tree.hasLevel(DummyType{ 100 })).isEqualTo(false);
+    assertThat(tree.hasLevel(DummyType{ 15000 })).isEqualTo(false);
+    assertThat(tree.hasLevel(DummyType{ 15003 })).isEqualTo(false);
+    assertThat(tree.hasLevel(DummyType{ 15005 })).isEqualTo(false);
+    assertThat(tree.hasLevel(DummyType{ 999999 })).isEqualTo(false);
+}
