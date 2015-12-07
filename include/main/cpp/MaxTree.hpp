@@ -25,6 +25,13 @@ public:
         return levels.size();
     }
 
+    bool hasLevel(const T& level) {
+        const auto notFound = levels.end();
+        auto searchResult = levels.find(level);
+
+        return searchResult != notFound;
+    }
+
     const MaxTreeNode<T>& addNode(const T& level) {
         auto& levelNodes = getOrCreateLevel(level);
         auto newNodeId = levelNodes.size();
@@ -56,7 +63,7 @@ public:
     }
 
     void removeNode(const T& level, unsigned int id) {
-        if (levelExists(level)) {
+        if (hasLevel(level)) {
             auto& levelNodes = getLevel(level);
 
             if (id < levelNodes.size())
@@ -76,7 +83,7 @@ private:
     }
 
     NodeList& getOrCreateLevel(const T& level) {
-        if (!levelExists(level))
+        if (!hasLevel(level))
             createLevel(level);
 
         return getLevel(level);
@@ -88,13 +95,6 @@ private:
 
     NodeList& getLevel(const T& level) {
         return levels.at(level);
-    }
-
-    bool levelExists(const T& level) {
-        const auto notFound = levels.end();
-        auto searchResult = levels.find(level);
-
-        return searchResult != notFound;
     }
 
     void createLevel(const T& level) {
