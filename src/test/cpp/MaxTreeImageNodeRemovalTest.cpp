@@ -1,47 +1,31 @@
-#include <gtest/gtest.h>
+#include "MaxTreeImageNodeRemovalTest.hpp"
 
-#include "asserts.hpp"
+TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
+    DummyMaxTreeImageType image(2, 2);
 
-#include "MaxTreeImage.hpp"
+    auto lowerPixelColor = PixelType{ 3018 };
+    auto higherPixelColor = PixelType{ 91314 };
 
-#include "DummyTypes.hpp"
-
-TEST(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
-    MaxTreeImage<SimpleArrayImage<DummyType> > image(2, 2);
-
-    auto lowerPixelColor = DummyType{ 3018 };
-    auto higherPixelColor = DummyType{ 91314 };
-
+    fillImage(image, higherPixelColor);
     image.setPixel(0, 0, lowerPixelColor);
-    image.setPixel(1, 0, higherPixelColor);
-    image.setPixel(0, 1, higherPixelColor);
-    image.setPixel(1, 1, higherPixelColor);
 
-    image.assignPixelToLatestNode(0, 0);
-    image.assignPixelToLatestNode(1, 0);
-    image.assignPixelToLatestNode(0, 1);
-    image.assignPixelToLatestNode(1, 1);
+    assignPixelsToLatestNodes(image);
 
     auto& higherNode = image.getPixelNode(1, 1);
 
     image.removeNode(higherNode);
 
-    assertThat(image.getPixelValue(0, 0)).isEqualTo(lowerPixelColor);
-    assertThat(image.getPixelValue(1, 0)).isEqualTo(lowerPixelColor);
-    assertThat(image.getPixelValue(0, 1)).isEqualTo(lowerPixelColor);
-    assertThat(image.getPixelValue(1, 1)).isEqualTo(lowerPixelColor);
+    verifyFilledImagePixels(image, lowerPixelColor);
 }
 
-TEST(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
-    MaxTreeImage<SimpleArrayImage<DummyType> > image(2, 2);
+TEST_F(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
+    DummyMaxTreeImageType image(2, 2);
 
-    auto lowerPixelColor = DummyType{ 3018 };
-    auto higherPixelColor = DummyType{ 91314 };
+    auto lowerPixelColor = PixelType{ 3018 };
+    auto higherPixelColor = PixelType{ 91314 };
 
+    fillImage(image, higherPixelColor);
     image.setPixel(0, 0, lowerPixelColor);
-    image.setPixel(1, 0, higherPixelColor);
-    image.setPixel(0, 1, higherPixelColor);
-    image.setPixel(1, 1, higherPixelColor);
 
     image.assignPixelToLatestNode(0, 0);
     image.assignPixelToLatestNode(1, 0);
