@@ -11,7 +11,6 @@ private:
     using NodeType = MaxTreeNode<T>;
     using NodePointer = std::shared_ptr<NodeType>;
 
-    bool empty = true;
     T level;
     unsigned int numberOfNodes = 0u;
 
@@ -20,13 +19,12 @@ public:
     }
 
     bool isEmpty() {
-        return empty;
+        return numberOfNodes == 0u;
     }
 
     NodePointer addNode() {
         auto node = std::make_shared<NodeType>(level, numberOfNodes);
 
-        empty = false;
         ++numberOfNodes;
 
         return node;
