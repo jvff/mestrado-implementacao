@@ -35,7 +35,7 @@ public:
         return nodes[id];
     }
 
-    NodeType& getNodeReference(unsigned int id) const {
+    const NodeType& getNodeReference(unsigned int id) const {
         return *nodes[id];
     }
 };
