@@ -176,3 +176,24 @@ TEST_F(MaxTreeLevelTest, hasMethodToCheckIfNodeExists) {
     assertThat(level.hasNode(8000000u)).isEqualTo(false);
     assertThat(level.hasNode(maximumId)).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelTest, nodesCanBeCollapsed) {
+    auto firstNode = level.addNode();
+    auto secondNode = level.addNode();
+    auto thirdNode = level.addNode();
+    auto fourthNode = level.addNode();
+
+    auto result = level.collapseNodes();
+    auto remainingNode = level.getNode(0u);
+
+    assertThat(level.hasNode(0u)).isEqualTo(true);
+    assertThat(level.hasNode(1u)).isEqualTo(false);
+    assertThat(level.hasNode(2u)).isEqualTo(false);
+    assertThat(level.hasNode(3u)).isEqualTo(false);
+
+    assertThat(result[0]).isEqualTo(secondNode);
+    assertThat(result[1]).isEqualTo(thirdNode);
+    assertThat(result[2]).isEqualTo(fourthNode);
+
+    assertThat(remainingNode).isEqualTo(firstNode);
+}
