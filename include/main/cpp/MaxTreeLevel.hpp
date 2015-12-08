@@ -53,12 +53,23 @@ public:
         updateNodeIds(id);
     }
 
+    void replaceParents(NodePointer oldParent, NodePointer newParent) {
+        for (auto& node : nodes)
+            maybeReplaceParent(node, oldParent, newParent);
+    }
+
 private:
     void updateNodeIds(unsigned int startId) {
         auto size = nodes.size();
 
         for (auto id = startId; id < size; ++id)
             nodes[id]->setId(id);
+    }
+
+    void maybeReplaceParent(NodePointer node, NodePointer oldParent,
+            NodePointer newParent) {
+        if (node->hasParent() && node->getParent() == *oldParent)
+            node->setParent(newParent);
     }
 };
 
