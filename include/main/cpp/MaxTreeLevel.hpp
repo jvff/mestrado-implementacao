@@ -48,9 +48,8 @@ public:
     }
 
     void removeNode(unsigned int id) {
-        nodes.erase(nodes.begin() + id);
-
-        updateNodeIds(id);
+        if (id < nodes.size())
+            safelyRemoveNode(id);
     }
 
     void replaceParents(NodePointer oldParent, NodePointer newParent) {
@@ -59,6 +58,12 @@ public:
     }
 
 private:
+    void safelyRemoveNode(unsigned int id) {
+        nodes.erase(nodes.begin() + id);
+
+        updateNodeIds(id);
+    }
+
     void updateNodeIds(unsigned int startId) {
         auto size = nodes.size();
 
