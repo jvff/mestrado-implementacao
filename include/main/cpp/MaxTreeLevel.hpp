@@ -3,12 +3,19 @@
 
 template <typename T>
 class MaxTreeLevel {
+private:
+    bool empty = true;
+
 public:
     MaxTreeLevel(const T&) {
     }
 
     bool isEmpty() {
-        return true;
+        return empty;
+    }
+
+    void addNode() {
+        empty = false;
     }
 };
 
