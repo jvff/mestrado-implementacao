@@ -15,3 +15,11 @@ TEST_F(MaxTreeLevelTest, isInitiallyEmpty) {
 
     assertThat(level.isEmpty()).isEqualTo(true);
 }
+
+TEST_F(MaxTreeLevelTest, isNotEmpyAfterAddingNode) {
+    DummyMaxTreeLevel level(DummyType{ 201 });
+
+    level.addNode();
+
+    assertThat(level.isEmpty()).isEqualTo(false);
+}
