@@ -13,7 +13,6 @@ private:
     using NodePointer = std::shared_ptr<NodeType>;
 
     T level;
-    unsigned int numberOfNodes = 0u;
     std::vector<NodePointer> nodes;
 
 public:
@@ -21,13 +20,12 @@ public:
     }
 
     bool isEmpty() {
-        return numberOfNodes == 0u;
+        return nodes.empty();
     }
 
     NodePointer addNode() {
-        auto node = std::make_shared<NodeType>(level, numberOfNodes);
+        auto node = std::make_shared<NodeType>(level, nodes.size());
 
-        ++numberOfNodes;
         nodes.push_back(node);
 
         return node;
