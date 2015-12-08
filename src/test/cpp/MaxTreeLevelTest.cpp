@@ -168,3 +168,13 @@ TEST_F(MaxTreeLevelTest, testRemovalOfMiddleNode) {
     assertThat(secondNode).isEqualTo(lastNode);
     assertThat(latestNode).isEqualTo(lastNode);
 }
+
+TEST_F(MaxTreeLevelTest, testRemovalOfAllNodes) {
+    level.addNode();
+    level.addNode();
+
+    level.removeNode(1u);
+    level.removeNode(0u);
+
+    assertThat(level.isEmpty()).isEqualTo(true);
+}
