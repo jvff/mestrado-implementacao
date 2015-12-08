@@ -23,6 +23,10 @@ public:
         return nodes.empty();
     }
 
+    bool hasNode(unsigned int id) {
+        return id < nodes.size();
+    }
+
     NodePointer addNode() {
         auto node = std::make_shared<NodeType>(level, nodes.size());
 
