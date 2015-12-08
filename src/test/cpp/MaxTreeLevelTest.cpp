@@ -101,3 +101,18 @@ TEST_F(MaxTreeLevelTest, getNodeReferenceReturnsConstReference) {
 
     AssertThat<decltype(level.getNodeReference(0u))>::isConstReference();
 }
+
+TEST_F(MaxTreeLevelTest, getLatestNodeReturnsLatestNode) {
+    level.addNode();
+    level.addNode();
+    level.addNode();
+    level.addNode();
+
+    auto lastNodeAdded = level.addNode();
+    auto latestNode = level.getLatestNode();
+
+    verifyNode(lastNodeAdded, 4u);
+    verifyNode(latestNode, 4u);
+
+    assertThat(latestNode).isEqualTo(lastNodeAdded);
+}
