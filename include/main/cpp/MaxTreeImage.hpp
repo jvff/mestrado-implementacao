@@ -78,6 +78,8 @@ public:
             for (auto y = 0u; y < height; ++y)
                 updatePixelIfAssignedToNode(x, y, node, newColor);
         }
+
+        maxTree.removeNode(node.getLevel(), node.getId());
     }
 
     using SuperClass::getPixelValue;
