@@ -23,18 +23,15 @@ TEST_F(MaxTreeLevelTest, isNotEmpyAfterAddingNode) {
 TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToFirstNode) {
     auto firstNode = level.addNode();
 
-    assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(firstNode->getId()).isEqualTo(0u);
+    verifyNode(firstNode, 0u);
 }
 
 TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToSecondNode) {
     auto firstNode = level.addNode();
     auto secondNode = level.addNode();
 
-    assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(firstNode->getId()).isEqualTo(0u);
-    assertThat(secondNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(secondNode->getId()).isEqualTo(1u);
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u);
 }
 
 TEST_F(MaxTreeLevelTest, nodesAreRetrievable) {
@@ -46,10 +43,7 @@ TEST_F(MaxTreeLevelTest, nodesAreRetrievable) {
     auto firstNode = level.getNode(0u);
     auto secondNode = level.getNode(1u);
 
-    assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(firstNode->getId()).isEqualTo(0u);
-    assertThat(secondNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(secondNode->getId()).isEqualTo(1u);
-    assertThat(thirdNode->getLevel()).isEqualTo(levelHeight);
-    assertThat(thirdNode->getId()).isEqualTo(2u);
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u);
+    verifyNode(thirdNode, 2u);
 }
