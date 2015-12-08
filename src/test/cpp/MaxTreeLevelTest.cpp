@@ -26,3 +26,13 @@ TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToFirstNode) {
     assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
     assertThat(firstNode->getId()).isEqualTo(0u);
 }
+
+TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToSecondNode) {
+    auto firstNode = level.addNode();
+    auto secondNode = level.addNode();
+
+    assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
+    assertThat(firstNode->getId()).isEqualTo(0u);
+    assertThat(secondNode->getLevel()).isEqualTo(levelHeight);
+    assertThat(secondNode->getId()).isEqualTo(1u);
+}
