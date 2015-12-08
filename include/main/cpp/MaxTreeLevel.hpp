@@ -61,6 +61,16 @@ public:
             maybeReplaceParent(node, oldParent, newParent);
     }
 
+    std::vector<NodePointer> collapseNodes() {
+        auto firstRemovedNode = nodes.begin() + 1;
+        auto end = nodes.end();
+        auto removedNodes = std::vector<NodePointer>(firstRemovedNode, end);
+
+        nodes.erase(firstRemovedNode, end);
+
+        return removedNodes;
+    }
+
 private:
     void safelyRemoveNode(unsigned int id) {
         nodes.erase(nodes.begin() + id);
