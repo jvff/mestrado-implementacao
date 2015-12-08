@@ -3,18 +3,18 @@
 
 #include <map>
 #include <memory>
-#include <vector>
 
 #include "MaxTreeNode.hpp"
+#include "MaxTreeLevel.hpp"
 
 template <typename T>
 class MaxTree {
 private:
     using NodeType = MaxTreeNode<T>;
+    using NodeLevel = MaxTreeLevel<T>;
     using NodePointer = std::shared_ptr<NodeType>;
-    using NodeList = std::vector<NodePointer>;
 
-    std::map<T, NodeList> levels;
+    std::map<T, NodeLevel> levels;
 
 public:
     bool isEmpty() const {
@@ -34,25 +34,24 @@ public:
 
     const MaxTreeNode<T>& addNode(const T& level) {
         auto& levelNodes = getOrCreateLevel(level);
-        auto newNodeId = levelNodes.size();
-        auto newNode = makeNode(level, newNodeId);
+        auto newNode = levelNodes.addNode();
 
-        levelNodes.push_back(newNode);
+        if (level != getFirstLevel())
+            updateParentOf(newNode);
 
         return *newNode;
     }
 
     const MaxTreeNode<T>& getNode(const T& level, unsigned int id) const {
-        auto nodePointer = getNodePointer(level, id);
+        auto& nodeList = getLevel(level);
 
-        return *nodePointer;
+        return nodeList.getNodeReference(id);
     }
 
     const MaxTreeNode<T>& getLatestNodeOnLevel(const T& level) const {
         auto& levelNodes = getLevel(level);
-        auto nodePointer = levelNodes.back();
 
-        return *nodePointer;
+        return levelNodes.getLatestNodeReference();
     }
 
     void setNodeParent(MaxTreeNode<T> nodeToChange, MaxTreeNode<T> newParent) {
@@ -66,48 +65,35 @@ public:
         if (hasLevel(level)) {
             auto& levelNodes = getLevel(level);
 
-            if (id < levelNodes.size())
+            if (levelNodes.hasNode(id))
                 safelyRemoveNode(level, id, levelNodes);
         }
     }
 
 private:
     NodePointer getNodePointer(const MaxTreeNode<T>& node) {
-        return getNodePointer(node.getLevel(), node.getId());
+        auto& levelNodes = getLevel(node.getLevel());
+
+        return levelNodes.getNode(node.getId());
     }
 
-    NodePointer getNodePointer(const T& level, unsigned int id) const {
-        auto& nodeList = getLevel(level);
-
-        return nodeList[id];
-    }
-
-    NodeList& getOrCreateLevel(const T& level) {
+    NodeLevel& getOrCreateLevel(const T& level) {
         if (!hasLevel(level))
             createLevel(level);
 
         return getLevel(level);
     }
 
-    const NodeList& getLevel(const T& level) const {
+    const NodeLevel& getLevel(const T& level) const {
         return levels.at(level);
     }
 
-    NodeList& getLevel(const T& level) {
+    NodeLevel& getLevel(const T& level) {
         return levels.at(level);
     }
 
     void createLevel(const T& level) {
-        levels[level] = NodeList();
-    }
-
-    NodePointer makeNode(const T& level, unsigned int id) {
-        auto node = std::make_shared<NodeType>(level, id);
-
-        if (level != getFirstLevel())
-            updateParentOf(node);
-
-        return node;
+        levels.emplace(level, NodeLevel(level));
     }
 
     T getFirstLevel() {
@@ -119,12 +105,12 @@ private:
 
     void updateParentOf(NodePointer node) {
         auto& nodeListOfLevelBelow = findLevelBefore(node->getLevel());
-        auto& latestNodeAtLevelBelow = nodeListOfLevelBelow.back();
+        auto latestNodeAtLevelBelow = nodeListOfLevelBelow.getLatestNode();
 
         node->setParent(latestNodeAtLevelBelow);
     }
 
-    NodeList& findLevelBefore(const T& level) {
+    NodeLevel& findLevelBefore(const T& level) {
         auto levelPosition = levels.find(level);
 
         --levelPosition;
@@ -133,24 +119,12 @@ private:
     }
 
     void safelyRemoveNode(const T& level, unsigned int id,
-            NodeList& levelNodes) {
-        auto nodeToRemove = levelNodes[id];
+            NodeLevel& levelNodes) {
+        auto nodeToRemove = levelNodes.getNode(id);
 
         updateChildrenOfRemovedNode(nodeToRemove);
-        removeNodeFromLevel(id, levelNodes);
-        updateNodeIds(id, levelNodes);
+        levelNodes.removeNode(id);
         removeLevelIfEmpty(level, levelNodes);
-    }
-
-    void removeNodeFromLevel(unsigned int id, NodeList& levelNodes) {
-        levelNodes.erase(levelNodes.begin() + id);
-    }
-
-    void updateNodeIds(unsigned int startId, NodeList& levelNodes) {
-        auto numberOfNodes = levelNodes.size();
-
-        for (auto id = startId; id < numberOfNodes; ++id)
-            levelNodes[id]->setId(id);
     }
 
     void updateChildrenOfRemovedNode(NodePointer oldParent) {
@@ -165,28 +139,23 @@ private:
     NodePointer getParentOf(NodePointer child) {
         auto& parent = child->getParent();
 
-        return getNodePointer(parent.getLevel(), parent.getId());
+        return getNodePointer(parent);
     }
 
     void replaceParents(NodePointer oldParent, NodePointer newParent) {
         auto startLevel = oldParent->getLevel();
-        auto startPosition = levels.find(startLevel);
-        auto endPosition = levels.end();
+        auto start = levels.find(startLevel);
+        auto end = levels.end();
 
-        for (auto position = startPosition; position != endPosition; ++position)
-            replaceParentsInLevel(oldParent, newParent, position->second);
-    }
+        for (auto position = start; position != end; ++position) {
+            auto levelNodes = position->second;
 
-    void replaceParentsInLevel(NodePointer oldParent, NodePointer newParent,
-            NodeList& levelNodes) {
-        for (auto& node : levelNodes) {
-            if (node->hasParent() && getParentOf(node) == oldParent)
-                node->setParent(newParent);
+            levelNodes.replaceParents(oldParent, newParent);
         }
     }
 
-    void removeLevelIfEmpty(const T& level, NodeList& levelNodes) {
-        if (levelNodes.size() == 0)
+    void removeLevelIfEmpty(const T& level, NodeLevel& levelNodes) {
+        if (levelNodes.isEmpty())
             levels.erase(level);
     }
 };
