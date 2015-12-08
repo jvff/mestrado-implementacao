@@ -3,6 +3,9 @@
 
 template <typename T>
 class MaxTreeLevel {
+public:
+    MaxTreeLevel(const T&) {
+    }
 };
 
 #endif
