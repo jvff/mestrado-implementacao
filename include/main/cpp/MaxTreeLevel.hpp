@@ -43,6 +43,10 @@ public:
         return nodes.back();
     }
 
+    NodeType& getLatestNodeReference() const {
+        return *nodes.back();
+    }
+
     void removeNode(unsigned int id) {
         nodes.erase(nodes.begin() + id);
 
