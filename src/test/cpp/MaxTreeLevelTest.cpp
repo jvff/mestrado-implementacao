@@ -19,3 +19,10 @@ TEST_F(MaxTreeLevelTest, isNotEmpyAfterAddingNode) {
 
     assertThat(level.isEmpty()).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToFirstNode) {
+    auto firstNode = level.addNode();
+
+    assertThat(firstNode->getLevel()).isEqualTo(levelHeight);
+    assertThat(firstNode->getId()).isEqualTo(0u);
+}

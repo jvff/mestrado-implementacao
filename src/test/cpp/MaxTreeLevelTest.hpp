@@ -13,10 +13,11 @@ class MaxTreeLevelTest : public ::testing::Test {
 protected:
     using DummyMaxTreeLevel = MaxTreeLevel<DummyType>;
 
+    DummyType levelHeight;
     DummyMaxTreeLevel level;
 
 public:
-    MaxTreeLevelTest() : level(DummyType{ 201 }) {
+    MaxTreeLevelTest() : levelHeight(DummyType{ 201 }), level(levelHeight) {
     }
 };
 
