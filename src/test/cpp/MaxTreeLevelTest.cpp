@@ -11,3 +11,10 @@ TEST(MaxTreeLevelTest, classTemplateExists) {
 
     AssertThat<DummyMaxTreeLevel>::isClassOrStruct();
 }
+
+TEST(MaxTreeLevelTest, isConstructibleWithLevelParameter) {
+    using DummyMaxTreeLevel = MaxTreeLevel<DummyType>;
+    using LevelParameter = const DummyType&;
+
+    AssertThat<DummyMaxTreeLevel>::isConstructible(With<LevelParameter>());
+}
