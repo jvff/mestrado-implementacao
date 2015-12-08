@@ -42,6 +42,10 @@ public:
     NodePointer getLatestNode() {
         return nodes.back();
     }
+
+    void removeNode(unsigned int id) {
+        nodes.erase(nodes.begin() + id);
+    }
 };
 
 #endif
