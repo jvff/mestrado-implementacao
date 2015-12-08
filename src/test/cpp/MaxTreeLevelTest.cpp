@@ -47,3 +47,25 @@ TEST_F(MaxTreeLevelTest, nodesAreRetrievable) {
     verifyNode(secondNode, 1u);
     verifyNode(thirdNode, 2u);
 }
+
+TEST_F(MaxTreeLevelTest, retrievedNodesAreTheSameAsNewNodes) {
+    auto firstNewNode = level.addNode();
+    auto secondNewNode = level.addNode();
+    auto thirdNewNode = level.addNode();
+
+    auto thirdNode = level.getNode(2u);
+    auto firstNode = level.getNode(0u);
+    auto secondNode = level.getNode(1u);
+
+    verifyNode(firstNewNode, 0u);
+    verifyNode(secondNewNode, 1u);
+    verifyNode(thirdNewNode, 2u);
+
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u);
+    verifyNode(thirdNode, 2u);
+
+    assertThat(firstNode).isEqualTo(firstNewNode);
+    assertThat(secondNode).isEqualTo(secondNewNode);
+    assertThat(thirdNode).isEqualTo(thirdNewNode);
+}
