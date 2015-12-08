@@ -130,3 +130,22 @@ TEST_F(MaxTreeLevelTest, testRemovalOfLastNode) {
 
     assertThat(latestNode).isEqualTo(secondNode);
 }
+
+TEST_F(MaxTreeLevelTest, testRemovalOfFirstNode) {
+    level.addNode();
+    level.addNode();
+    auto lastNode = level.addNode();
+
+    level.removeNode(0u);
+
+    auto firstNode = level.getNode(0u);
+    auto secondNode = level.getNode(1u);
+    auto latestNode = level.getLatestNode();
+
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u);
+    verifyNode(latestNode, 1u);
+
+    assertThat(secondNode).isEqualTo(lastNode);
+    assertThat(latestNode).isEqualTo(lastNode);
+}
