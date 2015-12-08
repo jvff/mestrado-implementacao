@@ -178,3 +178,16 @@ TEST_F(MaxTreeLevelTest, testRemovalOfAllNodes) {
 
     assertThat(level.isEmpty()).isEqualTo(true);
 }
+
+TEST_F(MaxTreeLevelTest, removingThenAddingNodeRecreatesIt) {
+    auto initialNode = level.addNode();
+
+    level.removeNode(0u);
+
+    auto newNode = level.addNode();
+
+    verifyNode(initialNode, 0u);
+    verifyNode(newNode, 0u);
+
+    assertThat(newNode).isNotEqualTo(initialNode);
+}
