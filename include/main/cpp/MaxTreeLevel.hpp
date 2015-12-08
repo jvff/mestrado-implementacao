@@ -6,6 +6,10 @@ class MaxTreeLevel {
 public:
     MaxTreeLevel(const T&) {
     }
+
+    bool isEmpty() {
+        return true;
+    }
 };
 
 #endif
