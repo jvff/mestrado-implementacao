@@ -76,3 +76,55 @@ TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
         return TreeNodeType(parent, PixelType{ pixelLevel }, 0u);
     });
 }
+
+TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
+    auto width = 3u;
+
+    DummyMaxTreeImageType image(width, 2);
+
+    paintImage(image);
+
+    auto levelToSkip = image.getPixelValue(2, 0).value;
+    auto repeatedLevel = image.getPixelValue(1, 0).value;
+    auto removedLevel = image.getPixelValue(0, 1).value;
+
+    image.setPixel(2, 0, PixelType{ repeatedLevel });
+
+    image.assignPixelToLatestNode(0, 0);
+    image.assignPixelToLatestNode(1, 0);
+    image.assignPixelToNewNode(2, 0);
+    image.assignPixelToLatestNode(0, 1);
+    image.assignPixelToLatestNode(1, 1);
+    image.assignPixelToLatestNode(2, 1);
+
+    auto& node = image.getPixelNode(0, 1);
+
+    image.removeNode(node);
+
+    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
+        if (x == 0 && y == 1) {
+            x = 2;
+            y = 0;
+        }
+
+        TreeNodePointer parent;
+        auto pixelLevel = (int)(x + y * width);
+        auto pixelNodeId = 0u;
+
+        if (x == 2 && y == 0) {
+            pixelLevel = 1;
+            pixelNodeId = 1u;
+        }
+
+        for (auto level = 0; level < pixelLevel; ++level) {
+            if (level != levelToSkip && level != removedLevel) {
+                auto id = level == repeatedLevel ? 1u : 0u;
+                auto node = makeNode(id, PixelType{ level }, parent);
+
+                parent = node;
+            }
+        }
+
+        return TreeNodeType(parent, PixelType{ pixelLevel }, pixelNodeId);
+    });
+}
