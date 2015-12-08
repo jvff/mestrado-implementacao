@@ -34,6 +34,10 @@ public:
     NodePointer getNode(unsigned int id) {
         return nodes[id];
     }
+
+    NodeType& getNodeReference(unsigned int id) const {
+        return *nodes[id];
+    }
 };
 
 #endif
