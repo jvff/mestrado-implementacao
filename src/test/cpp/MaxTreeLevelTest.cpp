@@ -116,3 +116,20 @@ TEST_F(MaxTreeLevelTest, getLatestNodeReturnsLatestNode) {
 
     assertThat(latestNode).isEqualTo(lastNodeAdded);
 }
+
+TEST_F(MaxTreeLevelTest, constReferenceToLatestNodeCanBeRetrieved) {
+    level.addNode();
+    level.addNode();
+    level.addNode();
+
+    auto thirdNode = level.getNode(2u);
+    auto latestNode = level.getLatestNode();
+    auto& latestNodeReference = constLevel.getLatestNodeReference();
+
+    verifyNode(thirdNode, 2u);
+    verifyNode(latestNode, 2u);
+    verifyNode(latestNodeReference, 2u);
+
+    assertThat(*latestNode).isAtSameAddressAs(*thirdNode);
+    assertThat(latestNodeReference).isAtSameAddressAs(*latestNode);
+}
