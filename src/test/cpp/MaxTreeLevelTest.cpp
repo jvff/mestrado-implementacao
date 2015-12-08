@@ -95,3 +95,9 @@ TEST_F(MaxTreeLevelTest, constReferenceToNodeCanBeRetrieved) {
     assertThat(*secondNode).isAtSameAddressAs(secondNodeReference);
     assertThat(*thirdNode).isAtSameAddressAs(thirdNodeReference);
 }
+
+TEST_F(MaxTreeLevelTest, getNodeReferenceReturnsConstReference) {
+    level.addNode();
+
+    AssertThat<decltype(level.getNodeReference(0u))>::isConstReference();
+}
