@@ -29,6 +29,10 @@ public:
 
         return node;
     }
+
+    NodePointer getNode(unsigned int id) {
+        return std::make_shared<NodeType>(level, id);
+    }
 };
 
 #endif
