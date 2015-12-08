@@ -45,6 +45,16 @@ public:
 
     void removeNode(unsigned int id) {
         nodes.erase(nodes.begin() + id);
+
+        updateNodeIds(id);
+    }
+
+private:
+    void updateNodeIds(unsigned int startId) {
+        auto size = nodes.size();
+
+        for (auto id = startId; id < size; ++id)
+            nodes[id]->setId(id);
     }
 };
 
