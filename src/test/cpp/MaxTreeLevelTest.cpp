@@ -161,3 +161,18 @@ TEST_F(MaxTreeLevelTest, hasMethodToReplaceParents) {
     verifyNode(thirdNode, 2u, differentParent);
     verifyNode(fourthNode, 3u, newParent);
 }
+
+TEST_F(MaxTreeLevelTest, hasMethodToCheckIfNodeExists) {
+    auto maximumId = std::numeric_limits<unsigned int>::max();
+
+    level.addNode();
+    level.addNode();
+
+    assertThat(level.hasNode(0u)).isEqualTo(true);
+    assertThat(level.hasNode(1u)).isEqualTo(true);
+    assertThat(level.hasNode(2u)).isEqualTo(false);
+    assertThat(level.hasNode(100u)).isEqualTo(false);
+    assertThat(level.hasNode(17000u)).isEqualTo(false);
+    assertThat(level.hasNode(8000000u)).isEqualTo(false);
+    assertThat(level.hasNode(maximumId)).isEqualTo(false);
+}
