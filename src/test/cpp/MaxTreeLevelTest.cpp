@@ -18,3 +18,11 @@ TEST(MaxTreeLevelTest, isConstructibleWithLevelParameter) {
 
     AssertThat<DummyMaxTreeLevel>::isConstructible(With<LevelParameter>());
 }
+
+TEST(MaxTreeLevelTest, isInitiallyEmpty) {
+    using DummyMaxTreeLevel = MaxTreeLevel<DummyType>;
+
+    DummyMaxTreeLevel level(DummyType{ 201 });
+
+    assertThat(level.isEmpty()).isEqualTo(true);
+}
