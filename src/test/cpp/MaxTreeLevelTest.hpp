@@ -19,9 +19,11 @@ protected:
 
     DummyType levelHeight;
     DummyMaxTreeLevel level;
+    const DummyMaxTreeLevel& constLevel;
 
 public:
-    MaxTreeLevelTest() : levelHeight(DummyType{ 201 }), level(levelHeight) {
+    MaxTreeLevelTest() : levelHeight(DummyType{ 201 }), level(levelHeight),
+            constLevel(level) {
     }
 
 protected:

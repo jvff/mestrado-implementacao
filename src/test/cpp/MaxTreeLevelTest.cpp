@@ -69,3 +69,29 @@ TEST_F(MaxTreeLevelTest, retrievedNodesAreTheSameAsNewNodes) {
     assertThat(secondNode).isEqualTo(secondNewNode);
     assertThat(thirdNode).isEqualTo(thirdNewNode);
 }
+
+TEST_F(MaxTreeLevelTest, constReferenceToNodeCanBeRetrieved) {
+    level.addNode();
+    level.addNode();
+    level.addNode();
+
+    auto thirdNode = level.getNode(2u);
+    auto firstNode = level.getNode(0u);
+    auto secondNode = level.getNode(1u);
+
+    auto& secondNodeReference = constLevel.getNodeReference(1u);
+    auto& thirdNodeReference = constLevel.getNodeReference(2u);
+    auto& firstNodeReference = constLevel.getNodeReference(0u);
+
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u);
+    verifyNode(thirdNode, 2u);
+
+    verifyNode(firstNodeReference, 0u);
+    verifyNode(secondNodeReference, 1u);
+    verifyNode(thirdNodeReference, 2u);
+
+    assertThat(*firstNode).isAtSameAddressAs(firstNodeReference);
+    assertThat(*secondNode).isAtSameAddressAs(secondNodeReference);
+    assertThat(*thirdNode).isAtSameAddressAs(thirdNodeReference);
+}
