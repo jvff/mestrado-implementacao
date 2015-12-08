@@ -38,6 +38,10 @@ public:
     const NodeType& getNodeReference(unsigned int id) const {
         return *nodes[id];
     }
+
+    NodePointer getLatestNode() {
+        return nodes.back();
+    }
 };
 
 #endif
