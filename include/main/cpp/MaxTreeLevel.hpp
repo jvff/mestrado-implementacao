@@ -43,7 +43,7 @@ public:
         return nodes.back();
     }
 
-    NodeType& getLatestNodeReference() const {
+    const NodeType& getLatestNodeReference() const {
         return *nodes.back();
     }
 
