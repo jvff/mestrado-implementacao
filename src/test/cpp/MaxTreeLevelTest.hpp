@@ -32,7 +32,47 @@ protected:
     }
 
     void verifyNode(const NodeType& node, unsigned int expectedId) {
-        assertThat(node.getLevel()).isEqualTo(levelHeight);
+        verifyNodeData(node, expectedId);
+
+        assertThat(node.hasParent()).isEqualTo(false);
+    }
+
+    void verifyNode(NodePointer nodePointer, unsigned int expectedId,
+            const DummyType& expectedLevel) {
+        verifyNode(*nodePointer, expectedId, expectedLevel);
+    }
+
+    void verifyNode(const NodeType& node, unsigned int expectedId,
+            const DummyType& expectedLevel) {
+        verifyNodeData(node, expectedId, expectedLevel);
+
+        assertThat(node.hasParent()).isEqualTo(false);
+    }
+
+    void verifyNode(NodePointer nodePointer, unsigned int expectedId,
+            NodePointer expectedParent) {
+        verifyNode(*nodePointer, expectedId, expectedParent);
+    }
+
+    void verifyNode(const NodeType& node, unsigned int expectedId,
+            NodePointer expectedParent) {
+        auto expectedParentId = expectedParent->getId();
+        auto expectedParentLevel = expectedParent->getLevel();
+
+        verifyNodeData(node, expectedId);
+
+        assertThat(node.hasParent()).isEqualTo(true);
+
+        verifyNode(node.getParent(), expectedParentId, expectedParentLevel);
+    }
+
+    void verifyNodeData(const NodeType& node, unsigned int expectedId) {
+        verifyNodeData(node, expectedId, levelHeight);
+    }
+
+    void verifyNodeData(const NodeType& node, unsigned int expectedId,
+            const DummyType& expectedLevel) {
+        assertThat(node.getLevel()).isEqualTo(expectedLevel);
         assertThat(node.getId()).isEqualTo(expectedId);
     }
 };

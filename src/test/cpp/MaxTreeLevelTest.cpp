@@ -139,3 +139,25 @@ TEST_F(MaxTreeLevelTest, getLatestNodeReferenceReturnsConstReference) {
 
     AssertThat<decltype(level.getLatestNodeReference())>::isConstReference();
 }
+
+TEST_F(MaxTreeLevelTest, hasMethodToReplaceParents) {
+    auto firstNode = level.addNode();
+    auto secondNode = level.addNode();
+    auto thirdNode = level.addNode();
+    auto fourthNode = level.addNode();
+
+    auto commonParent = std::make_shared<NodeType>(DummyType{ 100 }, 14u);
+    auto newParent = std::make_shared<NodeType>(DummyType{ 96 }, 3u);
+    auto differentParent = std::make_shared<NodeType>(DummyType{ 89 }, 144u);
+
+    secondNode->setParent(commonParent);
+    thirdNode->setParent(differentParent);
+    fourthNode->setParent(commonParent);
+
+    level.replaceParents(commonParent, newParent);
+
+    verifyNode(firstNode, 0u);
+    verifyNode(secondNode, 1u, newParent);
+    verifyNode(thirdNode, 2u, differentParent);
+    verifyNode(fourthNode, 3u, newParent);
+}
