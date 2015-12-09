@@ -41,6 +41,16 @@ TEST_F(MaxTreeTest, hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
     assertThat(constTree.numberOfLevels()).isEqualTo(2u);
 }
 
+TEST_F(MaxTreeTest, getFirstLevelReturnsExpectedFirstLevel) {
+    auto firstLevel = DummyType{ 2390284 };
+
+    tree.addNode(firstLevel);
+    tree.addNode(DummyType{ 3000000 });
+    tree.addNode(DummyType{ 3000001 });
+
+    assertThat(tree.getFirstLevel()).isEqualTo(firstLevel);
+}
+
 TEST_F(MaxTreeTest, nodeCanBeRetrieved) {
     tree.addNode(DummyType{ 1 });
 
