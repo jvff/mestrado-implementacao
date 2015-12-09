@@ -24,8 +24,8 @@ TEST_F(MaxTreeNodeRemovalTest, isEmptyAfterInsertingThenRemovingNode) {
 TEST_F(MaxTreeNodeRemovalTest,
         isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
     tree.addNode(DummyType{ 0 });
-    tree.addNode(DummyType{ 0 });
-    tree.removeNode(DummyType{ 0 }, 0);
+    tree.addNode(DummyType{ 1 });
+    tree.removeNode(DummyType{ 1 }, 0);
 
     assertThat(constTree.isEmpty()).isEqualTo(false);
 }
