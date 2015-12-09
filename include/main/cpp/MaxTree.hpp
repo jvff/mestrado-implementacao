@@ -25,6 +25,13 @@ public:
         return levels.size();
     }
 
+    T getFirstLevel() {
+        auto firstPosition = levels.begin();
+        auto firstLevel = firstPosition->first;
+
+        return firstLevel;
+    }
+
     bool hasLevel(const T& level) {
         const auto notFound = levels.end();
         auto searchResult = levels.find(level);
@@ -94,13 +101,6 @@ private:
 
     void createLevel(const T& level) {
         levels.emplace(level, NodeLevel(level));
-    }
-
-    T getFirstLevel() {
-        auto firstPosition = levels.begin();
-        auto firstLevel = firstPosition->first;
-
-        return firstLevel;
     }
 
     void updateParentOf(NodePointer node) {
