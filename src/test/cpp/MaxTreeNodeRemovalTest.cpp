@@ -127,3 +127,28 @@ TEST_F(MaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
             DummyType{ 10 }, 2u,
             DummyType{ 1 }, 0u);
 }
+
+TEST_F(MaxTreeNodeRemovalTest, rootNodeRemovalMergesNextLevel) {
+    tree.addNode(DummyType{ 10 });
+
+    tree.addNode(DummyType{ 20 });
+    tree.addNode(DummyType{ 31 });
+
+    tree.addNode(DummyType{ 20 });
+    tree.addNode(DummyType{ 30 });
+
+    tree.addNode(DummyType{ 20 });
+    tree.addNode(DummyType{ 30 });
+
+    tree.removeNode(DummyType{ 10 }, 0);
+
+    verifyNodeChain(
+            DummyType{ 31 }, 0u,
+            DummyType{ 20 }, 0u);
+    verifyNodeChain(
+            DummyType{ 30 }, 0u,
+            DummyType{ 20 }, 0u);
+    verifyNodeChain(
+            DummyType{ 30 }, 1u,
+            DummyType{ 20 }, 0u);
+}
