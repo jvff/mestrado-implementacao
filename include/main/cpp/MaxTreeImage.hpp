@@ -71,15 +71,10 @@ public:
     }
 
     void removeNode(const NodeType& node) {
-        auto& parent = node.getParent();
-        auto newColor = parent.getLevel();
-
-        for (auto x = 0u; x < width; ++x) {
-            for (auto y = 0u; y < height; ++y)
-                updatePixelIfAssignedToNode(x, y, node, newColor);
-        }
-
-        maxTree.removeNode(node.getLevel(), node.getId());
+        if (node.hasParent())
+            removeNormalNode(node);
+        else
+            removeRootNode(node);
     }
 
     using SuperClass::getPixelValue;
@@ -91,11 +86,38 @@ private:
         nodeIdImage.setPixel(x, y, node.getId());
     }
 
+    void removeNormalNode(const NodeType& node) {
+        auto& parent = node.getParent();
+        auto newColor = parent.getLevel();
+        auto newId = parent.getId();
+
+        updatePixelsIfAssignedToNode(node, newColor, newId);
+
+        maxTree.removeNode(node.getLevel(), node.getId());
+    }
+
+    void removeRootNode(const NodeType& node) {
+        maxTree.removeNode(node.getLevel(), node.getId());
+
+        auto newColor = maxTree.getFirstLevel();
+        auto newId = 0u;
+
+        updatePixelsIfAssignedToNode(node, newColor, newId);
+    }
+
+    void updatePixelsIfAssignedToNode(const NodeType& node, PixelType newColor,
+            unsigned int newId) {
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y)
+                updatePixelIfAssignedToNode(x, y, node, newColor, newId);
+        }
+    }
+
     void updatePixelIfAssignedToNode(unsigned int x, unsigned int y,
-            const NodeType& node, PixelType newColor) {
+            const NodeType& node, PixelType newColor, unsigned int newId) {
         if (pixelIsAssignedToNode(x, y, node)) {
             internalImage.setPixel(x, y, newColor);
-            nodeIdImage.setPixel(x, y, node.getParent().getId());
+            nodeIdImage.setPixel(x, y, newId);
         }
     }
 
