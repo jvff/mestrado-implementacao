@@ -69,11 +69,13 @@ public:
     }
 
     void removeNode(const T& level, unsigned int id) {
-        if (hasLevel(level)) {
+        if (level == getFirstLevel() && id == 0u)
+            removeRootNode();
+        else if (hasLevel(level)) {
             auto& levelNodes = getLevel(level);
 
             if (levelNodes.hasNode(id))
-                safelyRemoveNode(level, id, levelNodes);
+                removeNormalNode(level, id, levelNodes);
         }
     }
 
@@ -118,7 +120,40 @@ private:
         return levelPosition->second;
     }
 
-    void safelyRemoveNode(const T& level, unsigned int id,
+    void removeRootNode() {
+        auto oldRootLevel = getFirstLevel();
+
+        levels.erase(oldRootLevel);
+
+        if (!levels.empty())
+            createNewRootNode();
+    }
+
+    void createNewRootNode() {
+        auto newRootLevel = getFirstLevel();
+        auto& newRootLevelNodes = getLevel(newRootLevel);
+
+        auto newRootNode = newRootLevelNodes.getNode(0u);
+        auto mergedNodes = newRootLevelNodes.collapseNodes();
+
+        removeParentFromRootNode(newRootNode);
+
+        replaceMergedParents(mergedNodes, newRootNode);
+    }
+
+    void removeParentFromRootNode(NodePointer rootNode) {
+        NodePointer noParent;
+
+        rootNode->setParent(noParent);
+    }
+
+    void replaceMergedParents(const std::vector<NodePointer>& mergedNodes,
+            NodePointer newNode) {
+        for (auto& mergedNode : mergedNodes)
+            replaceParents(mergedNode, newNode);
+    }
+
+    void removeNormalNode(const T& level, unsigned int id,
             NodeLevel& levelNodes) {
         auto nodeToRemove = levelNodes.getNode(id);
 
