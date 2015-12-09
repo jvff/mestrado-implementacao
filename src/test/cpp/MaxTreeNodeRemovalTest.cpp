@@ -1,5 +1,35 @@
 #include "MaxTreeNodeRemovalTest.hpp"
 
+TEST_F(MaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
+    tree.addNode(DummyType{ 70 });
+    tree.addNode(DummyType{ 70 });
+    tree.addNode(DummyType{ 8 });
+    tree.addNode(DummyType{ 50505 });
+    tree.addNode(DummyType{ 8 });
+    tree.addNode(DummyType{ 70 });
+    tree.removeNode(DummyType{ 8 }, 0u);
+    tree.addNode(DummyType{ 1000 });
+    tree.removeNode(DummyType{ 8 }, 0u);
+
+    assertThat(constTree.numberOfLevels()).isEqualTo(3u);
+}
+
+TEST_F(MaxTreeNodeRemovalTest, isEmptyAfterInsertingThenRemovingNode) {
+    tree.addNode(DummyType{ 0 });
+    tree.removeNode(DummyType{ 0 }, 0);
+
+    assertThat(constTree.isEmpty()).isEqualTo(true);
+}
+
+TEST_F(MaxTreeNodeRemovalTest,
+        isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
+    tree.addNode(DummyType{ 0 });
+    tree.addNode(DummyType{ 0 });
+    tree.removeNode(DummyType{ 0 }, 0);
+
+    assertThat(constTree.isEmpty()).isEqualTo(false);
+}
+
 TEST_F(MaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
     tree.addNode(DummyType{ 20 });
     tree.addNode(DummyType{ 27 });
