@@ -147,3 +147,45 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
 
     verifyFilledImagePixels(image, higherPixelColor);
 }
+
+TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
+    auto width = 3u;
+
+    DummyMaxTreeImageType image(width, 2);
+
+    paintImage(image);
+
+    auto levelToSkip = image.getPixelValue(2, 0).value;
+    auto newRootLevel = image.getPixelValue(1, 0).value;
+
+    image.setPixel(2, 0, PixelType{ newRootLevel });
+
+    image.assignPixelToLatestNode(0, 0);
+    image.assignPixelToLatestNode(1, 0);
+    image.assignPixelToNewNode(2, 0);
+    image.assignPixelToLatestNode(0, 1);
+    image.assignPixelToLatestNode(1, 1);
+    image.assignPixelToLatestNode(2, 1);
+
+    auto& node = image.getPixelNode(0, 0);
+
+    image.removeNode(node);
+
+    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
+        if (y == 0)
+            x = 1;
+
+        TreeNodePointer parent;
+        auto pixelLevel = (int)(x + y * width);
+
+        for (auto level = 1; level < pixelLevel; ++level) {
+            if (level != levelToSkip) {
+                auto node = makeNode(0u, PixelType{ level }, parent);
+
+                parent = node;
+            }
+        }
+
+        return TreeNodeType(parent, PixelType{ pixelLevel }, 0u);
+    });
+}
