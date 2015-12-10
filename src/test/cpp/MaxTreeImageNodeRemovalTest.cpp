@@ -54,27 +54,18 @@ TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
 
     image.removeNode(node);
 
-    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
-        if (x == 0 && y == 1) {
-            x = 1;
-            y = 0;
-        }
-
-        TreeNodePointer parent;
-        auto pixelLevel = (int)(x + y * width);
-        auto maxLevel = pixelLevel;
-
-        if (x == 1 && y == 1)
-            maxLevel -= 1;
-
-        for (auto level = 0; level < maxLevel; ++level) {
-            auto node = makeNode(0u, PixelType{ level }, parent);
-
-            parent = node;
-        }
-
-        return TreeNodeType(parent, PixelType{ pixelLevel }, 0u);
-    });
+    verifyNode(image.getPixelNode(0, 0),
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 0),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(0, 1),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 1),
+            PixelType{ 3 }, 0u,
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
 }
 
 TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
@@ -84,11 +75,9 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
 
     paintImage(image);
 
-    auto levelToSkip = image.getPixelValue(2, 0).value;
-    auto repeatedLevel = image.getPixelValue(1, 0).value;
-    auto removedLevel = image.getPixelValue(0, 1).value;
+    auto repeatedLevel = image.getPixelValue(1, 0);
 
-    image.setPixel(2, 0, PixelType{ repeatedLevel });
+    image.setPixel(2, 0, repeatedLevel);
 
     image.assignPixelToLatestNode(0, 0);
     image.assignPixelToLatestNode(1, 0);
@@ -101,32 +90,26 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
 
     image.removeNode(node);
 
-    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
-        if (x == 0 && y == 1) {
-            x = 2;
-            y = 0;
-        }
-
-        TreeNodePointer parent;
-        auto pixelLevel = (int)(x + y * width);
-        auto pixelNodeId = 0u;
-
-        if (x == 2 && y == 0) {
-            pixelLevel = 1;
-            pixelNodeId = 1u;
-        }
-
-        for (auto level = 0; level < pixelLevel; ++level) {
-            if (level != levelToSkip && level != removedLevel) {
-                auto id = level == repeatedLevel ? 1u : 0u;
-                auto node = makeNode(id, PixelType{ level }, parent);
-
-                parent = node;
-            }
-        }
-
-        return TreeNodeType(parent, PixelType{ pixelLevel }, pixelNodeId);
-    });
+    verifyNode(image.getPixelNode(0, 0),
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 0),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(2, 0),
+            PixelType{ 1 }, 1u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(0, 1),
+            PixelType{ 1 }, 1u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 1),
+            PixelType{ 4 }, 0u,
+            PixelType{ 1 }, 1u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(2, 1),
+            PixelType{ 5 }, 0u,
+            PixelType{ 4 }, 0u,
+            PixelType{ 1 }, 1u,
+            PixelType{ 0 }, 0u);
 }
 
 TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
