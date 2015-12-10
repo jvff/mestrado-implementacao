@@ -1,5 +1,18 @@
 #include "MaxTreeLevelNodeRetrievalTest.hpp"
 
+TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveInexistentNode) {
+    auto maximumId = std::numeric_limits<unsigned int>::max();
+
+    level.addNode();
+
+    verifyInexistentNodeException([&] () { level.getNode(1u); });
+    verifyInexistentNodeException([&] () { level.getNode(2u); });
+    verifyInexistentNodeException([&] () { level.getNode(10u); });
+    verifyInexistentNodeException([&] () { level.getNode(439u); });
+    verifyInexistentNodeException([&] () { level.getNode(7145918u); });
+    verifyInexistentNodeException([&] () { level.getNode(maximumId); });
+}
+
 TEST_F(MaxTreeLevelNodeRetrievalTest, nodesAreRetrievable) {
     level.addNode();
     level.addNode();
