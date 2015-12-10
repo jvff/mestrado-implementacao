@@ -2,6 +2,7 @@
 #define MAX_TREE_LEVEL_HPP
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "MaxTreeNode.hpp"
@@ -36,7 +37,10 @@ public:
     }
 
     NodePointer getNode(unsigned int id) {
-        return nodes[id];
+        if (id < nodes.size())
+            return nodes[id];
+        else
+            throw std::string("Attempt to retrieve inexistent node");
     }
 
     const NodeType& getNodeReference(unsigned int id) const {
