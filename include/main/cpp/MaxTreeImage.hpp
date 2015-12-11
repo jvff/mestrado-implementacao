@@ -102,6 +102,7 @@ private:
         auto newColor = maxTree.getFirstLevel();
         auto newId = 0u;
 
+        updatePixelsIfOnCollapsedLevel(newColor, newId);
         updatePixelsIfAssignedToNode(node, newColor, newId);
     }
 
@@ -127,6 +128,26 @@ private:
         auto pixelNodeLevel = internalImage.getPixelValue(x, y);
 
         return pixelNodeId == node.getId() && pixelNodeLevel == node.getLevel();
+    }
+
+    void updatePixelsIfOnCollapsedLevel(PixelType newColor,
+            unsigned int newId) {
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y)
+                updatePixelIfOnCollapsedLevel(x, y, newColor, newId);
+        }
+    }
+
+    void updatePixelIfOnCollapsedLevel(unsigned int x, unsigned int y,
+            PixelType newColor, unsigned int newId) {
+        if (pixelIsOnLevel(x, y, newColor))
+            nodeIdImage.setPixel(x, y, newId);
+    }
+
+    bool pixelIsOnLevel(unsigned int x, unsigned int y, PixelType level) {
+        auto pixelLevel = internalImage.getPixelValue(x, y);
+
+        return pixelLevel == level;
     }
 };
 
