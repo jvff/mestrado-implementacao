@@ -72,7 +72,7 @@ public:
 
     void removeNode(const NodeType& node) {
         if (node.hasParent())
-            removeNormalNode(node);
+            removeNormalNode(getRealNodeInTree(node));
         else
             removeRootNode(node);
     }
@@ -84,6 +84,13 @@ private:
     void assignPixelToNode(unsigned int x, unsigned int y,
             const MaxTreeNode<PixelType>& node) {
         nodeIdImage.setPixel(x, y, node.getId());
+    }
+
+    const NodeType& getRealNodeInTree(const NodeType& reference) {
+        auto level = reference.getLevel();
+        auto id = reference.getId();
+
+        return maxTree.getNode(level, id);
     }
 
     void removeNormalNode(const NodeType& node) {
