@@ -44,7 +44,10 @@ public:
     }
 
     const NodeType& getNodeReference(unsigned int id) const {
-        return *nodes[id];
+        if (id < nodes.size())
+            return *nodes[id];
+        else
+            throw std::string("Attempt to retrieve inexistent node");
     }
 
     NodePointer getLatestNode() {
