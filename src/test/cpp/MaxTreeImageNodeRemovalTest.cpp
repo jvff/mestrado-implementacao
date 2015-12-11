@@ -43,9 +43,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
 }
 
 TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
-    auto width = 2u;
-
-    DummyMaxTreeImageType image(width, 2);
+    DummyMaxTreeImageType image(2, 2);
 
     paintImage(image);
     assignPixelsToLatestNodes(image);
@@ -69,9 +67,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
 }
 
 TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
-    auto width = 3u;
-
-    DummyMaxTreeImageType image(width, 2);
+    DummyMaxTreeImageType image(3, 2);
 
     paintImage(image);
 
@@ -132,9 +128,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
 }
 
 TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
-    auto width = 3u;
-
-    DummyMaxTreeImageType image(width, 2);
+    DummyMaxTreeImageType image(3, 2);
 
     paintImage(image);
 
