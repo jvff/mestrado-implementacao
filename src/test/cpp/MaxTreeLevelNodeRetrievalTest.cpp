@@ -13,6 +13,20 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveInexistentNode) {
     verifyInexistentNodeException([&] () { level.getNode(maximumId); });
 }
 
+TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveReferenceToInexistentNode) {
+    auto maximumId = std::numeric_limits<unsigned int>::max();
+
+    level.addNode();
+
+    verifyInexistentNodeException([&] () { level.getNodeReference(1u); });
+    verifyInexistentNodeException([&] () { level.getNodeReference(2u); });
+    verifyInexistentNodeException([&] () { level.getNodeReference(10u); });
+    verifyInexistentNodeException([&] () { level.getNodeReference(439u); });
+    verifyInexistentNodeException([&] () { level.getNodeReference(7145918u); });
+    verifyInexistentNodeException(
+            [&] () { level.getNodeReference(maximumId); });
+}
+
 TEST_F(MaxTreeLevelNodeRetrievalTest, nodesAreRetrievable) {
     level.addNode();
     level.addNode();
