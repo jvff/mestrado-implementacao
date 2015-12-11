@@ -138,7 +138,6 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
 
     paintImage(image);
 
-    auto levelToSkip = image.getPixelValue(2, 0).value;
     auto newRootLevel = image.getPixelValue(1, 0).value;
 
     image.setPixel(2, 0, PixelType{ newRootLevel });
@@ -154,21 +153,22 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
 
     image.removeNode(node);
 
-    verifyNodes(image, [=] (unsigned int x, unsigned int y) -> TreeNodeType {
-        if (y == 0)
-            x = 1;
-
-        TreeNodePointer parent;
-        auto pixelLevel = (int)(x + y * width);
-
-        for (auto level = 1; level < pixelLevel; ++level) {
-            if (level != levelToSkip) {
-                auto node = makeNode(0u, PixelType{ level }, parent);
-
-                parent = node;
-            }
-        }
-
-        return TreeNodeType(parent, PixelType{ pixelLevel }, 0u);
-    });
+    verifyNode(image.getPixelNode(0, 0),
+            PixelType{ 1 }, 0u);
+    verifyNode(image.getPixelNode(1, 0),
+            PixelType{ 1 }, 0u);
+    verifyNode(image.getPixelNode(2, 0),
+            PixelType{ 1 }, 0u);
+    verifyNode(image.getPixelNode(0, 1),
+            PixelType{ 3 }, 0u,
+            PixelType{ 1 }, 0u);
+    verifyNode(image.getPixelNode(1, 1),
+            PixelType{ 4 }, 0u,
+            PixelType{ 3 }, 0u,
+            PixelType{ 1 }, 0u);
+    verifyNode(image.getPixelNode(2, 1),
+            PixelType{ 5 }, 0u,
+            PixelType{ 4 }, 0u,
+            PixelType{ 3 }, 0u,
+            PixelType{ 1 }, 0u);
 }
