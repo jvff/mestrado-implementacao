@@ -71,8 +71,10 @@ public:
     }
 
     void removeNode(const NodeType& node) {
-        if (node.hasParent())
-            removeNormalNode(getRealNodeInTree(node));
+        auto& realNode = getRealNodeInTree(node);
+
+        if (realNode.hasParent())
+            removeNormalNode(realNode);
         else
             removeRootNode(node);
     }
