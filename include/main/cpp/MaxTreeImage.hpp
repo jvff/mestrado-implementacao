@@ -71,12 +71,10 @@ public:
     }
 
     void removeNode(const NodeType& node) {
-        auto& realNode = getRealNodeInTree(node);
+        auto level = node.getLevel();
 
-        if (realNode.hasParent())
-            removeNormalNode(realNode);
-        else
-            removeRootNode(node);
+        if (maxTree.hasLevel(level))
+            safelyRemoveNode(node);
     }
 
     using SuperClass::getPixelValue;
@@ -86,6 +84,15 @@ private:
     void assignPixelToNode(unsigned int x, unsigned int y,
             const MaxTreeNode<PixelType>& node) {
         nodeIdImage.setPixel(x, y, node.getId());
+    }
+
+    void safelyRemoveNode(const NodeType& node) {
+        auto& realNode = getRealNodeInTree(node);
+
+        if (realNode.hasParent())
+            removeNormalNode(realNode);
+        else
+            removeRootNode(node);
     }
 
     const NodeType& getRealNodeInTree(const NodeType& reference) {
