@@ -1,6 +1,8 @@
 #ifndef MAX_TREE_IMAGE_NODE_REMOVAL_TEST_HPP
 #define MAX_TREE_IMAGE_NODE_REMOVAL_TEST_HPP
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"

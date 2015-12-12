@@ -132,3 +132,34 @@ TEST_F(MaxTreeImageNodeRemovalTest, parentOfNodeParameterIsNotUsed) {
             PixelType{ 2 }, 0u,
             PixelType{ 0 }, 0u);
 }
+
+TEST_F(MaxTreeImageNodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
+    DummyMaxTreeImageType image(4, 1);
+    std::shared_ptr<TreeNodeType> noParent;
+
+    paintImage(image);
+    assignPixelsToLatestNodes(image);
+
+    auto nodeCopy = image.getPixelNode(2, 0);
+
+    nodeCopy.setParent(noParent);
+    image.removeNode(nodeCopy);
+
+    assertThat(image.getPixelValue(0, 0)).isEqualTo(PixelType{ 0 });
+    assertThat(image.getPixelValue(1, 0)).isEqualTo(PixelType{ 1 });
+    assertThat(image.getPixelValue(2, 0)).isEqualTo(PixelType{ 1 });
+    assertThat(image.getPixelValue(3, 0)).isEqualTo(PixelType{ 3 });
+
+    verifyNode(image.getPixelNode(0, 0),
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 0),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(2, 0),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(3, 0),
+            PixelType{ 3 }, 0u,
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+}
