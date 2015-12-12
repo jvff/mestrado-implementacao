@@ -163,3 +163,34 @@ TEST_F(MaxTreeImageNodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
             PixelType{ 1 }, 0u,
             PixelType{ 0 }, 0u);
 }
+
+TEST_F(MaxTreeImageNodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
+    DummyMaxTreeImageType image(4, 1);
+
+    paintImage(image);
+    assignPixelsToLatestNodes(image);
+
+    auto fakeNode = TreeNodeType(PixelType{ 4 }, 0u);
+
+    image.removeNode(fakeNode);
+
+    assertThat(image.getPixelValue(0, 0)).isEqualTo(PixelType{ 0 });
+    assertThat(image.getPixelValue(1, 0)).isEqualTo(PixelType{ 1 });
+    assertThat(image.getPixelValue(2, 0)).isEqualTo(PixelType{ 2 });
+    assertThat(image.getPixelValue(3, 0)).isEqualTo(PixelType{ 3 });
+
+    verifyNode(image.getPixelNode(0, 0),
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(1, 0),
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(2, 0),
+            PixelType{ 2 }, 0u,
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+    verifyNode(image.getPixelNode(3, 0),
+            PixelType{ 3 }, 0u,
+            PixelType{ 2 }, 0u,
+            PixelType{ 1 }, 0u,
+            PixelType{ 0 }, 0u);
+}
