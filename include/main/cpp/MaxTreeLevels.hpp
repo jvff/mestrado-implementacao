@@ -24,6 +24,10 @@ public:
             return 1u;
     }
 
+    T getFirstLevelHeight() const {
+        return level->getLevel();
+    }
+
     bool hasLevel(const T& levelHeight) const {
         return !isEmpty() && level->getLevel() == levelHeight;
     }
