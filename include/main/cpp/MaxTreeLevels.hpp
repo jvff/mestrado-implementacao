@@ -38,6 +38,10 @@ public:
 
         return *level;
     }
+
+    NodeLevel& getLevel(const T&) {
+        return *level;
+    }
 };
 
 #endif
