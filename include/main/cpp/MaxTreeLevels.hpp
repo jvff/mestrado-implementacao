@@ -28,6 +28,10 @@ public:
         return level->getLevel();
     }
 
+    NodeLevel& getFirstLevel() {
+        return *level;
+    }
+
     bool hasLevel(const T& levelHeight) const {
         return !isEmpty() && level->getLevel() == levelHeight;
     }
