@@ -14,7 +14,7 @@ private:
 
 public:
     bool isEmpty() const {
-        return true;
+        return !(bool)level;
     }
 
     unsigned int numberOfLevels() const {
