@@ -20,6 +20,10 @@ public:
     MaxTreeLevel(const T& level) : level(level) {
     }
 
+    T getLevel() const {
+        return level;
+    }
+
     bool isEmpty() {
         return nodes.empty();
     }
