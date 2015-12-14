@@ -11,6 +11,10 @@ public:
     unsigned int numberOfLevels() const {
         return 0u;
     }
+
+    bool hasLevel(const T&) const {
+        return false;
+    }
 };
 
 #endif
