@@ -7,6 +7,10 @@ public:
     bool isEmpty() const {
         return true;
     }
+
+    unsigned int numberOfLevels() const {
+        return 0u;
+    }
 };
 
 #endif
