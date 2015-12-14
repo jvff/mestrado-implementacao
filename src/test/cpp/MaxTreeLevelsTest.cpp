@@ -28,3 +28,10 @@ TEST_F(MaxTreeLevelsTest, initiallHasNoLevels) {
     assertThat(constLevels.hasLevel(DummyType{ 345 })).isEqualTo(false);
     assertThat(constLevels.hasLevel(maximumLevel)).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelsTest, createdLevelIsEmpty) {
+    auto levelHeight = DummyType{ 14931 };
+    auto& level = levels.getOrCreateLevel(levelHeight);
+
+    assertThat(level.isEmpty()).isEqualTo(true);
+}
