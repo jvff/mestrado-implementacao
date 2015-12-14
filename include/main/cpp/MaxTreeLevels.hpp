@@ -33,7 +33,8 @@ public:
     }
 
     NodeLevel& getOrCreateLevel(const T& levelHeight) {
-        level = std::make_shared<NodeLevel>(levelHeight);
+        if (isEmpty())
+            level = std::make_shared<NodeLevel>(levelHeight);
 
         return *level;
     }
