@@ -10,6 +10,10 @@ TEST_F(MaxTreeLevelTest, isConstructibleWithLevelParameter) {
     AssertThat<DummyMaxTreeLevel>::isConstructible(With<LevelParameter>());
 }
 
+TEST_F(MaxTreeLevelTest, levelHeightIsRetrievable) {
+    assertThat(constLevel.getLevel()).isEqualTo(levelHeight);
+}
+
 TEST_F(MaxTreeLevelTest, isInitiallyEmpty) {
     assertThat(level.isEmpty()).isEqualTo(true);
 }
