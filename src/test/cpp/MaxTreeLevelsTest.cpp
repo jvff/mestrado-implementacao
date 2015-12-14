@@ -84,3 +84,11 @@ TEST_F(MaxTreeLevelsTest, hasCreatedLevel) {
     assertThat(constLevels.hasLevel(levelHeightAbove)).isEqualTo(false);
     assertThat(constLevels.hasLevel(maximumLevel)).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelsTest, firstLevelHeightIsTheSameAsTheCreatedLevelHeight) {
+    auto levelHeight = DummyType{ 14936 };
+
+    levels.getOrCreateLevel(levelHeight);
+
+    assertThat(constLevels.getFirstLevelHeight()).isEqualTo(levelHeight);
+}
