@@ -9,3 +9,9 @@ TEST_F(MaxTreeLevelsTest, isInitiallyEmpty) {
 
     assertThat(levels.isEmpty()).isEqualTo(true);
 }
+
+TEST_F(MaxTreeLevelsTest, initiallyHasZeroLevels) {
+    const DummyMaxTreeLevels levels;
+
+    assertThat(levels.numberOfLevels()).isEqualTo(0u);
+}
