@@ -45,6 +45,14 @@ TEST_F(MaxTreeLevelsTest, cantCreateSameLevelTwice) {
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
+TEST_F(MaxTreeLevelsTest, createdLevelCanBeRetrieved) {
+    auto levelHeight = DummyType{ 59783 };
+    auto& createdLevel = levels.getOrCreateLevel(levelHeight);
+    auto& retrievedLevel = levels.getLevel(levelHeight);
+
+    assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
+}
+
 TEST_F(MaxTreeLevelsTest, isNotEmptyAfterCreatingLevel) {
     auto levelHeight = DummyType{ 74931 };
 
