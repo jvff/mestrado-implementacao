@@ -12,6 +12,13 @@
 class MaxTreeLevelsTest : public ::testing::Test {
 protected:
     using DummyMaxTreeLevels = MaxTreeLevels<DummyType>;
+
+    DummyMaxTreeLevels levels;
+    const DummyMaxTreeLevels& constLevels;
+
+protected:
+    MaxTreeLevelsTest() : constLevels(levels) {
+    }
 };
 
 #endif

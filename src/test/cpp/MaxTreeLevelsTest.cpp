@@ -5,13 +5,9 @@ TEST_F(MaxTreeLevelsTest, classTemplateExists) {
 }
 
 TEST_F(MaxTreeLevelsTest, isInitiallyEmpty) {
-    const DummyMaxTreeLevels levels;
-
-    assertThat(levels.isEmpty()).isEqualTo(true);
+    assertThat(constLevels.isEmpty()).isEqualTo(true);
 }
 
 TEST_F(MaxTreeLevelsTest, initiallyHasZeroLevels) {
-    const DummyMaxTreeLevels levels;
-
-    assertThat(levels.numberOfLevels()).isEqualTo(0u);
+    assertThat(constLevels.numberOfLevels()).isEqualTo(0u);
 }
