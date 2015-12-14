@@ -3,6 +3,10 @@
 
 template <typename T>
 class MaxTreeLevels {
+public:
+    bool isEmpty() const {
+        return true;
+    }
 };
 
 #endif
