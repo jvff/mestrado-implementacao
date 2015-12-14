@@ -1,13 +1,5 @@
-#include <gtest/gtest.h>
+#include "MaxTreeLevelsTest.hpp"
 
-#include "asserts.hpp"
-
-#include "MaxTreeLevels.hpp"
-
-#include "DummyTypes.hpp"
-
-TEST(MaxTreeLevelsTest, classTemplateExists) {
-    using DummyMaxTreeLevels = MaxTreeLevels<DummyType>;
-
+TEST_F(MaxTreeLevelsTest, classTemplateExists) {
     AssertThat<DummyMaxTreeLevels>::isClassOrStruct();
 }
