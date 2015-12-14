@@ -18,7 +18,10 @@ public:
     }
 
     unsigned int numberOfLevels() const {
-        return 0u;
+        if (isEmpty())
+            return 0u;
+        else
+            return 1u;
     }
 
     bool hasLevel(const T&) const {
