@@ -24,8 +24,8 @@ public:
             return 1u;
     }
 
-    bool hasLevel(const T&) const {
-        return false;
+    bool hasLevel(const T& levelHeight) const {
+        return !isEmpty() && level->getLevel() == levelHeight;
     }
 
     NodeLevel& getOrCreateLevel(const T& levelHeight) {
