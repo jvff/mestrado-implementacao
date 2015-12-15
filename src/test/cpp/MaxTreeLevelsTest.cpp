@@ -13,21 +13,11 @@ TEST_F(MaxTreeLevelsTest, initiallyHasZeroLevels) {
 }
 
 TEST_F(MaxTreeLevelsTest, initiallHasNoLevels) {
-    auto minimumLevel = DummyType{ std::numeric_limits<int>::min() };
-    auto maximumLevel = DummyType{ std::numeric_limits<int>::max() };
+    auto minimumLevel = std::numeric_limits<int>::min();
+    auto maximumLevel = std::numeric_limits<int>::max();
 
-    assertThat(constLevels.hasLevel(minimumLevel)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -345 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -3 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -2 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -1 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 0 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 1 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 2 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 3 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 345 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 75042 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(maximumLevel)).isEqualTo(false);
+    verifyDoesNotHaveLevels(minimumLevel, -345, -3, -2, -1, 0, 1, 2, 3, 345,
+            75042, maximumLevel);
 }
 
 TEST_F(MaxTreeLevelsTest, createdLevelIsEmpty) {
@@ -70,35 +60,22 @@ TEST_F(MaxTreeLevelsTest, hasOneLevelAfterCreatingLevel) {
 }
 
 TEST_F(MaxTreeLevelsTest, hasCreatedLevel) {
-    auto levelHeight = DummyType{ 75042 };
-    auto levelHeightAbove = DummyType{ 75043 };
-    auto levelHeightBelow = DummyType{ 75040 };
-    auto negativeLevelHeight = DummyType{ -75042 };
-    auto negativeLevelHeightBelow = DummyType{ -75043 };
-    auto negativeLevelHeightAbove = DummyType{ -75040 };
-    auto minimumLevel = DummyType{ std::numeric_limits<int>::min() };
-    auto maximumLevel = DummyType{ std::numeric_limits<int>::max() };
+    auto levelHeight = 75042;
+    auto levelHeightAbove = 75043;
+    auto levelHeightBelow = 75040;
+    auto negativeLevelHeight = -75042;
+    auto negativeLevelHeightBelow = -75043;
+    auto negativeLevelHeightAbove = -75040;
+    auto minimumLevel = std::numeric_limits<int>::min();
+    auto maximumLevel = std::numeric_limits<int>::max();
 
-    levels.getOrCreateLevel(levelHeight);
+    levels.getOrCreateLevel(DummyType{ levelHeight });
 
-    assertThat(constLevels.hasLevel(levelHeight)).isEqualTo(true);
+    verifyIfHasLevels(levelHeight);
 
-    assertThat(constLevels.hasLevel(minimumLevel)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(negativeLevelHeightBelow)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(negativeLevelHeight)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(negativeLevelHeightAbove)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -345 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -3 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -2 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ -1 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 0 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 1 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 2 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 3 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(DummyType{ 345 })).isEqualTo(false);
-    assertThat(constLevels.hasLevel(levelHeightBelow)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(levelHeightAbove)).isEqualTo(false);
-    assertThat(constLevels.hasLevel(maximumLevel)).isEqualTo(false);
+    verifyDoesNotHaveLevels(minimumLevel, negativeLevelHeightBelow,
+            negativeLevelHeight, negativeLevelHeightAbove, -345, -3, -2, -1, 0,
+            1, 2, 3, 345, levelHeightBelow, levelHeightAbove, maximumLevel);
 }
 
 TEST_F(MaxTreeLevelsTest, firstLevelHeightIsTheSameAsTheCreatedLevelHeight) {
