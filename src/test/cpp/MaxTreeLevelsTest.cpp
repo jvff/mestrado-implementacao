@@ -43,6 +43,14 @@ TEST_F(MaxTreeLevelsTest, createdLevelCanBeRetrieved) {
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
+TEST_F(MaxTreeLevelsTest, createdLevelCanBeRetrievedThroughConstReference) {
+    auto levelHeight = DummyType{ 59783 };
+    auto& createdLevel = levels.getOrCreateLevel(levelHeight);
+    auto& retrievedLevel = constLevels.getLevel(levelHeight);
+
+    assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
+}
+
 TEST_F(MaxTreeLevelsTest, levelsCanBeRetrievedAsConstOrNot) {
     auto levelHeight = DummyType{ 12 };
 
