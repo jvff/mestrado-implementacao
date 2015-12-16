@@ -43,6 +43,13 @@ TEST_F(MaxTreeLevelsTest, createdLevelCanBeRetrieved) {
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
+TEST_F(MaxTreeLevelsTest, levelsCanBeRetrievedAsConstOrNot) {
+    auto levelHeight = DummyType{ 12 };
+
+    AssertThat<decltype(constLevels.getLevel(levelHeight))>::isConstReference();
+    AssertThat<decltype(levels.getLevel(levelHeight))>::isNonConstReference();
+}
+
 TEST_F(MaxTreeLevelsTest, isNotEmptyAfterCreatingLevel) {
     auto levelHeight = DummyType{ 74931 };
 
