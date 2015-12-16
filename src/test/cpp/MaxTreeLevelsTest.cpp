@@ -115,3 +115,12 @@ TEST_F(MaxTreeLevelsTest, firstLevelIsTheSameAsTheCreatedLevel) {
 
     assertThat(firstLevel).isAtSameAddressAs(createdLevel);
 }
+
+TEST_F(MaxTreeLevelsTest, secondCreatedLevelHasCorrectHeight) {
+    levels.getOrCreateLevel(DummyType{ 14931 });
+
+    auto secondLevelHeight = DummyType{ 24931 };
+    auto& secondLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    assertThat(secondLevel.getLevel()).isEqualTo(secondLevelHeight);
+}
