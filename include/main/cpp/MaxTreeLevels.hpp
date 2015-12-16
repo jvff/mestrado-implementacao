@@ -47,6 +47,10 @@ public:
         return *level;
     }
 
+    const NodeLevel& getLevel(const T&) const {
+        return *level;
+    }
+
 private:
     void createLevel(const T& levelHeight) {
         level = std::make_shared<NodeLevel>(levelHeight);
