@@ -20,6 +20,13 @@ TEST_F(MaxTreeLevelsTest, initiallHasNoLevels) {
             75042, maximumLevel);
 }
 
+TEST_F(MaxTreeLevelsTest, createdLevelHasCorrectHeight) {
+    auto levelHeight = DummyType{ 14931 };
+    auto& level = levels.getOrCreateLevel(levelHeight);
+
+    assertThat(level.getLevel()).isEqualTo(levelHeight);
+}
+
 TEST_F(MaxTreeLevelsTest, createdLevelIsEmpty) {
     auto levelHeight = DummyType{ 14931 };
     auto& level = levels.getOrCreateLevel(levelHeight);
