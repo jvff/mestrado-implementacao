@@ -37,7 +37,7 @@ public:
     }
 
     NodeLevel& getOrCreateLevel(const T& levelHeight) {
-        if (isEmpty())
+        if (!hasLevel(levelHeight))
             createLevel(levelHeight);
 
         return getLevel(levelHeight);
