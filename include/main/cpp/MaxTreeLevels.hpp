@@ -18,10 +18,7 @@ public:
     }
 
     unsigned int numberOfLevels() const {
-        if (isEmpty())
-            return 0u;
-        else
-            return 1u;
+        return levels.size();
     }
 
     T getFirstLevelHeight() const {
