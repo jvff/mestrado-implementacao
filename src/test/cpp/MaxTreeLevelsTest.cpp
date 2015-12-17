@@ -28,8 +28,7 @@ TEST_F(MaxTreeLevelsTest, createdLevelHasCorrectHeight) {
 }
 
 TEST_F(MaxTreeLevelsTest, createdLevelIsEmpty) {
-    auto levelHeight = DummyType{ 14931 };
-    auto& level = levels.getOrCreateLevel(levelHeight);
+    auto& level = levels.getOrCreateLevel(DummyType{ 14931 });
 
     assertThat(level.isEmpty()).isEqualTo(true);
 }
@@ -66,17 +65,13 @@ TEST_F(MaxTreeLevelsTest, levelsCanBeRetrievedAsConstOrNot) {
 }
 
 TEST_F(MaxTreeLevelsTest, isNotEmptyAfterCreatingLevel) {
-    auto levelHeight = DummyType{ 74931 };
-
-    levels.getOrCreateLevel(levelHeight);
+    levels.getOrCreateLevel(DummyType{ 74931 });
 
     assertThat(constLevels.isEmpty()).isEqualTo(false);
 }
 
 TEST_F(MaxTreeLevelsTest, hasOneLevelAfterCreatingLevel) {
-    auto levelHeight = DummyType{ 75042 };
-
-    levels.getOrCreateLevel(levelHeight);
+    levels.getOrCreateLevel(DummyType{ 75042 });
 
     assertThat(constLevels.numberOfLevels()).isEqualTo(1u);
 }
@@ -109,8 +104,7 @@ TEST_F(MaxTreeLevelsTest, firstLevelHeightIsTheSameAsTheCreatedLevelHeight) {
 }
 
 TEST_F(MaxTreeLevelsTest, firstLevelIsTheSameAsTheCreatedLevel) {
-    auto levelHeight = DummyType{ 59783 };
-    auto& createdLevel = levels.getOrCreateLevel(levelHeight);
+    auto& createdLevel = levels.getOrCreateLevel(DummyType{ 59783 });
     auto& firstLevel = levels.getFirstLevel();
 
     assertThat(firstLevel).isAtSameAddressAs(createdLevel);
