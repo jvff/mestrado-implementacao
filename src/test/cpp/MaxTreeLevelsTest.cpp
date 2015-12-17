@@ -178,3 +178,10 @@ TEST_F(MaxTreeLevelsTest, isNotEmptyAfterCreatingTwoLevels) {
 
     assertThat(constLevels.isEmpty()).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelsTest, hasTwoLevelsAfterCreatingTwoLevels) {
+    levels.getOrCreateLevel(DummyType{ 74931 });
+    levels.getOrCreateLevel(DummyType{ 34028 });
+
+    assertThat(constLevels.numberOfLevels()).isEqualTo(2u);
+}
