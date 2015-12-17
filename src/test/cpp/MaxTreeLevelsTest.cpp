@@ -171,3 +171,10 @@ TEST_F(MaxTreeLevelsTest,
     assertThat(firstRetrievedLevel).isAtSameAddressAs(firstCreatedLevel);
     assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsTest, isNotEmptyAfterCreatingTwoLevels) {
+    levels.getOrCreateLevel(DummyType{ 74931 });
+    levels.getOrCreateLevel(DummyType{ 34028 });
+
+    assertThat(constLevels.isEmpty()).isEqualTo(false);
+}
