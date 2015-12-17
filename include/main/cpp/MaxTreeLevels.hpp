@@ -1,7 +1,7 @@
 #ifndef MAX_TREE_LEVELS_HPP
 #define MAX_TREE_LEVELS_HPP
 
-#include <memory>
+#include <map>
 
 #include "MaxTreeLevel.hpp"
 
@@ -10,11 +10,11 @@ class MaxTreeLevels {
 private:
     using NodeLevel = MaxTreeLevel<T>;
 
-    std::shared_ptr<NodeLevel> level;
+    std::map<T, NodeLevel> levels;
 
 public:
     bool isEmpty() const {
-        return !(bool)level;
+        return levels.empty();
     }
 
     unsigned int numberOfLevels() const {
@@ -25,15 +25,21 @@ public:
     }
 
     T getFirstLevelHeight() const {
-        return level->getLevel();
+        auto firstPosition = levels.begin();
+        auto firstLevelHeight = firstPosition->first;
+
+        return firstLevelHeight;
     }
 
     NodeLevel& getFirstLevel() {
-        return *level;
+        auto firstPosition = levels.begin();
+        auto& firstLevel = firstPosition->second;
+
+        return firstLevel;
     }
 
     bool hasLevel(const T& levelHeight) const {
-        return !isEmpty() && level->getLevel() == levelHeight;
+        return !isEmpty() && getFirstLevelHeight() == levelHeight;
     }
 
     NodeLevel& getOrCreateLevel(const T& levelHeight) {
@@ -43,17 +49,17 @@ public:
         return getLevel(levelHeight);
     }
 
-    NodeLevel& getLevel(const T&) {
-        return *level;
+    NodeLevel& getLevel(const T& levelHeight) {
+        return levels.at(levelHeight);
     }
 
-    const NodeLevel& getLevel(const T&) const {
-        return *level;
+    const NodeLevel& getLevel(const T& levelHeight) const {
+        return levels.at(levelHeight);
     }
 
 private:
     void createLevel(const T& levelHeight) {
-        level = std::make_shared<NodeLevel>(levelHeight);
+        levels.emplace(levelHeight, NodeLevel(levelHeight));
     }
 };
 
