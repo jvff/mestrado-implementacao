@@ -144,3 +144,16 @@ TEST_F(MaxTreeLevelsTest, cantRecreateFirstLevelAfterCreatingSecondLevel) {
 
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
+
+TEST_F(MaxTreeLevelsTest, firstAndSecondCreatedLevelsCanBeRetrieved) {
+    auto firstLevelHeight = DummyType{ 59783 };
+    auto secondLevelHeight = DummyType{ 732 };
+    auto& firstCreatedLevel = levels.getOrCreateLevel(firstLevelHeight);
+    auto& secondCreatedLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    auto& secondRetrievedLevel = levels.getLevel(secondLevelHeight);
+    auto& firstRetrievedLevel = levels.getLevel(firstLevelHeight);
+
+    assertThat(firstRetrievedLevel).isAtSameAddressAs(firstCreatedLevel);
+    assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
+}
