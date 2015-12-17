@@ -133,3 +133,14 @@ TEST_F(MaxTreeLevelsTest, secondCreatedLevelIsEmpty) {
 
     assertThat(secondLevel.isEmpty()).isEqualTo(true);
 }
+
+TEST_F(MaxTreeLevelsTest, cantRecreateFirstLevelAfterCreatingSecondLevel) {
+    auto firstLevelHeight = DummyType{ 59783 };
+    auto& createdLevel = levels.getOrCreateLevel(firstLevelHeight);
+
+    levels.getOrCreateLevel(DummyType{ 61392 });
+
+    auto& retrievedLevel = levels.getOrCreateLevel(firstLevelHeight);
+
+    assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
+}
