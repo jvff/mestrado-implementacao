@@ -36,7 +36,10 @@ public:
     }
 
     bool hasLevel(const T& levelHeight) const {
-        return !isEmpty() && getFirstLevelHeight() == levelHeight;
+        auto notFound = levels.end();
+        auto searchResult = levels.find(levelHeight);
+
+        return searchResult != notFound;
     }
 
     NodeLevel& getOrCreateLevel(const T& levelHeight) {
