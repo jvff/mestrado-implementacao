@@ -71,3 +71,21 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest, hasTwoLevelsAfterCreatingTwoLevels) {
 
     assertThat(constLevels.numberOfLevels()).isEqualTo(2u);
 }
+
+TEST_F(MaxTreeLevelsCreateTwoLevelsTest, hasCreatedLevels) {
+    auto firstLevelHeight = 75042;
+    auto secondLevelHeight = 345789;
+
+    levels.getOrCreateLevel(DummyType{ firstLevelHeight });
+    levels.getOrCreateLevel(DummyType{ secondLevelHeight });
+
+    verifyIfHasLevels(firstLevelHeight, secondLevelHeight);
+
+    verifyDoesNotHaveLevels(minimumLevel,
+            -firstLevelHeight, -firstLevelHeight - 1, -firstLevelHeight + 1,
+            -secondLevelHeight, -secondLevelHeight - 1, -secondLevelHeight + 1,
+            -345, -3, -2, -1, 0, 1, 2, 3, 345,
+            firstLevelHeight - 1, firstLevelHeight + 1,
+            secondLevelHeight - 1, secondLevelHeight + 1,
+            maximumLevel);
+}
