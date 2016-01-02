@@ -7,7 +7,7 @@
 
 #include "MaxTreeLevels.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 
 class MaxTreeLevelsTest : public ::testing::Test {
 protected:
