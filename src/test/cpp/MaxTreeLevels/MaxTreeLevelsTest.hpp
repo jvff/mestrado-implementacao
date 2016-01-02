@@ -13,6 +13,9 @@ class MaxTreeLevelsTest : public ::testing::Test {
 protected:
     using DummyMaxTreeLevels = MaxTreeLevels<DummyType>;
 
+    static constexpr int minimumLevel = std::numeric_limits<int>::min();
+    static constexpr int maximumLevel = std::numeric_limits<int>::max();
+
     DummyMaxTreeLevels levels;
     const DummyMaxTreeLevels& constLevels;
 

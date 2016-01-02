@@ -57,8 +57,6 @@ TEST_F(MaxTreeLevelsCreateOneLevelTest, hasCreatedLevel) {
     auto negativeLevelHeight = -75042;
     auto negativeLevelHeightBelow = -75043;
     auto negativeLevelHeightAbove = -75040;
-    auto minimumLevel = std::numeric_limits<int>::min();
-    auto maximumLevel = std::numeric_limits<int>::max();
 
     levels.getOrCreateLevel(DummyType{ levelHeight });
 
