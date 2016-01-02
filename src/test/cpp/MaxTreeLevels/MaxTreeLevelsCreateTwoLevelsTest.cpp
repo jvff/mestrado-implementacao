@@ -122,3 +122,13 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
 
     assertThat(firstLevel).isAtSameAddressAs(firstCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
+        firstLevelIsTheSameAsTheSecondCreatedLevel) {
+    levels.getOrCreateLevel(DummyType{ 61200 });
+
+    auto& secondCreatedLevel = levels.getOrCreateLevel(DummyType{ 59783 });
+    auto& firstLevel = levels.getFirstLevel();
+
+    assertThat(firstLevel).isAtSameAddressAs(secondCreatedLevel);
+}
