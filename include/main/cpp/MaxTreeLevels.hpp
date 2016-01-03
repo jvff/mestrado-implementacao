@@ -57,6 +57,10 @@ public:
         return levels.at(levelHeight);
     }
 
+    NodeLevel& findLevelBefore(const T&) {
+        return getFirstLevel();
+    }
+
 private:
     void createLevel(const T& levelHeight) {
         levels.emplace(levelHeight, NodeLevel(levelHeight));
