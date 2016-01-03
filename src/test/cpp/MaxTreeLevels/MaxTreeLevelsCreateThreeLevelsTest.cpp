@@ -32,3 +32,17 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
 
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+        cantRecreateSecondLevelAfterCreatingThirdLevel) {
+    levels.getOrCreateLevel(DummyType{ 109 });
+
+    auto secondLevelHeight = DummyType{ 59783 };
+    auto& createdLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    levels.getOrCreateLevel(DummyType{ 89723 });
+
+    auto& retrievedLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
+}
