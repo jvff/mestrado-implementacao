@@ -82,3 +82,11 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
     assertThat(thirdRetrievedLevel).isAtSameAddressAs(thirdCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest, isNotEmptyAfterCreatingThreeLevels) {
+    levels.getOrCreateLevel(DummyType{ 74931 });
+    levels.getOrCreateLevel(DummyType{ 34028 });
+    levels.getOrCreateLevel(DummyType{ 45980 });
+
+    assertThat(constLevels.isEmpty()).isEqualTo(false);
+}
