@@ -131,3 +131,14 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
     assertThat(firstLevel).isAtSameAddressAs(secondCreatedLevel);
     assertThat(firstLevel).isNotAtSameAddressAs(firstCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateTwoLevelsTest, findsLevelBeforeLast) {
+    auto secondLevelHeight = DummyType{ 71 };
+    auto& firstLevel = levels.getOrCreateLevel(DummyType{ 23 });
+    auto& secondLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    auto& levelBeforeSecond = levels.findLevelBefore(secondLevelHeight);
+
+    assertThat(levelBeforeSecond).isAtSameAddressAs(firstLevel);
+    assertThat(levelBeforeSecond).isNotAtSameAddressAs(secondLevel);
+}
