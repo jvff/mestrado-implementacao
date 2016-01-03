@@ -64,3 +64,21 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
     assertThat(thirdRetrievedLevel).isAtSameAddressAs(thirdCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+        firstSecondAndThirdCreatedLevelsCanBeRetrievedThroughConstReference) {
+    auto firstLevelHeight = DummyType{ 59783 };
+    auto secondLevelHeight = DummyType{ 732 };
+    auto thirdLevelHeight = DummyType{ 4378 };
+    auto& firstCreatedLevel = levels.getOrCreateLevel(firstLevelHeight);
+    auto& secondCreatedLevel = levels.getOrCreateLevel(secondLevelHeight);
+    auto& thirdCreatedLevel = levels.getOrCreateLevel(thirdLevelHeight);
+
+    auto& thirdRetrievedLevel = constLevels.getLevel(thirdLevelHeight);
+    auto& secondRetrievedLevel = constLevels.getLevel(secondLevelHeight);
+    auto& firstRetrievedLevel = constLevels.getLevel(firstLevelHeight);
+
+    assertThat(firstRetrievedLevel).isAtSameAddressAs(firstCreatedLevel);
+    assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
+    assertThat(thirdRetrievedLevel).isAtSameAddressAs(thirdCreatedLevel);
+}
