@@ -90,3 +90,12 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, isNotEmptyAfterCreatingThreeLevels) {
 
     assertThat(constLevels.isEmpty()).isEqualTo(false);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+        hasThreeLevelsAfterCreatingThreeLevels) {
+    levels.getOrCreateLevel(DummyType{ 74931 });
+    levels.getOrCreateLevel(DummyType{ 34028 });
+    levels.getOrCreateLevel(DummyType{ 45980 });
+
+    assertThat(constLevels.numberOfLevels()).isEqualTo(3u);
+}
