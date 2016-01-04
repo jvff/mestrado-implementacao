@@ -146,3 +146,16 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(firstLevel).isNotAtSameAddressAs(secondCreatedLevel);
     assertThat(firstLevel).isNotAtSameAddressAs(firstCreatedLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest, findsLevelBeforeLast) {
+    auto thirdLevelHeight = DummyType{ 71 };
+    auto& secondLevel = levels.getOrCreateLevel(DummyType{ 45 });
+    auto& firstLevel = levels.getOrCreateLevel(DummyType{ 23 });
+    auto& thirdLevel = levels.getOrCreateLevel(thirdLevelHeight);
+
+    auto& levelBeforeThird = levels.findLevelBefore(thirdLevelHeight);
+
+    assertThat(levelBeforeThird).isAtSameAddressAs(secondLevel);
+    assertThat(levelBeforeThird).isNotAtSameAddressAs(firstLevel);
+    assertThat(levelBeforeThird).isNotAtSameAddressAs(thirdLevel);
+}
