@@ -10,6 +10,7 @@ public:
         levels.getOrCreateLevel(DummyType{ 2 });
         levels.getOrCreateLevel(DummyType{ 3 });
         levels.getOrCreateLevel(DummyType{ 4 });
+        levels.getOrCreateLevel(DummyType{ 5 });
     }
 };
 
