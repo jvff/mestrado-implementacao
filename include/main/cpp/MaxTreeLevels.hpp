@@ -57,8 +57,13 @@ public:
         return levels.at(levelHeight);
     }
 
-    NodeLevel& findLevelBefore(const T&) {
-        return getFirstLevel();
+    NodeLevel& findLevelBefore(const T& height) {
+        auto firstPositionAfterOrAtHeight = levels.lower_bound(height);
+        auto& positionBeforeHeight = firstPositionAfterOrAtHeight;
+
+        --positionBeforeHeight;
+
+        return positionBeforeHeight->second;;
     }
 
 private:
