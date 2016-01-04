@@ -66,6 +66,10 @@ public:
         return positionBeforeHeight->second;;
     }
 
+    void removeLevel(const T& height) {
+        levels.erase(height);
+    }
+
 private:
     void createLevel(const T& levelHeight) {
         levels.emplace(levelHeight, NodeLevel(levelHeight));
