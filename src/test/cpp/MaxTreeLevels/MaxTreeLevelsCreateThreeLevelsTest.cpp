@@ -99,3 +99,25 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
 
     assertThat(constLevels.numberOfLevels()).isEqualTo(3u);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest, hasCreatedLevels) {
+    auto firstLevelHeight = 75042;
+    auto secondLevelHeight = 345789;
+    auto thirdLevelHeight = 87942;
+
+    levels.getOrCreateLevel(DummyType{ firstLevelHeight });
+    levels.getOrCreateLevel(DummyType{ secondLevelHeight });
+    levels.getOrCreateLevel(DummyType{ thirdLevelHeight });
+
+    verifyIfHasLevels(firstLevelHeight, secondLevelHeight, thirdLevelHeight);
+
+    verifyDoesNotHaveLevels(minimumLevel,
+            -firstLevelHeight, -firstLevelHeight - 1, -firstLevelHeight + 1,
+            -secondLevelHeight, -secondLevelHeight - 1, -secondLevelHeight + 1,
+            -thirdLevelHeight, -thirdLevelHeight - 1, -thirdLevelHeight + 1,
+            -345, -3, -2, -1, 0, 1, 2, 3, 345,
+            firstLevelHeight - 1, firstLevelHeight + 1,
+            secondLevelHeight - 1, secondLevelHeight + 1,
+            thirdLevelHeight - 1, thirdLevelHeight + 1,
+            maximumLevel);
+}
