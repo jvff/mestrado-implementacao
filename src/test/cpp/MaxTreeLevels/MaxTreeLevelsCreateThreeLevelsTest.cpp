@@ -121,3 +121,16 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, hasCreatedLevels) {
             thirdLevelHeight - 1, thirdLevelHeight + 1,
             maximumLevel);
 }
+
+TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+        firstLevelHeightIsTheSameAsTheThirdCreatedLevelHeight) {
+    auto firstLevelHeight = DummyType{ 93482 };
+    auto secondLevelHeight = DummyType{ 247001 };
+    auto thirdLevelHeight = DummyType{ 100000 };
+
+    levels.getOrCreateLevel(secondLevelHeight);
+    levels.getOrCreateLevel(thirdLevelHeight);
+    levels.getOrCreateLevel(firstLevelHeight);
+
+    assertThat(constLevels.getFirstLevelHeight()).isEqualTo(firstLevelHeight);
+}
