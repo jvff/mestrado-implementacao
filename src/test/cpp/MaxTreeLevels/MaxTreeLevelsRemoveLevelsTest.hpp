@@ -1,0 +1,16 @@
+#ifndef MAX_TREE_LEVELS_REMOVE_LEVELS_TEST_HPP
+#define MAX_TREE_LEVELS_REMOVE_LEVELS_TEST_HPP
+
+#include "MaxTreeLevelsTest.hpp"
+
+class MaxTreeLevelsRemoveLevelsTest : public MaxTreeLevelsTest {
+public:
+    void SetUp() override {
+        levels.getOrCreateLevel(DummyType{ 1 });
+        levels.getOrCreateLevel(DummyType{ 2 });
+        levels.getOrCreateLevel(DummyType{ 3 });
+        levels.getOrCreateLevel(DummyType{ 4 });
+    }
+};
+
+#endif
