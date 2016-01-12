@@ -28,7 +28,7 @@ public:
         return nodes.empty();
     }
 
-    bool hasNode(unsigned int id) {
+    bool hasNode(unsigned int id) const {
         return id < nodes.size();
     }
 
