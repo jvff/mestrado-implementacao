@@ -49,3 +49,32 @@ TEST_F(MaxTreeLevelsReplaceParentsTest, replacesOneParent) {
                 1, 0,
                 2, 0);
 }
+
+TEST_F(MaxTreeLevelsReplaceParentsTest, replacesThreeParents) {
+    createRootLevel(1);
+    createLevelWithParents(2,
+            1, 0,
+            1, 0);
+    createLevelWithParents(5,
+            2, 0,
+            1, 0,
+            2, 1,
+            2, 0,
+            2, 0);
+
+    auto oldParent = getNode(DummyType{ 2 }, 0u);
+    auto newParent = getNode(DummyType{ 2 }, 1u);
+
+    levels.replaceParents(oldParent, newParent);
+
+    verifyTree(DummyType{ 1 },
+            DummyType{ 2 },
+                1, 0,
+                1, 0,
+            DummyType{ 5 },
+                2, 1,
+                1, 0,
+                2, 1,
+                2, 1,
+                2, 1);
+}
