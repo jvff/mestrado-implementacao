@@ -19,6 +19,13 @@ protected:
         return std::make_shared<NodeType>(levelHeight, id);
     }
 
+    NodePointer getNode(const DummyType& levelHeight, unsigned int id) {
+        auto& level = levels.getLevel(levelHeight);
+        auto oldParent = level.getNode(id);
+
+        return oldParent;
+    }
+
     void createRootLevel(int levelHeight) {
         auto& level = levels.getOrCreateLevel(DummyType{ levelHeight });
 
