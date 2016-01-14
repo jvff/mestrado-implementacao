@@ -50,7 +50,7 @@ COMPLEX_FILTER_TEST(oneOfTwoPlateausIsCleared) {
 COMPLEX_FILTER_TEST(adjacentBigAndSmallPlateausAreCleared) {
     TestData<unsigned char>()
         .setDimensions(8, 8)
-        .setMaximumExtremitySize(65)
+        .setMaximumExtremitySize(50)
         .setBackground(30)
         .drawSquare(1, 1, 6, 50)
         .drawSquare(1, 6, 1, 45)
