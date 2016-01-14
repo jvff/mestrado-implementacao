@@ -72,7 +72,16 @@ public:
         levels.erase(height);
     }
 
-    void replaceParents(NodePointer, NodePointer) {
+    void replaceParents(NodePointer oldParent, NodePointer newParent) {
+        auto startLevelHeight = oldParent->getLevel();
+        auto startLevel = levels.find(startLevelHeight);
+        auto endLevel = levels.end();
+
+        for (auto position = startLevel; position != endLevel; ++position) {
+            auto& level = position->second;
+
+            level.replaceParents(oldParent, newParent);
+        }
     }
 
 private:
