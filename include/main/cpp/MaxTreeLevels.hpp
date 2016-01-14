@@ -2,6 +2,7 @@
 #define MAX_TREE_LEVELS_HPP
 
 #include <map>
+#include <memory>
 
 #include "MaxTreeLevel.hpp"
 
@@ -9,6 +10,7 @@ template <typename T>
 class MaxTreeLevels {
 private:
     using NodeLevel = MaxTreeLevel<T>;
+    using NodePointer = std::shared_ptr<MaxTreeNode<T> >;
 
     std::map<T, NodeLevel> levels;
 
@@ -68,6 +70,9 @@ public:
 
     void removeLevel(const T& height) {
         levels.erase(height);
+    }
+
+    void replaceParents(NodePointer, NodePointer) {
     }
 
 private:
