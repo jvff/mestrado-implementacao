@@ -1,4 +1,5 @@
 #include "AreaOpeningMaxTreeImplementationTest.hpp"
+#include "AreaOpeningTests.hpp"
 
 TEST_F(AreaOpeningMaxTreeImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
@@ -19,3 +20,6 @@ TEST_F(AreaOpeningMaxTreeImplementationTest, isConstructibleWithParameters) {
     AssertThat<ImplementationClass>::isConstructible(With<AreaSizeParameter,
             SourceImageParameter, DestinationImageParameter>());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(AreaOpeningMaxTreeImplementationTest,
+        AreaOpeningTests, TestData);

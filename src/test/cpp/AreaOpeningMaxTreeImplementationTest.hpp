@@ -7,7 +7,10 @@
 
 #include "AreaOpeningMaxTreeImplementation.hpp"
 #include "FilterImplementation.hpp"
+#include "SimpleArrayImage.hpp"
 
+#include "AbstractFilterImplementationTestData.hpp"
+#include "AreaOpeningAndClosingTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
@@ -20,5 +23,29 @@ protected:
     using ImplementationClass = AreaOpeningMaxTreeImplementation<
             SourceImageType, DestinationImageType>;
 };
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+class AbstractAreaOpeningMaxTreeImplementationTestData
+        : public AbstractFilterImplementationTestData<
+                AreaOpeningMaxTreeImplementation<ImageType, ImageType>,
+                ImageType, ImageType> {
+private:
+    using ImplementationType = AreaOpeningMaxTreeImplementation<ImageType,
+            ImageType>;
+
+protected:
+    ImplementationType instantiateImplementation(const ImageType& sourceImage,
+            ImageType& destinationImage) override {
+        return ImplementationType(getMaximumExtremitySize(), sourceImage,
+                destinationImage);
+    }
+
+    virtual unsigned int getMaximumExtremitySize() const = 0;
+};
+
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = AreaOpeningAndClosingTestData<
+        AbstractAreaOpeningMaxTreeImplementationTestData<PixelType, ImageType>,
+        PixelType, ImageType>;
 
 #endif
