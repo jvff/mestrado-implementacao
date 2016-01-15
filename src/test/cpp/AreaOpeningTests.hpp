@@ -57,9 +57,18 @@ COMPLEX_FILTER_TEST(adjacentBigAndSmallPlateausAreCleared) {
         .drawSquare(1, 5, 2, 40);
 }
 
+COMPLEX_FILTER_TEST(wholeImageIsFlattened) {
+    TestData<unsigned char>()
+        .setDimensions(8, 8)
+        .setMaximumExtremitySize(65)
+        .setBackground(30)
+        .drawSquare(1, 1, 6, 150)
+        .drawSquare(1, 5, 2, 50);
+}
+
 REGISTER_COMPLEX_FILTER_TEST_CASE(AreaOpeningTests, bigPlateauIsntCleared,
         smallPlateauIsCleared, twoSmallPlateausAreCleared,
         peakIsPartiallyFlattened, oneOfTwoPlateausIsCleared,
-        adjacentBigAndSmallPlateausAreCleared);
+        adjacentBigAndSmallPlateausAreCleared, wholeImageIsFlattened);
 
 #endif
