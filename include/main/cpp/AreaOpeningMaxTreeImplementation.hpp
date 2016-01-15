@@ -39,15 +39,54 @@ public:
 
     void apply() override {
         buildMaxTree();
-        countAreas();
-        propagateAreasFromLeavesToParents();
-        removeNodesWithSmallAreas();
+        filterNodes();
         updateDestinationImage();
     }
 
 private:
     void buildMaxTree() {
         maxTreeImage = maxTreeFilter.apply(sourceImage);
+    }
+
+    void filterNodes() {
+        auto imageArea = width * height;
+
+        if (maximumPeakSize >= imageArea)
+            flattenImage();
+        else
+            filterNodesWithSmallAreas();
+    }
+
+    void flattenImage() {
+        auto rootLevel = getRootLevel();
+
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y)
+                maxTreeImage.setPixel(x, y, rootLevel);
+        }
+    }
+
+    PixelType getRootLevel() {
+        auto& node = maxTreeImage.getPixelNode(0, 0);
+
+        return walkToRootLevel(node);
+    }
+
+    PixelType walkToRootLevel(const NodeType& node) {
+        if (isRootNode(node))
+            return node.getLevel();
+        else
+            return walkToRootLevel(node.getParent());
+    }
+
+    bool isRootNode(const NodeType& node) {
+        return !node.hasParent();
+    }
+
+    void filterNodesWithSmallAreas() {
+        countAreas();
+        propagateAreasFromLeavesToParents();
+        removeNodesWithSmallAreas();
     }
 
     void countAreas() {
