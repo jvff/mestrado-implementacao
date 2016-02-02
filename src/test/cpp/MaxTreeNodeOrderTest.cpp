@@ -12,6 +12,9 @@ TEST(MaxTreeNodeOrderTest, nodeOnLowerLevelComesBeforeNodeOnHigherLevel) {
 
     assertThat(nodeOnLowerLevel).isLessThan(nodeOnHigherLevel);
     assertThat(nodeOnHigherLevel).isNotLessThan(nodeOnLowerLevel);
+
+    assertThat(nodeOnHigherLevel).isGreaterThan(nodeOnLowerLevel);
+    assertThat(nodeOnLowerLevel).isNotGreaterThan(nodeOnHigherLevel);
 }
 
 TEST(MaxTreeNodeOrderTest, nodeWithSmallerIdComesBeforeNodeWithLargerId) {
@@ -22,4 +25,7 @@ TEST(MaxTreeNodeOrderTest, nodeWithSmallerIdComesBeforeNodeWithLargerId) {
 
     assertThat(nodeWithSmallerId).isLessThan(nodeWithLargerId);
     assertThat(nodeWithLargerId).isNotLessThan(nodeWithSmallerId);
+
+    assertThat(nodeWithLargerId).isGreaterThan(nodeWithSmallerId);
+    assertThat(nodeWithSmallerId).isNotGreaterThan(nodeWithLargerId);
 }
