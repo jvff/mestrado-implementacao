@@ -16,7 +16,7 @@ template <typename TypeParameter>
 class MinMaxTreeNodeTest : public ::testing::Test {
 };
 
-#define MIN_MAX_TREE_NODE_TEST(testName) \
+#define TEST_C(testName) \
     CREATE_MIN_MAX_TREE_NODE_TEST_CLASS(testName); \
     REGISTER_MIN_MAX_TREE_NODE_TEST_CASE(testName); \
     START_MIN_MAX_TREE_NODE_TEST_BODY(testName)
