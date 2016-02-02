@@ -1,6 +1,10 @@
 #include "MaxTreeNodeComparisonTest.hpp"
 
-TEST_F(MaxTreeNodeComparisonTest, isComparable) {
+using NodeTypes = ::testing::Types<MaxTreeNode<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeNodeComparisonTest, NodeTypes);
+
+TEST_C(isComparable) {
     auto level = DummyType{ 371 };
     auto id = 85u;
 
@@ -11,7 +15,7 @@ TEST_F(MaxTreeNodeComparisonTest, isComparable) {
     assertThat(secondNode).isEqualTo(firstNode);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentLevelsArentEqual) {
+TEST_C(nodesWithDifferentLevelsArentEqual) {
     auto id = 85u;
 
     const auto firstNode = makeNode(DummyType{ 371 }, id);
@@ -21,7 +25,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentLevelsArentEqual) {
     assertThat(secondNode).isNotEqualTo(firstNode);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentIdsArentEqual) {
+TEST_C(nodesWithDifferentIdsArentEqual) {
     auto level = DummyType{ 794 };
 
     const auto firstNode = makeNode(level, 239u);
@@ -31,7 +35,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentIdsArentEqual) {
     assertThat(secondNode).isNotEqualTo(firstNode);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithParentAndNodeWithoutArentEqual) {
+TEST_C(nodeWithParentAndNodeWithoutArentEqual) {
     auto level = DummyType{ 794 };
     auto id = 279u;
 
@@ -42,7 +46,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithParentAndNodeWithoutArentEqual) {
     assertThat(nodeWithoutParent).isNotEqualTo(nodeWithParent);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithDifferentParentsArentEqual) {
+TEST_C(nodeWithDifferentParentsArentEqual) {
     auto parentLevel = DummyType{ 92 };
     auto parentId = 12u;
 
@@ -56,11 +60,11 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithDifferentParentsArentEqual) {
     assertThat(secondNode).isNotEqualTo(firstNode);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithSameParentAreEqual) {
+TEST_C(nodeWithSameParentAreEqual) {
     auto level = DummyType{ 794 };
     auto id = 279u;
 
-    auto parent = std::make_shared<NodeType>(DummyType{ 92 }, 12u);
+    auto parent = makeNodePointer(DummyType{ 92 }, 12u);
 
     const auto firstNode = makeNode(parent, level, id);
     const auto secondNode = makeNode(parent, level, id);
@@ -69,7 +73,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithSameParentAreEqual) {
     assertThat(secondNode).isEqualTo(firstNode);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, isComparableToEquivalentNode) {
+TEST_C(isComparableToEquivalentNode) {
     auto level = DummyType{ 371 };
     auto id = 85u;
 
@@ -80,7 +84,7 @@ TEST_F(MaxTreeNodeComparisonTest, isComparableToEquivalentNode) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(true);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentLevelsArentEquivalent) {
+TEST_C(nodesWithDifferentLevelsArentEquivalent) {
     auto id = 85u;
 
     const auto firstNode = makeNode(DummyType{ 371 }, id);
@@ -90,7 +94,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentLevelsArentEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentIdsArentEquivalent) {
+TEST_C(nodesWithDifferentIdsArentEquivalent) {
     auto level = DummyType{ 794 };
 
     const auto firstNode = makeNode(level, 239u);
@@ -100,7 +104,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodesWithDifferentIdsArentEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithParentAndNodeWithoutArentEquivalent) {
+TEST_C(nodeWithParentAndNodeWithoutArentEquivalent) {
     auto level = DummyType{ 794 };
     auto id = 279u;
 
@@ -113,7 +117,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithParentAndNodeWithoutArentEquivalent) {
         .isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithDifferentParentsArentEquivalent) {
+TEST_C(nodeWithDifferentParentsArentEquivalent) {
     auto level = DummyType{ 794 };
     auto id = 279u;
 
@@ -124,11 +128,11 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithDifferentParentsArentEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithSameParentAreEquivalent) {
+TEST_C(nodeWithSameParentAreEquivalent) {
     auto level = DummyType{ 794 };
     auto id = 279u;
 
-    auto parent = std::make_shared<NodeType>(DummyType{ 92 }, 12u);
+    auto parent = makeNodePointer(DummyType{ 92 }, 12u);
 
     const auto firstNode = makeNode(parent, level, id);
     const auto secondNode = makeNode(parent, level, id);
@@ -137,7 +141,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithSameParentAreEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(true);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeWithEquivalentParentsAreEquivalent) {
+TEST_C(nodeWithEquivalentParentsAreEquivalent) {
     auto parentLevel = DummyType{ 732 };
     auto parentId = 32u;
 
@@ -151,7 +155,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeWithEquivalentParentsAreEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(true);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeChainWithDifferentIdsArentEquivalent) {
+TEST_C(nodeChainWithDifferentIdsArentEquivalent) {
     auto parentLevel = DummyType{ 732 };
     auto parentId = 32u;
 
@@ -164,7 +168,7 @@ TEST_F(MaxTreeNodeComparisonTest, nodeChainWithDifferentIdsArentEquivalent) {
     assertThat(secondNode.isEquivalentTo(firstNode)).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeComparisonTest, nodeChainWithDifferentLevelsArentEquivalent) {
+TEST_C(nodeChainWithDifferentLevelsArentEquivalent) {
     auto parentLevel = DummyType{ 732 };
     auto parentId = 32u;
 
