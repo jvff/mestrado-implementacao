@@ -1,25 +1,26 @@
 #ifndef MAX_TREE_NODE_HPP
 #define MAX_TREE_NODE_HPP
 
+#include <functional>
 #include <memory>
 
-template <typename T>
-class MaxTreeNode {
+template <typename T, typename LevelComparator>
+class MinMaxTreeNode {
 private:
-    using NodeType = MaxTreeNode<T>;
+    using NodeType = MinMaxTreeNode<T, LevelComparator>;
 
     std::shared_ptr<NodeType> parent;
     T level;
     unsigned int id;
 
 public:
-    MaxTreeNode() {
+    MinMaxTreeNode() {
     }
 
-    MaxTreeNode(const T& level, unsigned int id) : level(level), id(id) {
+    MinMaxTreeNode(const T& level, unsigned int id) : level(level), id(id) {
     }
 
-    MaxTreeNode(const std::shared_ptr<NodeType>& parent, const T& level,
+    MinMaxTreeNode(const std::shared_ptr<NodeType>& parent, const T& level,
             unsigned int id) : parent(parent), level(level), id(id) {
     }
 
@@ -78,8 +79,9 @@ public:
     }
 };
 
-template <typename T>
-bool operator==(const MaxTreeNode<T>& first, const MaxTreeNode<T>& second) {
+template <typename T, typename C>
+bool operator==(const MinMaxTreeNode<T, C>& first,
+        const MinMaxTreeNode<T, C>& second) {
     bool haveParents = first.hasParent() && second.hasParent();
     bool parentsAreEqual;
 
@@ -92,5 +94,8 @@ bool operator==(const MaxTreeNode<T>& first, const MaxTreeNode<T>& second) {
         && first.getId() == second.getId()
         && parentsAreEqual;
 }
+
+template <typename T>
+using MaxTreeNode = MinMaxTreeNode<T, std::less<T> >;
 
 #endif
