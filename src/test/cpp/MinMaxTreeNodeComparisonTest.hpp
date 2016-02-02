@@ -1,11 +1,12 @@
-#ifndef MAX_TREE_NODE_COMPARISON_TEST_HPP
-#define MAX_TREE_NODE_COMPARISON_TEST_HPP
+#ifndef MIN_MAX_TREE_NODE_COMPARISON_TEST_HPP
+#define MIN_MAX_TREE_NODE_COMPARISON_TEST_HPP
 
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
 
 #include "MaxTreeNode.hpp"
+#include "MinTreeNode.hpp"
 
 #include "DummyTypes.hpp"
 
@@ -51,11 +52,11 @@ protected:
 };
 
 #define TEST_C(testName) \
-    CREATE_MAX_TREE_NODE_COMPARISON_TEST_CLASS(testName); \
-    REGISTER_MAX_TREE_NODE_COMPARISON_TEST_CASE(testName); \
-    START_MAX_TREE_NODE_COMPARISON_TEST_BODY(testName)
+    CREATE_MIN_MAX_TREE_NODE_COMPARISON_TEST_CLASS(testName); \
+    REGISTER_MIN_MAX_TREE_NODE_COMPARISON_TEST_CASE(testName); \
+    START_MIN_MAX_TREE_NODE_COMPARISON_TEST_BODY(testName)
 
-#define CREATE_MAX_TREE_NODE_COMPARISON_TEST_CLASS(testName) \
+#define CREATE_MIN_MAX_TREE_NODE_COMPARISON_TEST_CLASS(testName) \
 template <typename TypeParameter> \
 class GTEST_TEST_CLASS_NAME_(MaxTreeNodeComparisonTest, testName) \
         : public MaxTreeNodeComparisonTest<TypeParameter> { \
@@ -69,7 +70,7 @@ private: \
     virtual void TestBody(); \
 }
 
-#define REGISTER_MAX_TREE_NODE_COMPARISON_TEST_CASE(testName) \
+#define REGISTER_MIN_MAX_TREE_NODE_COMPARISON_TEST_CASE(testName) \
     bool gtest_MaxTreeNodeTest_##testName##_registered_ \
         GTEST_ATTRIBUTE_UNUSED_ = ::testing::internal::TypeParameterizedTest< \
             MaxTreeNodeComparisonTest, ::testing::internal::TemplateSel< \
@@ -77,7 +78,7 @@ private: \
             GTEST_TYPE_PARAMS_(MaxTreeNodeComparisonTest)>::Register(\
                 "", "MaxTreeNodeComparisonTest", #testName, 0) \
 
-#define START_MAX_TREE_NODE_COMPARISON_TEST_BODY(testName) \
+#define START_MIN_MAX_TREE_NODE_COMPARISON_TEST_BODY(testName) \
 template <typename TypeParameter> \
 void GTEST_TEST_CLASS_NAME_(MaxTreeNodeComparisonTest, testName)<TypeParameter> \
         ::TestBody()

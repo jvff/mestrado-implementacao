@@ -1,6 +1,7 @@
-#include "MaxTreeNodeComparisonTest.hpp"
+#include "MinMaxTreeNodeComparisonTest.hpp"
 
-using NodeTypes = ::testing::Types<MaxTreeNode<DummyType> >;
+using NodeTypes = ::testing::Types<MaxTreeNode<DummyType>,
+        MinTreeNode<DummyType> >;
 
 TYPED_TEST_CASE(MaxTreeNodeComparisonTest, NodeTypes);
 
