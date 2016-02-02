@@ -1,14 +1,18 @@
 #include "MaxTreeNodeTest.hpp"
 
-TEST_F(MaxTreeNodeTest, structTemplateExists) {
+using NodeTypes = ::testing::Types<MaxTreeNode<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeNodeTest, NodeTypes);
+
+TYPED_TEST(MaxTreeNodeTest, structTemplateExists) {
     AssertThat<MaxTreeNode<DummyType> >::isClassOrStruct();
 }
 
-TEST_F(MaxTreeNodeTest, hasDefaultConstructor) {
+TYPED_TEST(MaxTreeNodeTest, hasDefaultConstructor) {
     AssertThat<MaxTreeNode<DummyType> >::isConstructible(WithoutParameters());
 }
 
-TEST_F(MaxTreeNodeTest, hasValueConstructor) {
+TYPED_TEST(MaxTreeNodeTest, hasValueConstructor) {
     using ParentParameter = const std::shared_ptr<MaxTreeNode<DummyType> >&;
     using LevelParameter = const DummyType&;
     using IdParameter = unsigned int;
@@ -17,7 +21,7 @@ TEST_F(MaxTreeNodeTest, hasValueConstructor) {
             With<ParentParameter, LevelParameter, IdParameter>());
 }
 
-TEST_F(MaxTreeNodeTest, hasValueConstructorWithoutParent) {
+TYPED_TEST(MaxTreeNodeTest, hasValueConstructorWithoutParent) {
     using LevelParameter = const DummyType&;
     using IdParameter = unsigned int;
 
@@ -25,7 +29,7 @@ TEST_F(MaxTreeNodeTest, hasValueConstructorWithoutParent) {
             With<LevelParameter, IdParameter>());
 }
 
-TEST_F(MaxTreeNodeTest, hasGetIdMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasGetIdMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
     const auto node = MaxTreeNode<DummyType>{ level, id };
@@ -33,7 +37,7 @@ TEST_F(MaxTreeNodeTest, hasGetIdMethod) {
     assertThat(node.getId()).isEqualTo(id);
 }
 
-TEST_F(MaxTreeNodeTest, hasSetIdMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasSetIdMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
     auto newId = 761u;
@@ -44,7 +48,7 @@ TEST_F(MaxTreeNodeTest, hasSetIdMethod) {
     assertThat(node.getId()).isEqualTo(newId);
 }
 
-TEST_F(MaxTreeNodeTest, hasGetLevelMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasGetLevelMethod) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
     const auto node = MaxTreeNode<DummyType>{ level, id };
@@ -52,7 +56,7 @@ TEST_F(MaxTreeNodeTest, hasGetLevelMethod) {
     assertThat(node.getLevel()).isEqualTo(level);
 }
 
-TEST_F(MaxTreeNodeTest, hasSetLevelMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasSetLevelMethod) {
     auto level = DummyType{ 1390 };
     auto newLevel = DummyType{ 2485 };
     auto id = 15u;
@@ -63,7 +67,7 @@ TEST_F(MaxTreeNodeTest, hasSetLevelMethod) {
     assertThat(node.getLevel()).isEqualTo(newLevel);
 }
 
-TEST_F(MaxTreeNodeTest, hasParentMethodReturnsFalseForNewNode) {
+TYPED_TEST(MaxTreeNodeTest, hasParentMethodReturnsFalseForNewNode) {
     auto level = DummyType{ 1390 };
     auto id = 15u;
     const auto node = MaxTreeNode<DummyType>{ level, id };
@@ -71,7 +75,7 @@ TEST_F(MaxTreeNodeTest, hasParentMethodReturnsFalseForNewNode) {
     assertThat(node.hasParent()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeTest, hasParentMethodReturnsTreeForNewNodeWithParent) {
+TYPED_TEST(MaxTreeNodeTest, hasParentMethodReturnsTreeForNewNodeWithParent) {
     auto parentLevel = DummyType{ 6178 };
     auto parentId = 21u;
     auto childLevel = DummyType{ 10401 };
@@ -85,7 +89,7 @@ TEST_F(MaxTreeNodeTest, hasParentMethodReturnsTreeForNewNodeWithParent) {
     assertThat(childNode.hasParent()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeNodeTest, hasGetParentMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasGetParentMethod) {
     auto parentLevel = DummyType{ 6178 };
     auto parentId = 21u;
     auto childLevel = DummyType{ 10401 };
@@ -102,7 +106,7 @@ TEST_F(MaxTreeNodeTest, hasGetParentMethod) {
     assertThat(result.getId()).isEqualTo(parentId);
 }
 
-TEST_F(MaxTreeNodeTest, getParentMethodReturnsConstReference) {
+TYPED_TEST(MaxTreeNodeTest, getParentMethodReturnsConstReference) {
     auto level = DummyType{ 932 };
     auto id = 901u;
     const auto node = MaxTreeNode<DummyType>(level, id);
@@ -110,7 +114,7 @@ TEST_F(MaxTreeNodeTest, getParentMethodReturnsConstReference) {
     AssertThat<decltype(node.getParent())>::isConstReference();
 }
 
-TEST_F(MaxTreeNodeTest, hasSetParentMethod) {
+TYPED_TEST(MaxTreeNodeTest, hasSetParentMethod) {
     auto parentLevel = DummyType{ 6178 };
     auto parentId = 21u;
     auto childLevel = DummyType{ 10401 };
@@ -132,7 +136,7 @@ TEST_F(MaxTreeNodeTest, hasSetParentMethod) {
     assertThat(result.getId()).isEqualTo(newParentId);
 }
 
-TEST_F(MaxTreeNodeTest, canBeConstructedWithoutParent) {
+TYPED_TEST(MaxTreeNodeTest, canBeConstructedWithoutParent) {
     DummyType level = { 4119 };
     unsigned int id = 109;
 
@@ -143,7 +147,7 @@ TEST_F(MaxTreeNodeTest, canBeConstructedWithoutParent) {
     assertThat(node.hasParent()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeTest, canBeConstructedWithParent) {
+TYPED_TEST(MaxTreeNodeTest, canBeConstructedWithParent) {
     auto parentLevel = DummyType{ 90 };
     auto parentId = 3u;
 

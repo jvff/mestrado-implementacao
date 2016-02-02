@@ -11,6 +11,7 @@
 
 #include "DummyTypes.hpp"
 
+template <typename NodeType>
 class MaxTreeNodeTest : public ::testing::Test {
 };
 
