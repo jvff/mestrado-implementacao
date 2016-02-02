@@ -6,7 +6,9 @@
 template <typename T>
 class MaxTreeNode {
 private:
-    std::shared_ptr<MaxTreeNode<T> > parent;
+    using NodeType = MaxTreeNode<T>;
+
+    std::shared_ptr<NodeType> parent;
     T level;
     unsigned int id;
 
@@ -17,7 +19,7 @@ public:
     MaxTreeNode(const T& level, unsigned int id) : level(level), id(id) {
     }
 
-    MaxTreeNode(const std::shared_ptr<MaxTreeNode<T> >& parent, const T& level,
+    MaxTreeNode(const std::shared_ptr<NodeType>& parent, const T& level,
             unsigned int id) : parent(parent), level(level), id(id) {
     }
 
@@ -41,15 +43,15 @@ public:
         return (bool)parent;
     }
 
-    const MaxTreeNode<T>& getParent() const {
+    const NodeType& getParent() const {
         return *parent;
     }
 
-    void setParent(const std::shared_ptr<MaxTreeNode>& newParent) {
+    void setParent(const std::shared_ptr<NodeType>& newParent) {
         parent = newParent;
     }
 
-    bool isEquivalentTo(const MaxTreeNode<T>& otherNode) const {
+    bool isEquivalentTo(const NodeType& otherNode) const {
         if (*this == otherNode)
             return true;
 
@@ -66,7 +68,7 @@ public:
             && parentsAreEquivalent;
     }
 
-    bool operator<(const MaxTreeNode<T>& otherNode) const {
+    bool operator<(const NodeType& otherNode) const {
         if (level < otherNode.level)
             return true;
         else if (level > otherNode.level)
