@@ -76,6 +76,15 @@ public:
         else
             return id < otherNode.id;
     }
+
+    bool operator>(const NodeType& otherNode) const {
+        if (level > otherNode.level)
+            return true;
+        else if (level < otherNode.level)
+            return false;
+        else
+            return id > otherNode.id;
+    }
 };
 
 template <typename T, typename C>
