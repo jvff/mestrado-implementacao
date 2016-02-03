@@ -69,9 +69,11 @@ public:
     }
 
     bool operator<(const NodeType& otherNode) const {
-        if (level < otherNode.level)
+        LevelOrderComparator isBefore;
+
+        if (isBefore(level, otherNode.level))
             return true;
-        else if (level > otherNode.level)
+        else if (level != otherNode.level)
             return false;
         else
             return id < otherNode.id;
