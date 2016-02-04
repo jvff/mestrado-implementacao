@@ -1,17 +1,18 @@
-#include "MaxTreeLevelTest.hpp"
+#include "MinMaxTreeLevelTest.hpp"
 
-using NodeTypes = ::testing::Types<std::less<DummyType> >;
+using NodeTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
 
-TYPED_TEST_CASE(MaxTreeLevelTest, NodeTypes);
+TYPED_TEST_CASE(MinMaxTreeLevelTest, NodeTypes);
 
 TEST_C(classTemplateExists) {
-    AssertThat<DummyMaxTreeLevel>::isClassOrStruct();
+    AssertThat<DummyMinMaxTreeLevel>::isClassOrStruct();
 }
 
 TEST_C(isConstructibleWithLevelParameter) {
     using LevelParameter = const DummyType&;
 
-    AssertThat<DummyMaxTreeLevel>::isConstructible(With<LevelParameter>());
+    AssertThat<DummyMinMaxTreeLevel>::isConstructible(With<LevelParameter>());
 }
 
 TEST_C(levelHeightIsRetrievable) {

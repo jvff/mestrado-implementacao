@@ -9,10 +9,10 @@
 
 #include "asserts.hpp"
 
-#include "MaxTreeLevelTest.hpp"
+#include "MinMaxTreeLevelTest.hpp"
 
 class MaxTreeLevelNodeRetrievalTest
-        : public MaxTreeLevelTest<std::less<DummyType> > {
+        : public MinMaxTreeLevelTest<std::less<DummyType> > {
 protected:
     using Statement = std::function<void()>;
 

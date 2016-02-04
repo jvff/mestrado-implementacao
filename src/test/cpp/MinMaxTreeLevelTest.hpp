@@ -1,5 +1,5 @@
-#ifndef MAX_TREE_LEVEL_TEST_HPP
-#define MAX_TREE_LEVEL_TEST_HPP
+#ifndef MIN_MAX_TREE_LEVEL_TEST_HPP
+#define MIN_MAX_TREE_LEVEL_TEST_HPP
 
 #include <functional>
 #include <memory>
@@ -8,25 +8,26 @@
 
 #include "asserts.hpp"
 
-#include "MaxTreeLevel.hpp"
+#include "MinMaxTreeLevel.hpp"
 
 #include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
 
 template <typename TypeParameter>
-class MaxTreeLevelTest : public ::testing::Test {
+class MinMaxTreeLevelTest : public ::testing::Test {
 protected:
     using LevelOrderComparator = TypeParameter;
-    using DummyMaxTreeLevel = MinMaxTreeLevel<DummyType, LevelOrderComparator>;
+    using DummyMinMaxTreeLevel = MinMaxTreeLevel<DummyType,
+            LevelOrderComparator>;
     using NodeType = MinMaxTreeNode<DummyType, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
     DummyType levelHeight;
-    DummyMaxTreeLevel level;
-    const DummyMaxTreeLevel& constLevel;
+    DummyMinMaxTreeLevel level;
+    const DummyMinMaxTreeLevel& constLevel;
 
 public:
-    MaxTreeLevelTest() : levelHeight(DummyType{ 201 }), level(levelHeight),
+    MinMaxTreeLevelTest() : levelHeight(DummyType{ 201 }), level(levelHeight),
             constLevel(level) {
     }
 
@@ -82,17 +83,17 @@ protected:
 };
 
 #define TEST_C(testName) \
-    CREATE_MAX_TREE_LEVEL_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MaxTreeLevelTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MaxTreeLevelTest, testName)
+    CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevelTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevelTest, testName)
 
-#define CREATE_MAX_TREE_LEVEL_TEST_CLASS(testName) \
+#define CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MaxTreeLevelTest, testName) \
-        : public MaxTreeLevelTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(MinMaxTreeLevelTest, testName) \
+        : public MinMaxTreeLevelTest<TypeParameter> { \
 private: \
-    using SuperClass = MaxTreeLevelTest<TypeParameter>; \
-    using DummyMaxTreeLevel = typename SuperClass::DummyMaxTreeLevel; \
+    using SuperClass = MinMaxTreeLevelTest<TypeParameter>; \
+    using DummyMinMaxTreeLevel = typename SuperClass::DummyMinMaxTreeLevel; \
     using NodeType = typename SuperClass::NodeType; \
 \
     using SuperClass::levelHeight; \

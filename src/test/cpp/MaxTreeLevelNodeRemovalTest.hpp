@@ -7,10 +7,10 @@
 
 #include "asserts.hpp"
 
-#include "MaxTreeLevelTest.hpp"
+#include "MinMaxTreeLevelTest.hpp"
 
 class MaxTreeLevelNodeRemovalTest
-        : public MaxTreeLevelTest<std::less<DummyType> > {
+        : public MinMaxTreeLevelTest<std::less<DummyType> > {
 };
 
 #endif
