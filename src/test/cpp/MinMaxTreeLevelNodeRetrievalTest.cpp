@@ -1,8 +1,9 @@
-#include "MaxTreeLevelNodeRetrievalTest.hpp"
+#include "MinMaxTreeLevelNodeRetrievalTest.hpp"
 
-using NodeTypes = ::testing::Types<std::less<DummyType> >;
+using NodeTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
 
-TYPED_TEST_CASE(MaxTreeLevelNodeRetrievalTest, NodeTypes);
+TYPED_TEST_CASE(MinMaxTreeLevelNodeRetrievalTest, NodeTypes);
 
 TEST_C(cantRetrieveInexistentNode) {
     auto maximumId = std::numeric_limits<unsigned int>::max();

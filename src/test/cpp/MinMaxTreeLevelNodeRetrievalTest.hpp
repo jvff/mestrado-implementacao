@@ -1,5 +1,5 @@
-#ifndef MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
-#define MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
+#ifndef MIN_MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
+#define MIN_MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
 
 #include <functional>
 #include <limits>
@@ -12,7 +12,7 @@
 #include "MinMaxTreeLevelTest.hpp"
 
 template <typename LevelOrderComparator>
-class MaxTreeLevelNodeRetrievalTest
+class MinMaxTreeLevelNodeRetrievalTest
         : public MinMaxTreeLevelTest<LevelOrderComparator> {
 protected:
     using Statement = std::function<void()>;
@@ -32,16 +32,16 @@ protected:
 
 #undef TEST_C
 #define TEST_C(testName) \
-    CREATE_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MaxTreeLevelNodeRetrievalTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MaxTreeLevelNodeRetrievalTest, testName)
+    CREATE_MIN_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevelNodeRetrievalTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevelNodeRetrievalTest, testName)
 
-#define CREATE_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName) \
+#define CREATE_MIN_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MaxTreeLevelNodeRetrievalTest, testName) \
-        : public MaxTreeLevelNodeRetrievalTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(MinMaxTreeLevelNodeRetrievalTest, testName) \
+        : public MinMaxTreeLevelNodeRetrievalTest<TypeParameter> { \
 private: \
-    using SuperClass = MaxTreeLevelNodeRetrievalTest<TypeParameter>; \
+    using SuperClass = MinMaxTreeLevelNodeRetrievalTest<TypeParameter>; \
 \
     using SuperClass::level; \
     using SuperClass::constLevel; \
