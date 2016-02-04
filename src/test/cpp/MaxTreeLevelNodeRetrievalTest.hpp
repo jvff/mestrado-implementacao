@@ -12,7 +12,8 @@
 
 #include "MaxTreeLevelTest.hpp"
 
-class MaxTreeLevelNodeRetrievalTest : public MaxTreeLevelTest {
+class MaxTreeLevelNodeRetrievalTest
+        : public MaxTreeLevelTest<MaxTreeLevel<DummyType> > {
 protected:
     using Statement = std::function<void()>;
 

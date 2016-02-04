@@ -1,36 +1,40 @@
 #include "MaxTreeLevelTest.hpp"
 
-TEST_F(MaxTreeLevelTest, classTemplateExists) {
+using NodeTypes = ::testing::Types<MaxTreeLevel<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeLevelTest, NodeTypes);
+
+TEST_C(classTemplateExists) {
     AssertThat<DummyMaxTreeLevel>::isClassOrStruct();
 }
 
-TEST_F(MaxTreeLevelTest, isConstructibleWithLevelParameter) {
+TEST_C(isConstructibleWithLevelParameter) {
     using LevelParameter = const DummyType&;
 
     AssertThat<DummyMaxTreeLevel>::isConstructible(With<LevelParameter>());
 }
 
-TEST_F(MaxTreeLevelTest, levelHeightIsRetrievable) {
+TEST_C(levelHeightIsRetrievable) {
     assertThat(constLevel.getLevel()).isEqualTo(levelHeight);
 }
 
-TEST_F(MaxTreeLevelTest, isInitiallyEmpty) {
+TEST_C(isInitiallyEmpty) {
     assertThat(level.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeLevelTest, isNotEmpyAfterAddingNode) {
+TEST_C(isNotEmpyAfterAddingNode) {
     level.addNode();
 
     assertThat(level.isEmpty()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToFirstNode) {
+TEST_C(addNodeReturnsPointerToFirstNode) {
     auto firstNode = level.addNode();
 
     verifyNode(firstNode, 0u);
 }
 
-TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToSecondNode) {
+TEST_C(addNodeReturnsPointerToSecondNode) {
     auto firstNode = level.addNode();
     auto secondNode = level.addNode();
 
@@ -38,7 +42,7 @@ TEST_F(MaxTreeLevelTest, addNodeReturnsPointerToSecondNode) {
     verifyNode(secondNode, 1u);
 }
 
-TEST_F(MaxTreeLevelTest, hasMethodToReplaceParents) {
+TEST_C(hasMethodToReplaceParents) {
     auto firstNode = level.addNode();
     auto secondNode = level.addNode();
     auto thirdNode = level.addNode();
@@ -60,7 +64,7 @@ TEST_F(MaxTreeLevelTest, hasMethodToReplaceParents) {
     verifyNode(fourthNode, 3u, newParent);
 }
 
-TEST_F(MaxTreeLevelTest, hasMethodToCheckIfNodeExists) {
+TEST_C(hasMethodToCheckIfNodeExists) {
     auto maximumId = std::numeric_limits<unsigned int>::max();
 
     level.addNode();
@@ -75,7 +79,7 @@ TEST_F(MaxTreeLevelTest, hasMethodToCheckIfNodeExists) {
     assertThat(constLevel.hasNode(maximumId)).isEqualTo(false);
 }
 
-TEST_F(MaxTreeLevelTest, nodesCanBeCollapsed) {
+TEST_C(nodesCanBeCollapsed) {
     auto firstNode = level.addNode();
     auto secondNode = level.addNode();
     auto thirdNode = level.addNode();

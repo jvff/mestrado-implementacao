@@ -9,7 +9,8 @@
 
 #include "MaxTreeLevelTest.hpp"
 
-class MaxTreeLevelNodeRemovalTest : public MaxTreeLevelTest {
+class MaxTreeLevelNodeRemovalTest
+        : public MaxTreeLevelTest<MaxTreeLevel<DummyType> > {
 };
 
 #endif

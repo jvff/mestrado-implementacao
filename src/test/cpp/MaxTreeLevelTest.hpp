@@ -9,11 +9,13 @@
 
 #include "MaxTreeLevel.hpp"
 
+#include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
 
+template <typename TypeParameter>
 class MaxTreeLevelTest : public ::testing::Test {
 protected:
-    using DummyMaxTreeLevel = MaxTreeLevel<DummyType>;
+    using DummyMaxTreeLevel = TypeParameter;
     using NodeType = MaxTreeNode<DummyType>;
     using NodePointer = std::shared_ptr<NodeType>;
 
@@ -76,5 +78,28 @@ protected:
         assertThat(node.getId()).isEqualTo(expectedId);
     }
 };
+
+#define TEST_C(testName) \
+    CREATE_MAX_TREE_LEVEL_TEST_CLASS(testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MaxTreeLevelTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MaxTreeLevelTest, testName)
+
+#define CREATE_MAX_TREE_LEVEL_TEST_CLASS(testName) \
+template <typename TypeParameter> \
+class GTEST_TEST_CLASS_NAME_(MaxTreeLevelTest, testName) \
+        : public MaxTreeLevelTest<TypeParameter> { \
+private: \
+    using SuperClass = MaxTreeLevelTest<TypeParameter>; \
+    using DummyMaxTreeLevel = typename SuperClass::DummyMaxTreeLevel; \
+    using NodeType = typename SuperClass::NodeType; \
+\
+    using SuperClass::levelHeight; \
+    using SuperClass::level; \
+    using SuperClass::constLevel; \
+\
+    using SuperClass::verifyNode; \
+\
+    virtual void TestBody(); \
+}
 
 #endif
