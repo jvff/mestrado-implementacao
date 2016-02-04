@@ -10,6 +10,7 @@
 #include "MaxTreeNode.hpp"
 #include "MinTreeNode.hpp"
 
+#include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
 
 template <typename TypeParameter>
@@ -18,8 +19,8 @@ class MinMaxTreeNodeTest : public ::testing::Test {
 
 #define TEST_C(testName) \
     CREATE_MIN_MAX_TREE_NODE_TEST_CLASS(testName); \
-    REGISTER_MIN_MAX_TREE_NODE_TEST_CASE(testName); \
-    START_MIN_MAX_TREE_NODE_TEST_BODY(testName)
+    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeNodeTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeNodeTest, testName)
 
 #define CREATE_MIN_MAX_TREE_NODE_TEST_CLASS(testName) \
 template <typename TypeParameter> \
@@ -30,18 +31,5 @@ private: \
 \
     virtual void TestBody(); \
 }
-
-#define REGISTER_MIN_MAX_TREE_NODE_TEST_CASE(testName) \
-    bool gtest_MinMaxTreeNodeTest_##testName##_registered_ \
-        GTEST_ATTRIBUTE_UNUSED_ = ::testing::internal::TypeParameterizedTest< \
-            MinMaxTreeNodeTest, ::testing::internal::TemplateSel< \
-                GTEST_TEST_CLASS_NAME_(MinMaxTreeNodeTest, testName)>, \
-            GTEST_TYPE_PARAMS_(MinMaxTreeNodeTest)>::Register(\
-                "", "MinMaxTreeNodeTest", #testName, 0) \
-
-#define START_MIN_MAX_TREE_NODE_TEST_BODY(testName) \
-template <typename TypeParameter> \
-void GTEST_TEST_CLASS_NAME_(MinMaxTreeNodeTest, testName)<TypeParameter> \
-        ::TestBody()
 
 #endif
