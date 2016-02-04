@@ -1,6 +1,10 @@
 #include "MaxTreeLevelNodeRemovalTest.hpp"
 
-TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfLastNode) {
+using NodeTypes = ::testing::Types<std::less<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeLevelNodeRemovalTest, NodeTypes);
+
+TEST_C(testRemovalOfLastNode) {
     level.addNode();
     auto secondNode = level.addNode();
     level.addNode();
@@ -14,7 +18,7 @@ TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfLastNode) {
     assertThat(latestNode).isEqualTo(secondNode);
 }
 
-TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfFirstNode) {
+TEST_C(testRemovalOfFirstNode) {
     level.addNode();
     level.addNode();
     auto lastNode = level.addNode();
@@ -33,7 +37,7 @@ TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfFirstNode) {
     assertThat(latestNode).isEqualTo(lastNode);
 }
 
-TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfMiddleNode) {
+TEST_C(testRemovalOfMiddleNode) {
     level.addNode();
     level.addNode();
     auto lastNode = level.addNode();
@@ -52,7 +56,7 @@ TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfMiddleNode) {
     assertThat(latestNode).isEqualTo(lastNode);
 }
 
-TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfAllNodes) {
+TEST_C(testRemovalOfAllNodes) {
     level.addNode();
     level.addNode();
 
@@ -62,7 +66,7 @@ TEST_F(MaxTreeLevelNodeRemovalTest, testRemovalOfAllNodes) {
     assertThat(level.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeLevelNodeRemovalTest, removingThenAddingNodeRecreatesIt) {
+TEST_C(removingThenAddingNodeRecreatesIt) {
     auto initialNode = level.addNode();
 
     level.removeNode(0u);
@@ -75,7 +79,7 @@ TEST_F(MaxTreeLevelNodeRemovalTest, removingThenAddingNodeRecreatesIt) {
     assertThat(newNode).isNotEqualTo(initialNode);
 }
 
-TEST_F(MaxTreeLevelNodeRemovalTest, cantRemoveInexistentNodes) {
+TEST_C(cantRemoveInexistentNodes) {
     auto firstNode = level.addNode();
     auto secondNode = level.addNode();
 
