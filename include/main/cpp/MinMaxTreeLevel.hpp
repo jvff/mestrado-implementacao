@@ -10,7 +10,7 @@
 template <typename T, typename LevelOrderComparator>
 class MinMaxTreeLevel {
 private:
-    using NodeType = MaxTreeNode<T>;
+    using NodeType = MinMaxTreeNode<T, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
     T level;
