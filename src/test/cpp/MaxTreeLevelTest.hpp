@@ -1,6 +1,7 @@
 #ifndef MAX_TREE_LEVEL_TEST_HPP
 #define MAX_TREE_LEVEL_TEST_HPP
 
+#include <functional>
 #include <memory>
 
 #include <gtest/gtest.h>
@@ -15,8 +16,9 @@
 template <typename TypeParameter>
 class MaxTreeLevelTest : public ::testing::Test {
 protected:
-    using DummyMaxTreeLevel = TypeParameter;
-    using NodeType = MaxTreeNode<DummyType>;
+    using LevelOrderComparator = TypeParameter;
+    using DummyMaxTreeLevel = MinMaxTreeLevel<DummyType, LevelOrderComparator>;
+    using NodeType = MinMaxTreeNode<DummyType, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
     DummyType levelHeight;

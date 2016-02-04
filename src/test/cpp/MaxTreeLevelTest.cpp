@@ -1,6 +1,6 @@
 #include "MaxTreeLevelTest.hpp"
 
-using NodeTypes = ::testing::Types<MaxTreeLevel<DummyType> >;
+using NodeTypes = ::testing::Types<std::less<DummyType> >;
 
 TYPED_TEST_CASE(MaxTreeLevelTest, NodeTypes);
 

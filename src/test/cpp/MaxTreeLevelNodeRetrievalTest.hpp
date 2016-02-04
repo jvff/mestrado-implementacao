@@ -1,6 +1,7 @@
 #ifndef MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
 #define MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
 
+#include <functional>
 #include <limits>
 #include <string>
 
@@ -8,12 +9,10 @@
 
 #include "asserts.hpp"
 
-#include "MaxTreeLevel.hpp"
-
 #include "MaxTreeLevelTest.hpp"
 
 class MaxTreeLevelNodeRetrievalTest
-        : public MaxTreeLevelTest<MaxTreeLevel<DummyType> > {
+        : public MaxTreeLevelTest<std::less<DummyType> > {
 protected:
     using Statement = std::function<void()>;
 
