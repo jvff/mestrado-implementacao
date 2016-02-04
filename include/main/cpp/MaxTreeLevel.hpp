@@ -1,14 +1,15 @@
 #ifndef MAX_TREE_LEVEL_HPP
 #define MAX_TREE_LEVEL_HPP
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "MaxTreeNode.hpp"
 
-template <typename T>
-class MaxTreeLevel {
+template <typename T, typename LevelOrderComparator>
+class MinMaxTreeLevel {
 private:
     using NodeType = MaxTreeNode<T>;
     using NodePointer = std::shared_ptr<NodeType>;
@@ -17,7 +18,7 @@ private:
     std::vector<NodePointer> nodes;
 
 public:
-    MaxTreeLevel(const T& level) : level(level) {
+    MinMaxTreeLevel(const T& level) : level(level) {
     }
 
     T getLevel() const {
@@ -102,5 +103,8 @@ private:
             node->setParent(newParent);
     }
 };
+
+template <typename T>
+using MaxTreeLevel = MinMaxTreeLevel<T, std::less<T> >;
 
 #endif
