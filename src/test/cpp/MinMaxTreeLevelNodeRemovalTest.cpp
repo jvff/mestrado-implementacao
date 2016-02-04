@@ -1,8 +1,9 @@
-#include "MaxTreeLevelNodeRemovalTest.hpp"
+#include "MinMaxTreeLevelNodeRemovalTest.hpp"
 
-using NodeTypes = ::testing::Types<std::less<DummyType> >;
+using NodeTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
 
-TYPED_TEST_CASE(MaxTreeLevelNodeRemovalTest, NodeTypes);
+TYPED_TEST_CASE(MinMaxTreeLevelNodeRemovalTest, NodeTypes);
 
 TEST_C(testRemovalOfLastNode) {
     level.addNode();
