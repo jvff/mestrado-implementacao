@@ -1,6 +1,10 @@
 #include "MaxTreeLevelNodeRetrievalTest.hpp"
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveInexistentNode) {
+using NodeTypes = ::testing::Types<std::less<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeLevelNodeRetrievalTest, NodeTypes);
+
+TEST_C(cantRetrieveInexistentNode) {
     auto maximumId = std::numeric_limits<unsigned int>::max();
 
     level.addNode();
@@ -13,7 +17,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveInexistentNode) {
     verifyInexistentNodeException([&] () { level.getNode(maximumId); });
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveReferenceToInexistentNode) {
+TEST_C(cantRetrieveReferenceToInexistentNode) {
     auto maximumId = std::numeric_limits<unsigned int>::max();
 
     level.addNode();
@@ -27,7 +31,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, cantRetrieveReferenceToInexistentNode) {
             [&] () { level.getNodeReference(maximumId); });
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, nodesAreRetrievable) {
+TEST_C(nodesAreRetrievable) {
     level.addNode();
     level.addNode();
     level.addNode();
@@ -41,7 +45,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, nodesAreRetrievable) {
     verifyNode(thirdNode, 2u);
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, retrievedNodesAreTheSameAsNewNodes) {
+TEST_C(retrievedNodesAreTheSameAsNewNodes) {
     auto firstNewNode = level.addNode();
     auto secondNewNode = level.addNode();
     auto thirdNewNode = level.addNode();
@@ -63,7 +67,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, retrievedNodesAreTheSameAsNewNodes) {
     assertThat(thirdNode).isEqualTo(thirdNewNode);
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, constReferenceToNodeCanBeRetrieved) {
+TEST_C(constReferenceToNodeCanBeRetrieved) {
     level.addNode();
     level.addNode();
     level.addNode();
@@ -89,13 +93,13 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, constReferenceToNodeCanBeRetrieved) {
     assertThat(*thirdNode).isAtSameAddressAs(thirdNodeReference);
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, getNodeReferenceReturnsConstReference) {
+TEST_C(getNodeReferenceReturnsConstReference) {
     level.addNode();
 
     AssertThat<decltype(level.getNodeReference(0u))>::isConstReference();
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest, getLatestNodeReturnsLatestNode) {
+TEST_C(getLatestNodeReturnsLatestNode) {
     level.addNode();
     level.addNode();
     level.addNode();
@@ -110,8 +114,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest, getLatestNodeReturnsLatestNode) {
     assertThat(latestNode).isEqualTo(lastNodeAdded);
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest,
-        constReferenceToLatestNodeCanBeRetrieved) {
+TEST_C(constReferenceToLatestNodeCanBeRetrieved) {
     level.addNode();
     level.addNode();
     level.addNode();
@@ -128,8 +131,7 @@ TEST_F(MaxTreeLevelNodeRetrievalTest,
     assertThat(latestNodeReference).isAtSameAddressAs(*latestNode);
 }
 
-TEST_F(MaxTreeLevelNodeRetrievalTest,
-        getLatestNodeReferenceReturnsConstReference) {
+TEST_C(getLatestNodeReferenceReturnsConstReference) {
     level.addNode();
 
     AssertThat<decltype(level.getLatestNodeReference())>::isConstReference();
