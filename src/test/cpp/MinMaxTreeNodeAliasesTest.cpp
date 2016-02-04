@@ -9,14 +9,14 @@
 
 #include "DummyTypes.hpp"
 
-TEST(MinMaxTreeNodeAliasTest, aliasForMaxTreeNodeExists) {
+TEST(MinMaxTreeNodeAliasesTest, aliasForMaxTreeNodeExists) {
     using MaxTreeNodeAlias = MaxTreeNode<DummyType>;
     using ExpectedType = MinMaxTreeNode<DummyType, std::less<DummyType> >;
 
     AssertThat<MaxTreeNodeAlias>::isTheSame(As<ExpectedType>());
 }
 
-TEST(MinMaxTreeNodeAliasTest, aliasForMinTreeNodeExists) {
+TEST(MinMaxTreeNodeAliasesTest, aliasForMinTreeNodeExists) {
     using MinTreeNodeAlias = MinTreeNode<DummyType>;
     using ExpectedType = MinMaxTreeNode<DummyType, std::greater<DummyType> >;
 
