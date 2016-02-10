@@ -7,8 +7,10 @@
 
 #include "MaxTreeLevels.hpp"
 
+#include "../CustomTypedTestMacros.hpp"
 #include "../DummyTypes.hpp"
 
+template <typename TypeParameter>
 class MaxTreeLevelsTest : public ::testing::Test {
 protected:
     using DummyMaxTreeLevels = MaxTreeLevels<DummyType>;
@@ -44,5 +46,24 @@ protected:
         verifyDoesNotHaveLevels(remainingLevels...);
     }
 };
+
+#define TEST_C(testName) \
+    CREATE_MAX_TREE_LEVELS_TEST_CLASS(testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MaxTreeLevelsTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MaxTreeLevelsTest, testName)
+
+#define CREATE_MAX_TREE_LEVELS_TEST_CLASS(testName) \
+template <typename TypeParameter> \
+class GTEST_TEST_CLASS_NAME_(MaxTreeLevelsTest, testName) \
+        : public MaxTreeLevelsTest<TypeParameter> { \
+private: \
+    using SuperClass = MaxTreeLevelsTest<TypeParameter>; \
+    using DummyMaxTreeLevels = typename SuperClass::DummyMaxTreeLevels; \
+\
+    using SuperClass::levels; \
+    using SuperClass::constLevels; \
+\
+    virtual void TestBody(); \
+}
 
 #endif

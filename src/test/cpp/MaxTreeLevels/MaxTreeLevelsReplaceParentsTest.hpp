@@ -1,6 +1,7 @@
 #ifndef MAX_TREE_LEVELS_REPLACE_PARENTS_TEST_HPP
 #define MAX_TREE_LEVELS_REPLACE_PARENTS_TEST_HPP
 
+#include <functional>
 #include <memory>
 
 #include "MaxTreeLevel.hpp"
@@ -8,7 +9,8 @@
 
 #include "MaxTreeLevelsTest.hpp"
 
-class MaxTreeLevelsReplaceParentsTest : public MaxTreeLevelsTest {
+class MaxTreeLevelsReplaceParentsTest
+        : public MaxTreeLevelsTest<std::less<DummyType> > {
 protected:
     using NodeType = MaxTreeNode<DummyType>;
     using NodeLevel = MaxTreeLevel<DummyType>;
