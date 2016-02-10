@@ -6,8 +6,8 @@
 
 #include "MaxTreeLevel.hpp"
 
-template <typename T>
-class MaxTreeLevels {
+template <typename T, typename LevelOrderComparator>
+class MinMaxTreeLevels {
 private:
     using NodeLevel = MaxTreeLevel<T>;
     using NodePointer = std::shared_ptr<MaxTreeNode<T> >;
@@ -89,5 +89,8 @@ private:
         levels.emplace(levelHeight, NodeLevel(levelHeight));
     }
 };
+
+template <typename T>
+using MaxTreeLevels = MinMaxTreeLevels<T, std::less<T> >;
 
 #endif
