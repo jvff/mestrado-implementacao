@@ -47,17 +47,17 @@ protected:
     }
 };
 
-#define TEST_C(testName) \
-    CREATE_MAX_TREE_LEVELS_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MaxTreeLevelsTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MaxTreeLevelsTest, testName)
+#define TEST_C(testFixture, testName) \
+    CREATE_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName); \
+    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
 
-#define CREATE_MAX_TREE_LEVELS_TEST_CLASS(testName) \
+#define CREATE_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MaxTreeLevelsTest, testName) \
-        : public MaxTreeLevelsTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
+        : public testFixture<TypeParameter> { \
 private: \
-    using SuperClass = MaxTreeLevelsTest<TypeParameter>; \
+    using SuperClass = testFixture<TypeParameter>; \
     using DummyMaxTreeLevels = typename SuperClass::DummyMaxTreeLevels; \
 \
     using SuperClass::levels; \
