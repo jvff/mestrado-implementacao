@@ -1,17 +1,17 @@
-#ifndef MAX_TREE_LEVELS_TEST_HPP
-#define MAX_TREE_LEVELS_TEST_HPP
+#ifndef MIN_MAX_TREE_LEVELS_TEST_HPP
+#define MIN_MAX_TREE_LEVELS_TEST_HPP
 
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
 
-#include "MaxTreeLevels.hpp"
+#include "MinMaxTreeLevels.hpp"
 
 #include "../CustomTypedTestMacros.hpp"
 #include "../DummyTypes.hpp"
 
 template <typename TypeParameter>
-class MaxTreeLevelsTest : public ::testing::Test {
+class MinMaxTreeLevelsTest : public ::testing::Test {
 protected:
     using LevelOrderComparator = TypeParameter;
     using DummyMinMaxTreeLevels = MinMaxTreeLevels<DummyType,
@@ -24,7 +24,7 @@ protected:
     const DummyMinMaxTreeLevels& constLevels;
 
 protected:
-    MaxTreeLevelsTest() : constLevels(levels) {
+    MinMaxTreeLevelsTest() : constLevels(levels) {
     }
 
     void verifyIfHasLevels(int level) {
@@ -50,11 +50,11 @@ protected:
 };
 
 #define TEST_C(testFixture, testName) \
-    CREATE_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName); \
+    CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName); \
     REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
     START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
 
-#define CREATE_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName) \
+#define CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
 class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
         : public testFixture<TypeParameter> { \

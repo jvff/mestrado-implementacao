@@ -3,10 +3,10 @@
 
 #include <functional>
 
-#include "MaxTreeLevelsTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
 class MaxTreeLevelsCreateThreeLevelsTest
-        : public MaxTreeLevelsTest<std::less<DummyType> > {
+        : public MinMaxTreeLevelsTest<std::less<DummyType> > {
 };
 
 #endif

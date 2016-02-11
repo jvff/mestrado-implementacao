@@ -7,10 +7,10 @@
 #include "MaxTreeLevel.hpp"
 #include "MaxTreeNode.hpp"
 
-#include "MaxTreeLevelsTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
 class MaxTreeLevelsReplaceParentsTest
-        : public MaxTreeLevelsTest<std::less<DummyType> > {
+        : public MinMaxTreeLevelsTest<std::less<DummyType> > {
 protected:
     using NodeType = MaxTreeNode<DummyType>;
     using NodeLevel = MaxTreeLevel<DummyType>;

@@ -3,10 +3,10 @@
 
 #include <functional>
 
-#include "MaxTreeLevelsTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
 class MaxTreeLevelsRemoveLevelsTest
-        : public MaxTreeLevelsTest<std::less<DummyType> > {
+        : public MinMaxTreeLevelsTest<std::less<DummyType> > {
 public:
     void SetUp() override {
         levels.getOrCreateLevel(DummyType{ 1 });
