@@ -13,13 +13,15 @@
 template <typename TypeParameter>
 class MaxTreeLevelsTest : public ::testing::Test {
 protected:
-    using DummyMaxTreeLevels = MaxTreeLevels<DummyType>;
+    using LevelOrderComparator = TypeParameter;
+    using DummyMinMaxTreeLevels = MinMaxTreeLevels<DummyType,
+            LevelOrderComparator>;
 
     static constexpr int minimumLevel = std::numeric_limits<int>::min();
     static constexpr int maximumLevel = std::numeric_limits<int>::max();
 
-    DummyMaxTreeLevels levels;
-    const DummyMaxTreeLevels& constLevels;
+    DummyMinMaxTreeLevels levels;
+    const DummyMinMaxTreeLevels& constLevels;
 
 protected:
     MaxTreeLevelsTest() : constLevels(levels) {
@@ -58,7 +60,7 @@ class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
         : public testFixture<TypeParameter> { \
 private: \
     using SuperClass = testFixture<TypeParameter>; \
-    using DummyMaxTreeLevels = typename SuperClass::DummyMaxTreeLevels; \
+    using DummyMinMaxTreeLevels = typename SuperClass::DummyMinMaxTreeLevels; \
 \
     using SuperClass::levels; \
     using SuperClass::constLevels; \

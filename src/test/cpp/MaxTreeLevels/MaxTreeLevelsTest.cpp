@@ -1,11 +1,12 @@
 #include "MaxTreeLevelsTest.hpp"
 
-using levelComparatorTypes = ::testing::Types<std::less<DummyType> >;
+using levelComparatorTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
 
 TYPED_TEST_CASE(MaxTreeLevelsTest, levelComparatorTypes);
 
 TEST_C(MaxTreeLevelsTest, classTemplateExists) {
-    AssertThat<DummyMaxTreeLevels>::isClassOrStruct();
+    AssertThat<DummyMinMaxTreeLevels>::isClassOrStruct();
 }
 
 TEST_C(MaxTreeLevelsTest, levelsCanBeRetrievedAsConstOrNot) {
