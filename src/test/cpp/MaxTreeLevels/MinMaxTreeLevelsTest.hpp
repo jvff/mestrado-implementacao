@@ -1,6 +1,8 @@
 #ifndef MIN_MAX_TREE_LEVELS_TEST_HPP
 #define MIN_MAX_TREE_LEVELS_TEST_HPP
 
+#include <functional>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
@@ -49,10 +51,26 @@ protected:
     }
 };
 
+using levelComparatorTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
+
+#define SUB_TEST(testFixture) \
+    CREATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(MinMaxTreeLevels##testFixture); \
+    INSTANTIATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(MinMaxTreeLevels##testFixture)
+
+#define CREATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(testFixture) \
+template <typename TypeParameter> \
+class testFixture : public MinMaxTreeLevelsTest<TypeParameter> { \
+}
+
+#define INSTANTIATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(testFixture) \
+    TYPED_TEST_CASE(testFixture, levelComparatorTypes)
+
 #define TEST_C(testFixture, testName) \
-    CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName); \
-    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
+    CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(MinMaxTreeLevels##testFixture, \
+            testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevels##testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevels##testFixture, testName)
 
 #define CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
