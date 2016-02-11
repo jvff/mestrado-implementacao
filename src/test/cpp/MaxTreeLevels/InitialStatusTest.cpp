@@ -1,14 +1,16 @@
-#include "MaxTreeLevelsInitialStatusTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
-TEST_F(MaxTreeLevelsInitialStatusTest, isInitiallyEmpty) {
+SUB_TEST(InitialStatusTest);
+
+TEST_C(InitialStatusTest, isInitiallyEmpty) {
     assertThat(constLevels.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeLevelsInitialStatusTest, initiallyHasZeroLevels) {
+TEST_C(InitialStatusTest, initiallyHasZeroLevels) {
     assertThat(constLevels.numberOfLevels()).isEqualTo(0u);
 }
 
-TEST_F(MaxTreeLevelsInitialStatusTest, initiallHasNoLevels) {
+TEST_C(InitialStatusTest, initiallHasNoLevels) {
     verifyDoesNotHaveLevels(minimumLevel, -345, -3, -2, -1, 0, 1, 2, 3, 345,
             75042, maximumLevel);
 }

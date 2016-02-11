@@ -80,8 +80,13 @@ private: \
     using SuperClass = testFixture<TypeParameter>; \
     using DummyMinMaxTreeLevels = typename SuperClass::DummyMinMaxTreeLevels; \
 \
+    using SuperClass::minimumLevel; \
+    using SuperClass::maximumLevel; \
+\
     using SuperClass::levels; \
     using SuperClass::constLevels; \
+\
+    using SuperClass::verifyDoesNotHaveLevels; \
 \
     virtual void TestBody(); \
 }
