@@ -5,6 +5,7 @@
 #include "asserts.hpp"
 
 #include "MaxTree.hpp"
+#include "MinTree.hpp"
 
 #include "DummyTypes.hpp"
 
@@ -13,4 +14,11 @@ TEST(MinMaxTreeAliasesTest, aliasForMaxTreeExists) {
     using ExpectedType = MinMaxTree<DummyType, std::less<DummyType> >;
 
     AssertThat<MaxTreeAlias>::isTheSame(As<ExpectedType>());
+}
+
+TEST(MinMaxTreeAliasesTest, aliasForMinTreeExists) {
+    using MinTreeAlias = MinTree<DummyType>;
+    using ExpectedType = MinMaxTree<DummyType, std::greater<DummyType> >;
+
+    AssertThat<MinTreeAlias>::isTheSame(As<ExpectedType>());
 }
