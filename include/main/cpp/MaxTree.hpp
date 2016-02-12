@@ -1,6 +1,7 @@
 #ifndef MAX_TREE_HPP
 #define MAX_TREE_HPP
 
+#include <functional>
 #include <map>
 #include <memory>
 
@@ -8,8 +9,8 @@
 #include "MaxTreeLevel.hpp"
 #include "MaxTreeLevels.hpp"
 
-template <typename T>
-class MaxTree {
+template <typename T, typename LevelOrderComparator>
+class MinMaxTree {
 private:
     using NodeType = MaxTreeNode<T>;
     using NodeLevel = MaxTreeLevel<T>;
@@ -149,5 +150,8 @@ private:
             levels.removeLevel(level);
     }
 };
+
+template <typename T>
+using MaxTree = MinMaxTree<T, std::less<T> >;
 
 #endif
