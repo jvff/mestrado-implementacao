@@ -29,6 +29,39 @@ protected:
     MinMaxTreeLevelsTest() : constLevels(levels) {
     }
 
+    DummyType getFirstLevelHeightFrom(const DummyType& firstCandidate,
+            const DummyType& secondCandidate) {
+        LevelOrderComparator isBefore;
+
+        if (isBefore(firstCandidate, secondCandidate))
+            return firstCandidate;
+        else
+            return secondCandidate;
+    }
+
+    DummyType getSecondLevelHeightFrom(const DummyType& firstCandidate,
+            const DummyType& secondCandidate) {
+        LevelOrderComparator isBefore;
+
+        if (isBefore(firstCandidate, secondCandidate))
+            return secondCandidate;
+        else
+            return firstCandidate;
+    }
+
+    const DummyMinMaxTreeLevels& getFirstLevelFrom(
+            const DummyMinMaxTreeLevels& firstCandidate,
+            const DummyMinMaxTreeLevels& secondCandidate) {
+        LevelOrderComparator isBefore;
+        auto firstCandidateHeight = firstCandidate.getLevelHeight();
+        auto secondCandidateHeight = secondCandidate.getLevelHeight();
+
+        if (isBefore(firstCandidateHeight, secondCandidateHeight))
+            return firstCandidate;
+        else
+            return secondCandidate;
+    }
+
     void verifyIfHasLevels(int level) {
         assertThat(constLevels.hasLevel(DummyType{ level })).isEqualTo(true);
     }
@@ -86,6 +119,9 @@ private: \
     using SuperClass::levels; \
     using SuperClass::constLevels; \
 \
+    using SuperClass::getFirstLevelHeightFrom; \
+    using SuperClass::getSecondLevelHeightFrom; \
+    using SuperClass::getFirstLevelFrom; \
     using SuperClass::verifyIfHasLevels; \
     using SuperClass::verifyDoesNotHaveLevels; \
 \

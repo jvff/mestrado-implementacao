@@ -1,6 +1,8 @@
-#include "MaxTreeLevelsCreateTwoLevelsTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, secondCreatedLevelHasCorrectHeight) {
+SUB_TEST(CreateTwoLevelsTest);
+
+TEST_C(CreateTwoLevelsTest, secondCreatedLevelHasCorrectHeight) {
     levels.getOrCreateLevel(DummyType{ 14931 });
 
     auto secondLevelHeight = DummyType{ 24931 };
@@ -9,7 +11,7 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest, secondCreatedLevelHasCorrectHeight) {
     assertThat(secondLevel.getLevel()).isEqualTo(secondLevelHeight);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, secondCreatedLevelIsEmpty) {
+TEST_C(CreateTwoLevelsTest, secondCreatedLevelIsEmpty) {
     levels.getOrCreateLevel(DummyType{ 14931 });
 
     auto secondLevelHeight = DummyType{ 24931 };
@@ -18,8 +20,7 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest, secondCreatedLevelIsEmpty) {
     assertThat(secondLevel.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
-        cantRecreateFirstLevelAfterCreatingSecondLevel) {
+TEST_C(CreateTwoLevelsTest, cantRecreateFirstLevelAfterCreatingSecondLevel) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto& createdLevel = levels.getOrCreateLevel(firstLevelHeight);
 
@@ -30,8 +31,7 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
-        firstAndSecondCreatedLevelsCanBeRetrieved) {
+TEST_C(CreateTwoLevelsTest, firstAndSecondCreatedLevelsCanBeRetrieved) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto secondLevelHeight = DummyType{ 732 };
     auto& firstCreatedLevel = levels.getOrCreateLevel(firstLevelHeight);
@@ -44,7 +44,7 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
     assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
+TEST_C(CreateTwoLevelsTest,
         firstAndSecondCreatedLevelsCanBeRetrievedThroughConstReference) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto secondLevelHeight = DummyType{ 732 };
@@ -58,21 +58,21 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
     assertThat(secondRetrievedLevel).isAtSameAddressAs(secondCreatedLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, isNotEmptyAfterCreatingTwoLevels) {
+TEST_C(CreateTwoLevelsTest, isNotEmptyAfterCreatingTwoLevels) {
     levels.getOrCreateLevel(DummyType{ 74931 });
     levels.getOrCreateLevel(DummyType{ 34028 });
 
     assertThat(constLevels.isEmpty()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, hasTwoLevelsAfterCreatingTwoLevels) {
+TEST_C(CreateTwoLevelsTest, hasTwoLevelsAfterCreatingTwoLevels) {
     levels.getOrCreateLevel(DummyType{ 74931 });
     levels.getOrCreateLevel(DummyType{ 34028 });
 
     assertThat(constLevels.numberOfLevels()).isEqualTo(2u);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, hasCreatedLevels) {
+TEST_C(CreateTwoLevelsTest, hasCreatedLevels) {
     auto firstLevelHeight = 75042;
     auto secondLevelHeight = 345789;
 
@@ -90,55 +90,62 @@ TEST_F(MaxTreeLevelsCreateTwoLevelsTest, hasCreatedLevels) {
             maximumLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
+TEST_C(CreateTwoLevelsTest,
         firstLevelHeightIsTheSameAsTheFirstCreatedLevelHeight) {
-    auto firstLevelHeight = DummyType{ 93482 };
-    auto secondLevelHeight = DummyType{ 247001 };
+    auto firstHeight = DummyType{ 93482 };
+    auto secondHeight = DummyType{ 247001 };
+    auto firstLevelHeight = getFirstLevelHeightFrom(firstHeight, secondHeight);
 
-    levels.getOrCreateLevel(firstLevelHeight);
-    levels.getOrCreateLevel(secondLevelHeight);
+    levels.getOrCreateLevel(firstHeight);
+    levels.getOrCreateLevel(secondHeight);
 
     assertThat(constLevels.getFirstLevelHeight()).isEqualTo(firstLevelHeight);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
+TEST_C(CreateTwoLevelsTest,
         firstLevelHeightIsTheSameAsTheSecondCreatedLevelHeight) {
-    auto firstLevelHeight = DummyType{ 93482 };
-    auto secondLevelHeight = DummyType{ 247001 };
+    auto firstHeight = DummyType{ 247001 };
+    auto secondHeight = DummyType{ 93482 };
+    auto firstLevelHeight = getFirstLevelHeightFrom(firstHeight, secondHeight);
 
-    levels.getOrCreateLevel(secondLevelHeight);
-    levels.getOrCreateLevel(firstLevelHeight);
+    levels.getOrCreateLevel(firstHeight);
+    levels.getOrCreateLevel(secondHeight);
 
     assertThat(constLevels.getFirstLevelHeight()).isEqualTo(firstLevelHeight);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
-        firstLevelIsTheSameAsTheFirstCreatedLevel) {
+TEST_C(CreateTwoLevelsTest, firstLevelIsTheSameAsTheFirstCreatedLevel) {
     auto& firstCreatedLevel = levels.getOrCreateLevel(DummyType{ 59783 });
     auto& secondCreatedLevel = levels.getOrCreateLevel(DummyType{ 61200 });
+    auto& expectedFirstLevel = getFirstLevelFrom(firstCreatedLevel,
+            secondCreatedLevel);
     auto& firstLevel = levels.getFirstLevel();
 
-    assertThat(firstLevel).isAtSameAddressAs(firstCreatedLevel);
-    assertThat(firstLevel).isNotAtSameAddressAs(secondCreatedLevel);
+    assertThat(firstLevel).isAtSameAddressAs(expectedFirstLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest,
-        firstLevelIsTheSameAsTheSecondCreatedLevel) {
+TEST_C(CreateTwoLevelsTest, firstLevelIsTheSameAsTheSecondCreatedLevel) {
     auto& firstCreatedLevel = levels.getOrCreateLevel(DummyType{ 61200 });
     auto& secondCreatedLevel = levels.getOrCreateLevel(DummyType{ 59783 });
+    auto& expectedFirstLevel = getFirstLevelFrom(firstCreatedLevel,
+            secondCreatedLevel);
     auto& firstLevel = levels.getFirstLevel();
 
-    assertThat(firstLevel).isAtSameAddressAs(secondCreatedLevel);
-    assertThat(firstLevel).isNotAtSameAddressAs(firstCreatedLevel);
+    assertThat(firstLevel).isAtSameAddressAs(expectedFirstLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateTwoLevelsTest, findsLevelBeforeLast) {
-    auto secondLevelHeight = DummyType{ 71 };
-    auto& firstLevel = levels.getOrCreateLevel(DummyType{ 23 });
-    auto& secondLevel = levels.getOrCreateLevel(secondLevelHeight);
+TEST_C(CreateTwoLevelsTest, findsLevelBeforeLast) {
+    auto firstHeight = DummyType{ 23 };
+    auto secondHeight = DummyType{ 71 };
+
+    auto& firstCreatedLevel = levels.getOrCreateLevel(firstHeight);
+    auto& secondCreatedLevel = levels.getOrCreateLevel(secondHeight);
+
+    auto& firstLevel = getFirstLevelFrom(firstCreatedLevel, secondCreatedLevel);
+    auto secondLevelHeight = getSecondLevelHeightFrom(firstHeight,
+            secondHeight);
 
     auto& levelBeforeSecond = levels.findLevelBefore(secondLevelHeight);
 
     assertThat(levelBeforeSecond).isAtSameAddressAs(firstLevel);
-    assertThat(levelBeforeSecond).isNotAtSameAddressAs(secondLevel);
 }
