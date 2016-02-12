@@ -163,6 +163,7 @@ private: \
     using SuperClass = testFixture<TypeParameter>; \
     using DummyMinMaxTreeLevels = typename SuperClass::DummyMinMaxTreeLevels; \
     using LevelOrderComparator = typename SuperClass::LevelOrderComparator; \
+    using NodeLevel = typename SuperClass::NodeLevel; \
 \
     using SuperClass::minimumLevel; \
     using SuperClass::maximumLevel; \
