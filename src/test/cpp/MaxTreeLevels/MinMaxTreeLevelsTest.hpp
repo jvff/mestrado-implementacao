@@ -135,10 +135,11 @@ using levelComparatorTypes = ::testing::Types<std::less<DummyType>,
         std::greater<DummyType> >;
 
 #define SUB_TEST(testFixture) \
-    CREATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(MinMaxTreeLevels##testFixture); \
+    CREATE_EMPTY_MIN_MAX_TREE_LEVELS_TEST_FIXTURE( \
+            MinMaxTreeLevels##testFixture); \
     INSTANTIATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(MinMaxTreeLevels##testFixture)
 
-#define CREATE_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(testFixture) \
+#define CREATE_EMPTY_MIN_MAX_TREE_LEVELS_TEST_FIXTURE(testFixture) \
 template <typename TypeParameter> \
 class testFixture : public MinMaxTreeLevelsTest<TypeParameter> { \
 }
@@ -152,6 +153,8 @@ class testFixture : public MinMaxTreeLevelsTest<TypeParameter> { \
     REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevels##testFixture, testName); \
     START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevels##testFixture, testName)
 
+#define CUSTOM_SUB_TEST_ADDITIONAL_MEMBERS
+
 #define CREATE_MIN_MAX_TREE_LEVELS_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
 class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
@@ -159,6 +162,7 @@ class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
 private: \
     using SuperClass = testFixture<TypeParameter>; \
     using DummyMinMaxTreeLevels = typename SuperClass::DummyMinMaxTreeLevels; \
+    using LevelOrderComparator = typename SuperClass::LevelOrderComparator; \
 \
     using SuperClass::minimumLevel; \
     using SuperClass::maximumLevel; \
@@ -172,6 +176,8 @@ private: \
     using SuperClass::getSecondLevelFrom; \
     using SuperClass::verifyIfHasLevels; \
     using SuperClass::verifyDoesNotHaveLevels; \
+\
+    CUSTOM_SUB_TEST_ADDITIONAL_MEMBERS \
 \
     virtual void TestBody(); \
 }
