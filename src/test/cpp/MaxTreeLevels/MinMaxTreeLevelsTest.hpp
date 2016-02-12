@@ -86,6 +86,7 @@ private: \
     using SuperClass::levels; \
     using SuperClass::constLevels; \
 \
+    using SuperClass::verifyIfHasLevels; \
     using SuperClass::verifyDoesNotHaveLevels; \
 \
     virtual void TestBody(); \
