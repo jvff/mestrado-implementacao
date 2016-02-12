@@ -3,9 +3,9 @@
 
 #include <functional>
 
-#include "MaxTreeTest.hpp"
+#include "MinMaxTreeTest.hpp"
 
-class MaxTreeNodeRemovalTest : public MaxTreeTest<std::less<DummyType> > {
+class MaxTreeNodeRemovalTest : public MinMaxTreeTest<std::less<DummyType> > {
 };
 
 #endif
