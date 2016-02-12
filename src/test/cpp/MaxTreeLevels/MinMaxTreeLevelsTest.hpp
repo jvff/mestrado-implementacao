@@ -40,7 +40,15 @@ protected:
             return secondCandidate;
     }
 
-    DummyType getSecondLevelHeightFrom(const DummyType& firstCandidate,
+    DummyType getFirstLevelHeightFrom(const DummyType& firstCandidate,
+            const DummyType& secondCandidate, const DummyType& thirdCandidate) {
+        auto firstResult = getFirstLevelHeightFrom(firstCandidate,
+                secondCandidate);
+
+        return getFirstLevelHeightFrom(firstResult, thirdCandidate);
+    }
+
+    DummyType getLastLevelHeightFrom(const DummyType& firstCandidate,
             const DummyType& secondCandidate) {
         LevelOrderComparator isBefore;
 
@@ -48,6 +56,14 @@ protected:
             return secondCandidate;
         else
             return firstCandidate;
+    }
+
+    DummyType getLastLevelHeightFrom(const DummyType& firstCandidate,
+            const DummyType& secondCandidate, const DummyType& thirdCandidate) {
+        auto firstResult = getLastLevelHeightFrom(firstCandidate,
+                secondCandidate);
+
+        return getLastLevelHeightFrom(firstResult, thirdCandidate);
     }
 
     const NodeLevel& getFirstLevelFrom(const NodeLevel& firstCandidate,
@@ -60,6 +76,37 @@ protected:
             return firstCandidate;
         else
             return secondCandidate;
+    }
+
+    const NodeLevel& getFirstLevelFrom(const NodeLevel& firstCandidate,
+            const NodeLevel& secondCandidate, const NodeLevel& thirdCandidate) {
+        auto& firstResult = getFirstLevelFrom(firstCandidate, secondCandidate);
+
+        return getFirstLevelFrom(firstResult, thirdCandidate);
+    }
+
+    const NodeLevel& getSecondLevelFrom(const NodeLevel& firstCandidate,
+            const NodeLevel& secondCandidate, const NodeLevel& thirdCandidate) {
+        LevelOrderComparator isBefore;
+        auto firstCandidateHeight = firstCandidate.getLevel();
+        auto secondCandidateHeight = secondCandidate.getLevel();
+        auto thirdCandidateHeight = thirdCandidate.getLevel();
+
+        if (isBefore(firstCandidateHeight, secondCandidateHeight)) {
+            if (isBefore(thirdCandidateHeight, firstCandidateHeight))
+                return firstCandidate;
+            else if (isBefore(thirdCandidateHeight, secondCandidateHeight))
+                return thirdCandidate;
+            else
+                return secondCandidate;
+        } else {
+            if (isBefore(thirdCandidateHeight, secondCandidateHeight))
+                return secondCandidate;
+            else if (isBefore(thirdCandidateHeight, firstCandidateHeight))
+                return thirdCandidate;
+            else
+                return firstCandidate;
+        }
     }
 
     void verifyIfHasLevels(int level) {
@@ -120,8 +167,9 @@ private: \
     using SuperClass::constLevels; \
 \
     using SuperClass::getFirstLevelHeightFrom; \
-    using SuperClass::getSecondLevelHeightFrom; \
+    using SuperClass::getLastLevelHeightFrom; \
     using SuperClass::getFirstLevelFrom; \
+    using SuperClass::getSecondLevelFrom; \
     using SuperClass::verifyIfHasLevels; \
     using SuperClass::verifyDoesNotHaveLevels; \
 \

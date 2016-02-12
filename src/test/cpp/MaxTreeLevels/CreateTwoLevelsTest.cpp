@@ -142,8 +142,7 @@ TEST_C(CreateTwoLevelsTest, findsLevelBeforeLast) {
     auto& secondCreatedLevel = levels.getOrCreateLevel(secondHeight);
 
     auto& firstLevel = getFirstLevelFrom(firstCreatedLevel, secondCreatedLevel);
-    auto secondLevelHeight = getSecondLevelHeightFrom(firstHeight,
-            secondHeight);
+    auto secondLevelHeight = getLastLevelHeightFrom(firstHeight, secondHeight);
 
     auto& levelBeforeSecond = levels.findLevelBefore(secondLevelHeight);
 

@@ -1,6 +1,8 @@
-#include "MaxTreeLevelsCreateThreeLevelsTest.hpp"
+#include "MinMaxTreeLevelsTest.hpp"
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest, thirdCreatedLevelHasCorrectHeight) {
+SUB_TEST(CreateThreeLevelsTest);
+
+TEST_C(CreateThreeLevelsTest, thirdCreatedLevelHasCorrectHeight) {
     levels.getOrCreateLevel(DummyType{ 14931 });
     levels.getOrCreateLevel(DummyType{ 23098 });
 
@@ -10,7 +12,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, thirdCreatedLevelHasCorrectHeight) {
     assertThat(thirdLevel.getLevel()).isEqualTo(thirdLevelHeight);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest, thirdCreatedLevelIsEmpty) {
+TEST_C(CreateThreeLevelsTest, thirdCreatedLevelIsEmpty) {
     levels.getOrCreateLevel(DummyType{ 14931 });
     levels.getOrCreateLevel(DummyType{ 20398 });
 
@@ -20,8 +22,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, thirdCreatedLevelIsEmpty) {
     assertThat(thirdLevel.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
-        cantRecreateFirstLevelAfterCreatingThirdLevel) {
+TEST_C(CreateThreeLevelsTest, cantRecreateFirstLevelAfterCreatingThirdLevel) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto& createdLevel = levels.getOrCreateLevel(firstLevelHeight);
 
@@ -33,8 +34,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
-        cantRecreateSecondLevelAfterCreatingThirdLevel) {
+TEST_C(CreateThreeLevelsTest, cantRecreateSecondLevelAfterCreatingThirdLevel) {
     levels.getOrCreateLevel(DummyType{ 109 });
 
     auto secondLevelHeight = DummyType{ 59783 };
@@ -47,8 +47,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(retrievedLevel).isAtSameAddressAs(createdLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
-        firstSecondAndThirdCreatedLevelsCanBeRetrieved) {
+TEST_C(CreateThreeLevelsTest, firstSecondAndThirdCreatedLevelsCanBeRetrieved) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto secondLevelHeight = DummyType{ 732 };
     auto thirdLevelHeight = DummyType{ 4378 };
@@ -65,7 +64,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(thirdRetrievedLevel).isAtSameAddressAs(thirdCreatedLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+TEST_C(CreateThreeLevelsTest,
         firstSecondAndThirdCreatedLevelsCanBeRetrievedThroughConstReference) {
     auto firstLevelHeight = DummyType{ 59783 };
     auto secondLevelHeight = DummyType{ 732 };
@@ -83,7 +82,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(thirdRetrievedLevel).isAtSameAddressAs(thirdCreatedLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest, isNotEmptyAfterCreatingThreeLevels) {
+TEST_C(CreateThreeLevelsTest, isNotEmptyAfterCreatingThreeLevels) {
     levels.getOrCreateLevel(DummyType{ 74931 });
     levels.getOrCreateLevel(DummyType{ 34028 });
     levels.getOrCreateLevel(DummyType{ 45980 });
@@ -91,8 +90,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, isNotEmptyAfterCreatingThreeLevels) {
     assertThat(constLevels.isEmpty()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
-        hasThreeLevelsAfterCreatingThreeLevels) {
+TEST_C(CreateThreeLevelsTest, hasThreeLevelsAfterCreatingThreeLevels) {
     levels.getOrCreateLevel(DummyType{ 74931 });
     levels.getOrCreateLevel(DummyType{ 34028 });
     levels.getOrCreateLevel(DummyType{ 45980 });
@@ -100,7 +98,7 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
     assertThat(constLevels.numberOfLevels()).isEqualTo(3u);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest, hasCreatedLevels) {
+TEST_C(CreateThreeLevelsTest, hasCreatedLevels) {
     auto firstLevelHeight = 75042;
     auto secondLevelHeight = 345789;
     auto thirdLevelHeight = 87942;
@@ -122,40 +120,47 @@ TEST_F(MaxTreeLevelsCreateThreeLevelsTest, hasCreatedLevels) {
             maximumLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
+TEST_C(CreateThreeLevelsTest,
         firstLevelHeightIsTheSameAsTheThirdCreatedLevelHeight) {
-    auto firstLevelHeight = DummyType{ 93482 };
-    auto secondLevelHeight = DummyType{ 247001 };
-    auto thirdLevelHeight = DummyType{ 100000 };
+    auto firstHeight = DummyType{ 247001 };
+    auto secondHeight = DummyType{ 100000 };
+    auto thirdHeight = DummyType{ 93482 };
+    auto firstLevelHeight = getFirstLevelHeightFrom(firstHeight, secondHeight,
+            thirdHeight);
 
-    levels.getOrCreateLevel(secondLevelHeight);
-    levels.getOrCreateLevel(thirdLevelHeight);
-    levels.getOrCreateLevel(firstLevelHeight);
+    levels.getOrCreateLevel(firstHeight);
+    levels.getOrCreateLevel(secondHeight);
+    levels.getOrCreateLevel(thirdHeight);
 
     assertThat(constLevels.getFirstLevelHeight()).isEqualTo(firstLevelHeight);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest,
-        firstLevelIsTheSameAsTheThirdCreatedLevel) {
+TEST_C(CreateThreeLevelsTest, firstLevelIsTheSameAsTheThirdCreatedLevel) {
     auto& firstCreatedLevel = levels.getOrCreateLevel(DummyType{ 61200 });
     auto& secondCreatedLevel = levels.getOrCreateLevel(DummyType{ 59783 });
     auto& thirdCreatedLevel = levels.getOrCreateLevel(DummyType{ 42794 });
+    auto& expectedFirstLevel = getFirstLevelFrom(firstCreatedLevel,
+            secondCreatedLevel, thirdCreatedLevel);
     auto& firstLevel = levels.getFirstLevel();
 
-    assertThat(firstLevel).isAtSameAddressAs(thirdCreatedLevel);
-    assertThat(firstLevel).isNotAtSameAddressAs(secondCreatedLevel);
-    assertThat(firstLevel).isNotAtSameAddressAs(firstCreatedLevel);
+    assertThat(firstLevel).isAtSameAddressAs(expectedFirstLevel);
 }
 
-TEST_F(MaxTreeLevelsCreateThreeLevelsTest, findsLevelBeforeLast) {
-    auto thirdLevelHeight = DummyType{ 71 };
-    auto& secondLevel = levels.getOrCreateLevel(DummyType{ 45 });
-    auto& firstLevel = levels.getOrCreateLevel(DummyType{ 23 });
-    auto& thirdLevel = levels.getOrCreateLevel(thirdLevelHeight);
+TEST_C(CreateThreeLevelsTest, findsLevelBeforeLast) {
+    auto firstHeight = DummyType{ 45 };
+    auto secondHeight = DummyType{ 23 };
+    auto thirdHeight = DummyType{ 71 };
 
-    auto& levelBeforeThird = levels.findLevelBefore(thirdLevelHeight);
+    auto& firstCreatedLevel = levels.getOrCreateLevel(firstHeight);
+    auto& secondCreatedLevel = levels.getOrCreateLevel(secondHeight);
+    auto& thirdCreatedLevel = levels.getOrCreateLevel(thirdHeight);
+
+    auto& secondLevel = getSecondLevelFrom(firstCreatedLevel,
+            secondCreatedLevel, thirdCreatedLevel);
+    auto lastLevelHeight = getLastLevelHeightFrom(firstHeight, secondHeight,
+            thirdHeight);
+
+    auto& levelBeforeThird = levels.findLevelBefore(lastLevelHeight);
 
     assertThat(levelBeforeThird).isAtSameAddressAs(secondLevel);
-    assertThat(levelBeforeThird).isNotAtSameAddressAs(firstLevel);
-    assertThat(levelBeforeThird).isNotAtSameAddressAs(thirdLevel);
 }
