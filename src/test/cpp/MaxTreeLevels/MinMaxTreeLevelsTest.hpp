@@ -18,6 +18,7 @@ protected:
     using LevelOrderComparator = TypeParameter;
     using DummyMinMaxTreeLevels = MinMaxTreeLevels<DummyType,
             LevelOrderComparator>;
+    using NodeLevel = MinMaxTreeLevel<DummyType, LevelOrderComparator>;
 
     static constexpr int minimumLevel = std::numeric_limits<int>::min();
     static constexpr int maximumLevel = std::numeric_limits<int>::max();
@@ -49,12 +50,11 @@ protected:
             return firstCandidate;
     }
 
-    const DummyMinMaxTreeLevels& getFirstLevelFrom(
-            const DummyMinMaxTreeLevels& firstCandidate,
-            const DummyMinMaxTreeLevels& secondCandidate) {
+    const NodeLevel& getFirstLevelFrom(const NodeLevel& firstCandidate,
+            const NodeLevel& secondCandidate) {
         LevelOrderComparator isBefore;
-        auto firstCandidateHeight = firstCandidate.getLevelHeight();
-        auto secondCandidateHeight = secondCandidate.getLevelHeight();
+        auto firstCandidateHeight = firstCandidate.getLevel();
+        auto secondCandidateHeight = secondCandidate.getLevel();
 
         if (isBefore(firstCandidateHeight, secondCandidateHeight))
             return firstCandidate;
