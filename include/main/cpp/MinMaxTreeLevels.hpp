@@ -4,13 +4,14 @@
 #include <map>
 #include <memory>
 
-#include "MaxTreeLevel.hpp"
+#include "MinMaxTreeLevel.hpp"
 
 template <typename T, typename LevelOrderComparator>
 class MinMaxTreeLevels {
 private:
-    using NodeLevel = MaxTreeLevel<T>;
-    using NodePointer = std::shared_ptr<MaxTreeNode<T> >;
+    using NodeLevel = MinMaxTreeLevel<T, LevelOrderComparator>;
+    using NodeType = MinMaxTreeNode<T, LevelOrderComparator>;
+    using NodePointer = std::shared_ptr<NodeType>;
 
     std::map<T, NodeLevel> levels;
 
