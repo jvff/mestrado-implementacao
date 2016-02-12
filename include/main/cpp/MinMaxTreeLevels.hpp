@@ -13,7 +13,7 @@ private:
     using NodeType = MinMaxTreeNode<T, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
-    std::map<T, NodeLevel> levels;
+    std::map<T, NodeLevel, LevelOrderComparator> levels;
 
 public:
     bool isEmpty() const {
