@@ -4,18 +4,18 @@
 #include <map>
 #include <memory>
 
-#include "MaxTreeNode.hpp"
-#include "MaxTreeLevel.hpp"
-#include "MaxTreeLevels.hpp"
+#include "MinMaxTreeNode.hpp"
+#include "MinMaxTreeLevel.hpp"
+#include "MinMaxTreeLevels.hpp"
 
 template <typename T, typename LevelOrderComparator>
 class MinMaxTree {
 private:
-    using NodeType = MaxTreeNode<T>;
-    using NodeLevel = MaxTreeLevel<T>;
+    using NodeType = MinMaxTreeNode<T, LevelOrderComparator>;
+    using NodeLevel = MinMaxTreeLevel<T, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
-    MaxTreeLevels<T> levels;
+    MinMaxTreeLevels<T, LevelOrderComparator> levels;
 
 public:
     bool isEmpty() const {
@@ -34,7 +34,7 @@ public:
         return levels.hasLevel(level);
     }
 
-    const MaxTreeNode<T>& addNode(const T& level) {
+    const NodeType& addNode(const T& level) {
         auto& levelNodes = levels.getOrCreateLevel(level);
         auto newNode = levelNodes.addNode();
 
@@ -44,19 +44,19 @@ public:
         return *newNode;
     }
 
-    const MaxTreeNode<T>& getNode(const T& level, unsigned int id) const {
+    const NodeType& getNode(const T& level, unsigned int id) const {
         auto& nodeList = levels.getLevel(level);
 
         return nodeList.getNodeReference(id);
     }
 
-    const MaxTreeNode<T>& getLatestNodeOnLevel(const T& level) const {
+    const NodeType& getLatestNodeOnLevel(const T& level) const {
         auto& levelNodes = levels.getLevel(level);
 
         return levelNodes.getLatestNodeReference();
     }
 
-    void setNodeParent(MaxTreeNode<T> nodeToChange, MaxTreeNode<T> newParent) {
+    void setNodeParent(NodeType nodeToChange, NodeType newParent) {
         auto nodePointerToChange = getNodePointer(nodeToChange);
         auto newParentPointer = getNodePointer(newParent);
 
@@ -75,7 +75,7 @@ public:
     }
 
 private:
-    NodePointer getNodePointer(const MaxTreeNode<T>& node) {
+    NodePointer getNodePointer(const NodeType& node) {
         auto& levelNodes = levels.getLevel(node.getLevel());
 
         return levelNodes.getNode(node.getId());
