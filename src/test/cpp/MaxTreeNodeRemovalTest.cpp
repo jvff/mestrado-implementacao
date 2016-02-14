@@ -1,6 +1,10 @@
 #include "MaxTreeNodeRemovalTest.hpp"
 
-TEST_F(MaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
+using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType> >;
+
+TYPED_TEST_CASE(MaxTreeNodeRemovalTest, nodeLevelComparatorTypes);
+
+TEST_C(MaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 8 });
@@ -14,14 +18,14 @@ TEST_F(MaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
     assertThat(constTree.numberOfLevels()).isEqualTo(3u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, isEmptyAfterInsertingThenRemovingNode) {
+TEST_C(MaxTreeNodeRemovalTest, isEmptyAfterInsertingThenRemovingNode) {
     tree.addNode(DummyType{ 0 });
     tree.removeNode(DummyType{ 0 }, 0);
 
     assertThat(constTree.isEmpty()).isEqualTo(true);
 }
 
-TEST_F(MaxTreeNodeRemovalTest,
+TEST_C(MaxTreeNodeRemovalTest,
         isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
     tree.addNode(DummyType{ 0 });
     tree.addNode(DummyType{ 1 });
@@ -30,7 +34,7 @@ TEST_F(MaxTreeNodeRemovalTest,
     assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
+TEST_C(MaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
     tree.addNode(DummyType{ 20 });
     tree.addNode(DummyType{ 27 });
     tree.addNode(DummyType{ 33 });
@@ -49,7 +53,7 @@ TEST_F(MaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
             DummyType{ 20 }, 0u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, correctNodeIsRemoved) {
+TEST_C(MaxTreeNodeRemovalTest, correctNodeIsRemoved) {
     tree.addNode(DummyType{ 1 });
 
     tree.addNode(DummyType{ 10 });
@@ -68,7 +72,7 @@ TEST_F(MaxTreeNodeRemovalTest, correctNodeIsRemoved) {
             DummyType{ 1 }, 0u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, cantRemoveFromInexistentLevels) {
+TEST_C(MaxTreeNodeRemovalTest, cantRemoveFromInexistentLevels) {
     tree.addNode(DummyType{ 1 });
     tree.addNode(DummyType{ 3 });
     tree.removeNode(DummyType{ 0 }, 0u);
@@ -80,7 +84,7 @@ TEST_F(MaxTreeNodeRemovalTest, cantRemoveFromInexistentLevels) {
             DummyType{ 1 }, 0u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, cantRemoveInexistentNode) {
+TEST_C(MaxTreeNodeRemovalTest, cantRemoveInexistentNode) {
     tree.addNode(DummyType{ 1 });
     tree.addNode(DummyType{ 3 });
     tree.addNode(DummyType{ 3 });
@@ -94,7 +98,7 @@ TEST_F(MaxTreeNodeRemovalTest, cantRemoveInexistentNode) {
             DummyType{ 1 }, 0u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
+TEST_C(MaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
     tree.addNode(DummyType{ 1 });
 
     tree.addNode(DummyType{ 10 });
@@ -128,7 +132,7 @@ TEST_F(MaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
             DummyType{ 1 }, 0u);
 }
 
-TEST_F(MaxTreeNodeRemovalTest, rootNodeRemovalMergesNextLevel) {
+TEST_C(MaxTreeNodeRemovalTest, rootNodeRemovalMergesNextLevel) {
     tree.addNode(DummyType{ 10 });
 
     tree.addNode(DummyType{ 20 });
