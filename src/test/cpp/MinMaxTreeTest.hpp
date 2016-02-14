@@ -87,17 +87,17 @@ private:
     }
 };
 
-#define TEST_C(testName) \
-    CREATE_MIN_MAX_TREE_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeTest, testName)
+#define TEST_C(testFixture, testName) \
+    CREATE_MIN_MAX_TREE_TEST_CLASS(testFixture, testName); \
+    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
 
-#define CREATE_MIN_MAX_TREE_TEST_CLASS(testName) \
+#define CREATE_MIN_MAX_TREE_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MinMaxTreeTest, testName) \
-        : public MinMaxTreeTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
+        : public testFixture<TypeParameter> { \
 private: \
-    using SuperClass = MinMaxTreeTest<TypeParameter>; \
+    using SuperClass = testFixture<TypeParameter>; \
     using DummyMinMaxTreeType = typename SuperClass::DummyMinMaxTreeType; \
 \
     using SuperClass::tree; \

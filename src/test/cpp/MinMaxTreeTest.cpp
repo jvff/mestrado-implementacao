@@ -5,31 +5,31 @@ using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType>,
 
 TYPED_TEST_CASE(MinMaxTreeTest, nodeLevelComparatorTypes);
 
-TEST_C(classTemplateExists) {
+TEST_C(MinMaxTreeTest, classTemplateExists) {
     AssertThat<DummyMinMaxTreeType>::isClassOrStruct();
 }
 
-TEST_C(isInitiallyEmpty) {
+TEST_C(MinMaxTreeTest, isInitiallyEmpty) {
     assertThat(constTree.isEmpty()).isEqualTo(true);
 }
 
-TEST_C(initiallyHasZeroLevels) {
+TEST_C(MinMaxTreeTest, initiallyHasZeroLevels) {
     assertThat(constTree.numberOfLevels()).isEqualTo(0u);
 }
 
-TEST_C(isNotEmptyAfterInsertingNode) {
+TEST_C(MinMaxTreeTest, isNotEmptyAfterInsertingNode) {
     tree.addNode(DummyType{ 0 });
 
     assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
-TEST_C(hasOneLevelAfterInsertingNode) {
+TEST_C(MinMaxTreeTest, hasOneLevelAfterInsertingNode) {
     tree.addNode(DummyType{ 0 });
 
     assertThat(constTree.numberOfLevels()).isEqualTo(1u);
 }
 
-TEST_C(hasOneLevelAfterInsertingNodesAtSameLevel) {
+TEST_C(MinMaxTreeTest, hasOneLevelAfterInsertingNodesAtSameLevel) {
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
@@ -37,7 +37,7 @@ TEST_C(hasOneLevelAfterInsertingNodesAtSameLevel) {
     assertThat(constTree.numberOfLevels()).isEqualTo(1u);
 }
 
-TEST_C(hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
+TEST_C(MinMaxTreeTest, hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
     tree.addNode(DummyType{ 8 });
     tree.addNode(DummyType{ 70 });
     tree.addNode(DummyType{ 70 });
@@ -46,7 +46,7 @@ TEST_C(hasTwoLevelsAfterInsertingNodesOnDifferentLevels) {
     assertThat(constTree.numberOfLevels()).isEqualTo(2u);
 }
 
-TEST_C(getFirstLevelReturnsExpectedFirstLevel) {
+TEST_C(MinMaxTreeTest, getFirstLevelReturnsExpectedFirstLevel) {
     auto levelHeights = makeLevelHeights({ 2390284, 3000000, 3000001 });
     auto firstLevel = levelHeights[0];
 
@@ -57,24 +57,24 @@ TEST_C(getFirstLevelReturnsExpectedFirstLevel) {
     assertThat(tree.getFirstLevel()).isEqualTo(firstLevel);
 }
 
-TEST_C(nodeCanBeRetrieved) {
+TEST_C(MinMaxTreeTest, nodeCanBeRetrieved) {
     tree.addNode(DummyType{ 1 });
 
     verifyNodeChain(DummyType{ 1 }, 0u);
 }
 
-TEST_C(getNodeReturnsConstReference) {
+TEST_C(MinMaxTreeTest, getNodeReturnsConstReference) {
     auto level = DummyType{ 21890 };
     auto id = 890432u;
 
     AssertThat<decltype(tree.getNode(level, id))>::isConstReference();
 }
 
-TEST_C(getNodeIsConstMethod) {
+TEST_C(MinMaxTreeTest, getNodeIsConstMethod) {
     assertThat(&DummyMinMaxTreeType::getNode).isConstMethod();
 }
 
-TEST_C(newNodeDefaultsToNodeOnPreviousLevelAsParent) {
+TEST_C(MinMaxTreeTest, newNodeDefaultsToNodeOnPreviousLevelAsParent) {
     auto levelHeights = makeLevelHeights({ 1000, 2000 });
 
     tree.addNode(levelHeights[0]);
@@ -85,7 +85,7 @@ TEST_C(newNodeDefaultsToNodeOnPreviousLevelAsParent) {
             levelHeights[0], 0u);
 }
 
-TEST_C(newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
+TEST_C(MinMaxTreeTest, newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
     auto levelHeights = makeLevelHeights({ 0, 1000, 2000 });
 
     tree.addNode(levelHeights[0]);
@@ -100,7 +100,7 @@ TEST_C(newNodeDefaultsToLatestNodeOnPreviousLevelAsParent) {
             levelHeights[0], 0u);
 }
 
-TEST_C(nodeParentCanBeChanged) {
+TEST_C(MinMaxTreeTest, nodeParentCanBeChanged) {
     auto levelHeights = makeLevelHeights({ 981, 982, 983 });
 
     tree.addNode(levelHeights[0]);
@@ -117,7 +117,7 @@ TEST_C(nodeParentCanBeChanged) {
             levelHeights[0], 0u);
 }
 
-TEST_C(latestNodeIsRetrievable) {
+TEST_C(MinMaxTreeTest, latestNodeIsRetrievable) {
     auto levelHeights = makeLevelHeights({ 100, 101, 102 });
 
     tree.addNode(levelHeights[0]);
@@ -138,23 +138,23 @@ TEST_C(latestNodeIsRetrievable) {
             levelHeights[0], 0u);
 }
 
-TEST_C(getLatestNodeOnLevelReturnsConstReference) {
+TEST_C(MinMaxTreeTest, getLatestNodeOnLevelReturnsConstReference) {
     auto level = DummyType{ 21890 };
 
     AssertThat<decltype(tree.getLatestNodeOnLevel(level))>::isConstReference();
 }
 
-TEST_C(getLatestNodeOnLevelIsConstMethod) {
+TEST_C(MinMaxTreeTest, getLatestNodeOnLevelIsConstMethod) {
     assertThat(&DummyMinMaxTreeType::getLatestNodeOnLevel).isConstMethod();
 }
 
-TEST_C(addNodeReturnsConstReference) {
+TEST_C(MinMaxTreeTest, addNodeReturnsConstReference) {
     auto level = DummyType{ 92487 };
 
     AssertThat<decltype(tree.addNode(level))>::isConstReference();
 }
 
-TEST_C(addNodeReturnsNewNode) {
+TEST_C(MinMaxTreeTest, addNodeReturnsNewNode) {
     auto levelHeights = makeLevelHeights({ 15001, 15002, 15003, 15004, 16000 });
 
     tree.addNode(levelHeights[0]);
@@ -172,7 +172,7 @@ TEST_C(addNodeReturnsNewNode) {
             levelHeights[0], 0u);
 }
 
-TEST_C(hasLevelReturnsFalseForUnknownLevels) {
+TEST_C(MinMaxTreeTest, hasLevelReturnsFalseForUnknownLevels) {
     auto levelHeights = makeLevelHeights({ 15001, 15002, 15004 });
 
     tree.addNode(levelHeights[0]);
@@ -186,7 +186,7 @@ TEST_C(hasLevelReturnsFalseForUnknownLevels) {
     assertThat(tree.hasLevel(DummyType{ 999999 })).isEqualTo(false);
 }
 
-TEST_C(hasLevelReturnsFalseForKnownLevels) {
+TEST_C(MinMaxTreeTest, hasLevelReturnsFalseForKnownLevels) {
     auto levelHeights = makeLevelHeights({ 15001, 15002, 15004 });
 
     tree.addNode(levelHeights[0]);
