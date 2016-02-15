@@ -9,8 +9,10 @@
 #include "MaxTreeImage.hpp"
 #include "SimpleArrayImage.hpp"
 
+#include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
 
+template <typename TypeParameter>
 class MaxTreeImageTest : public ::testing::Test {
 protected:
     using PixelType = DummyType;
@@ -130,5 +132,33 @@ protected:
         }
     }
 };
+
+#define TEST_C(testFixture, testName) \
+    CREATE_MAX_TREE_IMAGE_TEST_CLASS(testFixture, testName); \
+    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
+
+#define CREATE_MAX_TREE_IMAGE_TEST_CLASS(testFixture, testName) \
+template <typename TypeParameter> \
+class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
+        : public testFixture<TypeParameter> { \
+private: \
+    using SuperClass = testFixture<TypeParameter>; \
+\
+    using DummyMaxTreeImageType = typename SuperClass::DummyMaxTreeImageType; \
+    using PixelType = typename SuperClass::PixelType; \
+    using TreeNodePointer = typename SuperClass::TreeNodePointer; \
+    using TreeNodeType = typename SuperClass::TreeNodeType; \
+\
+    using SuperClass::assignPixelsToLatestNodes; \
+    using SuperClass::fillImage; \
+    using SuperClass::makeNode; \
+    using SuperClass::paintImage; \
+    using SuperClass::verifyNode; \
+    using SuperClass::verifyNodes; \
+    using SuperClass::verifyPaintedImagePixels; \
+\
+    virtual void TestBody(); \
+}
 
 #endif
