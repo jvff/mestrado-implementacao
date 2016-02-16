@@ -4,6 +4,7 @@
 
 #include "asserts.hpp"
 
+#include "MinTreeImage.hpp"
 #include "MaxTreeImage.hpp"
 #include "SimpleArrayImage.hpp"
 
@@ -16,4 +17,13 @@ TEST(MinMaxTreeImageAliases, aliasForMaxTreeImageExists) {
             std::less<DummyType> >;
 
     AssertThat<MaxTreeImageAlias>::isTheSame(As<ExpectedType>());
+}
+
+TEST(MinMaxTreeImageAliases, aliasForMinTreeImageExists) {
+    using InternalImageType = SimpleArrayImage<DummyType>;
+    using MinTreeImageAlias = MinTreeImage<InternalImageType>;
+    using ExpectedType = MinMaxTreeImage<InternalImageType,
+            std::greater<DummyType> >;
+
+    AssertThat<MinTreeImageAlias>::isTheSame(As<ExpectedType>());
 }
