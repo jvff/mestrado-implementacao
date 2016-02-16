@@ -1,6 +1,8 @@
-#include "MaxTreeImageRootNodeRemovalTest.hpp"
+#include "MaxTreeImageTest.hpp"
 
-TEST_F(MaxTreeImageRootNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
+SUB_TEST(RootNodeRemovalTest);
+
+TEST_C(RootNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
     DummyMaxTreeImageType image(2, 2);
 
     auto lowerPixelColor = PixelType{ 3018 };
@@ -19,8 +21,7 @@ TEST_F(MaxTreeImageRootNodeRemovalTest, pixelsAreUpdatedWhenRootNodeIsRemoved) {
     verifyFilledImagePixels(image, higherPixelColor);
 }
 
-TEST_F(MaxTreeImageRootNodeRemovalTest,
-        pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
+TEST_C(RootNodeRemovalTest, pixelNodeIdsAreUpdatedOnRootNodeRemoval) {
     DummyMaxTreeImageType image(3, 2);
 
     paintImage(image);
