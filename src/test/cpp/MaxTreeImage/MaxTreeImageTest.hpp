@@ -134,9 +134,9 @@ protected:
 };
 
 #define TEST_C(testFixture, testName) \
-    CREATE_MAX_TREE_IMAGE_TEST_CLASS(testFixture, testName); \
-    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
+    CREATE_MAX_TREE_IMAGE_TEST_CLASS(MaxTreeImage##testFixture, testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MaxTreeImage##testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MaxTreeImage##testFixture, testName)
 
 #define CREATE_MAX_TREE_IMAGE_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \

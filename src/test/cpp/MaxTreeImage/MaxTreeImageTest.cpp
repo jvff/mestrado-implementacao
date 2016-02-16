@@ -4,23 +4,23 @@ using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType> >;
 
 TYPED_TEST_CASE(MaxTreeImageTest, nodeLevelComparatorTypes);
 
-TEST_C(MaxTreeImageTest, classTemplateExists) {
+TEST_C(Test, classTemplateExists) {
     AssertThat<DummyMaxTreeImageType>::isClassOrStruct();
 }
 
-TEST_C(MaxTreeImageTest, isImage) {
+TEST_C(Test, isImage) {
     using ParentImageClass = Image<PixelType>;
 
     AssertThat<DummyMaxTreeImageType>::isSubClass(Of<ParentImageClass>());
 }
 
-TEST_C(MaxTreeImageTest, pixelTypeIsPubliclyAccessible) {
+TEST_C(Test, pixelTypeIsPubliclyAccessible) {
     using ImagePixelType = typename DummyMaxTreeImageType::PixelType;
 
     AssertThat<ImagePixelType>::isTheSame(As<PixelType>());
 }
 
-TEST_C(MaxTreeImageTest, isConstructible) {
+TEST_C(Test, isConstructible) {
     using WidthParameter = unsigned int;
     using HeightParameter = unsigned int;
 
@@ -28,7 +28,7 @@ TEST_C(MaxTreeImageTest, isConstructible) {
             HeightParameter>());
 }
 
-TEST_C(MaxTreeImageTest, setsDimensions) {
+TEST_C(Test, setsDimensions) {
     unsigned int width = 7539;
     unsigned int height = 401;
 
@@ -38,7 +38,7 @@ TEST_C(MaxTreeImageTest, setsDimensions) {
     assertThat(image.getHeight()).isEqualTo(height);
 }
 
-TEST_C(MaxTreeImageTest, updatesInternalImage) {
+TEST_C(Test, updatesInternalImage) {
     unsigned int width = 6;
     unsigned int height = 4;
 
@@ -49,7 +49,7 @@ TEST_C(MaxTreeImageTest, updatesInternalImage) {
     verifyPaintedImagePixels(image);
 }
 
-TEST_C(MaxTreeImageTest, allowsAssigningToRootNode) {
+TEST_C(Test, allowsAssigningToRootNode) {
     unsigned int width = 3;
     unsigned int height = 2;
     PixelType rootNodeLevel = { 10 };
@@ -64,7 +64,7 @@ TEST_C(MaxTreeImageTest, allowsAssigningToRootNode) {
     verifyNodes(image, expectedRootNode);
 }
 
-TEST_C(MaxTreeImageTest, nodeParentChain) {
+TEST_C(Test, nodeParentChain) {
     unsigned int width = 2;
     unsigned int height = 2;
 
@@ -90,7 +90,7 @@ TEST_C(MaxTreeImageTest, nodeParentChain) {
     });
 }
 
-TEST_C(MaxTreeImageTest, forkingCreatesTreeBranch) {
+TEST_C(Test, forkingCreatesTreeBranch) {
     unsigned int width = 2;
     unsigned int height = 2;
 
@@ -121,7 +121,7 @@ TEST_C(MaxTreeImageTest, forkingCreatesTreeBranch) {
     });
 }
 
-TEST_C(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
+TEST_C(Test, imagesAreAssignableToLambdaFunction) {
     unsigned int width = 8;
     unsigned int height = 7;
 
@@ -143,7 +143,7 @@ TEST_C(MaxTreeImageTest, imagesAreAssignableToLambdaFunction) {
     }
 }
 
-TEST_C(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
+TEST_C(Test, separatedPartsOfRegionMayBeMislabeled) {
     DummyMaxTreeImageType image(3, 1);
 
     auto leftPixelColor = PixelType{ 14 };
@@ -166,7 +166,7 @@ TEST_C(MaxTreeImageTest, separatedPartsOfRegionMayBeMislabeled) {
     verifyNode(image.getPixelNode(2, 0), *rightPixelNode);
 }
 
-TEST_C(MaxTreeImageTest, nodesAreMergedWhenPixelsAreConnected) {
+TEST_C(Test, nodesAreMergedWhenPixelsAreConnected) {
     DummyMaxTreeImageType image(3, 1);
 
     auto leftPixelColor = PixelType{ 14 };
@@ -188,7 +188,7 @@ TEST_C(MaxTreeImageTest, nodesAreMergedWhenPixelsAreConnected) {
     verifyNode(image.getPixelNode(2, 0), rightPixelNode);
 }
 
-TEST_C(MaxTreeImageTest, getterMethodsAreConstQualified) {
+TEST_C(Test, getterMethodsAreConstQualified) {
     using GetPixelValueMethodSignature =
             PixelType (DummyMaxTreeImageType::*) (unsigned int, unsigned int)
                     const;
