@@ -3,10 +3,11 @@
 SUB_TEST(NodeRemovalTest);
 
 TEST_C(NodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
-    DummyMaxTreeImageType image(2, 2);
+    DummyMinMaxTreeImageType image(2, 2);
 
-    auto lowerPixelColor = PixelType{ 3018 };
-    auto higherPixelColor = PixelType{ 91314 };
+    auto levelHeights = makeLevelHeights({ 3018, 91314 });
+    auto lowerPixelColor = levelHeights[0];
+    auto higherPixelColor = levelHeights[1];
 
     fillImage(image, higherPixelColor);
     image.setPixel(0, 0, lowerPixelColor);
@@ -21,10 +22,11 @@ TEST_C(NodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
 }
 
 TEST_C(NodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
-    DummyMaxTreeImageType image(2, 2);
+    DummyMinMaxTreeImageType image(2, 2);
 
-    auto lowerPixelColor = PixelType{ 3018 };
-    auto higherPixelColor = PixelType{ 91314 };
+    auto levelHeights = makeLevelHeights({ 3018, 91314 });
+    auto lowerPixelColor = levelHeights[0];
+    auto higherPixelColor = levelHeights[1];
 
     fillImage(image, higherPixelColor);
     image.setPixel(0, 0, lowerPixelColor);
@@ -45,7 +47,8 @@ TEST_C(NodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
 }
 
 TEST_C(NodeRemovalTest, treeIsUpdated) {
-    DummyMaxTreeImageType image(2, 2);
+    auto levelHeights = makeLevelHeights({ 0, 1, 2, 3 });
+    DummyMinMaxTreeImageType image(2, 2);
 
     paintImage(image);
     assignPixelsToLatestNodes(image);
@@ -55,21 +58,22 @@ TEST_C(NodeRemovalTest, treeIsUpdated) {
     image.removeNode(node);
 
     verifyNode(image.getPixelNode(0, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 0),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(0, 1),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 1),
-            PixelType{ 3 }, 0u,
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[3], 0u,
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
 }
 
 TEST_C(NodeRemovalTest, pixelNodeIdsAreUpdated) {
-    DummyMaxTreeImageType image(3, 2);
+    auto levelHeights = makeLevelHeights({ 0, 1, 2, 3, 4, 5 });
+    DummyMinMaxTreeImageType image(3, 2);
 
     paintImage(image);
 
@@ -89,29 +93,30 @@ TEST_C(NodeRemovalTest, pixelNodeIdsAreUpdated) {
     image.removeNode(node);
 
     verifyNode(image.getPixelNode(0, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 0),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(2, 0),
-            PixelType{ 1 }, 1u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 1u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(0, 1),
-            PixelType{ 1 }, 1u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 1u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 1),
-            PixelType{ 4 }, 0u,
-            PixelType{ 1 }, 1u,
-            PixelType{ 0 }, 0u);
+            levelHeights[4], 0u,
+            levelHeights[1], 1u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(2, 1),
-            PixelType{ 5 }, 0u,
-            PixelType{ 4 }, 0u,
-            PixelType{ 1 }, 1u,
-            PixelType{ 0 }, 0u);
+            levelHeights[5], 0u,
+            levelHeights[4], 0u,
+            levelHeights[1], 1u,
+            levelHeights[0], 0u);
 }
 
 TEST_C(NodeRemovalTest, parentOfNodeParameterIsNotUsed) {
-    DummyMaxTreeImageType image(3, 1);
+    auto levelHeights = makeLevelHeights({ 0, 1, 2 });
+    DummyMinMaxTreeImageType image(3, 1);
 
     paintImage(image);
     assignPixelsToLatestNodes(image);
@@ -122,21 +127,22 @@ TEST_C(NodeRemovalTest, parentOfNodeParameterIsNotUsed) {
     nodeCopy.setParent(fakeParent);
     image.removeNode(nodeCopy);
 
-    assertThat(image.getPixelValue(0, 0)).isEqualTo(PixelType{ 0 });
-    assertThat(image.getPixelValue(1, 0)).isEqualTo(PixelType{ 0 });
-    assertThat(image.getPixelValue(2, 0)).isEqualTo(PixelType{ 2 });
+    assertThat(image.getPixelValue(0, 0)).isEqualTo(levelHeights[0]);
+    assertThat(image.getPixelValue(1, 0)).isEqualTo(levelHeights[0]);
+    assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[2]);
 
     verifyNode(image.getPixelNode(0, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(2, 0),
-            PixelType{ 2 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[2], 0u,
+            levelHeights[0], 0u);
 }
 
 TEST_C(NodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
-    DummyMaxTreeImageType image(4, 1);
+    auto levelHeights = makeLevelHeights({ 0, 1, 2, 3 });
+    DummyMinMaxTreeImageType image(4, 1);
     std::shared_ptr<TreeNodeType> noParent;
 
     paintImage(image);
@@ -147,27 +153,28 @@ TEST_C(NodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
     nodeCopy.setParent(noParent);
     image.removeNode(nodeCopy);
 
-    assertThat(image.getPixelValue(0, 0)).isEqualTo(PixelType{ 0 });
-    assertThat(image.getPixelValue(1, 0)).isEqualTo(PixelType{ 1 });
-    assertThat(image.getPixelValue(2, 0)).isEqualTo(PixelType{ 1 });
-    assertThat(image.getPixelValue(3, 0)).isEqualTo(PixelType{ 3 });
+    assertThat(image.getPixelValue(0, 0)).isEqualTo(levelHeights[0]);
+    assertThat(image.getPixelValue(1, 0)).isEqualTo(levelHeights[1]);
+    assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[1]);
+    assertThat(image.getPixelValue(3, 0)).isEqualTo(levelHeights[3]);
 
     verifyNode(image.getPixelNode(0, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 0),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(2, 0),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(3, 0),
-            PixelType{ 3 }, 0u,
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[3], 0u,
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
 }
 
 TEST_C(NodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
-    DummyMaxTreeImageType image(4, 1);
+    auto levelHeights = makeLevelHeights({ 0, 1, 2, 3 });
+    DummyMinMaxTreeImageType image(4, 1);
 
     paintImage(image);
     assignPixelsToLatestNodes(image);
@@ -176,23 +183,23 @@ TEST_C(NodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
 
     image.removeNode(fakeNode);
 
-    assertThat(image.getPixelValue(0, 0)).isEqualTo(PixelType{ 0 });
-    assertThat(image.getPixelValue(1, 0)).isEqualTo(PixelType{ 1 });
-    assertThat(image.getPixelValue(2, 0)).isEqualTo(PixelType{ 2 });
-    assertThat(image.getPixelValue(3, 0)).isEqualTo(PixelType{ 3 });
+    assertThat(image.getPixelValue(0, 0)).isEqualTo(levelHeights[0]);
+    assertThat(image.getPixelValue(1, 0)).isEqualTo(levelHeights[1]);
+    assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[2]);
+    assertThat(image.getPixelValue(3, 0)).isEqualTo(levelHeights[3]);
 
     verifyNode(image.getPixelNode(0, 0),
-            PixelType{ 0 }, 0u);
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(1, 0),
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(2, 0),
-            PixelType{ 2 }, 0u,
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[2], 0u,
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
     verifyNode(image.getPixelNode(3, 0),
-            PixelType{ 3 }, 0u,
-            PixelType{ 2 }, 0u,
-            PixelType{ 1 }, 0u,
-            PixelType{ 0 }, 0u);
+            levelHeights[3], 0u,
+            levelHeights[2], 0u,
+            levelHeights[1], 0u,
+            levelHeights[0], 0u);
 }

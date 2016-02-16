@@ -7,7 +7,8 @@
 
 #include "AbstractFixture.hpp"
 
-using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType> >;
+using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
 
 #define SUB_TEST(testFixture) \
     CREATE_EMPTY_MAX_TREE_IMAGE_TEST_FIXTURE(MaxTreeImage##testFixture); \
@@ -30,13 +31,15 @@ class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
 private: \
     using SuperClass = testFixture<TypeParameter>; \
 \
-    using DummyMaxTreeImageType = typename SuperClass::DummyMaxTreeImageType; \
+    using DummyMinMaxTreeImageType = \
+            typename SuperClass::DummyMinMaxTreeImageType; \
     using PixelType = typename SuperClass::PixelType; \
     using TreeNodePointer = typename SuperClass::TreeNodePointer; \
     using TreeNodeType = typename SuperClass::TreeNodeType; \
 \
     using SuperClass::assignPixelsToLatestNodes; \
     using SuperClass::fillImage; \
+    using SuperClass::makeLevelHeights; \
     using SuperClass::makeNode; \
     using SuperClass::paintImage; \
     using SuperClass::verifyNode; \

@@ -7,7 +7,7 @@ TEST_C(NodeAssignmentTest, allowsAssigningToRootNode) {
     unsigned int height = 2;
     PixelType rootNodeLevel = { 10 };
 
-    DummyMaxTreeImageType image(width, height);
+    DummyMinMaxTreeImageType image(width, height);
 
     fillImage(image, rootNodeLevel);
     assignPixelsToLatestNodes(image);
@@ -18,38 +18,35 @@ TEST_C(NodeAssignmentTest, allowsAssigningToRootNode) {
 }
 
 TEST_C(NodeAssignmentTest, nodeParentChain) {
+    auto levelHeights = makeLevelHeights({ 0, 1, 2, 3 });
+
     unsigned int width = 2;
     unsigned int height = 2;
 
-    DummyMaxTreeImageType image(width, height);
+    DummyMinMaxTreeImageType image(width, height);
 
     paintImage(image);
     assignPixelsToLatestNodes(image);
 
-    verifyNodes(image, [&] (unsigned int x, unsigned int y)
-            -> TreeNodeType {
-        TreeNodePointer parent;
-        int level = x + y * width;
+    auto firstPixelNode = image.getPixelNode(0, 0);
+    auto secondPixelNode = image.getPixelNode(1, 0);
+    auto thirdPixelNode = image.getPixelNode(0, 1);
+    auto fourthPixelNode = image.getPixelNode(1, 1);
 
-        for (auto parentLevel = 0; parentLevel < level; ++parentLevel) {
-            auto newParent = makeNode(0u, PixelType{ parentLevel }, parent);
-
-            parent = newParent;
-        }
-
-        auto expectedNode = makeNode(0u, PixelType{ level }, parent);
-
-        return *expectedNode;
-    });
+    verifyNode(firstPixelNode, levelHeights[0], 0u);
+    verifyNode(secondPixelNode, levelHeights[1], 0u, firstPixelNode);
+    verifyNode(thirdPixelNode, levelHeights[2], 0u, secondPixelNode);
+    verifyNode(fourthPixelNode, levelHeights[3], 0u, thirdPixelNode);
 }
 
 TEST_C(NodeAssignmentTest, forkingCreatesTreeBranch) {
     unsigned int width = 2;
     unsigned int height = 2;
 
-    DummyMaxTreeImageType image(width, height);
-    auto background = PixelType{ 100 };
-    auto foreground = PixelType{ 1000 };
+    DummyMinMaxTreeImageType image(width, height);
+    auto levelHeights = makeLevelHeights({ 100, 1000 });
+    auto background = levelHeights[0];
+    auto foreground = levelHeights[1];
 
     image.setPixel(0, 0, background);
     image.setPixel(1, 0, foreground);
@@ -75,11 +72,12 @@ TEST_C(NodeAssignmentTest, forkingCreatesTreeBranch) {
 }
 
 TEST_C(NodeAssignmentTest, separatedPartsOfRegionMayBeMislabeled) {
-    DummyMaxTreeImageType image(3, 1);
+    DummyMinMaxTreeImageType image(3, 1);
 
-    auto leftPixelColor = PixelType{ 14 };
-    auto middlePixelColor = PixelType{ 16 };
-    auto rightPixelColor = PixelType{ 15 };
+    auto levelHeights = makeLevelHeights({ 14, 15, 16 });
+    auto leftPixelColor = levelHeights[0];
+    auto middlePixelColor = levelHeights[2];
+    auto rightPixelColor = levelHeights[1];
 
     image.setPixel(0, 0, leftPixelColor);
     image.setPixel(1, 0, middlePixelColor);
@@ -98,11 +96,12 @@ TEST_C(NodeAssignmentTest, separatedPartsOfRegionMayBeMislabeled) {
 }
 
 TEST_C(NodeAssignmentTest, nodesAreMergedWhenPixelsAreConnected) {
-    DummyMaxTreeImageType image(3, 1);
+    DummyMinMaxTreeImageType image(3, 1);
 
-    auto leftPixelColor = PixelType{ 14 };
-    auto middlePixelColor = PixelType{ 16 };
-    auto rightPixelColor = PixelType{ 15 };
+    auto levelHeights = makeLevelHeights({ 14, 15, 16 });
+    auto leftPixelColor = levelHeights[0];
+    auto middlePixelColor = levelHeights[2];
+    auto rightPixelColor = levelHeights[1];
 
     image.setPixel(0, 0, leftPixelColor);
     image.setPixel(1, 0, middlePixelColor);
