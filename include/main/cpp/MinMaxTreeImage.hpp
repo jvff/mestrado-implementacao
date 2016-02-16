@@ -2,8 +2,8 @@
 #define MIN_MAX_TREE_IMAGE_HPP
 
 #include "Image.hpp"
-#include "MaxTree.hpp"
-#include "MaxTreeNode.hpp"
+#include "MinMaxTree.hpp"
+#include "MinMaxTreeNode.hpp"
 #include "SimpleArrayImage.hpp"
 
 template <typename InternalImageType, typename LevelOrderComparator>
@@ -12,13 +12,15 @@ public:
     using PixelType = typename InternalImageType::PixelType;
 
 private:
-    using NodeType = MaxTreeNode<PixelType>;
+    using NodeType = MinMaxTreeNode<PixelType, LevelOrderComparator>;
     using SuperClass = Image<PixelType>;
 
     InternalImageType internalImage;
     SimpleArrayImage<unsigned int> nodeIdImage;
 
-    MaxTree<PixelType> maxTree;
+    MinMaxTree<PixelType, LevelOrderComparator> minMaxTree;
+
+    LevelOrderComparator levelOrderComparator;
 
     using SuperClass::width;
     using SuperClass::height;
@@ -42,38 +44,41 @@ public:
     void assignPixelToLatestNode(unsigned int x, unsigned int y) {
         auto level = getPixelValue(x, y);
 
-        if (maxTree.hasLevel(level))
-            assignPixelToNode(x, y, maxTree.getLatestNodeOnLevel(level));
+        if (minMaxTree.hasLevel(level))
+            assignPixelToNode(x, y, minMaxTree.getLatestNodeOnLevel(level));
         else
-            assignPixelToNode(x, y, maxTree.addNode(level));
+            assignPixelToNode(x, y, minMaxTree.addNode(level));
     }
 
     void assignPixelToNewNode(unsigned int x, unsigned int y) {
         auto level = getPixelValue(x, y);
 
-        assignPixelToNode(x, y, maxTree.addNode(level));
+        assignPixelToNode(x, y, minMaxTree.addNode(level));
     }
 
     void connectPixels(unsigned int firstX, unsigned int firstY,
             unsigned int secondX, unsigned int secondY) {
+        auto& isBefore = levelOrderComparator;
         auto& firstNode = getPixelNode(firstX, firstY);
         auto& secondNode = getPixelNode(secondX, secondY);
+        auto firstNodeParentLevel = firstNode.getParent().getLevel();
+        auto secondNodeLevel = secondNode.getLevel();
 
-        if (secondNode.getLevel() > firstNode.getParent().getLevel())
-            maxTree.setNodeParent(firstNode, secondNode);
+        if (isBefore(firstNodeParentLevel, secondNodeLevel))
+            minMaxTree.setNodeParent(firstNode, secondNode);
     }
 
     const NodeType& getPixelNode(unsigned int x, unsigned int y) const {
         auto level = internalImage.getPixelValue(x, y);
         auto id = nodeIdImage.getPixelValue(x, y);
 
-        return maxTree.getNode(level, id);
+        return minMaxTree.getNode(level, id);
     }
 
     void removeNode(const NodeType& node) {
         auto level = node.getLevel();
 
-        if (maxTree.hasLevel(level))
+        if (minMaxTree.hasLevel(level))
             safelyRemoveNode(node);
     }
 
@@ -82,7 +87,7 @@ public:
 
 private:
     void assignPixelToNode(unsigned int x, unsigned int y,
-            const MaxTreeNode<PixelType>& node) {
+            const NodeType& node) {
         nodeIdImage.setPixel(x, y, node.getId());
     }
 
@@ -99,7 +104,7 @@ private:
         auto level = reference.getLevel();
         auto id = reference.getId();
 
-        return maxTree.getNode(level, id);
+        return minMaxTree.getNode(level, id);
     }
 
     void removeNormalNode(const NodeType& node) {
@@ -109,13 +114,13 @@ private:
 
         updatePixelsIfAssignedToNode(node, newColor, newId);
 
-        maxTree.removeNode(node.getLevel(), node.getId());
+        minMaxTree.removeNode(node.getLevel(), node.getId());
     }
 
     void removeRootNode(const NodeType& node) {
-        maxTree.removeNode(node.getLevel(), node.getId());
+        minMaxTree.removeNode(node.getLevel(), node.getId());
 
-        auto newColor = maxTree.getFirstLevel();
+        auto newColor = minMaxTree.getFirstLevel();
         auto newId = 0u;
 
         updatePixelsIfOnCollapsedLevel(newColor, newId);
