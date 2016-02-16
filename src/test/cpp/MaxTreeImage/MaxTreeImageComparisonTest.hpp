@@ -9,7 +9,7 @@
 #include "MaxTreeImage.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 
 class MaxTreeImageComparisonTest : public ::testing::Test {
 protected:

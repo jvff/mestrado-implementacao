@@ -10,7 +10,7 @@
 
 #include "MaxTreeImage.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 #include "MaxTreeImageTest.hpp"
 
 class MaxTreeImageNodeRemovalTest

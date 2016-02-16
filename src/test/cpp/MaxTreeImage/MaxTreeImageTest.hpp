@@ -9,8 +9,8 @@
 #include "MaxTreeImage.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "CustomTypedTestMacros.hpp"
-#include "DummyTypes.hpp"
+#include "../CustomTypedTestMacros.hpp"
+#include "../DummyTypes.hpp"
 
 template <typename TypeParameter>
 class MaxTreeImageTest : public ::testing::Test {
