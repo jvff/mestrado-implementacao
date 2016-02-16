@@ -1,6 +1,8 @@
-#include "MaxTreeImageNodeRemovalTest.hpp"
+#include "MaxTreeImageTest.hpp"
 
-TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
+SUB_TEST(NodeRemovalTest);
+
+TEST_C(NodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
     DummyMaxTreeImageType image(2, 2);
 
     auto lowerPixelColor = PixelType{ 3018 };
@@ -18,7 +20,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelsAreUpdatedWhenNodeIsRemoved) {
     verifyFilledImagePixels(image, lowerPixelColor);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
+TEST_C(NodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
     DummyMaxTreeImageType image(2, 2);
 
     auto lowerPixelColor = PixelType{ 3018 };
@@ -42,7 +44,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, onlyPixelsAssignedToNodeAreUpdated) {
     assertThat(image.getPixelValue(1, 1)).isEqualTo(lowerPixelColor);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
+TEST_C(NodeRemovalTest, treeIsUpdated) {
     DummyMaxTreeImageType image(2, 2);
 
     paintImage(image);
@@ -66,7 +68,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, treeIsUpdated) {
             PixelType{ 0 }, 0u);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
+TEST_C(NodeRemovalTest, pixelNodeIdsAreUpdated) {
     DummyMaxTreeImageType image(3, 2);
 
     paintImage(image);
@@ -108,7 +110,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, pixelNodeIdsAreUpdated) {
             PixelType{ 0 }, 0u);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, parentOfNodeParameterIsNotUsed) {
+TEST_C(NodeRemovalTest, parentOfNodeParameterIsNotUsed) {
     DummyMaxTreeImageType image(3, 1);
 
     paintImage(image);
@@ -133,7 +135,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, parentOfNodeParameterIsNotUsed) {
             PixelType{ 0 }, 0u);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
+TEST_C(NodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
     DummyMaxTreeImageType image(4, 1);
     std::shared_ptr<TreeNodeType> noParent;
 
@@ -164,7 +166,7 @@ TEST_F(MaxTreeImageNodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
             PixelType{ 0 }, 0u);
 }
 
-TEST_F(MaxTreeImageNodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
+TEST_C(NodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
     DummyMaxTreeImageType image(4, 1);
 
     paintImage(image);
