@@ -1,13 +1,15 @@
 #ifndef MAX_TREE_IMAGE_HPP
 #define MAX_TREE_IMAGE_HPP
 
+#include <functional>
+
 #include "Image.hpp"
 #include "MaxTree.hpp"
 #include "MaxTreeNode.hpp"
 #include "SimpleArrayImage.hpp"
 
-template <typename InternalImageType>
-class MaxTreeImage : public Image<typename InternalImageType::PixelType> {
+template <typename InternalImageType, typename LevelOrderComparator>
+class MinMaxTreeImage : public Image<typename InternalImageType::PixelType> {
 public:
     using PixelType = typename InternalImageType::PixelType;
 
@@ -24,7 +26,7 @@ private:
     using SuperClass::height;
 
 public:
-    MaxTreeImage(unsigned int width, unsigned int height)
+    MinMaxTreeImage(unsigned int width, unsigned int height)
             : SuperClass(width, height), internalImage(width, height),
             nodeIdImage(width, height) {
     }
@@ -166,6 +168,9 @@ private:
         return pixelLevel == level;
     }
 };
+
+template <typename T>
+using MaxTreeImage = MinMaxTreeImage<T, std::less<typename T::PixelType> >;
 
 template <typename InternalImageType>
 static bool allNodesAreEqual(const MaxTreeImage<InternalImageType>& first,
