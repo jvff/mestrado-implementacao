@@ -41,6 +41,7 @@ private: \
     using SuperClass::paintImage; \
     using SuperClass::verifyNode; \
     using SuperClass::verifyNodes; \
+    using SuperClass::verifyFilledImagePixels; \
     using SuperClass::verifyPaintedImagePixels; \
 \
     virtual void TestBody(); \
