@@ -14,13 +14,17 @@
 
 #include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
+#include "NodeVerificationHelper.hpp"
 
 template <typename TypeParameter>
-class MinMaxTreeTest : public ::testing::Test {
+class MinMaxTreeTest : public ::testing::Test,
+        NodeVerificationHelper<DummyType, TypeParameter> {
 protected:
     using LevelOrderComparator = TypeParameter;
     using NodeType = MinMaxTreeNode<DummyType, LevelOrderComparator>;
     using DummyMinMaxTreeType = MinMaxTree<DummyType, LevelOrderComparator>;
+    using NodeVerificationHelperType = NodeVerificationHelper<DummyType,
+            LevelOrderComparator>;
 
     DummyMinMaxTreeType tree;
     const DummyMinMaxTreeType& constTree;
@@ -44,39 +48,11 @@ public:
             const RemainingParameterTypes&... remainingParameters) {
         const auto& node = tree.getNode(startingLevel, startingId);
 
-        verifyNodeChain(node, startingLevel, startingId,
-                remainingParameters...);
+        verifyNode(node, startingLevel, startingId, remainingParameters...);
     }
 
-    template <typename T, typename... RemainingParameterTypes>
-    void verifyNodeChain(const NodeType& node, const T& expectedLevel,
-            unsigned int expectedId,
-            const RemainingParameterTypes&... remainingParameters) {
-        verifyNode(node, expectedLevel, expectedId);
-
-        assertThat(node.hasParent()).isEqualTo(true);
-
-        if (node.hasParent()) {
-            const auto& parent = node.getParent();
-
-            verifyNodeChain(parent, remainingParameters...);
-        }
-    }
-
-    template <typename T>
-    void verifyNodeChain(const NodeType& node, const T& expectedLevel,
-            unsigned int expectedId) {
-        verifyNode(node, expectedLevel, expectedId);
-
-        assertThat(node.hasParent()).isEqualTo(false);
-    }
-
-    template <typename T>
-    void verifyNode(const NodeType& node, const T& expectedLevel,
-            unsigned int expectedId) {
-        assertThat(node.getLevel()).isEqualTo(expectedLevel);
-        assertThat(node.getId()).isEqualTo(expectedId);
-    }
+protected:
+    using NodeVerificationHelperType::verifyNode;
 
 private:
     std::vector<DummyType> sortLevelHeights(std::vector<DummyType>& heights) {
@@ -105,6 +81,7 @@ private: \
     using SuperClass::constTree; \
 \
     using SuperClass::makeLevelHeights; \
+    using SuperClass::verifyNode; \
     using SuperClass::verifyNodeChain; \
 \
     virtual void TestBody(); \

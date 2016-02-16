@@ -127,12 +127,12 @@ TEST_C(MinMaxTreeTest, latestNodeIsRetrievable) {
     tree.addNode(levelHeights[2]);
     tree.addNode(levelHeights[1]);
 
-    verifyNodeChain(tree.getLatestNodeOnLevel(levelHeights[0]),
+    verifyNode(tree.getLatestNodeOnLevel(levelHeights[0]),
             levelHeights[0], 0u);
-    verifyNodeChain(tree.getLatestNodeOnLevel(levelHeights[1]),
+    verifyNode(tree.getLatestNodeOnLevel(levelHeights[1]),
             levelHeights[1], 1u,
             levelHeights[0], 0u);
-    verifyNodeChain(tree.getLatestNodeOnLevel(levelHeights[2]),
+    verifyNode(tree.getLatestNodeOnLevel(levelHeights[2]),
             levelHeights[2], 2u,
             levelHeights[1], 0u,
             levelHeights[0], 0u);
@@ -164,7 +164,7 @@ TEST_C(MinMaxTreeTest, addNodeReturnsNewNode) {
 
     auto& leafNode = tree.addNode(levelHeights[4]);
 
-    verifyNodeChain(leafNode,
+    verifyNode(leafNode,
             levelHeights[4], 0u,
             levelHeights[3], 0u,
             levelHeights[2], 0u,

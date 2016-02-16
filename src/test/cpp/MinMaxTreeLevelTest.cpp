@@ -49,9 +49,9 @@ TEST_C(hasMethodToReplaceParents) {
     auto thirdNode = level.addNode();
     auto fourthNode = level.addNode();
 
-    auto commonParent = std::make_shared<NodeType>(DummyType{ 100 }, 14u);
-    auto newParent = std::make_shared<NodeType>(DummyType{ 96 }, 3u);
-    auto differentParent = std::make_shared<NodeType>(DummyType{ 89 }, 144u);
+    auto commonParent = makeNode(14u, DummyType{ 100 });
+    auto newParent = makeNode(3u, DummyType{ 96 });
+    auto differentParent = makeNode(144u, DummyType{ 89 });
 
     secondNode->setParent(commonParent);
     thirdNode->setParent(differentParent);

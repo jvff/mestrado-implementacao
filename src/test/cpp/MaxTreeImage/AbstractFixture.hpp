@@ -10,9 +10,11 @@
 #include "SimpleArrayImage.hpp"
 
 #include "../DummyTypes.hpp"
+#include "../NodeVerificationHelper.hpp"
 
 template <typename TypeParameter>
-class MaxTreeImageTest : public ::testing::Test {
+class MaxTreeImageTest : public ::testing::Test,
+        public NodeVerificationHelper<DummyType, TypeParameter> {
 protected:
     using PixelType = DummyType;
     using InternalImageType = SimpleArrayImage<PixelType>;
@@ -21,6 +23,8 @@ protected:
     using TreeNodePointer = std::shared_ptr<TreeNodeType>;
     using MaxTreeNodeFunction =
             std::function<TreeNodeType(unsigned int, unsigned int)>;
+    using NodeVerificationHelperType = NodeVerificationHelper<PixelType,
+            TypeParameter>;
 
 protected:
     void paintImage(Image<PixelType>& image) {
@@ -63,15 +67,6 @@ protected:
         }
     }
 
-    TreeNodePointer makeNode(unsigned int id, PixelType level) {
-        return std::make_shared<TreeNodeType>(level, id);
-    }
-
-    TreeNodePointer makeNode(unsigned int id, PixelType level,
-            TreeNodePointer parent) {
-        return std::make_shared<TreeNodeType>(parent, level, id);
-    }
-
     void verifyNodes(const MaxTreeImage<InternalImageType>& image,
             const TreeNodePointer& expectedRootNodePointer) {
         verifyNodes(image, *expectedRootNodePointer);
@@ -101,36 +96,6 @@ protected:
         }
     }
 
-    void verifyNode(const TreeNodeType& node,
-            const TreeNodePointer& expectedNodePointer) {
-        verifyNode(node, *expectedNodePointer);
-    }
-
-    void verifyNode(const TreeNodeType& node,
-            const TreeNodeType& expectedNode) {
-        verifyNodeData(node, expectedNode);
-        verifyNodeParents(node, expectedNode);
-    }
-
-    void verifyNodeData(const TreeNodeType& node,
-            const TreeNodeType& expectedNode) {
-        assertThat(node.getId()).isEqualTo(expectedNode.getId());
-        assertThat(node.getLevel()).isEqualTo(expectedNode.getLevel());
-    }
-
-    void verifyNodeParents(const TreeNodeType& node,
-            const TreeNodeType& expectedNode) {
-        assertThat(node.hasParent()).isEqualTo(expectedNode.hasParent());
-
-        if (node.hasParent() && expectedNode.hasParent()) {
-            auto& parent = node.getParent();
-            auto& expectedParent = expectedNode.getParent();
-
-            verifyNodeData(parent, expectedParent);
-            verifyNodeParents(parent, expectedParent);
-        }
-    }
-
     void verifyFilledImagePixels(Image<PixelType>& image, PixelType color) {
         auto width = image.getWidth();
         auto height = image.getHeight();
@@ -141,34 +106,9 @@ protected:
         }
     }
 
-    template <typename... RemainingParameterTypes>
-    void verifyNode(const TreeNodeType& node, PixelType level, unsigned int id,
-            const RemainingParameterTypes&... remainingParameters) {
-        verifyNodeData(node, level, id);
-        verifyNodeIsNotRoot(node);
-
-        verifyNode(node.getParent(), remainingParameters...);
-    }
-
-    void verifyNode(const TreeNodeType& node, PixelType level,
-            unsigned int id) {
-        verifyNodeData(node, level, id);
-        verifyNodeIsRoot(node);
-    }
-
-    void verifyNodeData(const TreeNodeType& node, PixelType level,
-            unsigned int id) {
-        assertThat(node.getLevel()).isEqualTo(level);
-        assertThat(node.getId()).isEqualTo(id);
-    }
-
-    void verifyNodeIsRoot(const TreeNodeType& node) {
-        assertThat(node.hasParent()).isEqualTo(false);
-    }
-
-    void verifyNodeIsNotRoot(const TreeNodeType& node) {
-        assertThat(node.hasParent()).isEqualTo(true);
-    }
+protected:
+    using NodeVerificationHelperType::makeNode;
+    using NodeVerificationHelperType::verifyNode;
 };
 
 #endif

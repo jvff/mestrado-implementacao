@@ -12,15 +12,19 @@
 
 #include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
+#include "NodeVerificationHelper.hpp"
 
 template <typename TypeParameter>
-class MinMaxTreeLevelTest : public ::testing::Test {
+class MinMaxTreeLevelTest : public ::testing::Test,
+        public NodeVerificationHelper<DummyType, TypeParameter> {
 protected:
     using LevelOrderComparator = TypeParameter;
     using DummyMinMaxTreeLevel = MinMaxTreeLevel<DummyType,
             LevelOrderComparator>;
     using NodeType = MinMaxTreeNode<DummyType, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
+    using NodeVerificationHelperType = NodeVerificationHelper<DummyType,
+            LevelOrderComparator>;
 
     DummyType levelHeight;
     DummyMinMaxTreeLevel level;
@@ -32,54 +36,21 @@ public:
     }
 
 protected:
-    void verifyNode(NodePointer nodePointer, unsigned int expectedId) {
-        verifyNode(*nodePointer, expectedId);
+    template <typename... RemainingParameters>
+    void verifyNode(NodePointer nodePointer, unsigned int id,
+            const RemainingParameters&... remainingParameters) {
+        verifyNode(*nodePointer, levelHeight, id, remainingParameters...);
     }
 
-    void verifyNode(const NodeType& node, unsigned int expectedId) {
-        verifyNodeData(node, expectedId);
-
-        assertThat(node.hasParent()).isEqualTo(false);
+    template <typename... RemainingParameters>
+    void verifyNode(const NodeType& node, unsigned int id,
+            const RemainingParameters&... remainingParameters) {
+        verifyNode(node, levelHeight, id, remainingParameters...);
     }
 
-    void verifyNode(NodePointer nodePointer, unsigned int expectedId,
-            const DummyType& expectedLevel) {
-        verifyNode(*nodePointer, expectedId, expectedLevel);
-    }
-
-    void verifyNode(const NodeType& node, unsigned int expectedId,
-            const DummyType& expectedLevel) {
-        verifyNodeData(node, expectedId, expectedLevel);
-
-        assertThat(node.hasParent()).isEqualTo(false);
-    }
-
-    void verifyNode(NodePointer nodePointer, unsigned int expectedId,
-            NodePointer expectedParent) {
-        verifyNode(*nodePointer, expectedId, expectedParent);
-    }
-
-    void verifyNode(const NodeType& node, unsigned int expectedId,
-            NodePointer expectedParent) {
-        auto expectedParentId = expectedParent->getId();
-        auto expectedParentLevel = expectedParent->getLevel();
-
-        verifyNodeData(node, expectedId);
-
-        assertThat(node.hasParent()).isEqualTo(true);
-
-        verifyNode(node.getParent(), expectedParentId, expectedParentLevel);
-    }
-
-    void verifyNodeData(const NodeType& node, unsigned int expectedId) {
-        verifyNodeData(node, expectedId, levelHeight);
-    }
-
-    void verifyNodeData(const NodeType& node, unsigned int expectedId,
-            const DummyType& expectedLevel) {
-        assertThat(node.getLevel()).isEqualTo(expectedLevel);
-        assertThat(node.getId()).isEqualTo(expectedId);
-    }
+protected:
+    using NodeVerificationHelperType::verifyNode;
+    using NodeVerificationHelperType::verifyNodeData;
 };
 
 #define TEST_C(testName) \
@@ -100,6 +71,7 @@ private: \
     using SuperClass::level; \
     using SuperClass::constLevel; \
 \
+    using SuperClass::makeNode; \
     using SuperClass::verifyNode; \
 \
     virtual void TestBody(); \
