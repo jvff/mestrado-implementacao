@@ -92,26 +92,19 @@ TEST_C(NodeRemovalTest, pixelNodeIdsAreUpdated) {
 
     image.removeNode(node);
 
-    verifyNode(image.getPixelNode(0, 0),
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(1, 0),
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(2, 0),
-            levelHeights[1], 1u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(0, 1),
-            levelHeights[1], 1u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(1, 1),
-            levelHeights[4], 0u,
-            levelHeights[1], 1u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(2, 1),
-            levelHeights[5], 0u,
-            levelHeights[4], 0u,
-            levelHeights[1], 1u,
-            levelHeights[0], 0u);
+    auto& firstNode = image.getPixelNode(0, 0);
+    auto& secondNode = image.getPixelNode(1, 0);
+    auto& thirdNode = image.getPixelNode(2, 0);
+    auto& fourthNode = image.getPixelNode(0, 1);
+    auto& fifthNode = image.getPixelNode(1, 1);
+    auto& sixthNode = image.getPixelNode(2, 1);
+
+    verifyNode(firstNode, levelHeights[0], 0u);
+    verifyNode(secondNode, levelHeights[1], 0u, firstNode);
+    verifyNode(thirdNode, levelHeights[1], 1u, firstNode);
+    verifyNode(fourthNode, levelHeights[1], 1u, firstNode);
+    verifyNode(fifthNode, levelHeights[4], 0u, fourthNode);
+    verifyNode(sixthNode, levelHeights[5], 0u, fifthNode);
 }
 
 TEST_C(NodeRemovalTest, parentOfNodeParameterIsNotUsed) {
@@ -131,13 +124,13 @@ TEST_C(NodeRemovalTest, parentOfNodeParameterIsNotUsed) {
     assertThat(image.getPixelValue(1, 0)).isEqualTo(levelHeights[0]);
     assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[2]);
 
-    verifyNode(image.getPixelNode(0, 0),
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(1, 0),
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(2, 0),
-            levelHeights[2], 0u,
-            levelHeights[0], 0u);
+    auto& firstNode = image.getPixelNode(0, 0);
+    auto& secondNode = image.getPixelNode(1, 0);
+    auto& thirdNode = image.getPixelNode(2, 0);
+
+    verifyNode(firstNode, levelHeights[0], 0u);
+    verifyNode(secondNode, levelHeights[0], 0u);
+    verifyNode(thirdNode, levelHeights[2], 0u, firstNode);
 }
 
 TEST_C(NodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
@@ -158,18 +151,15 @@ TEST_C(NodeRemovalTest, nodeParameterWithoutParentCanBeUsed) {
     assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[1]);
     assertThat(image.getPixelValue(3, 0)).isEqualTo(levelHeights[3]);
 
-    verifyNode(image.getPixelNode(0, 0),
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(1, 0),
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(2, 0),
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(3, 0),
-            levelHeights[3], 0u,
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
+    auto& firstNode = image.getPixelNode(0, 0);
+    auto& secondNode = image.getPixelNode(1, 0);
+    auto& thirdNode = image.getPixelNode(2, 0);
+    auto& fourthNode = image.getPixelNode(3, 0);
+
+    verifyNode(firstNode, levelHeights[0], 0u);
+    verifyNode(secondNode, levelHeights[1], 0u, firstNode);
+    verifyNode(thirdNode, levelHeights[1], 0u, firstNode);
+    verifyNode(fourthNode, levelHeights[3], 0u, secondNode);
 }
 
 TEST_C(NodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
@@ -188,18 +178,13 @@ TEST_C(NodeRemovalTest, cantRemoveNodeFromInexistentLevel) {
     assertThat(image.getPixelValue(2, 0)).isEqualTo(levelHeights[2]);
     assertThat(image.getPixelValue(3, 0)).isEqualTo(levelHeights[3]);
 
-    verifyNode(image.getPixelNode(0, 0),
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(1, 0),
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(2, 0),
-            levelHeights[2], 0u,
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
-    verifyNode(image.getPixelNode(3, 0),
-            levelHeights[3], 0u,
-            levelHeights[2], 0u,
-            levelHeights[1], 0u,
-            levelHeights[0], 0u);
+    auto& firstNode = image.getPixelNode(0, 0);
+    auto& secondNode = image.getPixelNode(1, 0);
+    auto& thirdNode = image.getPixelNode(2, 0);
+    auto& fourthNode = image.getPixelNode(3, 0);
+
+    verifyNode(firstNode, levelHeights[0], 0u);
+    verifyNode(secondNode, levelHeights[1], 0u, firstNode);
+    verifyNode(thirdNode, levelHeights[2], 0u, secondNode);
+    verifyNode(fourthNode, levelHeights[3], 0u, thirdNode);
 }
