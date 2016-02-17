@@ -26,7 +26,7 @@ protected:
             LevelOrderComparator>;
     using TreeNodeType = MinMaxTreeNode<PixelType, LevelOrderComparator>;
     using TreeNodePointer = std::shared_ptr<TreeNodeType>;
-    using MaxTreeNodeFunction =
+    using MinMaxTreeNodeFunction =
             std::function<TreeNodeType(unsigned int, unsigned int)>;
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
     using NodeVerificationHelperType = NodeVerificationHelper<PixelType,
@@ -101,7 +101,7 @@ protected:
     }
 
     void verifyNodes(const DummyMinMaxTreeImageType& image,
-            MaxTreeNodeFunction expectedNodeFunction) {
+            MinMaxTreeNodeFunction expectedNodeFunction) {
         auto width = image.getWidth();
         auto height = image.getHeight();
 
@@ -142,7 +142,7 @@ private:
 };
 
 template <typename TypeParameter>
-class MaxTreeImageTest : public AbstractFixture<TypeParameter> {
+class MinMaxTreeImageTest : public AbstractFixture<TypeParameter> {
 protected:
     using SuperClass = AbstractFixture<TypeParameter>;
     using PaintFunction = typename SuperClass::PaintFunction;
@@ -158,7 +158,7 @@ protected:
 };
 
 template <typename PixelType>
-class MaxTreeImageTest<std::greater<PixelType> >
+class MinMaxTreeImageTest<std::greater<PixelType> >
         : public AbstractFixture<std::greater<PixelType> > {
 protected:
     using TypeParameter = std::greater<PixelType>;

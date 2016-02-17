@@ -1,4 +1,4 @@
-#include "MaxTreeImageTest.hpp"
+#include "MinMaxTreeImageTest.hpp"
 
 SUB_TEST(ComparisonTest);
 
