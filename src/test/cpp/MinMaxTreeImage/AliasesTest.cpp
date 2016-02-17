@@ -1,16 +1,11 @@
-#include <functional>
-
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
-
 #include "MinTreeImage.hpp"
 #include "MaxTreeImage.hpp"
-#include "SimpleArrayImage.hpp"
 
-#include "DummyTypes.hpp"
+#include "MinMaxTreeImageTest.hpp"
 
-TEST(MinMaxTreeImageAliases, aliasForMaxTreeImageExists) {
+SUB_TEST(AliasesTest);
+
+TEST_C(AliasesTest, aliasForMaxTreeImageExists) {
     using InternalImageType = SimpleArrayImage<DummyType>;
     using MaxTreeImageAlias = MaxTreeImage<InternalImageType>;
     using ExpectedType = MinMaxTreeImage<InternalImageType,
@@ -19,7 +14,7 @@ TEST(MinMaxTreeImageAliases, aliasForMaxTreeImageExists) {
     AssertThat<MaxTreeImageAlias>::isTheSame(As<ExpectedType>());
 }
 
-TEST(MinMaxTreeImageAliases, aliasForMinTreeImageExists) {
+TEST_C(AliasesTest, aliasForMinTreeImageExists) {
     using InternalImageType = SimpleArrayImage<DummyType>;
     using MinTreeImageAlias = MinTreeImage<InternalImageType>;
     using ExpectedType = MinMaxTreeImage<InternalImageType,
