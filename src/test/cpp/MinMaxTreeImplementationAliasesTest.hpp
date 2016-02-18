@@ -8,6 +8,7 @@
 #include "asserts.hpp"
 
 #include "MaxTreeImplementation.hpp"
+#include "MinTreeImplementation.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"

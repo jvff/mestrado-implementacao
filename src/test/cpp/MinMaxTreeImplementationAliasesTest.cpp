@@ -9,3 +9,13 @@ TEST_F(MinMaxTreeImplementationAliasesTest,
 
     AssertThat<MaxTreeImplementationAlias>::isTheSame(As<ExpectedType>());
 }
+
+TEST_F(MinMaxTreeImplementationAliasesTest,
+        aliasForMinTreeImplementationExists) {
+    using MinTreeImplementationAlias = MinTreeImplementation<SourceImageType,
+            InternalImageType>;
+    using ExpectedType = MinMaxTreeImplementation<SourceImageType,
+            InternalImageType, std::greater>;
+
+    AssertThat<MinTreeImplementationAlias>::isTheSame(As<ExpectedType>());
+}
