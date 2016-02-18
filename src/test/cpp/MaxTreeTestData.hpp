@@ -4,24 +4,28 @@
 #include <initializer_list>
 #include <vector>
 
-#include "MaxTreeImplementation.hpp"
+#include "MinMaxTreeImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "ChainableMethodMacros.hpp"
 #include "PaintableTestData.hpp"
 
-template <typename PaintableTestDataSuperClass, typename PixelType,
+template <typename PaintableTestDataSuperClass,
+        template <typename> class TreeTypeComparator, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
-class MaxTreeTestData : public PaintableTestData<PaintableTestDataSuperClass,
-        ImageType, MaxTreeImage<ImageType> > {
+class MaxTreeTestData
+        : public PaintableTestData<PaintableTestDataSuperClass, ImageType,
+                MinMaxTreeImage<ImageType, TreeTypeComparator<PixelType> > > {
 private:
-    using ImplementationType = MaxTreeImplementation<ImageType, ImageType>;
-    using DestinationImageType = MaxTreeImage<ImageType>;
+    using ImplementationType = MinMaxTreeImplementation<ImageType, ImageType,
+            TreeTypeComparator>;
+    using DestinationImageType = MinMaxTreeImage<ImageType,
+            TreeTypeComparator<PixelType> >;
     using State = AbstractTestData::State;
     using SuperClass = PaintableTestData<PaintableTestDataSuperClass, ImageType,
             DestinationImageType>;
-    using ThisType = MaxTreeTestData<PaintableTestDataSuperClass, PixelType,
-            ImageType>;
+    using ThisType = MaxTreeTestData<PaintableTestDataSuperClass,
+            TreeTypeComparator, PixelType, ImageType>;
 
 private:
     std::vector<PixelType> colors;

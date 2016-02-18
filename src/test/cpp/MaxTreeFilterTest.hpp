@@ -1,6 +1,8 @@
 #ifndef MAX_TREE_FILTER_TEST_HPP
 #define MAX_TREE_FILTER_TEST_HPP
 
+#include <functional>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
@@ -37,6 +39,6 @@ public:
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MaxTreeTestData<AbstractMaxTreeFilterTestData<PixelType,
-            ImageType>, PixelType, ImageType>;
+            ImageType>, std::less, PixelType, ImageType>;
 
 #endif

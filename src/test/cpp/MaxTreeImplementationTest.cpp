@@ -1,3 +1,5 @@
+#include <functional>
+
 #include "MaxTreeImage.hpp"
 #include "MaxTreeImplementation.hpp"
 #include "SimpleArrayImage.hpp"
@@ -10,7 +12,7 @@ template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MaxTreeTestData<AbstractFilterImplementationTestData<
             MaxTreeImplementation<ImageType, ImageType>,
             ImageType, MaxTreeImage<ImageType> >,
-        PixelType, ImageType>;
+        std::less, PixelType, ImageType>;
 
 INSTANTIATE_COMPLEX_FILTER_TEST_CASE(MaxTreeImplementationTest,
         MaxTreeTests, TestData);
