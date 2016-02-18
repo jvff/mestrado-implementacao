@@ -5,11 +5,11 @@
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractFilterImplementationTestData.hpp"
-#include "MaxTreeTestData.hpp"
 #include "MaxTreeTests.hpp"
+#include "MinMaxTreeTestData.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MaxTreeTestData<AbstractFilterImplementationTestData<
+using TestData = MinMaxTreeTestData<AbstractFilterImplementationTestData<
             MaxTreeImplementation<ImageType, ImageType>,
             ImageType, MaxTreeImage<ImageType> >,
         std::less, PixelType, ImageType>;

@@ -1,5 +1,5 @@
-#ifndef MAX_TREE_TEST_DATA_HPP
-#define MAX_TREE_TEST_DATA_HPP
+#ifndef MIN_MAX_TREE_TEST_DATA_HPP
+#define MIN_MAX_TREE_TEST_DATA_HPP
 
 #include <initializer_list>
 #include <vector>
@@ -13,7 +13,7 @@
 template <typename PaintableTestDataSuperClass,
         template <typename> class TreeTypeComparator, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
-class MaxTreeTestData
+class MinMaxTreeTestData
         : public PaintableTestData<PaintableTestDataSuperClass, ImageType,
                 MinMaxTreeImage<ImageType, TreeTypeComparator<PixelType> > > {
 private:
@@ -24,7 +24,7 @@ private:
     using State = AbstractTestData::State;
     using SuperClass = PaintableTestData<PaintableTestDataSuperClass, ImageType,
             DestinationImageType>;
-    using ThisType = MaxTreeTestData<PaintableTestDataSuperClass,
+    using ThisType = MinMaxTreeTestData<PaintableTestDataSuperClass,
             TreeTypeComparator, PixelType, ImageType>;
 
 private:
@@ -36,7 +36,7 @@ private:
     using SuperClass::expectedImage;
 
 public:
-    ~MaxTreeTestData() {
+    ~MinMaxTreeTestData() {
         this->tryToRunTest();
     }
 

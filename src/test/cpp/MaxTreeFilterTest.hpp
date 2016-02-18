@@ -15,7 +15,7 @@
 #include "AbstractFilterTestData.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-#include "MaxTreeTestData.hpp"
+#include "MinMaxTreeTestData.hpp"
 
 class MaxTreeFilterTest : public ::testing::Test {
 protected:
@@ -38,7 +38,7 @@ public:
 };
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MaxTreeTestData<AbstractMaxTreeFilterTestData<PixelType,
+using TestData = MinMaxTreeTestData<AbstractMaxTreeFilterTestData<PixelType,
             ImageType>, std::less, PixelType, ImageType>;
 
 #endif
