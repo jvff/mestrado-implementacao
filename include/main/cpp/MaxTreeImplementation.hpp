@@ -1,6 +1,7 @@
 #ifndef MAX_TREE_IMPLEMENTATION_HPP
 #define MAX_TREE_IMPLEMENTATION_HPP
 
+#include <functional>
 #include <queue>
 #include <vector>
 
@@ -10,8 +11,9 @@
 #include "Pixel.hpp"
 #include "SimpleArrayImage.hpp"
 
-template <typename SourceImageType, typename InternalImageType>
-class MaxTreeImplementation : public FilterImplementation<SourceImageType,
+template <typename SourceImageType, typename InternalImageType,
+         template <typename> class TreeTypeComparator>
+class MinMaxTreeImplementation : public FilterImplementation<SourceImageType,
         MaxTreeImage<InternalImageType> > {
 private:
     using DestinationImageType = MaxTreeImage<InternalImageType>;
@@ -37,7 +39,7 @@ private:
     using SuperClass::maxY;
 
 public:
-    MaxTreeImplementation(const SourceImageType& sourceImage,
+    MinMaxTreeImplementation(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
             queuedOrFinishedPixels(width, height) {
@@ -195,5 +197,9 @@ private:
         pixelQueue.pop();
     }
 };
+
+template <typename SourceImageType, typename InternalImageType>
+using MaxTreeImplementation = MinMaxTreeImplementation<SourceImageType,
+        InternalImageType, std::less>;
 
 #endif
