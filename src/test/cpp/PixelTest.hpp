@@ -33,16 +33,16 @@ private:
     template <typename PixelType>
     struct DirectComparator : public Comparator<PixelType> {
         void compareSinglePixel(const Pixel<PixelType>& pixel) const override {
-            assertThat(pixel).isNotBefore(pixel);
-            assertThat(pixel).isNotAfter(pixel);
+            assertThat(pixel).isNotLessThan(pixel);
+            assertThat(pixel).isNotGreaterThan(pixel);
         }
 
         void compareTwoPixels(const Pixel<PixelType>& before,
                 const Pixel<PixelType>& after) const override {
-            assertThat(before).isBefore(after);
-            assertThat(before).isNotAfter(after);
-            assertThat(after).isAfter(before);
-            assertThat(after).isNotBefore(before);
+            assertThat(before).isLessThan(after);
+            assertThat(before).isNotGreaterThan(after);
+            assertThat(after).isGreaterThan(before);
+            assertThat(after).isNotLessThan(before);
         }
     };
 
