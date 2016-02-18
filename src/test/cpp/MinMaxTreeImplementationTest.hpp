@@ -1,5 +1,5 @@
-#ifndef MAX_TREE_IMPLEMENTATION_TEST_HPP
-#define MAX_TREE_IMPLEMENTATION_TEST_HPP
+#ifndef MIN_MAX_TREE_IMPLEMENTATION_TEST_HPP
+#define MIN_MAX_TREE_IMPLEMENTATION_TEST_HPP
 
 #include <functional>
 
@@ -8,18 +8,15 @@
 #include "asserts.hpp"
 
 #include "FilterImplementation.hpp"
-#include "MaxTreeImage.hpp"
-#include "MaxTreeImplementation.hpp"
-#include "SimpleArrayImage.hpp"
+#include "MinMaxTreeImage.hpp"
+#include "MinMaxTreeImplementation.hpp"
 
-#include "AbstractFilterImplementationTestData.hpp"
 #include "CustomTypedTestMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
-#include "MaxTreeTestData.hpp"
 
 template <typename TypeParameter>
-class MaxTreeImplementationTest : public ::testing::Test {
+class MinMaxTreeImplementationTest : public ::testing::Test {
 protected:
     template <typename T>
     using TreeTypeComparator =
@@ -43,16 +40,16 @@ struct ComparatorWrapper {
 };
 
 #define TEST_C(testName) \
-    CREATE_MAX_TREE_IMPLEMENTATION_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MaxTreeImplementationTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MaxTreeImplementationTest, testName)
+    CREATE_MIN_MAX_TREE_IMPLEMENTATION_TEST_CLASS(testName); \
+    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeImplementationTest, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeImplementationTest, testName)
 
-#define CREATE_MAX_TREE_IMPLEMENTATION_TEST_CLASS(testName) \
+#define CREATE_MIN_MAX_TREE_IMPLEMENTATION_TEST_CLASS(testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MaxTreeImplementationTest, testName) \
-        : public MaxTreeImplementationTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(MinMaxTreeImplementationTest, testName) \
+        : public MinMaxTreeImplementationTest<TypeParameter> { \
 private: \
-    using SuperClass = MaxTreeImplementationTest<TypeParameter>; \
+    using SuperClass = MinMaxTreeImplementationTest<TypeParameter>; \
     using SourceImageType = typename SuperClass::SourceImageType; \
     using DestinationImageType = typename SuperClass::DestinationImageType; \
     using DummyImplementationType = \
@@ -61,11 +58,5 @@ private: \
 private: \
     virtual void TestBody(); \
 }
-
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MaxTreeTestData<AbstractFilterImplementationTestData<
-            MaxTreeImplementation<ImageType, ImageType>,
-            ImageType, MaxTreeImage<ImageType> >,
-        PixelType, ImageType>;
 
 #endif
