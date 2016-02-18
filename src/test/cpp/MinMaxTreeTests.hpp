@@ -1,9 +1,9 @@
-#ifndef MAX_TREE_TESTS_HPP
-#define MAX_TREE_TESTS_HPP
+#ifndef MIN_MAX_TREE_TESTS_HPP
+#define MIN_MAX_TREE_TESTS_HPP
 
 #include "ComplexFilterTestMacros.hpp"
 
-COMPLEX_FILTER_TEST_CASE(MaxTreeTests);
+COMPLEX_FILTER_TEST_CASE(MinMaxTreeTests);
 
 COMPLEX_FILTER_TEST(allNodesAreAssignedToRootNode) {
     TestData<unsigned char>()
@@ -60,7 +60,8 @@ COMPLEX_FILTER_TEST(complexConnectedRegionsAreChained) {
         .drawSquare(2, 3, 1, 3);
 }
 
-REGISTER_COMPLEX_FILTER_TEST_CASE(MaxTreeTests, allNodesAreAssignedToRootNode,
+REGISTER_COMPLEX_FILTER_TEST_CASE(MinMaxTreeTests,
+        allNodesAreAssignedToRootNode,
         higherRegionIsAssignedToChildNode,
         twoRegionsAreAssignedToDifferentNodes,
         twoConnectedRegionsAreAssignedToSameNode,
