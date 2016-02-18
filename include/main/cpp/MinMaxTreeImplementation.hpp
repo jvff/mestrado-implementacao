@@ -14,9 +14,13 @@
 template <typename SourceImageType, typename InternalImageType,
          template <typename> class TreeTypeComparator>
 class MinMaxTreeImplementation : public FilterImplementation<SourceImageType,
-        MaxTreeImage<InternalImageType> > {
+        MinMaxTreeImage<InternalImageType,
+                TreeTypeComparator<typename InternalImageType::PixelType> > > {
 private:
-    using DestinationImageType = MaxTreeImage<InternalImageType>;
+    using DestinationPixelType = typename InternalImageType::PixelType;
+    using LevelOrderComparator = TreeTypeComparator<DestinationPixelType>;
+    using DestinationImageType = MinMaxTreeImage<InternalImageType,
+            LevelOrderComparator>;
     using PixelType = typename SourceImageType::PixelType;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
