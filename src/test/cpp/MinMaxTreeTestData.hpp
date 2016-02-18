@@ -48,6 +48,8 @@ public:
     CHAIN_I(setColorsToUse, PixelType, colorsToUse) {
         for (auto color : colorsToUse)
             colors.push_back(color);
+
+        sortColors();
     }
 
     CHAIN(setBackground, unsigned int colorIndex) {
@@ -89,6 +91,12 @@ public:
 
 private:
     using SuperClass::stateIs;
+
+    void sortColors() {
+        TreeTypeComparator<PixelType> colorComparator;
+
+        std::sort(colors.begin(), colors.end(), colorComparator);
+    }
 
     void updateExpectedNodes(unsigned int startX, unsigned int startY,
             unsigned int endX, unsigned int endY) {
