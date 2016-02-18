@@ -1,6 +1,9 @@
 #ifndef MAX_TREE_TEST_DATA_HPP
 #define MAX_TREE_TEST_DATA_HPP
 
+#include <initializer_list>
+#include <vector>
+
 #include "MaxTreeImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
@@ -20,6 +23,9 @@ private:
     using ThisType = MaxTreeTestData<PaintableTestDataSuperClass, PixelType,
             ImageType>;
 
+private:
+    std::vector<PixelType> colors;
+
     using SuperClass::state;
     using SuperClass::width;
     using SuperClass::height;
@@ -35,7 +41,14 @@ public:
             state = State::READY;
     }
 
-    CHAIN(setBackground, const PixelType& color) {
+    CHAIN_I(setColorsToUse, PixelType, colorsToUse) {
+        for (auto color : colorsToUse)
+            colors.push_back(color);
+    }
+
+    CHAIN(setBackground, unsigned int colorIndex) {
+        auto color = colors[colorIndex];
+
         SuperClass::setBackground(color);
         SuperClass::setExpectedBackground(color);
 
@@ -45,7 +58,9 @@ public:
     }
 
     CHAIN(drawSquare, unsigned int x, unsigned int y, unsigned int size,
-            const PixelType& color) {
+            unsigned int colorIndex) {
+        auto color = colors[colorIndex];
+
         if (stateIs(State::READY)) {
             SuperClass::drawSquare(x, y, size, color);
             SuperClass::drawExpectedSquare(x, y, size, color);
@@ -57,7 +72,9 @@ public:
     }
 
     CHAIN(drawSquareOnSameNode, unsigned int x, unsigned int y,
-            unsigned int size, const PixelType& color) {
+            unsigned int size, unsigned int colorIndex) {
+        auto color = colors[colorIndex];
+
         if (stateIs(State::READY)) {
             SuperClass::drawSquare(x, y, size, color);
             SuperClass::drawExpectedSquare(x, y, size, color);
