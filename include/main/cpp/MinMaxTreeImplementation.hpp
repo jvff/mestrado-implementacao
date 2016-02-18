@@ -22,15 +22,17 @@ private:
     using DestinationImageType = MinMaxTreeImage<InternalImageType,
             LevelOrderComparator>;
     using PixelType = typename SourceImageType::PixelType;
+    using PixelValueComparator = TreeTypeComparator<PixelType>;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    using AscendingPixelComparator = std::less<Pixel<PixelType> >;
+    using PixelComparator = TreeTypeComparator<Pixel<PixelType> >;
     using PixelQueue = std::priority_queue<Pixel<PixelType>,
-            std::vector<Pixel<PixelType> >, AscendingPixelComparator>;
+            std::vector<Pixel<PixelType> >, PixelComparator>;
 
     enum class Direction { LEFT, RIGHT, UP, DOWN };
 
+    PixelValueComparator isCloserToRootLevel;
     PixelQueue pixelQueue;
     SimpleArrayImage<bool> queuedOrFinishedPixels;
 
@@ -62,7 +64,7 @@ private:
     }
 
     void queueStartingPixel() {
-        auto startingPixel = findLowestPixel();
+        auto startingPixel = findRootPixel();
 
         setFirstDestinationPixel(startingPixel);
 
@@ -70,19 +72,19 @@ private:
         queuedOrFinishedPixels.setPixel(startingPixel.x, startingPixel.y, true);
     }
 
-    Pixel<PixelType> findLowestPixel() {
-        auto lowestPixel = sourceImage.getPixel(0, 0);
+    Pixel<PixelType> findRootPixel() {
+        auto rootPixel = sourceImage.getPixel(0, 0);
 
         for (auto x = 0u; x < width; ++x) {
             for (auto y = 0u; y < height; ++y) {
                 auto currentPixel = sourceImage.getPixel(x, y);
 
-                if (currentPixel.value < lowestPixel.value)
-                    lowestPixel = currentPixel;
+                if (isCloserToRootLevel(currentPixel.value, rootPixel.value))
+                    rootPixel = currentPixel;
             }
         }
 
-        return lowestPixel;
+        return rootPixel;
     }
 
     void processQueue() {
@@ -94,7 +96,7 @@ private:
         if (allNeighborsHaveBeenProcessed(pixel))
             finishPixel();
         else
-            queueHighestNeighbor(pixel);
+            queueNeighborOnFarthestLevel(pixel);
     }
 
     bool allNeighborsHaveBeenProcessed(Pixel<PixelType> pixel) {
@@ -133,26 +135,27 @@ private:
         };
     }
 
-    void queueHighestNeighbor(Pixel<PixelType> pixel) {
-        auto neighbor = getHighestNeighbor(pixel);
+    void queueNeighborOnFarthestLevel(Pixel<PixelType> pixel) {
+        auto neighbor = getNeighborOnFarthestLevel(pixel);
 
         processPixelNeighbor(pixel, neighbor);
     }
 
-    Pixel<PixelType> getHighestNeighbor(Pixel<PixelType> pixel) {
+    Pixel<PixelType> getNeighborOnFarthestLevel(Pixel<PixelType> pixel) {
         auto neighbor = pixel;
         bool hasBeenSet = false;
 
-        getNeighborIfHigher(pixel, Direction::LEFT, neighbor, hasBeenSet);
-        getNeighborIfHigher(pixel, Direction::RIGHT, neighbor, hasBeenSet);
-        getNeighborIfHigher(pixel, Direction::UP, neighbor, hasBeenSet);
-        getNeighborIfHigher(pixel, Direction::DOWN, neighbor, hasBeenSet);
+        getNeighborIfFarther(pixel, Direction::LEFT, neighbor, hasBeenSet);
+        getNeighborIfFarther(pixel, Direction::RIGHT, neighbor, hasBeenSet);
+        getNeighborIfFarther(pixel, Direction::UP, neighbor, hasBeenSet);
+        getNeighborIfFarther(pixel, Direction::DOWN, neighbor, hasBeenSet);
 
         return neighbor;
     }
 
-    void getNeighborIfHigher(const Pixel<PixelType> &pixel, Direction direction,
-            Pixel<PixelType> &bestNeighbor, bool& bestNeighborHasBeenSet) {
+    void getNeighborIfFarther(const Pixel<PixelType> &pixel,
+            Direction direction, Pixel<PixelType> &bestNeighbor,
+            bool& bestNeighborHasBeenSet) {
         if (neighborIsValid(pixel, direction)
                 && !neighborHasBeenProcessed(pixel, direction)) {
             auto neighborCoordinate = getPixelNeighbor(pixel, direction);
@@ -161,7 +164,7 @@ private:
             if (!bestNeighborHasBeenSet) {
                 bestNeighbor = neighbor;
                 bestNeighborHasBeenSet = true;
-            } else if (neighbor.value > bestNeighbor.value)
+            } else if (isCloserToRootLevel(bestNeighbor.value, neighbor.value))
                 bestNeighbor = neighbor;
         }
     }
@@ -181,12 +184,12 @@ private:
 
         destinationImage.setPixel(neighbor);
 
-        if (pixel.value < neighbor.value)
+        if (isCloserToRootLevel(pixel.value, neighbor.value))
             destinationImage.assignPixelToNewNode(x, y);
         else {
             destinationImage.assignPixelToLatestNode(x, y);
 
-            if (pixel.value > neighbor.value)
+            if (isCloserToRootLevel(neighbor.value, pixel.value))
                 destinationImage.connectPixels(pixel.x, pixel.y, x, y);
         }
     }
