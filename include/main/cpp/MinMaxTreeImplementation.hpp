@@ -1,6 +1,7 @@
 #ifndef MIN_MAX_TREE_IMPLEMENTATION_HPP
 #define MIN_MAX_TREE_IMPLEMENTATION_HPP
 
+#include <functional>
 #include <queue>
 #include <vector>
 
@@ -20,8 +21,7 @@ private:
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    using AscendingPixelComparator =
-            typename Pixel<PixelType>::AscendingComparator;
+    using AscendingPixelComparator = std::less<Pixel<PixelType> >;
     using PixelQueue = std::priority_queue<Pixel<PixelType>,
             std::vector<Pixel<PixelType> >, AscendingPixelComparator>;
 

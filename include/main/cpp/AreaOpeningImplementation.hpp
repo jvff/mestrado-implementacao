@@ -16,10 +16,8 @@ class AreaOpeningImplementation : public FilterImplementation<SourceImageType,
 private:
     using DestinationPixelType = typename DestinationImageType::PixelType;
     using DestinationPixel = Pixel<DestinationPixelType>;
-    using AscendingPixelComparator =
-            typename DestinationPixel::AscendingComparator;
-    using DescendingPixelComparator =
-            typename DestinationPixel::DescendingComparator;
+    using AscendingPixelComparator = std::less<DestinationPixel>;
+    using DescendingPixelComparator = std::greater<DestinationPixel>;
     using RegionalMaximumsFilterType = RegionalMaximumsFilter<SourceImageType,
             DestinationImageType>;
     using SuperClass = FilterImplementation<SourceImageType,
