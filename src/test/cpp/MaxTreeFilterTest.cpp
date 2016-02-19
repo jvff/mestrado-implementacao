@@ -1,27 +1,26 @@
-#include "MaxTreeFilterTest.hpp"
+#include <functional>
+
+#include "MaxTreeFilter.hpp"
+#include "MaxTreeImage.hpp"
+#include "SimpleArrayImage.hpp"
+
+#include "AbstractFilterTestData.hpp"
+#include "MinMaxTreeTestData.hpp"
 #include "MinMaxTreeTests.hpp"
 
-using TreeTypeComparators = ::testing::Types<ComparatorWrapper<std::less> >;
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+class AbstractMaxTreeFilterTestData : public AbstractFilterTestData<
+        MaxTreeFilter<ImageType, ImageType>, ImageType,
+        MaxTreeImage<ImageType> > {
+public:
+    AbstractMaxTreeFilterTestData() {
+        this->initializeFilter();
+    }
+};
 
-TYPED_TEST_CASE(MaxTreeFilterTest, TreeTypeComparators);
-
-TEST_C(classTemplateExists) {
-    AssertThat<DummyMaxTreeFilter>::isClassOrStruct();
-}
-
-TEST_C(isComplexFilter) {
-    using DestinationImageType = MaxTreeImage<InternalImageType>;
-    using ImplementationType = MaxTreeImplementation<SourceImageType,
-            InternalImageType>;
-    using ParentFilter = ComplexFilter<SourceImageType, DestinationImageType,
-            ImplementationType>;
-
-    AssertThat<DummyMaxTreeFilter>::isSubClass(Of<ParentFilter>());
-}
-
-TEST_C(isConstructible) {
-    AssertThat<DummyMaxTreeFilter>::isConstructible(WithoutParameters());
-}
+template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+using TestData = MinMaxTreeTestData<AbstractMaxTreeFilterTestData<PixelType,
+            ImageType>, std::less, PixelType, ImageType>;
 
 INSTANTIATE_COMPLEX_FILTER_TEST_CASE(MaxTreeFilterTest, MinMaxTreeTests,
         TestData);
