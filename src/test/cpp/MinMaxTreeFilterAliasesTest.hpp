@@ -8,6 +8,7 @@
 #include "asserts.hpp"
 
 #include "MaxTreeFilter.hpp"
+#include "MinTreeFilter.hpp"
 
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"

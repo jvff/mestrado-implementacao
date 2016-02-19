@@ -8,3 +8,12 @@ TEST_F(MinMaxTreeFilterAliasesTest, aliasForMaxTreeFilterExists) {
 
     AssertThat<MaxTreeFilterAlias>::isTheSame(As<ExpectedType>());
 }
+
+TEST_F(MinMaxTreeFilterAliasesTest, aliasForMinTreeFilterExists) {
+    using MinTreeFilterAlias = MinTreeFilter<SourceImageType,
+            InternalImageType>;
+    using ExpectedType = MinMaxTreeFilter<SourceImageType, InternalImageType,
+            std::greater>;
+
+    AssertThat<MinTreeFilterAlias>::isTheSame(As<ExpectedType>());
+}
