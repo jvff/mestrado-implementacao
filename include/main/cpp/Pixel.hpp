@@ -20,7 +20,7 @@ struct Pixel {
             y(coordinate.y), value(value) {
     }
 
-    bool isBefore(const Pixel<Type>& other) const {
+    bool operator<(const Pixel<Type>& other) const {
         if (value != other.value)
             return value < other.value;
         else if (x != other.x)
@@ -29,7 +29,7 @@ struct Pixel {
             return y < other.y;
     }
 
-    bool isAfter(const Pixel<Type>& other) const {
+    bool operator>(const Pixel<Type>& other) const {
         if (value != other.value)
             return value > other.value;
         else if (x != other.x)
@@ -41,14 +41,14 @@ struct Pixel {
     struct AscendingComparator {
         bool operator() (const Pixel<Type>& first, const Pixel<Type>& second)
                 const {
-            return first.isBefore(second);
+            return first < second;
         }
     };
 
     struct DescendingComparator {
         bool operator() (const Pixel<Type>& first, const Pixel<Type>& second)
                 const {
-            return first.isAfter(second);
+            return first > second;
         }
     };
 };
