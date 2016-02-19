@@ -3,16 +3,7 @@
 
 #include <functional>
 
-#include "ComplexFilter.hpp"
-#include "MaxTreeImage.hpp"
-#include "MaxTreeImplementation.hpp"
-
-template <typename SourceImageType, typename InternalImageType,
-        template <typename> class TreeTypeComparator>
-class MinMaxTreeFilter : public ComplexFilter<SourceImageType,
-        MaxTreeImage<InternalImageType>, MaxTreeImplementation<SourceImageType,
-                InternalImageType> > {
-};
+#include "MinMaxTreeFilter.hpp"
 
 template <typename SourceImageType, typename InternalImageType>
 using MaxTreeFilter = MinMaxTreeFilter<SourceImageType, InternalImageType,
