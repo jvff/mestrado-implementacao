@@ -8,8 +8,10 @@
 template <typename SourceImageType, typename InternalImageType,
         template <typename> class TreeTypeComparator>
 class MinMaxTreeFilter : public ComplexFilter<SourceImageType,
-        MaxTreeImage<InternalImageType>, MaxTreeImplementation<SourceImageType,
-                InternalImageType> > {
+        MinMaxTreeImage<InternalImageType,
+                TreeTypeComparator<typename InternalImageType::PixelType> >,
+        MinMaxTreeImplementation<SourceImageType, InternalImageType,
+                TreeTypeComparator> > {
 };
 
 #endif
