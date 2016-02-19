@@ -1,11 +1,15 @@
 #include "MaxTreeFilterTest.hpp"
 #include "MinMaxTreeTests.hpp"
 
-TEST_F(MaxTreeFilterTest, classTemplateExists) {
+using TreeTypeComparators = ::testing::Types<ComparatorWrapper<std::less> >;
+
+TYPED_TEST_CASE(MaxTreeFilterTest, TreeTypeComparators);
+
+TEST_C(classTemplateExists) {
     AssertThat<DummyMaxTreeFilter>::isClassOrStruct();
 }
 
-TEST_F(MaxTreeFilterTest, isComplexFilter) {
+TEST_C(isComplexFilter) {
     using DestinationImageType = MaxTreeImage<InternalImageType>;
     using ImplementationType = MaxTreeImplementation<SourceImageType,
             InternalImageType>;
@@ -15,7 +19,7 @@ TEST_F(MaxTreeFilterTest, isComplexFilter) {
     AssertThat<DummyMaxTreeFilter>::isSubClass(Of<ParentFilter>());
 }
 
-TEST_F(MaxTreeFilterTest, isConstructible) {
+TEST_C(isConstructible) {
     AssertThat<DummyMaxTreeFilter>::isConstructible(WithoutParameters());
 }
 
