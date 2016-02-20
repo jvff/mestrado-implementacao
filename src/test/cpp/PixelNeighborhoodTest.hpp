@@ -5,7 +5,9 @@
 
 #include "asserts.hpp"
 
+#include "Image.hpp"
 #include "PixelNeighborhood.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "DummyTypes.hpp"
 
