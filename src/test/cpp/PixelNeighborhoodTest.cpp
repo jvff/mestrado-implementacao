@@ -1,19 +1,9 @@
-#include <gtest/gtest.h>
+#include "PixelNeighborhoodTest.hpp"
 
-#include "asserts.hpp"
-
-#include "PixelNeighborhood.hpp"
-
-#include "DummyTypes.hpp"
-
-TEST(PixelNeighborhoodTest, classTemplateExists) {
-    using DummyPixelNeighborhood = PixelNeighborhood<DummyType>;
-
+TEST_F(PixelNeighborhoodTest, classTemplateExists) {
     AssertThat<DummyPixelNeighborhood>::isClassOrStruct();
 }
 
-TEST(PixelNeighborhoodTest, isConstructibleWithParameters) {
-    using DummyPixelNeighborhood = PixelNeighborhood<DummyType>;
-
+TEST_F(PixelNeighborhoodTest, isConstructibleWithParameters) {
     AssertThat<DummyPixelNeighborhood>::isConstructible(WithoutParameters());
 }
