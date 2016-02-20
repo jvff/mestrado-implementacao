@@ -14,6 +14,20 @@
 class PixelNeighborhoodTest : public ::testing::Test {
 protected:
     using DummyPixelNeighborhood = PixelNeighborhood<DummyType>;
+
+    DummyPixelNeighborhood neighborhood;
+    SimpleArrayImage<bool> maskImage;
+    const Image<bool>& maskImageReference;
+
+public:
+    PixelNeighborhoodTest() : maskImage(3, 3), maskImageReference(maskImage) {
+    }
+
+    void SetUp() {
+        maskImage = [] (unsigned int, unsigned int) {
+            return false;
+        };
+    }
 };
 
 #endif
