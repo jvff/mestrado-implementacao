@@ -11,3 +11,9 @@ TEST(PixelNeighborhoodTest, classTemplateExists) {
 
     AssertThat<DummyPixelNeighborhood>::isClassOrStruct();
 }
+
+TEST(PixelNeighborhoodTest, isConstructibleWithParameters) {
+    using DummyPixelNeighborhood = PixelNeighborhood<DummyType>;
+
+    AssertThat<DummyPixelNeighborhood>::isConstructible(WithoutParameters());
+}
