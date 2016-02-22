@@ -45,6 +45,14 @@ TEST_F(PixelTest, hasCoordinateConstructor) {
     assertThat(pixel.value).isEqualTo(value);
 }
 
+TEST_F(PixelTest, pixelsAreComparable) {
+    auto pixelValue = DummyType{ 927 };
+    auto pixel = Pixel<DummyType>{ 239, 5200, pixelValue };
+    const auto& pixelReference = pixel;
+
+    assertThat(pixelReference).isNotDifferentThan(pixelReference);
+}
+
 TEST_F(PixelTest, isOrderable) {
     const Pixel<unsigned char> first(0, 0, 10);
     const Pixel<unsigned char> second(0, 0, 100);
