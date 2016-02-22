@@ -1,15 +1,16 @@
 #include "NeighborAvailabilityTest.hpp"
 
-TEST_C(canTestMaskImageIfThereIsAnAvailableNeighbor) {
-    auto result = neighborhood.hasAvailableNeighbor(maskImageReference, 1, 1);
+TEST_C(hasAvailableNeighborTest) {
+    auto result = SimpleArrayImage<bool>(width, height);
 
-    assertThat(result).isEqualTo(true);
+    result = [&] (unsigned int x, unsigned int y) -> bool {
+        return neighborhood.hasAvailableNeighbor(maskImageReference, x, y);
+    };
+
+    assertThat(result).isEqualTo(expectedResult);
 }
 
-TEST_C(hasNeighborAvailableIfOnlyNorthWasMarked) {
-    maskImage.setPixel(1, 0, true);
-
-    auto result = neighborhood.hasAvailableNeighbor(maskImageReference, 1, 1);
-
-    assertThat(result).isEqualTo(true);
-}
+INSTANTIATE_TEST_CASE_P(Test3By3Image,
+        PixelNeighborhoodNeighborAvailabilityTest,
+        ::testing::ValuesIn(PixelNeighborhoodNeighborAvailabilityTest
+                ::generateParameters()));
