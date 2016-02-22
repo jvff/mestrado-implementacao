@@ -11,19 +11,21 @@ public:
         auto maxX = maskImage.getWidth() - 1;
         auto maxY = maskImage.getHeight() - 1;
 
-        if (x > 0 && maskImage.getPixelValue(x - 1, y) == false)
-            return true;
+        return isNeighborAvailable(maskImage, x - 1, y, x > 0)
+            || isNeighborAvailable(maskImage, x, y - 1, y > 0)
+            || isNeighborAvailable(maskImage, x + 1, y, x < maxX)
+            || isNeighborAvailable(maskImage, x, y + 1, y < maxY);
+    }
 
-        if (y > 0 && maskImage.getPixelValue(x, y - 1) == false)
-            return true;
+private:
+    bool isNeighborAvailable(const Image<bool>& maskImage, unsigned int x,
+            unsigned int y, bool neighborCoordinateIsValid) {
+        if (neighborCoordinateIsValid == false)
+            return false;
 
-        if (x < maxX && maskImage.getPixelValue(x + 1, y) == false)
-            return true;
+        auto neighborHasBeenProcessed = maskImage.getPixelValue(x, y);
 
-        if (y < maxY && maskImage.getPixelValue(x, y + 1) == false)
-            return true;
-
-        return false;
+        return neighborHasBeenProcessed == false;
     }
 };
 
