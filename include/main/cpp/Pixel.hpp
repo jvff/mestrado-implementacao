@@ -20,6 +20,10 @@ struct Pixel {
             y(coordinate.y), value(value) {
     }
 
+    bool operator!=(const Pixel<Type>&) const {
+        return false;
+    }
+
     bool operator<(const Pixel<Type>& other) const {
         if (value != other.value)
             return value < other.value;
