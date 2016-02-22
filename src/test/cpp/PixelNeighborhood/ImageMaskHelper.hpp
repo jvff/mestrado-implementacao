@@ -1,6 +1,7 @@
 #ifndef IMAGE_MASK_HELPER_HPP
 #define IMAGE_MASK_HELPER_HPP
 
+#include <functional>
 #include <vector>
 
 #include "Image.hpp"
@@ -8,6 +9,8 @@
 
 class ImageMaskHelper {
 private:
+    using ImageMaskFilter = std::function<bool(const Image<bool>&)>;
+
     unsigned int width;
     unsigned int height;
 
@@ -17,6 +20,15 @@ public:
     }
 
     std::vector<SimpleArrayImage<bool> > createImageMasks() {
+        auto includeAllMasks = [] (const Image<bool>&) {
+            return true;
+        };
+
+        return createImageMasks(includeAllMasks);
+    }
+
+    std::vector<SimpleArrayImage<bool> > createImageMasks(
+            ImageMaskFilter shouldIncludeMask) {
         std::vector<SimpleArrayImage<bool> > imageMasks;
 
         auto numberOfMasks = getNumberOfMasks();
@@ -24,7 +36,7 @@ public:
         imageMasks.reserve(numberOfMasks);
 
         for (auto maskId = 0u; maskId < numberOfMasks; ++maskId)
-            imageMasks.push_back(createImageMask(maskId));
+            maybeAddNewMask(imageMasks, maskId, shouldIncludeMask);
 
         return imageMasks;
     }
@@ -41,6 +53,20 @@ public:
             || neighborIsAvailable(image, y < maxY, x, y + 1);
     }
 
+    static bool imageMaskHasAvailableNeighborForAllPixels(const Image<bool>& image) {
+        auto width = image.getWidth();
+        auto height = image.getHeight();
+
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y) {
+                if (doesPixelHaveAvailableNeighbor(image, x, y) == false)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
 private:
     unsigned int getNumberOfMasks() {
         return createBitMask(width * height);
@@ -48,6 +74,14 @@ private:
 
     unsigned int createBitMask(unsigned int numberOfBits) {
         return (1u << numberOfBits) - 1;
+    }
+
+    void maybeAddNewMask(std::vector<SimpleArrayImage<bool> >& imageMasks,
+            unsigned int maskId, ImageMaskFilter shouldIncludeMask) {
+        auto imageMask = createImageMask(maskId);
+
+        if (shouldIncludeMask(imageMask))
+            imageMasks.push_back(imageMask);
     }
 
     SimpleArrayImage<bool> createImageMask(unsigned int maskId) {
