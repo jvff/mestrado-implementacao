@@ -64,6 +64,17 @@ TEST_F(PixelTest, pixelsWithDifferentXValuesDiffer) {
     assertThat(secondPixel).isDifferentThan(firstPixel);
 }
 
+TEST_F(PixelTest, pixelsWithDifferentYValuesDiffer) {
+    auto pixelValue = DummyType{ -6272 };
+    auto commonXValue = 6739u;
+
+    auto firstPixel = Pixel<DummyType>{ commonXValue, 29761, pixelValue };
+    auto secondPixel = Pixel<DummyType>{ commonXValue, 876302, pixelValue };
+
+    assertThat(firstPixel).isDifferentThan(secondPixel);
+    assertThat(secondPixel).isDifferentThan(firstPixel);
+}
+
 TEST_F(PixelTest, isOrderable) {
     const Pixel<unsigned char> first(0, 0, 10);
     const Pixel<unsigned char> second(0, 0, 100);
