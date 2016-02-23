@@ -15,7 +15,7 @@ private:
 public:
     void apply(const SourceImageType& sourceImage,
             DestinationImageType& destinationImage) override {
-        destinationImage = sourceImage;
+        destinationImage.paint(sourceImage);
     }
 
     using SuperClass::apply;

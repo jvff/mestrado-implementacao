@@ -27,18 +27,6 @@ public:
     virtual ~Image() {
     }
 
-    virtual Image& operator=(const Image<PixelType>& image) {
-        auto smallestWidth = std::min(this->width, image.getWidth());
-        auto smallestHeight = std::min(this->height, image.getHeight());
-
-        for (unsigned int x = 0; x < smallestWidth; ++x) {
-            for (unsigned int y = 0; y < smallestHeight; ++y)
-                setPixel(x, y, image.getPixelValue(x, y));
-        }
-
-        return *this;
-    }
-
     virtual Image& operator=(PaintFunction makePixel) {
         for (unsigned int y = 0; y < height; ++y) {
             for (unsigned int x = 0; x < width; ++x)
@@ -78,6 +66,16 @@ public:
 
     virtual void setPixel(unsigned int x, unsigned int y, PixelType value) = 0;
     virtual PixelType getPixelValue(unsigned int x, unsigned int y) const = 0;
+
+    virtual void paint(const Image<PixelType>& image) {
+        auto smallestWidth = std::min(this->width, image.getWidth());
+        auto smallestHeight = std::min(this->height, image.getHeight());
+
+        for (unsigned int x = 0; x < smallestWidth; ++x) {
+            for (unsigned int y = 0; y < smallestHeight; ++y)
+                setPixel(x, y, image.getPixelValue(x, y));
+        }
+    }
 };
 
 template <typename PixelType>

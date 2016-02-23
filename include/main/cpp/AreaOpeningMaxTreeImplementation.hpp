@@ -161,7 +161,7 @@ private:
     }
 
     void updateDestinationImage() {
-        destinationImage = maxTreeImage;
+        destinationImage.paint(maxTreeImage);
     }
 };
 
