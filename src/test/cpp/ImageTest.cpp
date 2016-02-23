@@ -9,6 +9,19 @@ TEST_F(ImageTest, destructorIsVirtual) {
     AssertThat<DummyImage>::hasVirtualDestructor();
 }
 
+TEST_F(ImageTest, copyAssignmentOperatorChangesDimensions) {
+    auto width = 133u;
+    auto height = 57u;
+
+    FakeDummyImage source(width, height);
+    FakeDummyImage destination(920u, 4297u);
+
+    destination = source;
+
+    assertThat(destination.getWidth()).isEqualTo(width);
+    assertThat(destination.getHeight()).isEqualTo(height);
+}
+
 TEST_F(ImageTest, hasPixelTypeStaticAlias) {
     using PixelType = DummyTypes<3>;
     using ImageType = Image<PixelType>;
