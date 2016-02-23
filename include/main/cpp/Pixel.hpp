@@ -21,7 +21,7 @@ struct Pixel {
     }
 
     bool operator!=(const Pixel<Type>& other) const {
-        return x != other.x || y != other.y;
+        return x != other.x || y != other.y || value != other.value;
     }
 
     bool operator<(const Pixel<Type>& other) const {
