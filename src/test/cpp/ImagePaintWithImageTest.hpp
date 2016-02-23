@@ -1,5 +1,5 @@
-#ifndef IMAGE_ASSIGNMENT_WITH_IMAGE_TEST_HPP
-#define IMAGE_ASSIGNMENT_WITH_IMAGE_TEST_HPP
+#ifndef IMAGE_PAINT_WITH_IMAGE_TEST_HPP
+#define IMAGE_PAINT_WITH_IMAGE_TEST_HPP
 
 #include <tuple>
 
@@ -14,7 +14,7 @@ struct ImageConfigurations {
     unsigned int destinationHeight;
 };
 
-class ImageAssignmentWithImageTest : public ImageTest,
+class ImagePaintWithImageTest : public ImageTest,
         public testing::WithParamInterface<ImageConfigurations> {
 protected:
     unsigned int sourceWidth;

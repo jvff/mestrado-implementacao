@@ -1,13 +1,13 @@
-#include "ImageAssignmentWithImageTest.hpp"
+#include "ImagePaintWithImageTest.hpp"
 
-TEST_P(ImageAssignmentWithImageTest, isAssignable) {
+TEST_P(ImagePaintWithImageTest, isAssignable) {
     auto destinationImage = FakeDummyImage(destinationWidth, destinationHeight);
     auto destinationImageSpy = spyImage(destinationImage);
 
     auto sourceImageMock = createMockImage(sourceWidth, sourceHeight);
     const auto& sourceImage = sourceImageMock.get();
 
-    destinationImage = sourceImage;
+    destinationImage.paint(sourceImage);
 
     verifyImageWasRead(sourceImageMock);
     verifyImageWasPainted(destinationImageSpy);
@@ -23,8 +23,8 @@ static ImageConfigurations assignToShorterImage = { 3, 5, 3, 2 };
 static ImageConfigurations assignToShorterWiderImage = { 4, 5, 3, 2 };
 static ImageConfigurations assignToTallerNarrowerImage = { 4, 2, 2, 3 };
 
-INSTANTIATE_TEST_CASE_P(ImageAssignmentWithImageTestInstantiation,
-        ImageAssignmentWithImageTest,
+INSTANTIATE_TEST_CASE_P(ImagePaintWithImageTestInstantiation,
+        ImagePaintWithImageTest,
         testing::Values(
             imagesWithSameSize,
             assignToLargerImage,
