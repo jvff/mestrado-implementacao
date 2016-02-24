@@ -15,16 +15,6 @@
 
 #include "../AreaOpeningAndClosingTestData.hpp"
 
-class AreaOpeningMaxTreeImplementationTest : public ::testing::Test {
-protected:
-    using SourcePixelType = DummyTypes<1>;
-    using DestinationPixelType = DummyTypes<2>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationClass = AreaOpeningMaxTreeImplementation<
-            SourceImageType, DestinationImageType>;
-};
-
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class AbstractAreaOpeningMaxTreeImplementationTestData
         : public AbstractFilterImplementationTestData<
