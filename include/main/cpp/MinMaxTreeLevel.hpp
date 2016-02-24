@@ -82,6 +82,10 @@ public:
         return removedNodes;
     }
 
+    bool operator==(const MinMaxTreeLevel&) const {
+        return true;
+    }
+
 private:
     void safelyRemoveNode(unsigned int id) {
         nodes.erase(nodes.begin() + id);
