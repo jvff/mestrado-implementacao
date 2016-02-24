@@ -1,6 +1,7 @@
 #ifndef AREA_OPENING_MAX_TREE_IMPLEMENTATION_HPP
 #define AREA_OPENING_MAX_TREE_IMPLEMENTATION_HPP
 
+#include <functional>
 #include <map>
 
 #include "FilterImplementation.hpp"
@@ -8,8 +9,9 @@
 #include "MaxTreeImage.hpp"
 #include "MaxTreeNode.hpp"
 
-template <typename SourceImageType, typename DestinationImageType>
-class AreaOpeningMaxTreeImplementation
+template <typename SourceImageType, typename DestinationImageType,
+        template <typename> class TreeTypeComparator>
+class AreaOpeningAndClosingMinMaxTreeImplementation
         : public FilterImplementation<SourceImageType, DestinationImageType> {
 private:
     using PixelType = typename DestinationImageType::PixelType;
@@ -30,7 +32,7 @@ private:
     using SuperClass::height;
 
 public:
-    AreaOpeningMaxTreeImplementation(unsigned int maximumPeakSize,
+    AreaOpeningAndClosingMinMaxTreeImplementation(unsigned int maximumPeakSize,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
@@ -164,5 +166,10 @@ private:
         destinationImage.paint(maxTreeImage);
     }
 };
+
+template <typename SourceImageType, typename DestinationImageType>
+using AreaOpeningMaxTreeImplementation =
+        AreaOpeningAndClosingMinMaxTreeImplementation<SourceImageType,
+                DestinationImageType, std::less>;
 
 #endif
