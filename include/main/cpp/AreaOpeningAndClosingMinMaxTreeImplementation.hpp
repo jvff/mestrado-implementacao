@@ -4,9 +4,9 @@
 #include <map>
 
 #include "FilterImplementation.hpp"
-#include "MaxTreeFilter.hpp"
-#include "MaxTreeImage.hpp"
-#include "MaxTreeNode.hpp"
+#include "MinMaxTreeFilter.hpp"
+#include "MinMaxTreeImage.hpp"
+#include "MinMaxTreeNode.hpp"
 
 template <typename SourceImageType, typename DestinationImageType,
         template <typename> class TreeTypeComparator>
@@ -14,12 +14,18 @@ class AreaOpeningAndClosingMinMaxTreeImplementation
         : public FilterImplementation<SourceImageType, DestinationImageType> {
 private:
     using PixelType = typename DestinationImageType::PixelType;
-    using NodeType = MaxTreeNode<PixelType>;
+    using LevelOrderComparator = TreeTypeComparator<PixelType>;
+    using NodeType = MinMaxTreeNode<PixelType, LevelOrderComparator>;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
 
-    MaxTreeFilter<SourceImageType, DestinationImageType> maxTreeFilter;
-    MaxTreeImage<DestinationImageType> maxTreeImage;
+    using MinMaxTreeFilterType = MinMaxTreeFilter<SourceImageType,
+            DestinationImageType, TreeTypeComparator>;
+    using MinMaxTreeImageType = MinMaxTreeImage<DestinationImageType,
+            LevelOrderComparator>;
+
+    MinMaxTreeFilterType minMaxTreeFilter;
+    MinMaxTreeImageType minMaxTreeImage;
 
     std::map<NodeType, unsigned int> nodeAreaSizes;
 
@@ -35,7 +41,7 @@ public:
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
-            maxTreeImage(width, height), maximumPeakSize(maximumPeakSize) {
+            minMaxTreeImage(width, height), maximumPeakSize(maximumPeakSize) {
     }
 
     void apply() override {
@@ -46,7 +52,7 @@ public:
 
 private:
     void buildMaxTree() {
-        maxTreeImage = maxTreeFilter.apply(sourceImage);
+        minMaxTreeImage = minMaxTreeFilter.apply(sourceImage);
     }
 
     void filterNodes() {
@@ -63,12 +69,12 @@ private:
 
         for (auto x = 0u; x < width; ++x) {
             for (auto y = 0u; y < height; ++y)
-                maxTreeImage.setPixel(x, y, rootLevel);
+                minMaxTreeImage.setPixel(x, y, rootLevel);
         }
     }
 
     PixelType getRootLevel() {
-        auto& node = maxTreeImage.getPixelNode(0, 0);
+        auto& node = minMaxTreeImage.getPixelNode(0, 0);
 
         return walkToRootLevel(node);
     }
@@ -98,7 +104,7 @@ private:
     }
 
     void addPixelToAreaCount(unsigned int x, unsigned int y) {
-        auto& pixelNode = maxTreeImage.getPixelNode(x, y);
+        auto& pixelNode = minMaxTreeImage.getPixelNode(x, y);
         auto& nodeAreaCounter = getOrCreateNodeAreaCounter(pixelNode);
 
         ++nodeAreaCounter;
@@ -157,12 +163,12 @@ private:
             auto& area = nodeAreaPair.second;
 
             if (area < maximumPeakSize)
-                maxTreeImage.removeNode(node);
+                minMaxTreeImage.removeNode(node);
         }
     }
 
     void updateDestinationImage() {
-        destinationImage.paint(maxTreeImage);
+        destinationImage.paint(minMaxTreeImage);
     }
 };
 
