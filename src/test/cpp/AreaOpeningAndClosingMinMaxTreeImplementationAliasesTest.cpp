@@ -10,3 +10,14 @@ TEST_C(aliasForAreaOpeningMaxTreeImplementationExists) {
     AssertThat<AreaOpeningMaxTreeImplementationAlias>
             ::isTheSame(As<ExpectedType>());
 }
+
+TEST_C(aliasForAreaClosingMinTreeImplementationExists) {
+    using AreaClosingMinTreeImplementationAlias =
+            AreaClosingMinTreeImplementation<SourceImageType,
+                    DestinationImageType>;
+    using ExpectedType = AreaOpeningAndClosingMinMaxTreeImplementation<
+            SourceImageType, DestinationImageType, std::greater>;
+
+    AssertThat<AreaClosingMinTreeImplementationAlias>
+            ::isTheSame(As<ExpectedType>());
+}

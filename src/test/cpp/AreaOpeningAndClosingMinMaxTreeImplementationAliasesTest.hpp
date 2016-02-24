@@ -7,6 +7,7 @@
 
 #include "asserts.hpp"
 
+#include "AreaClosingMinTreeImplementation.hpp"
 #include "AreaOpeningMaxTreeImplementation.hpp"
 #include "Image.hpp"
 
