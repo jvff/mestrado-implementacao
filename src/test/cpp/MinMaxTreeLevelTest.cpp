@@ -100,3 +100,7 @@ TEST_C(nodesCanBeCollapsed) {
 
     assertThat(remainingNode).isEqualTo(firstNode);
 }
+
+TEST_C(isComparable) {
+    assertThat(constLevel).isEqualTo(constLevel);
+}
