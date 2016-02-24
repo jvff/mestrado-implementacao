@@ -21,6 +21,8 @@ public:
 
         auto numberOfMasks = getNumberOfMasks();
 
+        imageMasks.reserve(numberOfMasks);
+
         for (auto maskId = 0u; maskId < numberOfMasks; ++maskId)
             imageMasks.push_back(createImageMask(maskId));
 
