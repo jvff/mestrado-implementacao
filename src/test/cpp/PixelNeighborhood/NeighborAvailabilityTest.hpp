@@ -13,6 +13,8 @@
 
 #include "../DummyTypes.hpp"
 
+#include "ImageMaskHelper.hpp"
+
 struct PixelNeighborhoodNeighborAvailabilityTestParameter {
     SimpleArrayImage<bool> maskImage;
     SimpleArrayImage<bool> expectedPixelsWithAvailableNeighbors;
@@ -28,14 +30,14 @@ protected:
 
 public:
     static std::vector<TestParameter> generateParameters() {
-        const auto numberOfBoards = createMask(width * height);
-
         std::vector<TestParameter> parameters;
 
-        for (auto boardId = 0u; boardId < numberOfBoards; ++boardId) {
-            auto board = createBoard(boardId);
-            auto expectedResult = createExpectedResultMask(board);
-            auto testParameter = TestParameter{ board, expectedResult };
+        auto helper = ImageMaskHelper(width, height);
+        auto imageMasks = helper.createImageMasks();
+
+        for (auto& imageMask : imageMasks) {
+            auto expectedResult = createExpectedResultMask(imageMask);
+            auto testParameter = TestParameter{ imageMask, expectedResult };
 
             parameters.push_back(testParameter);
         }
@@ -44,18 +46,6 @@ public:
     }
 
 private:
-    static SimpleArrayImage<bool> createBoard(unsigned int boardId) {
-        auto board = SimpleArrayImage<bool>(width, height);
-
-        board = [=] (unsigned int x, unsigned int y) -> bool {
-            auto coordinateBit = x + y * width;
-
-            return bitIsSet(coordinateBit, boardId);
-        };
-
-        return board;
-    }
-
     static SimpleArrayImage<bool> createExpectedResultMask(
             const Image<bool>& board) {
         const auto maxX = width - 1;
@@ -81,20 +71,6 @@ private:
         };
 
         return resultMask;
-    }
-
-    static constexpr unsigned int createMask(unsigned int bits) {
-        return (1u << bits) - 1;
-    }
-
-    static constexpr unsigned int createMaskForBit(unsigned int bit) {
-        return 1u << bit;
-    }
-
-    static bool bitIsSet(unsigned int bit, unsigned int bits) {
-        auto bitMask = createMaskForBit(bit);
-
-        return (bits & bitMask) != 0;
     }
 
 protected:
