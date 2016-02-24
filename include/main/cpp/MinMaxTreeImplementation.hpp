@@ -5,10 +5,10 @@
 #include <queue>
 #include <vector>
 
-#include "Coordinate.hpp"
 #include "FilterImplementation.hpp"
 #include "MaxTreeImage.hpp"
 #include "Pixel.hpp"
+#include "PixelNeighborhood.hpp"
 #include "SimpleArrayImage.hpp"
 
 template <typename SourceImageType, typename InternalImageType,
@@ -22,6 +22,7 @@ private:
     using DestinationImageType = MinMaxTreeImage<InternalImageType,
             LevelOrderComparator>;
     using PixelType = typename SourceImageType::PixelType;
+    using PixelNeighborComparator = TreeTypeComparator<Pixel<PixelType> >;
     using PixelValueComparator = TreeTypeComparator<PixelType>;
     using SuperClass = FilterImplementation<SourceImageType,
             DestinationImageType>;
@@ -30,9 +31,10 @@ private:
     using PixelQueue = std::priority_queue<Pixel<PixelType>,
             std::vector<Pixel<PixelType> >, PixelComparator>;
 
-    enum class Direction { LEFT, RIGHT, UP, DOWN };
-
+    PixelNeighborhood<PixelType> neighborhood;
+    PixelNeighborComparator farthestLevelCriterion;
     PixelValueComparator isCloserToRootLevel;
+
     PixelQueue pixelQueue;
     SimpleArrayImage<bool> queuedOrFinishedPixels;
 
@@ -100,39 +102,13 @@ private:
     }
 
     bool allNeighborsHaveBeenProcessed(Pixel<PixelType> pixel) {
-        return neighborHasBeenProcessed(pixel, Direction::LEFT)
-            && neighborHasBeenProcessed(pixel, Direction::UP)
-            && neighborHasBeenProcessed(pixel, Direction::RIGHT)
-            && neighborHasBeenProcessed(pixel, Direction::DOWN);
-    }
+        auto x = pixel.x;
+        auto y = pixel.y;
 
-    bool neighborHasBeenProcessed(Pixel<PixelType> pixel, Direction direction) {
-        if (!neighborIsValid(pixel, direction))
-            return true;
+        auto hasAvailableNeighbor =
+                neighborhood.hasAvailableNeighbor(queuedOrFinishedPixels, x, y);
 
-        auto neighbor = getPixelNeighbor(pixel, direction);
-
-        return queuedOrFinishedPixels.getPixelValue(neighbor);
-    }
-
-    bool neighborIsValid(Pixel<PixelType> pixel, Direction direction) {
-        switch (direction) {
-            case Direction::LEFT:   return pixel.x > 0;
-            case Direction::RIGHT:  return pixel.x < maxX;
-            case Direction::UP:     return pixel.y > 0;
-            case Direction::DOWN:   return pixel.y < maxY;
-            default:                return false;
-        };
-    }
-
-    Coordinate getPixelNeighbor(Pixel<PixelType> pixel, Direction direction) {
-        switch (direction) {
-            case Direction::LEFT:   return Coordinate(pixel.x - 1, pixel.y);
-            case Direction::RIGHT:  return Coordinate(pixel.x + 1, pixel.y);
-            case Direction::UP:     return Coordinate(pixel.x, pixel.y - 1);
-            case Direction::DOWN:   return Coordinate(pixel.x, pixel.y + 1);
-            default:                return Coordinate(pixel.x, pixel.y);
-        };
+        return hasAvailableNeighbor == false;
     }
 
     void queueNeighborOnFarthestLevel(Pixel<PixelType> pixel) {
@@ -142,31 +118,14 @@ private:
     }
 
     Pixel<PixelType> getNeighborOnFarthestLevel(Pixel<PixelType> pixel) {
-        auto neighbor = pixel;
-        bool hasBeenSet = false;
+        const auto& image = sourceImage;
+        const auto& mask = queuedOrFinishedPixels;
+        const auto& criterion = farthestLevelCriterion;
 
-        getNeighborIfFarther(pixel, Direction::LEFT, neighbor, hasBeenSet);
-        getNeighborIfFarther(pixel, Direction::RIGHT, neighbor, hasBeenSet);
-        getNeighborIfFarther(pixel, Direction::UP, neighbor, hasBeenSet);
-        getNeighborIfFarther(pixel, Direction::DOWN, neighbor, hasBeenSet);
+        auto x = pixel.x;
+        auto y = pixel.y;
 
-        return neighbor;
-    }
-
-    void getNeighborIfFarther(const Pixel<PixelType> &pixel,
-            Direction direction, Pixel<PixelType> &bestNeighbor,
-            bool& bestNeighborHasBeenSet) {
-        if (neighborIsValid(pixel, direction)
-                && !neighborHasBeenProcessed(pixel, direction)) {
-            auto neighborCoordinate = getPixelNeighbor(pixel, direction);
-            auto neighbor = sourceImage.getPixel(neighborCoordinate);
-
-            if (!bestNeighborHasBeenSet) {
-                bestNeighbor = neighbor;
-                bestNeighborHasBeenSet = true;
-            } else if (isCloserToRootLevel(bestNeighbor.value, neighbor.value))
-                bestNeighbor = neighbor;
-        }
+        return neighborhood.getBestNeighbor(image, mask, x, y, criterion);
     }
 
     void processPixelNeighbor(Pixel<PixelType> pixel,
