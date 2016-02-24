@@ -114,3 +114,20 @@ TEST_C(isNotEqualIfOnlyOneIsEmpty) {
     assertThat(constLevel).isNotEqualTo(constEmptyLevel);
     assertThat(constEmptyLevel).isNotEqualTo(constLevel);
 }
+
+TEST_C(isNotEqualIfSizesDiffer) {
+    auto smallerLevel = DummyMinMaxTreeLevel(levelHeight);
+    const auto& constSmallerLevel = smallerLevel;
+
+    level.addNode();
+    level.addNode();
+    level.addNode();
+    level.addNode();
+    level.addNode();
+
+    smallerLevel.addNode();
+    smallerLevel.addNode();
+
+    assertThat(constLevel).isNotEqualTo(constSmallerLevel);
+    assertThat(constSmallerLevel).isNotEqualTo(constLevel);
+}
