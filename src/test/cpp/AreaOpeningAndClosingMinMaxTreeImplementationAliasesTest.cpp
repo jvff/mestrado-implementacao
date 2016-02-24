@@ -1,22 +1,6 @@
-#include <functional>
+#include "AreaOpeningAndClosingMinMaxTreeImplementationAliasesTest.hpp"
 
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
-
-#include "AreaOpeningMaxTreeImplementation.hpp"
-#include "Image.hpp"
-
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
-
-TEST(AreaOpeningAndClosingMinMaxTreeImplementationAliasesTest,
-        aliasForAreaOpeningMaxTreeImplementationExists) {
-    using SourcePixelType = DummyTypes<0>;
-    using DestinationPixelType = DummyTypes<1>;
-    using SourceImageType = Image<SourcePixelType>;
-    using DestinationImageType = FakeImage<DestinationPixelType>;
-
+TEST_C(aliasForAreaOpeningMaxTreeImplementationExists) {
     using AreaOpeningMaxTreeImplementationAlias =
             AreaOpeningMaxTreeImplementation<SourceImageType,
                     DestinationImageType>;
