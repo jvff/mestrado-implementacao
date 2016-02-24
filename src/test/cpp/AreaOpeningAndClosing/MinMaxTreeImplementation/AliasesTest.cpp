@@ -1,4 +1,4 @@
-#include "AreaOpeningAndClosingMinMaxTreeImplementationAliasesTest.hpp"
+#include "AliasesTest.hpp"
 
 TEST_C(aliasForAreaOpeningMaxTreeImplementationExists) {
     using AreaOpeningMaxTreeImplementationAlias =
