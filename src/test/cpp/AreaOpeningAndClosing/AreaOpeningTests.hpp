@@ -1,7 +1,7 @@
 #ifndef AREA_OPENING_TESTS_HPP
 #define AREA_OPENING_TESTS_HPP
 
-#include "ComplexFilterTestMacros.hpp"
+#include "../ComplexFilterTestMacros.hpp"
 
 COMPLEX_FILTER_TEST_CASE(AreaOpeningTests);
 

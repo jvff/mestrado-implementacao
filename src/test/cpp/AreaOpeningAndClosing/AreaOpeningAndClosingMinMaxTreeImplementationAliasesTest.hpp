@@ -11,8 +11,8 @@
 #include "AreaOpeningMaxTreeImplementation.hpp"
 #include "Image.hpp"
 
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
 
 class AreaOpeningAndClosingMinMaxTreeImplementationAliasesTest
         : public ::testing::Test {

@@ -10,10 +10,11 @@
 #include "ComplexFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterTestData.hpp"
+#include "../AbstractFilterTestData.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
+
 #include "AreaOpeningAndClosingTestData.hpp"
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class AbstractAreaClosingFilterTestData : public AbstractFilterTestData<

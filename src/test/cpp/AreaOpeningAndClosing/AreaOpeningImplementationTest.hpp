@@ -8,10 +8,11 @@
 #include "AreaOpeningImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterImplementationTestData.hpp"
+#include "../AbstractFilterImplementationTestData.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
+
 #include "AreaOpeningAndClosingTestData.hpp"
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
 
 class AreaOpeningImplementationTest : public testing::Test {
 protected:

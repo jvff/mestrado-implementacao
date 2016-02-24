@@ -6,9 +6,9 @@
 #include "AreaClosingFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractTestData.hpp"
-#include "ChainableMethodMacros.hpp"
-#include "RectanglePainter.hpp"
+#include "../AbstractTestData.hpp"
+#include "../ChainableMethodMacros.hpp"
+#include "../RectanglePainter.hpp"
 
 template <typename SuperClass, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
