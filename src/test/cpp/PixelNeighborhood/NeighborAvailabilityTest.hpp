@@ -108,7 +108,7 @@ public:
             expectedResult(width, height), maskImageReference(maskImage) {
     }
 
-    void SetUp() {
+    void SetUp() override {
         auto testParameter = GetParam();
 
         maskImage = testParameter.maskImage;
