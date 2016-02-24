@@ -48,26 +48,11 @@ public:
 private:
     static SimpleArrayImage<bool> createExpectedResultMask(
             const Image<bool>& board) {
-        const auto maxX = width - 1;
-        const auto maxY = height - 1;
         auto resultMask = SimpleArrayImage<bool>(width, height);
+        auto helper = ImageMaskHelper(width, height);
 
-        resultMask = [=, &board] (unsigned int x, unsigned int y) -> bool {
-            auto shouldHaveAvailableNeighbor = false;
-
-            if (x > 0)
-                shouldHaveAvailableNeighbor |= !board.getPixelValue(x - 1, y);
-
-            if (y > 0)
-                shouldHaveAvailableNeighbor |= !board.getPixelValue(x, y - 1);
-
-            if (x < maxX)
-                shouldHaveAvailableNeighbor |= !board.getPixelValue(x + 1, y);
-
-            if (y < maxY)
-                shouldHaveAvailableNeighbor |= !board.getPixelValue(x, y + 1);
-
-            return shouldHaveAvailableNeighbor;
+        resultMask = [&] (unsigned int x, unsigned int y) -> bool {
+            return helper.doesPixelHaveAvailableNeighbor(board, x, y);
         };
 
         return resultMask;

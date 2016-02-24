@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Image.hpp"
 #include "SimpleArrayImage.hpp"
 
 class ImageMaskHelper {
@@ -24,6 +25,17 @@ public:
             imageMasks.push_back(createImageMask(maskId));
 
         return imageMasks;
+    }
+
+    bool doesPixelHaveAvailableNeighbor(const Image<bool>& image,
+            unsigned int x, unsigned int y) {
+        auto maxX = image.getWidth() - 1;
+        auto maxY = image.getHeight() - 1;
+
+        return neighborIsAvailable(image, x > 0, x - 1, y)
+            || neighborIsAvailable(image, y > 0, x, y - 1)
+            || neighborIsAvailable(image, x < maxX, x + 1, y)
+            || neighborIsAvailable(image, y < maxY, x, y + 1);
     }
 
 private:
@@ -63,6 +75,16 @@ private:
 
     unsigned int createMaskForBit(unsigned int bitIndex) {
         return 1u << bitIndex;
+    }
+
+    bool neighborIsAvailable(const Image<bool>& image, bool coordinateIsValid,
+            unsigned int x, unsigned int y) {
+        return coordinateIsValid && pixelIsNotMarked(image, x, y);
+    }
+
+    bool pixelIsNotMarked(const Image<bool>& image, unsigned int x,
+            unsigned int y) {
+        return !image.getPixelValue(x, y);
     }
 };
 
