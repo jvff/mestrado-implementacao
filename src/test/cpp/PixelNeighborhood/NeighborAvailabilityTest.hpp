@@ -49,10 +49,9 @@ private:
     static SimpleArrayImage<bool> createExpectedResultMask(
             const Image<bool>& board) {
         auto resultMask = SimpleArrayImage<bool>(width, height);
-        auto helper = ImageMaskHelper(width, height);
 
         resultMask = [&] (unsigned int x, unsigned int y) -> bool {
-            return helper.doesPixelHaveAvailableNeighbor(board, x, y);
+            return ImageMaskHelper::doesPixelHaveAvailableNeighbor(board, x, y);
         };
 
         return resultMask;

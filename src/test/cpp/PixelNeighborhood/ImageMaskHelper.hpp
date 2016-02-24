@@ -29,7 +29,8 @@ public:
         return imageMasks;
     }
 
-    bool doesPixelHaveAvailableNeighbor(const Image<bool>& image,
+public:
+    static bool doesPixelHaveAvailableNeighbor(const Image<bool>& image,
             unsigned int x, unsigned int y) {
         auto maxX = image.getWidth() - 1;
         auto maxY = image.getHeight() - 1;
@@ -79,12 +80,13 @@ private:
         return 1u << bitIndex;
     }
 
-    bool neighborIsAvailable(const Image<bool>& image, bool coordinateIsValid,
-            unsigned int x, unsigned int y) {
+private:
+    static bool neighborIsAvailable(const Image<bool>& image,
+            bool coordinateIsValid, unsigned int x, unsigned int y) {
         return coordinateIsValid && pixelIsNotMarked(image, x, y);
     }
 
-    bool pixelIsNotMarked(const Image<bool>& image, unsigned int x,
+    static bool pixelIsNotMarked(const Image<bool>& image, unsigned int x,
             unsigned int y) {
         return !image.getPixelValue(x, y);
     }
