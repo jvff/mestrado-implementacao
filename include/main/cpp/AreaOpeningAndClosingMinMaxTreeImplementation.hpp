@@ -29,7 +29,7 @@ private:
 
     std::map<NodeType, unsigned int> nodeAreaSizes;
 
-    unsigned int maximumPeakSize;
+    unsigned int areaThreshold;
 
     using SuperClass::sourceImage;
     using SuperClass::destinationImage;
@@ -37,28 +37,28 @@ private:
     using SuperClass::height;
 
 public:
-    AreaOpeningAndClosingMinMaxTreeImplementation(unsigned int maximumPeakSize,
+    AreaOpeningAndClosingMinMaxTreeImplementation(unsigned int areaThreshold,
             const SourceImageType& sourceImage,
             DestinationImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage),
-            minMaxTreeImage(width, height), maximumPeakSize(maximumPeakSize) {
+            minMaxTreeImage(width, height), areaThreshold(areaThreshold) {
     }
 
     void apply() override {
-        buildMaxTree();
+        buildMinMaxTree();
         filterNodes();
         updateDestinationImage();
     }
 
 private:
-    void buildMaxTree() {
+    void buildMinMaxTree() {
         minMaxTreeImage = minMaxTreeFilter.apply(sourceImage);
     }
 
     void filterNodes() {
         auto imageArea = width * height;
 
-        if (maximumPeakSize >= imageArea)
+        if (areaThreshold >= imageArea)
             flattenImage();
         else
             filterNodesWithSmallAreas();
@@ -162,7 +162,7 @@ private:
             auto& node = nodeAreaPair.first;
             auto& area = nodeAreaPair.second;
 
-            if (area < maximumPeakSize)
+            if (area < areaThreshold)
                 minMaxTreeImage.removeNode(node);
         }
     }
