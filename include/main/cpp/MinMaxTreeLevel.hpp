@@ -82,8 +82,8 @@ public:
         return removedNodes;
     }
 
-    bool operator==(const MinMaxTreeLevel&) const {
-        return true;
+    bool operator==(const MinMaxTreeLevel& other) const {
+        return nodes == other.nodes;
     }
 
 private:
