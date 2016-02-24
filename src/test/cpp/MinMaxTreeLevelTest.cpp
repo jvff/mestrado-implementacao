@@ -104,3 +104,13 @@ TEST_C(nodesCanBeCollapsed) {
 TEST_C(isComparable) {
     assertThat(constLevel).isEqualTo(constLevel);
 }
+
+TEST_C(isNotEqualIfOnlyOneIsEmpty) {
+    auto emptyLevel = DummyMinMaxTreeLevel(levelHeight);
+    const auto& constEmptyLevel = emptyLevel;
+
+    level.addNode();
+
+    assertThat(constLevel).isNotEqualTo(constEmptyLevel);
+    assertThat(constEmptyLevel).isNotEqualTo(constLevel);
+}
