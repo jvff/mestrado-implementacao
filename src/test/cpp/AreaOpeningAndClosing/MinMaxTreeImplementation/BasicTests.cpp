@@ -1,7 +1,8 @@
 #include "BasicTests.hpp"
 
 using TypeParameters = ::testing::Types<
-    AreaOpeningAndClosingMinMaxTreeImplementationTestAliases<std::less> >;
+    AreaOpeningAndClosingMinMaxTreeImplementationTestAliases<std::less>,
+    AreaOpeningAndClosingMinMaxTreeImplementationTestAliases<std::greater> >;
 
 TYPED_TEST_CASE(AreaOpeningAndClosingMinMaxTreeImplementationTest,
         TypeParameters);

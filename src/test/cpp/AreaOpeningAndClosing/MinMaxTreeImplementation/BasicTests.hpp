@@ -5,7 +5,7 @@
 
 #include "asserts.hpp"
 
-#include "AreaOpeningMaxTreeImplementation.hpp"
+#include "AreaOpeningAndClosingMinMaxTreeImplementation.hpp"
 #include "FilterImplementation.hpp"
 
 #include "../../CustomTypedTestMacros.hpp"
@@ -23,8 +23,8 @@ struct AreaOpeningAndClosingMinMaxTreeImplementationTestAliases {
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
     using DestinationImageType = FakeImage<DestinationPixelType>;
-    using ImplementationClass = AreaOpeningMaxTreeImplementation<
-            SourceImageType, DestinationImageType>;
+    using ImplementationClass = AreaOpeningAndClosingMinMaxTreeImplementation<
+            SourceImageType, DestinationImageType, TreeTypeComparator>;
 };
 
 #define TEST_C(testName) \
