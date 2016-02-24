@@ -1,5 +1,11 @@
 #include "BasicTests.hpp"
 
+using TypeParameters = ::testing::Types<
+    AreaOpeningAndClosingMinMaxTreeImplementationTestAliases<std::less> >;
+
+TYPED_TEST_CASE(AreaOpeningAndClosingMinMaxTreeImplementationTest,
+        TypeParameters);
+
 TEST_C(classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();
 }
