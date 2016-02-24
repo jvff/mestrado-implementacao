@@ -1,5 +1,6 @@
 #include "AreaOpeningMaxTreeImplementationTest.hpp"
-#include "AreaOpeningTests.hpp"
+
+#include "../AreaOpeningTests.hpp"
 
 TEST_F(AreaOpeningMaxTreeImplementationTest, classTemplateExists) {
     AssertThat<ImplementationClass>::isClassOrStruct();

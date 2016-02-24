@@ -9,11 +9,11 @@
 #include "FilterImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "../AbstractFilterImplementationTestData.hpp"
-#include "../DummyTypes.hpp"
-#include "../FakeImage.hpp"
+#include "../../AbstractFilterImplementationTestData.hpp"
+#include "../../DummyTypes.hpp"
+#include "../../FakeImage.hpp"
 
-#include "AreaOpeningAndClosingTestData.hpp"
+#include "../AreaOpeningAndClosingTestData.hpp"
 
 class AreaOpeningMaxTreeImplementationTest : public ::testing::Test {
 protected:
