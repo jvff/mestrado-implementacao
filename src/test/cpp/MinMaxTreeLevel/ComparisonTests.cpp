@@ -127,3 +127,29 @@ TEST_C(isEqualIfNodesHaveTheSameParent) {
     assertThat(constLevel).isEqualTo(constOtherLevel);
     assertThat(constOtherLevel).isEqualTo(constLevel);
 }
+
+TEST_C(isEqualIfNodesHaveEquivalentParent) {
+    auto otherLevel = DummyMinMaxTreeLevel(levelHeight);
+    const auto& constOtherLevel = otherLevel;
+
+    auto parentNodeId = 7u;
+    auto parentNodeLevelHeight = DummyType{ -70 };
+
+    auto parentNode = makeNode(parentNodeId, parentNodeLevelHeight);
+    auto otherParentNode = makeNode(parentNodeId, parentNodeLevelHeight);
+
+    auto firstNode = level.addNode();
+    auto secondNode = level.addNode();
+
+    auto otherFirstNode = otherLevel.addNode();
+    auto otherSecondNode = otherLevel.addNode();
+
+    firstNode->setParent(parentNode);
+    secondNode->setParent(parentNode);
+
+    otherFirstNode->setParent(otherParentNode);
+    otherSecondNode->setParent(otherParentNode);
+
+    assertThat(constLevel).isEqualTo(constOtherLevel);
+    assertThat(constOtherLevel).isEqualTo(constLevel);
+}
