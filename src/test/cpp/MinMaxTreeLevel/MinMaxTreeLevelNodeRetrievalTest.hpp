@@ -30,26 +30,11 @@ protected:
     }
 };
 
-#undef TEST_C
-#define TEST_C(testName) \
-    CREATE_MIN_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevelNodeRetrievalTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevelNodeRetrievalTest, testName)
+#undef TEST_FIXTURE_NAME
+#define TEST_FIXTURE_NAME MinMaxTreeLevelNodeRetrievalTest
 
-#define CREATE_MIN_MAX_TREE_LEVEL_NODE_REMOVAL_TEST_CLASS(testName) \
-template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MinMaxTreeLevelNodeRetrievalTest, testName) \
-        : public MinMaxTreeLevelNodeRetrievalTest<TypeParameter> { \
-private: \
-    using SuperClass = MinMaxTreeLevelNodeRetrievalTest<TypeParameter>; \
-\
-    using SuperClass::level; \
-    using SuperClass::constLevel; \
-\
-    using SuperClass::verifyNode; \
-    using SuperClass::verifyInexistentNodeException; \
-\
-    virtual void TestBody(); \
-}
+#undef EXTRA_FIXTURE_MEMBERS
+#define EXTRA_FIXTURE_MEMBERS \
+    using SuperClass::verifyInexistentNodeException;
 
 #endif

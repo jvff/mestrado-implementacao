@@ -53,17 +53,23 @@ protected:
     using NodeVerificationHelperType::verifyNodeData;
 };
 
-#define TEST_C(testName) \
-    CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testName); \
-    REGISTER_CUSTOM_TYPED_TEST(MinMaxTreeLevelTest, testName); \
-    START_CUSTOM_TYPED_TEST_BODY(MinMaxTreeLevelTest, testName)
+#define TEST_FIXTURE_NAME MinMaxTreeLevelTest
+#define EXTRA_FIXTURE_MEMBERS
 
-#define CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testName) \
+#define TEST_C(testName) \
+    TEST_C_HELPER(TEST_FIXTURE_NAME, testName)
+
+#define TEST_C_HELPER(testFixture, testName) \
+    CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testFixture, testName); \
+    REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
+    START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
+
+#define CREATE_MIN_MAX_TREE_LEVEL_TEST_CLASS(testFixture, testName) \
 template <typename TypeParameter> \
-class GTEST_TEST_CLASS_NAME_(MinMaxTreeLevelTest, testName) \
-        : public MinMaxTreeLevelTest<TypeParameter> { \
+class GTEST_TEST_CLASS_NAME_(testFixture, testName) \
+        : public testFixture<TypeParameter> { \
 private: \
-    using SuperClass = MinMaxTreeLevelTest<TypeParameter>; \
+    using SuperClass = testFixture<TypeParameter>; \
     using DummyMinMaxTreeLevel = typename SuperClass::DummyMinMaxTreeLevel; \
     using NodeType = typename SuperClass::NodeType; \
 \
@@ -73,6 +79,8 @@ private: \
 \
     using SuperClass::makeNode; \
     using SuperClass::verifyNode; \
+\
+    EXTRA_FIXTURE_MEMBERS \
 \
     virtual void TestBody(); \
 }
