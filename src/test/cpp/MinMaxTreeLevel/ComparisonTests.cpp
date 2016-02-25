@@ -105,3 +105,25 @@ TEST_C(isNotEqualIfLevelHeightsDifferButNodesHasSameHeights) {
     assertThat(constLevel).isNotEqualTo(constDifferentLevel);
     assertThat(constDifferentLevel).isNotEqualTo(constLevel);
 }
+
+TEST_C(isEqualIfNodesHaveTheSameParent) {
+    auto otherLevel = DummyMinMaxTreeLevel(levelHeight);
+    const auto& constOtherLevel = otherLevel;
+
+    auto parentNode = makeNode(3u, DummyType{ 2310 });
+
+    auto firstNode = level.addNode();
+    auto secondNode = level.addNode();
+
+    auto otherFirstNode = otherLevel.addNode();
+    auto otherSecondNode = otherLevel.addNode();
+
+    firstNode->setParent(parentNode);
+    secondNode->setParent(parentNode);
+
+    otherFirstNode->setParent(parentNode);
+    otherSecondNode->setParent(parentNode);
+
+    assertThat(constLevel).isEqualTo(constOtherLevel);
+    assertThat(constOtherLevel).isEqualTo(constLevel);
+}
