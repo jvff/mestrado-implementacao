@@ -105,6 +105,15 @@ TEST_C(isComparable) {
     assertThat(constLevel).isEqualTo(constLevel);
 }
 
+TEST_C(emptyLevelsWithDifferentHeightsArentEqual) {
+    auto differentLevelHeight = DummyType{ 103720 };
+    auto emptyDifferentLevel = DummyMinMaxTreeLevel(differentLevelHeight);
+    const auto& constEmptyDifferentLevel = emptyDifferentLevel;
+
+    assertThat(constLevel).isNotEqualTo(constEmptyDifferentLevel);
+    assertThat(constEmptyDifferentLevel).isNotEqualTo(constLevel);
+}
+
 TEST_C(emptyLevelsWithSameHeightAreEqual) {
     auto emptyLevel = DummyMinMaxTreeLevel(levelHeight);
     const auto& constEmptyLevel = emptyLevel;
