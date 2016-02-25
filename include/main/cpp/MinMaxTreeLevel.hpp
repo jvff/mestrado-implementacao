@@ -82,8 +82,8 @@ public:
         return removedNodes;
     }
 
-    bool operator==(const MinMaxTreeLevel& other) const {
-        return nodes == other.nodes;
+    bool operator==(const MinMaxTreeLevel& otherLevel) const {
+        return nodesAreTheSameOn(otherLevel);;
     }
 
 private:
@@ -104,6 +104,22 @@ private:
             NodePointer newParent) {
         if (node->hasParent() && node->getParent() == *oldParent)
             node->setParent(newParent);
+    }
+
+    bool nodesAreTheSameOn(const MinMaxTreeLevel& otherLevel) const {
+        auto numberOfNodes = nodes.size();
+
+        if (otherLevel.nodes.size() != numberOfNodes)
+            return false;
+
+        for (auto index = 0u; index < numberOfNodes; ++index) {
+            if (*otherLevel.nodes[index] == *nodes[index])
+                continue;
+            else
+                return false;
+        }
+
+        return true;
     }
 };
 
