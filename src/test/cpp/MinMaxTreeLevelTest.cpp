@@ -113,6 +113,24 @@ TEST_C(emptyLevelsWithSameHeightAreEqual) {
     assertThat(constEmptyLevel).isEqualTo(constLevel);
 }
 
+TEST_C(populatedLevelsWithTheSameHeightAreEqual) {
+    auto otherLevel = DummyMinMaxTreeLevel(levelHeight);
+    const auto& constOtherLevel = otherLevel;
+
+    level.addNode();
+    level.addNode();
+    level.addNode();
+    level.addNode();
+
+    otherLevel.addNode();
+    otherLevel.addNode();
+    otherLevel.addNode();
+    otherLevel.addNode();
+
+    assertThat(constLevel).isEqualTo(constOtherLevel);
+    assertThat(constOtherLevel).isEqualTo(constLevel);
+}
+
 TEST_C(isNotEqualIfOnlyOneIsEmpty) {
     auto emptyLevel = DummyMinMaxTreeLevel(levelHeight);
     const auto& constEmptyLevel = emptyLevel;
