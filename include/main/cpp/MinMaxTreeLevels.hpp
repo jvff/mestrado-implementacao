@@ -85,6 +85,10 @@ public:
         }
     }
 
+    bool operator==(const MinMaxTreeLevels&) const {
+        return true;
+    }
+
 private:
     void createLevel(const T& levelHeight) {
         levels.emplace(levelHeight, NodeLevel(levelHeight));
