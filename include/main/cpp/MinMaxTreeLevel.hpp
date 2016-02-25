@@ -83,7 +83,7 @@ public:
     }
 
     bool operator==(const MinMaxTreeLevel& otherLevel) const {
-        return nodesAreTheSameOn(otherLevel);;
+        return heightIsTheSameOn(otherLevel) && nodesAreTheSameOn(otherLevel);
     }
 
 private:
@@ -104,6 +104,10 @@ private:
             NodePointer newParent) {
         if (node->hasParent() && node->getParent() == *oldParent)
             node->setParent(newParent);
+    }
+
+    bool heightIsTheSameOn(const MinMaxTreeLevel& otherLevel) const {
+        return otherLevel.level == level;
     }
 
     bool nodesAreTheSameOn(const MinMaxTreeLevel& otherLevel) const {
