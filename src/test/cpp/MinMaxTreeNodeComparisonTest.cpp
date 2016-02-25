@@ -26,6 +26,8 @@ TEST_C(nodesWithDifferentLevelsArentEqual) {
 
     assertThat(firstNode).isNotEqualTo(secondNode);
     assertThat(secondNode).isNotEqualTo(firstNode);
+    assertThat(firstNode).isDifferentThan(secondNode);
+    assertThat(secondNode).isDifferentThan(firstNode);
 }
 
 TEST_C(nodesWithDifferentIdsArentEqual) {
