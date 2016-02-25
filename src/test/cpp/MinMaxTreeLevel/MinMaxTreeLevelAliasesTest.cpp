@@ -7,7 +7,7 @@
 #include "MaxTreeLevel.hpp"
 #include "MinTreeLevel.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 
 TEST(MinMaxTreeLevelAliasesTest, MaxTreeLevelAliasExists) {
     using MaxTreeLevelAlias = MaxTreeLevel<DummyType>;
