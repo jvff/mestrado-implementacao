@@ -49,6 +49,23 @@ protected:
             unsigned int id) {
         return makeNode(parent, level, id);
     }
+
+    void shouldBeEqual(const NodeType& firstNode, const NodeType& secondNode) {
+        assertThat(firstNode).isEqualTo(secondNode);
+        assertThat(secondNode).isEqualTo(firstNode);
+
+        assertThat(firstNode).isNotDifferentThan(secondNode);
+        assertThat(secondNode).isNotDifferentThan(firstNode);
+    }
+
+    void shouldBeDifferent(const NodeType& firstNode,
+            const NodeType& secondNode) {
+        assertThat(firstNode).isNotEqualTo(secondNode);
+        assertThat(secondNode).isNotEqualTo(firstNode);
+
+        assertThat(firstNode).isDifferentThan(secondNode);
+        assertThat(secondNode).isDifferentThan(firstNode);
+    }
 };
 
 #define TEST_C(testName) \
@@ -66,6 +83,8 @@ private: \
     using SuperClass::makeNode; \
     using SuperClass::makeNodePointer; \
     using SuperClass::makeNodeChain; \
+    using SuperClass::shouldBeEqual; \
+    using SuperClass::shouldBeDifferent; \
 \
     virtual void TestBody(); \
 }

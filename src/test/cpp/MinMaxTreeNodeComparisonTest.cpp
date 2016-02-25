@@ -12,10 +12,7 @@ TEST_C(isComparable) {
     const auto firstNode = makeNode(level, id);
     const auto secondNode = makeNode(level, id);
 
-    assertThat(firstNode).isEqualTo(secondNode);
-    assertThat(secondNode).isEqualTo(firstNode);
-    assertThat(firstNode).isNotDifferentThan(secondNode);
-    assertThat(secondNode).isNotDifferentThan(firstNode);
+    shouldBeEqual(firstNode, secondNode);
 }
 
 TEST_C(nodesWithDifferentLevelsArentEqual) {
@@ -24,10 +21,7 @@ TEST_C(nodesWithDifferentLevelsArentEqual) {
     const auto firstNode = makeNode(DummyType{ 371 }, id);
     const auto secondNode = makeNode(DummyType{ 794 }, id);
 
-    assertThat(firstNode).isNotEqualTo(secondNode);
-    assertThat(secondNode).isNotEqualTo(firstNode);
-    assertThat(firstNode).isDifferentThan(secondNode);
-    assertThat(secondNode).isDifferentThan(firstNode);
+    shouldBeDifferent(firstNode, secondNode);
 }
 
 TEST_C(nodesWithDifferentIdsArentEqual) {
