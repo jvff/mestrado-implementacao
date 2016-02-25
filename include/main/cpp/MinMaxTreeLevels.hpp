@@ -85,8 +85,8 @@ public:
         }
     }
 
-    bool operator==(const MinMaxTreeLevels&) const {
-        return true;
+    bool operator==(const MinMaxTreeLevels& other) const {
+        return levels == other.levels;
     }
 
 private:
