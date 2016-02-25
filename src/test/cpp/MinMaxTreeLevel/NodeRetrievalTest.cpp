@@ -1,4 +1,4 @@
-#include "MinMaxTreeLevelNodeRetrievalTest.hpp"
+#include "NodeRetrievalTest.hpp"
 
 using NodeTypes = ::testing::Types<std::less<DummyType>,
         std::greater<DummyType> >;

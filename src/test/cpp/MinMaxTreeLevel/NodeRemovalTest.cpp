@@ -1,4 +1,4 @@
-#include "MinMaxTreeLevelNodeRemovalTest.hpp"
+#include "NodeRemovalTest.hpp"
 
 using NodeTypes = ::testing::Types<std::less<DummyType>,
         std::greater<DummyType> >;

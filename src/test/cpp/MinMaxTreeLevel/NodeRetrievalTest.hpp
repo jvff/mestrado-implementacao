@@ -1,5 +1,5 @@
-#ifndef MIN_MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
-#define MIN_MAX_TREE_LEVEL_NODE_RETRIEVAL_TEST_HPP
+#ifndef NODE_RETRIEVAL_TEST_HPP
+#define NODE_RETRIEVAL_TEST_HPP
 
 #include <functional>
 #include <limits>
