@@ -108,8 +108,9 @@ bool operator==(const MinMaxTreeNode<T, C>& first,
 }
 
 template <typename T, typename C>
-bool operator!=(const MinMaxTreeNode<T, C>&, const MinMaxTreeNode<T, C>&) {
-    return false;
+bool operator!=(const MinMaxTreeNode<T, C>& first,
+        const MinMaxTreeNode<T, C>& second) {
+    return !(first == second);
 }
 
 #endif
