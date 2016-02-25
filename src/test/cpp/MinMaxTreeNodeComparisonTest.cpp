@@ -30,8 +30,7 @@ TEST_C(nodesWithDifferentIdsArentEqual) {
     const auto firstNode = makeNode(level, 239u);
     const auto secondNode = makeNode(level, 840u);
 
-    assertThat(firstNode).isNotEqualTo(secondNode);
-    assertThat(secondNode).isNotEqualTo(firstNode);
+    shouldBeDifferent(firstNode, secondNode);
 }
 
 TEST_C(nodeWithParentAndNodeWithoutArentEqual) {
@@ -41,8 +40,7 @@ TEST_C(nodeWithParentAndNodeWithoutArentEqual) {
     const auto nodeWithParent = makeNodeChain(DummyType{ 92 }, 12u, level, id);
     const auto nodeWithoutParent = makeNode(level, id);
 
-    assertThat(nodeWithParent).isNotEqualTo(nodeWithoutParent);
-    assertThat(nodeWithoutParent).isNotEqualTo(nodeWithParent);
+    shouldBeDifferent(nodeWithParent, nodeWithoutParent);
 }
 
 TEST_C(nodeWithDifferentParentsArentEqual) {
@@ -55,8 +53,7 @@ TEST_C(nodeWithDifferentParentsArentEqual) {
     const auto firstNode = makeNodeChain(parentLevel, parentId, level, id);
     const auto secondNode = makeNodeChain(parentLevel, parentId, level, id);
 
-    assertThat(firstNode).isNotEqualTo(secondNode);
-    assertThat(secondNode).isNotEqualTo(firstNode);
+    shouldBeDifferent(firstNode, secondNode);
 }
 
 TEST_C(nodeWithSameParentAreEqual) {
@@ -68,8 +65,7 @@ TEST_C(nodeWithSameParentAreEqual) {
     const auto firstNode = makeNode(parent, level, id);
     const auto secondNode = makeNode(parent, level, id);
 
-    assertThat(firstNode).isEqualTo(secondNode);
-    assertThat(secondNode).isEqualTo(firstNode);
+    shouldBeEqual(firstNode, secondNode);
 }
 
 TEST_C(isComparableToEquivalentNode) {
