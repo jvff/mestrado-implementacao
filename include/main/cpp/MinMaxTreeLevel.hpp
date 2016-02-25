@@ -117,9 +117,7 @@ private:
             return false;
 
         for (auto index = 0u; index < numberOfNodes; ++index) {
-            if (*otherLevel.nodes[index] == *nodes[index])
-                continue;
-            else
+            if (*otherLevel.nodes[index] != *nodes[index])
                 return false;
         }
 
