@@ -13,15 +13,15 @@ private:
     using NodeType = MinMaxTreeNode<T, LevelOrderComparator>;
     using NodePointer = std::shared_ptr<NodeType>;
 
-    T level;
+    T levelHeight;
     std::vector<NodePointer> nodes;
 
 public:
-    MinMaxTreeLevel(const T& level) : level(level) {
+    MinMaxTreeLevel(const T& levelHeight) : levelHeight(levelHeight) {
     }
 
     T getLevel() const {
-        return level;
+        return levelHeight;
     }
 
     bool isEmpty() {
@@ -33,7 +33,7 @@ public:
     }
 
     NodePointer addNode() {
-        auto node = std::make_shared<NodeType>(level, nodes.size());
+        auto node = std::make_shared<NodeType>(levelHeight, nodes.size());
 
         nodes.push_back(node);
 
@@ -107,7 +107,7 @@ private:
     }
 
     bool heightIsTheSameOn(const MinMaxTreeLevel& otherLevel) const {
-        return otherLevel.level == level;
+        return otherLevel.levelHeight == levelHeight;
     }
 
     bool nodesAreTheSameOn(const MinMaxTreeLevel& otherLevel) const {
