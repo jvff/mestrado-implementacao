@@ -23,3 +23,23 @@ TEST_C(ComparisonTests, emptyLevelsDifferFromNonEmptyLevels) {
     assertThat(constEmptyLevels).isNotEqualTo(constLevels);
     assertThat(constLevels).isNotEqualTo(constEmptyLevels);
 }
+
+TEST_C(ComparisonTests, levelsWithSameEmptyLevelsAreEqual) {
+    DummyMinMaxTreeLevels otherLevels;
+    const auto& constOtherLevels = otherLevels;
+
+    auto firstLevel = DummyType{ 22 };
+    auto secondLevel = DummyType{ 12 };
+    auto thirdLevel = DummyType{ 96 };
+
+    levels.getOrCreateLevel(firstLevel);
+    levels.getOrCreateLevel(secondLevel);
+    levels.getOrCreateLevel(thirdLevel);
+
+    otherLevels.getOrCreateLevel(firstLevel);
+    otherLevels.getOrCreateLevel(secondLevel);
+    otherLevels.getOrCreateLevel(thirdLevel);
+
+    assertThat(constOtherLevels).isEqualTo(constLevels);
+    assertThat(constLevels).isEqualTo(constOtherLevels);
+}
