@@ -107,4 +107,9 @@ bool operator==(const MinMaxTreeNode<T, C>& first,
         && parentsAreEqual;
 }
 
+template <typename T, typename C>
+bool operator!=(const MinMaxTreeNode<T, C>&, const MinMaxTreeNode<T, C>&) {
+    return false;
+}
+
 #endif
