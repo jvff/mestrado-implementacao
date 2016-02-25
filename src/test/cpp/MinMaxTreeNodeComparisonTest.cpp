@@ -14,6 +14,8 @@ TEST_C(isComparable) {
 
     assertThat(firstNode).isEqualTo(secondNode);
     assertThat(secondNode).isEqualTo(firstNode);
+    assertThat(firstNode).isNotDifferentThan(secondNode);
+    assertThat(secondNode).isNotDifferentThan(firstNode);
 }
 
 TEST_C(nodesWithDifferentLevelsArentEqual) {
