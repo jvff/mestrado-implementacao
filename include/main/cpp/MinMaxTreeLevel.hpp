@@ -117,7 +117,10 @@ private:
             return false;
 
         for (auto index = 0u; index < numberOfNodes; ++index) {
-            if (*otherLevel.nodes[index] != *nodes[index])
+            const auto& node = *nodes[index];
+            const auto& otherNode = *otherLevel.nodes[index];
+
+            if (!node.isEquivalentTo(otherNode))
                 return false;
         }
 
