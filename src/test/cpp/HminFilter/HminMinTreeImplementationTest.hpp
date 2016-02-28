@@ -5,7 +5,10 @@
 
 #include "asserts.hpp"
 
+#include "FilterImplementation.hpp"
 #include "HminMinTreeImplementation.hpp"
+#include "MinTreeImage.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "../DummyTypes.hpp"
 #include "../FakeImage.hpp"
@@ -14,6 +17,7 @@ class HminMinTreeImplementationTest : public ::testing::Test {
 protected:
     using PixelType = DummyType;
     using InternalImageType = FakeImage<PixelType>;
+    using ImageType = MinTreeImage<InternalImageType>;
     using DummyImplementation = HminMinTreeImplementation<InternalImageType>;
 };
 
