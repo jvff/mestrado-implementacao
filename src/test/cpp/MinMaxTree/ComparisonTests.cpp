@@ -38,3 +38,22 @@ TEST_C(treesWithTheSameNodeAreEqual) {
     assertThat(constTree).isEqualTo(constOtherTree);
     assertThat(constOtherTree).isEqualTo(constTree);
 }
+
+TEST_C(treesWithDifferentAmountOfNodesDiffer) {
+    auto otherTree = DummyMinMaxTreeType();
+    const auto& constOtherTree = otherTree;
+
+    auto nodeLevelHeight = DummyType{ 7025 };
+
+    tree.addNode(nodeLevelHeight);
+    tree.addNode(nodeLevelHeight);
+    tree.addNode(nodeLevelHeight);
+
+    otherTree.addNode(nodeLevelHeight);
+    otherTree.addNode(nodeLevelHeight);
+    otherTree.addNode(nodeLevelHeight);
+    otherTree.addNode(nodeLevelHeight);
+
+    assertThat(constTree).isNotEqualTo(constOtherTree);
+    assertThat(constOtherTree).isNotEqualTo(constTree);
+}
