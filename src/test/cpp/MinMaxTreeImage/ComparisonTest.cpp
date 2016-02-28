@@ -128,8 +128,8 @@ TEST_C(ComparisonTest, imagesWithDifferentNodeParentsArentEqual) {
 
     secondImage.assignPixelToNewNode(0, 1);
     secondImage.assignPixelToNewNode(2, 1);
+    secondImage.assignPixelToNewNode(0, 0);
     secondImage.assignPixelToNewNode(2, 0);
-    secondImage.assignPixelToLatestNode(0, 0);
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
