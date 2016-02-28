@@ -15,3 +15,13 @@ TEST_C(emptyTreesAreEqual) {
     assertThat(constTree).isEqualTo(constEmptyTree);
     assertThat(constEmptyTree).isEqualTo(constTree);
 }
+
+TEST_C(treeWithNodeIsNotEqualToEmptyTree) {
+    auto emptyTree = DummyMinMaxTreeType();
+    const auto& constEmptyTree = emptyTree;
+
+    tree.addNode(DummyType{ 2918 });
+
+    assertThat(constTree).isNotEqualTo(constEmptyTree);
+    assertThat(constEmptyTree).isNotEqualTo(constTree);
+}
