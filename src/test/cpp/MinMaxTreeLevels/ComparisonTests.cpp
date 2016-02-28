@@ -148,3 +148,38 @@ TEST_C(ComparisonTests, levelsWithNodesWithSameParentsAreEqual) {
     assertThat(constOtherLevels).isEqualTo(constLevels);
     assertThat(constLevels).isEqualTo(constOtherLevels);
 }
+
+TEST_C(ComparisonTests, levelsWithNodesWithDifferentParentsDiffer) {
+    DummyMinMaxTreeLevels otherLevels;
+    const auto& constOtherLevels = otherLevels;
+
+    auto firstLevelHeight = DummyType{ 22 };
+    auto secondLevelHeight = DummyType{ 12 };
+
+    auto& firstLevel = levels.getOrCreateLevel(firstLevelHeight);
+    auto& secondLevel = levels.getOrCreateLevel(secondLevelHeight);
+
+    auto& otherFirstLevel = otherLevels.getOrCreateLevel(firstLevelHeight);
+    auto& otherSecondLevel = otherLevels.getOrCreateLevel(secondLevelHeight);
+
+    firstLevel.addNode();
+
+    auto rootNode = firstLevel.addNode();
+    auto otherRootNode = otherFirstLevel.addNode();
+
+    otherFirstLevel.addNode();
+
+    auto firstLeafNode = secondLevel.addNode();
+    auto secondLeafNode = secondLevel.addNode();
+    auto otherFirstLeafNode = otherSecondLevel.addNode();
+    auto otherSecondLeafNode = otherSecondLevel.addNode();
+
+    firstLeafNode->setParent(rootNode);
+    secondLeafNode->setParent(rootNode);
+
+    otherFirstLeafNode->setParent(otherRootNode);
+    otherSecondLeafNode->setParent(otherRootNode);
+
+    assertThat(constOtherLevels).isNotEqualTo(constLevels);
+    assertThat(constLevels).isNotEqualTo(constOtherLevels);
+}
