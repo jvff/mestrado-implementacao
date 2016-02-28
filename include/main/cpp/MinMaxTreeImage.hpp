@@ -82,6 +82,11 @@ public:
             safelyRemoveNode(node);
     }
 
+    bool operator==(const MinMaxTreeImage& other) const {
+        return internalImage == other.internalImage
+            &&  minMaxTree == other.minMaxTree;
+    }
+
     using SuperClass::getPixelValue;
     using SuperClass::setPixel;
 
@@ -171,37 +176,5 @@ private:
         return pixelLevel == level;
     }
 };
-
-template <typename InternalImageType, typename LevelOrderComparator>
-static bool allNodesAreEqual(
-        const MinMaxTreeImage<InternalImageType, LevelOrderComparator>& first,
-        const MinMaxTreeImage<InternalImageType, LevelOrderComparator>& second)
-        {
-    auto width = first.getWidth();
-    auto height = first.getHeight();
-
-    for (unsigned int x = 0; x < width; ++x) {
-        for (unsigned int y = 0; y < height; ++y) {
-            auto firstNode = first.getPixelNode(x, y);
-            auto secondNode = second.getPixelNode(x, y);
-
-            if (!firstNode.isEquivalentTo(secondNode))
-                return false;
-        }
-    }
-
-    return true;
-}
-
-template <typename InternalImageType, typename LevelOrderComparator>
-bool operator==(
-        const MinMaxTreeImage<InternalImageType, LevelOrderComparator>& first,
-        const MinMaxTreeImage<InternalImageType, LevelOrderComparator>& second)
-        {
-    return first.getWidth() == second.getWidth()
-        && first.getHeight() == second.getHeight()
-        && allPixelsAreEqual(first, second)
-        && allNodesAreEqual(first, second);
-}
 
 #endif
