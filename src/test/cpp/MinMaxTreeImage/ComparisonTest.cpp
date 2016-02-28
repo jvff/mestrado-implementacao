@@ -50,12 +50,8 @@ TEST_C(ComparisonTest, imagesWithDifferentPixelsAtZeroZeroArentEqual) {
     auto firstImage = DummyMinMaxTreeImageType(width, height);
     auto secondImage = DummyMinMaxTreeImageType(width, height);
 
-    auto painter = [height] (unsigned int x, unsigned int y) -> PixelType {
-        return PixelType{ (int)(y + x * height) };
-    };
-
-    firstImage = painter;
-    secondImage = painter;
+    paintImage(firstImage);
+    paintImage(secondImage);
 
     assignPixelsToLatestNodes(firstImage);
     assignPixelsToLatestNodes(secondImage);
@@ -69,8 +65,9 @@ TEST_C(ComparisonTest, imagesWithDifferentNodesArentEqual) {
     unsigned int width = 3;
     unsigned int height = 2;
 
-    PixelType background = { 3 };
-    PixelType foreground = { 7 };
+    auto levelHeights = makeLevelHeights({ 3, 7 });
+    auto background = levelHeights[0];
+    auto foreground = levelHeights[1];
 
     auto firstImage = DummyMinMaxTreeImageType(width, height);
     auto secondImage = DummyMinMaxTreeImageType(width, height);
@@ -102,9 +99,10 @@ TEST_C(ComparisonTest, imagesWithDifferentNodeParentsArentEqual) {
     unsigned int width = 3;
     unsigned int height = 2;
 
-    PixelType background = { 3 };
-    PixelType middleground = { 5 };
-    PixelType foreground = { 7 };
+    auto levelHeights = makeLevelHeights({ 3, 5, 7 });
+    auto background = levelHeights[0];
+    auto middleground = levelHeights[1];
+    auto foreground = levelHeights[2];
 
     auto firstImage = DummyMinMaxTreeImageType(width, height);
     auto secondImage = DummyMinMaxTreeImageType(width, height);
