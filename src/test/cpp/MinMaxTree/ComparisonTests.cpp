@@ -25,3 +25,16 @@ TEST_C(treeWithNodeIsNotEqualToEmptyTree) {
     assertThat(constTree).isNotEqualTo(constEmptyTree);
     assertThat(constEmptyTree).isNotEqualTo(constTree);
 }
+
+TEST_C(treesWithTheSameNodeAreEqual) {
+    auto otherTree = DummyMinMaxTreeType();
+    const auto& constOtherTree = otherTree;
+
+    auto nodeLevelHeight = DummyType{ 7025 };
+
+    tree.addNode(nodeLevelHeight);
+    otherTree.addNode(nodeLevelHeight);
+
+    assertThat(constTree).isEqualTo(constOtherTree);
+    assertThat(constOtherTree).isEqualTo(constTree);
+}
