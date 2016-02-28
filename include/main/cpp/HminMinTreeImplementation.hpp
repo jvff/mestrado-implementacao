@@ -37,6 +37,7 @@ public:
 
     void apply() override {
         collectNodes();
+        findLeafNodes();
         raiseNodes();
         updateFinalImage();
     }
@@ -49,8 +50,35 @@ private:
         }
     }
 
+    void findLeafNodes() {
+        leafNodes = nodes;
+
+        for (auto& node : nodes)
+            removeNodeParentChainFromLeafNodeSet(node);
+    }
+
+    void removeNodeParentChainFromLeafNodeSet(const NodeType& node) {
+        if (node.hasParent())
+            removeNodeChainFromLeafNodeSet(node.getParent());
+    }
+
+    void removeNodeChainFromLeafNodeSet(const NodeType& node) {
+        if (leafNodeSetHas(node)) {
+            leafNodes.erase(node);
+
+            removeNodeParentChainFromLeafNodeSet(node);
+        }
+    }
+
+    bool leafNodeSetHas(const NodeType& node) {
+        auto notFound = leafNodes.end();
+        auto searchResult = leafNodes.find(node);
+
+        return searchResult != notFound;
+    }
+
     void raiseNodes() {
-        for (auto& leafNode : nodes)
+        for (auto& leafNode : leafNodes)
             raiseNode(leafNode);
     }
 
@@ -68,8 +96,19 @@ private:
     void updatePixel(unsigned int x, unsigned int y) {
         auto& node = sourceImage.getPixelNode(x, y);
 
-        destinationImage.setPixel(x, y, nodesToUpdate[node]);
+        if (nodeShouldBeUpdated(node))
+            destinationImage.setPixel(x, y, nodesToUpdate[node]);
+        else
+            destinationImage.setPixel(x, y, sourceImage.getPixelValue(x, y));
+
         destinationImage.assignPixelToLatestNode(x, y);
+    }
+
+    bool nodeShouldBeUpdated(const NodeType& node) {
+        auto notFound = nodesToUpdate.end();
+        auto searchResult = nodesToUpdate.find(node);
+
+        return searchResult != notFound;
     }
 };
 
