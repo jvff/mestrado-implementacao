@@ -7,7 +7,7 @@
 #include "MaxTree.hpp"
 #include "MinTree.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 
 TEST(MinMaxTreeAliasesTest, aliasForMaxTreeExists) {
     using MaxTreeAlias = MaxTree<DummyType>;

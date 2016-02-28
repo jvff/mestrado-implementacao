@@ -12,9 +12,9 @@
 #include "MinMaxTree.hpp"
 #include "MaxTree.hpp"
 
-#include "CustomTypedTestMacros.hpp"
-#include "DummyTypes.hpp"
-#include "NodeVerificationHelper.hpp"
+#include "../CustomTypedTestMacros.hpp"
+#include "../DummyTypes.hpp"
+#include "../NodeVerificationHelper.hpp"
 
 template <typename TypeParameter>
 class MinMaxTreeTest : public ::testing::Test,
