@@ -1,11 +1,10 @@
-#include "MinMaxTreeNodeRemovalTest.hpp"
+#include "MinMaxTreeTest.hpp"
 
-using nodeLevelComparatorTypes = ::testing::Types<std::less<DummyType>,
-        std::greater<DummyType> >;
+#define TEST_FIXTURE NodeRemovalTest
 
-TYPED_TEST_CASE(MinMaxTreeNodeRemovalTest, nodeLevelComparatorTypes);
+SUB_TEST();
 
-TEST_C(MinMaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
+TEST_C(hasThreeLevelsAfterUsingFourAndEmptyingOne) {
     tree.addNode(DummyType{ 8 });
     tree.addNode(DummyType{ 8 });
     tree.addNode(DummyType{ 70 });
@@ -19,15 +18,14 @@ TEST_C(MinMaxTreeNodeRemovalTest, hasThreeLevelsAfterUsingFourAndEmptyingOne) {
     assertThat(constTree.numberOfLevels()).isEqualTo(3u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, isEmptyAfterInsertingThenRemovingNode) {
+TEST_C(isEmptyAfterInsertingThenRemovingNode) {
     tree.addNode(DummyType{ 0 });
     tree.removeNode(DummyType{ 0 }, 0);
 
     assertThat(constTree.isEmpty()).isEqualTo(true);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest,
-        isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
+TEST_C(isNotEmptyAfterInsertingTwoNodesThenRemovingOneNode) {
     auto levelHeights = makeLevelHeights({ 0, 1 });
 
     tree.addNode(levelHeights[0]);
@@ -37,7 +35,7 @@ TEST_C(MinMaxTreeNodeRemovalTest,
     assertThat(constTree.isEmpty()).isEqualTo(false);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
+TEST_C(removingNodeUpdatesParentOfChildren) {
     auto levelHeights = makeLevelHeights({ 20, 27, 30, 33 });
 
     tree.addNode(levelHeights[0]);
@@ -58,7 +56,7 @@ TEST_C(MinMaxTreeNodeRemovalTest, removingNodeUpdatesParentOfChildren) {
             levelHeights[0], 0u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, correctNodeIsRemoved) {
+TEST_C(correctNodeIsRemoved) {
     auto levelHeights = makeLevelHeights({ 1, 10, 20, 21, 22 });
 
     tree.addNode(levelHeights[0]);
@@ -79,7 +77,7 @@ TEST_C(MinMaxTreeNodeRemovalTest, correctNodeIsRemoved) {
             levelHeights[0], 0u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, cantRemoveFromInexistentLevels) {
+TEST_C(cantRemoveFromInexistentLevels) {
     auto levelHeights = makeLevelHeights({ 0, 1, 2, 3, 4 });
 
     tree.addNode(levelHeights[1]);
@@ -93,7 +91,7 @@ TEST_C(MinMaxTreeNodeRemovalTest, cantRemoveFromInexistentLevels) {
             levelHeights[1], 0u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, cantRemoveInexistentNode) {
+TEST_C(cantRemoveInexistentNode) {
     auto levelHeights = makeLevelHeights({ 1, 3 });
 
     tree.addNode(levelHeights[0]);
@@ -109,7 +107,7 @@ TEST_C(MinMaxTreeNodeRemovalTest, cantRemoveInexistentNode) {
             levelHeights[0], 0u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
+TEST_C(nodeIdsAreUpdatedAfterRemoval) {
     auto levelHeights = makeLevelHeights({ 1, 10, 20, 30, 40, 50 });
 
     tree.addNode(levelHeights[0]);
@@ -145,7 +143,7 @@ TEST_C(MinMaxTreeNodeRemovalTest, nodeIdsAreUpdatedAfterRemoval) {
             levelHeights[0], 0u);
 }
 
-TEST_C(MinMaxTreeNodeRemovalTest, rootNodeRemovalMergesNextLevel) {
+TEST_C(rootNodeRemovalMergesNextLevel) {
     auto levelHeights = makeLevelHeights({ 10, 20, 30, 31 });
 
     tree.addNode(levelHeights[0]);

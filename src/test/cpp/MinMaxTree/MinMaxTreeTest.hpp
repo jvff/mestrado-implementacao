@@ -64,7 +64,25 @@ private:
     }
 };
 
-#define TEST_C(testFixture, testName) \
+#define SUB_TEST() \
+    CREATE_EMPTY_TEST_FIXTURE(MinMaxTree##TEST_FIXTURE); \
+    REGISTER_TYPE_PARAMETERS(MinMaxTree##TEST_FIXTURE)
+
+#define CREATE_EMPTY_TEST_FIXTURE(testFixture) \
+template <typename TypeParameter> \
+class testFixture : public MinMaxTreeTest<TypeParameter> { \
+}
+
+#define REGISTER_TYPE_PARAMETERS(testFixture) \
+    TYPED_TEST_CASE(testFixture, TypeParameters)
+
+using TypeParameters = ::testing::Types<std::less<DummyType>,
+        std::greater<DummyType> >;
+
+#define TEST_C(testName) \
+    TEST_C_HELPER(MinMaxTree##TEST_FIXTURE, testName)
+
+#define TEST_C_HELPER(testFixture, testName) \
     CREATE_MIN_MAX_TREE_TEST_CLASS(testFixture, testName); \
     REGISTER_CUSTOM_TYPED_TEST(testFixture, testName); \
     START_CUSTOM_TYPED_TEST_BODY(testFixture, testName)
