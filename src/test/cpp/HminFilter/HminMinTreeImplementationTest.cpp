@@ -10,3 +10,13 @@ TEST_F(HminMinTreeImplementationTest, isFilterImplementation) {
 
     AssertThat<ImplementationClass>::isSubClass(Of<ParentImplementation>());
 }
+
+TEST_F(HminMinTreeImplementationTest, isConstructibleWithParameters) {
+    using FeatureHeightParameter = const PixelType&;
+    using SourceImageParameter = const ImageType&;
+    using DestinationImageParameter = ImageType&;
+
+    AssertThat<DummyImplementation>::isConstructible(
+            With<FeatureHeightParameter, SourceImageParameter,
+                    DestinationImageParameter>());
+}
