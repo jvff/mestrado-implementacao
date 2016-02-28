@@ -92,8 +92,8 @@ TEST_C(ComparisonTest, imagesWithDifferentNodesArentEqual) {
     firstImage.assignPixelToLatestNode(0, 0);
     firstImage.assignPixelToNewNode(2, 0);
 
-    secondImage.assignPixelToNewNode(0, 0);
     secondImage.assignPixelToLatestNode(2, 0);
+    secondImage.assignPixelToNewNode(0, 0);
 
     assertThat(firstImage).isNotEqualTo(secondImage);
 }
