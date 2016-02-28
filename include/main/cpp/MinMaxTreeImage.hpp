@@ -84,6 +84,7 @@ public:
 
     bool operator==(const MinMaxTreeImage& other) const {
         return internalImage == other.internalImage
+            &&  nodeIdImage == other.nodeIdImage
             &&  minMaxTree == other.minMaxTree;
     }
 
