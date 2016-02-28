@@ -1,4 +1,5 @@
 #include "HminMinTreeImplementationTest.hpp"
+#include "HminTests.hpp"
 
 TEST_F(HminMinTreeImplementationTest, classTemplateExists) {
     AssertThat<DummyImplementation>::isClassOrStruct();
@@ -20,3 +21,6 @@ TEST_F(HminMinTreeImplementationTest, isConstructibleWithParameters) {
             With<FeatureHeightParameter, SourceImageParameter,
                     DestinationImageParameter>());
 }
+
+INSTANTIATE_COMPLEX_FILTER_TEST_CASE(HminMinTreeImplementationTest, HminTests,
+        TestData);
