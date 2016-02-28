@@ -1,7 +1,7 @@
 #ifndef HMIN_TESTS_HPP
 #define HMIN_TESTS_HPP
 
-#include "ComplexFilterTestMacros.hpp"
+#include "../ComplexFilterTestMacros.hpp"
 
 COMPLEX_FILTER_TEST_CASE(HminTests);
 

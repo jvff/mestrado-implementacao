@@ -9,9 +9,10 @@
 #include "HminImplementation.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterImplementationTestData.hpp"
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "../AbstractFilterImplementationTestData.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
+
 #include "HminTestData.hpp"
 
 class HminImplementationTest : public ::testing::Test {

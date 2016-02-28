@@ -3,8 +3,8 @@
 
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractTestData.hpp"
-#include "PaintableTestData.hpp"
+#include "../AbstractTestData.hpp"
+#include "../PaintableTestData.hpp"
 
 template <typename ParentTestDataType, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >
