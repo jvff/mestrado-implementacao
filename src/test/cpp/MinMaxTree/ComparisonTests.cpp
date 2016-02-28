@@ -104,3 +104,51 @@ TEST_C(treesWithSameNodesAreEqual) {
     assertThat(constTree).isEqualTo(constOtherTree);
     assertThat(constOtherTree).isEqualTo(constTree);
 }
+
+TEST_C(treesWithNodesWithDifferentParentsDiffer) {
+    auto otherTree = DummyMinMaxTreeType();
+    const auto& constOtherTree = otherTree;
+
+    auto firstLevelHeight = DummyType{ 3078 };
+    auto secondLevelHeight = DummyType{ -579 };
+    auto thirdLevelHeight = DummyType{ 3801 };
+
+    auto& rootNode = tree.addNode(firstLevelHeight);
+
+    auto& firstNodeOnSecondLevel = tree.addNode(secondLevelHeight);
+    auto& secondNodeOnSecondLevel = tree.addNode(secondLevelHeight);
+
+    auto& firstNodeOnThirdLevel = tree.addNode(thirdLevelHeight);
+    auto& secondNodeOnThirdLevel = tree.addNode(thirdLevelHeight);
+    auto& thirdNodeOnThirdLevel = tree.addNode(thirdLevelHeight);
+
+    tree.setNodeParent(firstNodeOnSecondLevel, rootNode);
+    tree.setNodeParent(secondNodeOnSecondLevel, rootNode);
+
+    tree.setNodeParent(firstNodeOnThirdLevel, firstNodeOnSecondLevel);
+    tree.setNodeParent(thirdNodeOnThirdLevel, secondNodeOnSecondLevel);
+
+    auto& otherRootNode = otherTree.addNode(firstLevelHeight);
+
+    auto& otherFirstNodeOnSecondLevel = otherTree.addNode(secondLevelHeight);
+    auto& otherSecondNodeOnSecondLevel = otherTree.addNode(secondLevelHeight);
+
+    auto& otherFirstNodeOnThirdLevel = otherTree.addNode(thirdLevelHeight);
+    auto& otherSecondNodeOnThirdLevel = otherTree.addNode(thirdLevelHeight);
+    auto& otherThirdNodeOnThirdLevel = otherTree.addNode(thirdLevelHeight);
+
+    otherTree.setNodeParent(otherFirstNodeOnSecondLevel, otherRootNode);
+    otherTree.setNodeParent(otherSecondNodeOnSecondLevel, otherRootNode);
+
+    otherTree.setNodeParent(otherFirstNodeOnThirdLevel,
+            otherFirstNodeOnSecondLevel);
+    otherTree.setNodeParent(otherThirdNodeOnThirdLevel,
+            otherSecondNodeOnSecondLevel);
+
+    tree.setNodeParent(secondNodeOnThirdLevel, firstNodeOnSecondLevel);
+    otherTree.setNodeParent(otherSecondNodeOnThirdLevel,
+            otherSecondNodeOnSecondLevel);
+
+    assertThat(constTree).isNotEqualTo(constOtherTree);
+    assertThat(constOtherTree).isNotEqualTo(constTree);
+}
