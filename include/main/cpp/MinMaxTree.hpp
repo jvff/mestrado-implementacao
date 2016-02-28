@@ -74,6 +74,10 @@ public:
         }
     }
 
+    bool operator==(const MinMaxTree&) const {
+        return true;
+    }
+
 private:
     NodePointer getNodePointer(const NodeType& node) {
         auto& levelNodes = levels.getLevel(node.getLevel());
