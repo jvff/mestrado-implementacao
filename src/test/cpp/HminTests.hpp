@@ -26,7 +26,7 @@ COMPLEX_FILTER_TEST(doesntChangePeak) {
 
 COMPLEX_FILTER_TEST(shavesValleys) {
     TestData<unsigned char>()
-        .setDimensions(6, 3)
+        .setDimensions(6, 4)
         .setFeatureHeight(3)
         .setBackground(100)
         .setExpectedBackground(100)
