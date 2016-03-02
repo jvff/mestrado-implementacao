@@ -5,6 +5,14 @@
 
 COMPLEX_FILTER_TEST_CASE(HminTests);
 
+COMPLEX_FILTER_TEST(raisesUniformImage) {
+    TestData<unsigned char>()
+        .setDimensions(3, 3)
+        .setFeatureHeight(5)
+        .setBackground(24)
+        .setExpectedBackground(29);
+}
+
 COMPLEX_FILTER_TEST(removesShallowHole) {
     TestData<unsigned char>()
         .setDimensions(7, 7)
@@ -40,7 +48,7 @@ COMPLEX_FILTER_TEST(shavesValleys) {
         .drawSquare(5, 3, 1, 100);
 }
 
-REGISTER_COMPLEX_FILTER_TEST_CASE(HminTests, removesShallowHole,
-        doesntChangePeak, shavesValleys);
+REGISTER_COMPLEX_FILTER_TEST_CASE(HminTests, raisesUniformImage,
+        removesShallowHole, doesntChangePeak, shavesValleys);
 
 #endif
