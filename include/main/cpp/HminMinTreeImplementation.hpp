@@ -4,6 +4,8 @@
 #include <map>
 #include <set>
 
+#include <boost/range/adaptor/reversed.hpp>
+
 #include "FilterImplementation.hpp"
 #include "MinTreeImage.hpp"
 #include "MinTreeNode.hpp"
@@ -78,7 +80,7 @@ private:
     }
 
     void raiseNodes() {
-        for (auto& leafNode : leafNodes)
+        for (auto& leafNode : boost::adaptors::reverse(leafNodes))
             raiseNode(leafNode);
     }
 
@@ -88,20 +90,26 @@ private:
         raiseNodeTo(node, newHeight);
     }
 
-    void raiseNodeTo(const NodeType& node, const PixelType& newLevelHeight) {
-        nodesToUpdate[node] = newLevelHeight;
+    void raiseNodeTo(const NodeType& node, PixelType newHeight) {
+        if (node.hasParent())
+            newHeight = getRaisedHeightAfterUpdatingParent(node, newHeight);
 
-        maybeRaiseNodeParentTo(node, newLevelHeight);
+        nodesToUpdate[node] = newHeight;
     }
 
-    void maybeRaiseNodeParentTo(const NodeType& node,
+    PixelType getRaisedHeightAfterUpdatingParent(const NodeType& node,
             const PixelType& newLevelHeight) {
-        if (node.hasParent()) {
-            auto& parent = node.getParent();
+        auto& parent = node.getParent();
+        auto parentIsntQueuedYet = nodeIsMarkedForUpdate(parent) == false;
+        auto touchesParentLevel = parent.getLevel() <= newLevelHeight;
 
-            if (parent.getLevel() < newLevelHeight)
+        if (touchesParentLevel) {
+            if (parentIsntQueuedYet)
                 raiseNodeTo(parent, newLevelHeight);
-        }
+
+            return nodesToUpdate[parent];
+        } else
+            return newLevelHeight;
     }
 
     void updateFinalImage() {
@@ -119,13 +127,13 @@ private:
     void updatePixel(unsigned int x, unsigned int y) {
         auto& node = sourceImage.getPixelNode(x, y);
 
-        if (nodeShouldBeUpdated(node))
+        if (nodeIsMarkedForUpdate(node))
             destinationImage.setPixel(x, y, nodesToUpdate[node]);
         else
             destinationImage.setPixel(x, y, sourceImage.getPixelValue(x, y));
     }
 
-    bool nodeShouldBeUpdated(const NodeType& node) {
+    bool nodeIsMarkedForUpdate(const NodeType& node) {
         auto notFound = nodesToUpdate.end();
         auto searchResult = nodesToUpdate.find(node);
 
@@ -151,7 +159,7 @@ private:
     }
 
     PixelType getUpdatedNodeLevel(const NodeType& node) {
-        if (nodeShouldBeUpdated(node))
+        if (nodeIsMarkedForUpdate(node))
             return nodesToUpdate[node];
         else
             return node.getLevel();
@@ -159,11 +167,11 @@ private:
 
     bool nodeWasCollapsedIntoParent(const NodeType& node,
             const PixelType& updatedLevel) {
-        if (nodeShouldBeUpdated(node) && node.hasParent()) {
+        if (nodeIsMarkedForUpdate(node) && node.hasParent()) {
             auto& parent = node.getParent();
             auto parentLevel = parent.getLevel();
 
-            if (nodeShouldBeUpdated(parent))
+            if (nodeIsMarkedForUpdate(parent))
                 parentLevel = nodesToUpdate[parent];
 
             return updatedLevel == parentLevel;
