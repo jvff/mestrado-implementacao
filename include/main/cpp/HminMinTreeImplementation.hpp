@@ -83,7 +83,25 @@ private:
     }
 
     void raiseNode(const NodeType& node) {
-        nodesToUpdate[node] = node.getLevel() + featureHeight;
+        auto newHeight = node.getLevel() + featureHeight;
+
+        raiseNodeTo(node, newHeight);
+    }
+
+    void raiseNodeTo(const NodeType& node, const PixelType& newLevelHeight) {
+        nodesToUpdate[node] = newLevelHeight;
+
+        maybeRaiseNodeParentTo(node, newLevelHeight);
+    }
+
+    void maybeRaiseNodeParentTo(const NodeType& node,
+            const PixelType& newLevelHeight) {
+        if (node.hasParent()) {
+            auto& parent = node.getParent();
+
+            if (parent.getLevel() < newLevelHeight)
+                raiseNodeTo(parent, newLevelHeight);
+        }
     }
 
     void updateFinalImage() {
