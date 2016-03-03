@@ -13,6 +13,15 @@ COMPLEX_FILTER_TEST(raisesUniformImage) {
         .setExpectedBackground(29);
 }
 
+COMPLEX_FILTER_TEST(removesShallowHole) {
+    TestData<unsigned char>()
+        .setDimensions(7, 7)
+        .setFeatureHeight(3)
+        .setBackground(24)
+        .drawSquare(1, 1, 5, 21)
+        .setExpectedBackground(24);
+}
+
 COMPLEX_FILTER_TEST(removesShallowHoleAndRaisesBackground) {
     TestData<unsigned char>()
         .setDimensions(7, 7)
@@ -49,7 +58,7 @@ COMPLEX_FILTER_TEST(shavesValleysAndRaisesBackground) {
 }
 
 REGISTER_COMPLEX_FILTER_TEST_CASE(HminTests, raisesUniformImage,
-        removesShallowHoleAndRaisesBackground, doesntChangePeak,
-        shavesValleysAndRaisesBackground);
+        removesShallowHole, removesShallowHoleAndRaisesBackground,
+        doesntChangePeak, shavesValleysAndRaisesBackground);
 
 #endif
