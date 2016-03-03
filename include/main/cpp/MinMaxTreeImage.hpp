@@ -58,14 +58,13 @@ public:
 
     void connectPixels(unsigned int firstX, unsigned int firstY,
             unsigned int secondX, unsigned int secondY) {
-        auto& isBefore = levelOrderComparator;
         auto& firstNode = getPixelNode(firstX, firstY);
         auto& secondNode = getPixelNode(secondX, secondY);
-        auto firstNodeParentLevel = firstNode.getParent().getLevel();
-        auto secondNodeLevel = secondNode.getLevel();
 
-        if (isBefore(firstNodeParentLevel, secondNodeLevel))
-            minMaxTree.setNodeParent(firstNode, secondNode);
+        if (firstNode.hasParent())
+            connectPixelsMaybeReplacingParent(firstNode, secondNode);
+        else
+            connectPixelsWithoutParents(firstNode, secondNode);
     }
 
     const NodeType& getPixelNode(unsigned int x, unsigned int y) const {
@@ -95,6 +94,21 @@ private:
     void assignPixelToNode(unsigned int x, unsigned int y,
             const NodeType& node) {
         nodeIdImage.setPixel(x, y, node.getId());
+    }
+
+    void connectPixelsMaybeReplacingParent(const NodeType& firstNode,
+            const NodeType& secondNode) {
+        auto& isBefore = levelOrderComparator;
+        auto firstNodeParentLevel = firstNode.getParent().getLevel();
+        auto secondNodeLevel = secondNode.getLevel();
+
+        if (isBefore(firstNodeParentLevel, secondNodeLevel))
+            minMaxTree.setNodeParent(firstNode, secondNode);
+    }
+
+    void connectPixelsWithoutParents(const NodeType& firstNode,
+            const NodeType& secondNode) {
+        minMaxTree.setNodeParent(firstNode, secondNode);
     }
 
     void safelyRemoveNode(const NodeType& node) {
