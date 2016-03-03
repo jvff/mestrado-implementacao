@@ -53,8 +53,7 @@ COMPLEX_FILTER_TEST(shavesValleysAndRaisesBackground) {
         .drawExpectedSquare(3, 1, 1, 99)
         .drawSquare(5, 1, 1, 97)
         .drawSquare(1, 3, 1, 98)
-        .drawSquare(3, 3, 1, 99)
-        .drawSquare(5, 3, 1, 100);
+        .drawSquare(3, 3, 1, 99);
 }
 
 REGISTER_COMPLEX_FILTER_TEST_CASE(HminTests, raisesUniformImage,
