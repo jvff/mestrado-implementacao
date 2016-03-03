@@ -117,3 +117,23 @@ TEST_C(NodeAssignmentTest, nodesAreMergedWhenPixelsAreConnected) {
     verifyNode(image.getPixelNode(1, 0), middlePixelNode);
     verifyNode(image.getPixelNode(2, 0), rightPixelNode);
 }
+
+TEST_C(NodeAssignmentTest, rootNodeCanBeReplaced) {
+    DummyMinMaxTreeImageType image(2, 1);
+
+    auto levelHeights = makeLevelHeights({ 140, 150 });
+    auto leftPixelColor = levelHeights[1];
+    auto rightPixelColor = levelHeights[0];
+
+    image.setPixel(0, 0, leftPixelColor);
+    image.setPixel(1, 0, rightPixelColor);
+
+    assignPixelsToLatestNodes(image);
+    image.connectPixels(0, 0, 1, 0);
+
+    auto rightPixelNode = makeNode(0u, rightPixelColor);
+    auto leftPixelNode = makeNode(0u, leftPixelColor, rightPixelNode);
+
+    verifyNode(image.getPixelNode(0, 0), *leftPixelNode);
+    verifyNode(image.getPixelNode(1, 0), *rightPixelNode);
+}
