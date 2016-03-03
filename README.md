@@ -20,6 +20,7 @@ need to have the Boost Format library installed.
 
 To run the test cases, the following libraries are required:
 
+- Boost::range
 - Google Test
 - [FakeIt](https://github.com/eranpeer/FakeIt)
 - [mtrace_gtest](https://bitbucket.org/jvff/mtrace_gtest)
