@@ -105,6 +105,11 @@ private:
     }
 
     void updateFinalImage() {
+        updateFinalImagePixels();
+        updateFinalImageNodes();
+    }
+
+    void updateFinalImagePixels() {
         for (auto x = 0u; x < width; ++x) {
             for (auto y = 0u; y < height; ++y)
                 updatePixel(x, y);
@@ -118,8 +123,6 @@ private:
             destinationImage.setPixel(x, y, nodesToUpdate[node]);
         else
             destinationImage.setPixel(x, y, sourceImage.getPixelValue(x, y));
-
-        destinationImage.assignPixelToLatestNode(x, y);
     }
 
     bool nodeShouldBeUpdated(const NodeType& node) {
@@ -127,6 +130,67 @@ private:
         auto searchResult = nodesToUpdate.find(node);
 
         return searchResult != notFound;
+    }
+
+    void updateFinalImageNodes() {
+        for (auto& node : nodes)
+            updatePixelsAssociatedToNode(node);
+    }
+
+    void updatePixelsAssociatedToNode(const NodeType& node) {
+        auto nodeLevel = getUpdatedNodeLevel(node);
+        auto nodeId = node.getId();
+        auto nodeExists = nodeWasCollapsedIntoParent(node, nodeLevel);
+
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y) {
+                updatePixelIfAssociatedToNode(x, y, nodeLevel, nodeId,
+                        nodeExists);
+            }
+        }
+    }
+
+    PixelType getUpdatedNodeLevel(const NodeType& node) {
+        if (nodeShouldBeUpdated(node))
+            return nodesToUpdate[node];
+        else
+            return node.getLevel();
+    }
+
+    bool nodeWasCollapsedIntoParent(const NodeType& node,
+            const PixelType& updatedLevel) {
+        if (nodeShouldBeUpdated(node) && node.hasParent()) {
+            auto& parent = node.getParent();
+            auto parentLevel = parent.getLevel();
+
+            if (nodeShouldBeUpdated(parent))
+                parentLevel = nodesToUpdate[parent];
+
+            return updatedLevel == parentLevel;
+        } else
+            return false;
+    }
+
+    void updatePixelIfAssociatedToNode(unsigned int x, unsigned int y,
+            PixelType nodeLevel, unsigned int nodeId, bool& nodeExists) {
+        auto pixelLevel = destinationImage.getPixelValue(x, y);
+
+        if (pixelLevel == nodeLevel) {
+            auto& oldNode = sourceImage.getPixelNode(x, y);
+
+            if (oldNode.getId() == nodeId)
+                assignPixelToNode(x, y, nodeExists);
+        }
+    }
+
+    void assignPixelToNode(unsigned int x, unsigned int y, bool& nodeExists) {
+        if (nodeExists)
+            destinationImage.assignPixelToLatestNode(x, y);
+        else {
+            destinationImage.assignPixelToNewNode(x, y);
+
+            nodeExists = true;
+        }
     }
 };
 
