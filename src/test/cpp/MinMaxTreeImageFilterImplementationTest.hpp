@@ -5,6 +5,8 @@
 
 #include "asserts.hpp"
 
+#include "FilterImplementation.hpp"
+#include "MinMaxTreeImage.hpp"
 #include "MinMaxTreeImageFilterImplementation.hpp"
 
 #include "DummyTypes.hpp"
@@ -13,8 +15,9 @@
 class MinMaxTreeImageFilterImplementationTest : public ::testing::Test {
 protected:
     using PixelType = DummyType;
-    using InternalImageType = FakeImage<PixelType>;
     using LevelOrderComparator = std::greater<PixelType>;
+    using InternalImageType = FakeImage<PixelType>;
+    using ImageType = MinMaxTreeImage<InternalImageType, LevelOrderComparator>;
     using ImplementationType = MinMaxTreeImageFilterImplementation<
             InternalImageType, LevelOrderComparator>;
 };
