@@ -22,6 +22,7 @@ public:
     }
 
     using SuperClass::collectPixelNodes;
+    using SuperClass::getLeafNodesIn;
 };
 
 #endif

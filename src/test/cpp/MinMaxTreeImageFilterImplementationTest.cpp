@@ -146,3 +146,32 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, collectsNodesWithDifferentIds) {
     assertThat(thirdNode.getLevel()).isEqualTo(middlePixelLevel);
     assertThat(thirdNode.getId()).isEqualTo(0u);
 }
+
+TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
+    auto leafLevel = DummyType{ 1 };
+    auto leafNodeId = 0u;
+
+    auto sourceImage = ImageType(1, 1);
+    auto destinationImage = ImageType(1, 1);
+    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+
+    std::set<NodeType> allNodes;
+
+    auto rootNode = makeNode(0u, DummyType{ 3 });
+    auto middleNode = makeNode(0u, DummyType{ 2 }, rootNode);
+    auto leafNode = makeNode(leafNodeId, leafLevel, middleNode);
+
+    allNodes.insert(*rootNode);
+    allNodes.insert(*middleNode);
+    allNodes.insert(*leafNode);
+
+    auto leafNodes = implementation.getLeafNodesIn(allNodes);
+
+    assertThat(leafNodes.size()).isEqualTo(1u);
+
+    auto firstPosition = leafNodes.begin();
+    auto resultingLeafNode = *firstPosition;
+
+    assertThat(resultingLeafNode.getLevel()).isEqualTo(leafLevel);
+    assertThat(resultingLeafNode.getId()).isEqualTo(leafNodeId);
+}
