@@ -18,6 +18,8 @@ private:
     using SuperClass = FilterImplementation<ImageType, ImageType>;
 
     using SuperClass::sourceImage;
+    using SuperClass::width;
+    using SuperClass::height;
 
 public:
     using SuperClass::SuperClass;
@@ -26,7 +28,10 @@ protected:
     std::set<NodeType> collectPixelNodes() {
         std::set<NodeType> pixelNodes;
 
-        pixelNodes.insert(sourceImage.getPixelNode(0, 0));
+        for (auto x = 0u; x < width; ++x) {
+            for (auto y = 0u; y < height; ++y)
+                pixelNodes.insert(sourceImage.getPixelNode(x, y));
+        }
 
         return pixelNodes;
     }
