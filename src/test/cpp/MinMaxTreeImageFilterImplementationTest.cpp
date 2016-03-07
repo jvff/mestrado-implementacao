@@ -29,3 +29,45 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canCollectNodes) {
     assertThat(node.getLevel()).isEqualTo(pixelLevel);
     assertThat(node.getId()).isEqualTo(0u);
 }
+
+TEST_F(MinMaxTreeImageFilterImplementationTest, collectsThreeNodes) {
+    auto firstPixelLevel = DummyType{ 892 };
+    auto secondPixelLevel = DummyType{ 657 };
+    auto thirdPixelLevel = DummyType{ 340 };
+
+    auto sourceImage = ImageType(3, 1);
+    auto destinationImage = ImageType(3, 1);
+    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+
+    sourceImage.setPixel(0, 0, firstPixelLevel);
+    sourceImage.setPixel(1, 0, secondPixelLevel);
+    sourceImage.setPixel(2, 0, thirdPixelLevel);
+
+    sourceImage.assignPixelToNewNode(0, 0);
+    sourceImage.assignPixelToNewNode(1, 0);
+    sourceImage.assignPixelToNewNode(2, 0);
+
+    auto nodes = implementation.collectPixelNodes();
+
+    assertThat(nodes.size()).isEqualTo(3u);
+
+    auto position = nodes.begin();
+    auto firstNode = *position;
+
+    ++position;
+
+    auto secondNode = *position;
+
+    ++position;
+
+    auto thirdNode = *position;
+
+    assertThat(firstNode.getLevel()).isEqualTo(firstPixelLevel);
+    assertThat(firstNode.getId()).isEqualTo(0u);
+
+    assertThat(secondNode.getLevel()).isEqualTo(secondPixelLevel);
+    assertThat(secondNode.getId()).isEqualTo(0u);
+
+    assertThat(thirdNode.getLevel()).isEqualTo(thirdPixelLevel);
+    assertThat(thirdNode.getId()).isEqualTo(0u);
+}
