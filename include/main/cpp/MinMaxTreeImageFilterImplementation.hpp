@@ -35,6 +35,38 @@ protected:
 
         return pixelNodes;
     }
+
+    std::set<NodeType> getLeafNodesIn(const std::set<NodeType>& nodes) {
+        std::set<NodeType> leafNodes = nodes;
+
+        for (auto& node : leafNodes)
+            removeNodeParentChainFromNodeSet(node, leafNodes);
+
+        return leafNodes;
+    }
+
+private:
+    void removeNodeParentChainFromNodeSet(const NodeType& node,
+            std::set<NodeType>& nodeSet) {
+        if (node.hasParent())
+            removeNodeChainFromLeafNodeSet(node.getParent(), nodeSet);
+    }
+
+    void removeNodeChainFromLeafNodeSet(const NodeType& node,
+            std::set<NodeType>& nodeSet) {
+        if (nodeSetHas(nodeSet, node)) {
+            nodeSet.erase(node);
+
+            removeNodeParentChainFromNodeSet(node, nodeSet);
+        }
+    }
+
+    bool nodeSetHas(const std::set<NodeType>& nodeSet, const NodeType& node) {
+        auto notFound = nodeSet.end();
+        auto searchResult = nodeSet.find(node);
+
+        return searchResult != notFound;
+    }
 };
 
 #endif
