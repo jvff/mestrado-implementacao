@@ -34,6 +34,23 @@ protected:
             InternalImageType, LevelOrderComparator>;
 
 protected:
+    std::shared_ptr<ImageType> sourceImage;
+    std::shared_ptr<ImageType> destinationImage;
+    std::shared_ptr<FakeImplementationType> implementation;
+
+protected:
+    MinMaxTreeImageFilterImplementationTest() {
+        initialize(1, 1);
+    }
+
+    void initialize(unsigned int width, unsigned int height) {
+        sourceImage = std::make_shared<ImageType>(width, height);
+        destinationImage = std::make_shared<ImageType>(width, height);
+
+        implementation = std::make_shared<FakeImplementationType>(*sourceImage,
+                *destinationImage);
+    }
+
     template <typename... RemainingParameterTypes>
     void verifyNodeSet(const std::set<NodeType>& nodeSet,
             const RemainingParameterTypes&... remainingParameters) {

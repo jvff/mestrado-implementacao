@@ -11,23 +11,16 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, isFilterImplementation) {
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, sourceImageIsAccessible) {
-    auto sourceImage = ImageType(1, 1);
-    auto destinationImage = ImageType(1, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
-
-    assertThat(implementation.sourceImage).isAtSameAddressAs(sourceImage);
+    assertThat(implementation->sourceImage).isAtSameAddressAs(*sourceImage);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, canCollectNodes) {
     auto pixelLevel = DummyType{ 340 };
-    auto sourceImage = ImageType(1, 1);
-    auto destinationImage = ImageType(1, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
 
-    sourceImage.setPixel(0, 0, pixelLevel);
-    sourceImage.assignPixelToNewNode(0, 0);
+    sourceImage->setPixel(0, 0, pixelLevel);
+    sourceImage->assignPixelToNewNode(0, 0);
 
-    auto nodes = implementation.collectPixelNodes();
+    auto nodes = implementation->collectPixelNodes();
 
     verifyNodeSet(nodes, pixelLevel, 0u);
 }
@@ -37,19 +30,17 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, collectsThreeNodes) {
     auto secondPixelLevel = DummyType{ 657 };
     auto thirdPixelLevel = DummyType{ 340 };
 
-    auto sourceImage = ImageType(3, 1);
-    auto destinationImage = ImageType(3, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+    initialize(3, 1);
 
-    sourceImage.setPixel(0, 0, firstPixelLevel);
-    sourceImage.setPixel(1, 0, secondPixelLevel);
-    sourceImage.setPixel(2, 0, thirdPixelLevel);
+    sourceImage->setPixel(0, 0, firstPixelLevel);
+    sourceImage->setPixel(1, 0, secondPixelLevel);
+    sourceImage->setPixel(2, 0, thirdPixelLevel);
 
-    sourceImage.assignPixelToNewNode(0, 0);
-    sourceImage.assignPixelToNewNode(1, 0);
-    sourceImage.assignPixelToNewNode(2, 0);
+    sourceImage->assignPixelToNewNode(0, 0);
+    sourceImage->assignPixelToNewNode(1, 0);
+    sourceImage->assignPixelToNewNode(2, 0);
 
-    auto nodes = implementation.collectPixelNodes();
+    auto nodes = implementation->collectPixelNodes();
 
     verifyNodeSet(nodes,
             firstPixelLevel, 0u,
@@ -61,19 +52,17 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, onlyAddsNodeOnce) {
     auto extremityPixelLevel = DummyType{ 892 };
     auto middlePixelLevel = DummyType{ 657 };
 
-    auto sourceImage = ImageType(3, 1);
-    auto destinationImage = ImageType(3, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+    initialize(3, 1);
 
-    sourceImage.setPixel(0, 0, extremityPixelLevel);
-    sourceImage.setPixel(1, 0, middlePixelLevel);
-    sourceImage.setPixel(2, 0, extremityPixelLevel);
+    sourceImage->setPixel(0, 0, extremityPixelLevel);
+    sourceImage->setPixel(1, 0, middlePixelLevel);
+    sourceImage->setPixel(2, 0, extremityPixelLevel);
 
-    sourceImage.assignPixelToNewNode(0, 0);
-    sourceImage.assignPixelToNewNode(1, 0);
-    sourceImage.assignPixelToLatestNode(2, 0);
+    sourceImage->assignPixelToNewNode(0, 0);
+    sourceImage->assignPixelToNewNode(1, 0);
+    sourceImage->assignPixelToLatestNode(2, 0);
 
-    auto nodes = implementation.collectPixelNodes();
+    auto nodes = implementation->collectPixelNodes();
 
     verifyNodeSet(nodes,
             extremityPixelLevel, 0u,
@@ -84,19 +73,17 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, collectsNodesWithDifferentIds) {
     auto extremityPixelLevel = DummyType{ 892 };
     auto middlePixelLevel = DummyType{ 657 };
 
-    auto sourceImage = ImageType(3, 1);
-    auto destinationImage = ImageType(3, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+    initialize(3, 1);
 
-    sourceImage.setPixel(0, 0, extremityPixelLevel);
-    sourceImage.setPixel(1, 0, middlePixelLevel);
-    sourceImage.setPixel(2, 0, extremityPixelLevel);
+    sourceImage->setPixel(0, 0, extremityPixelLevel);
+    sourceImage->setPixel(1, 0, middlePixelLevel);
+    sourceImage->setPixel(2, 0, extremityPixelLevel);
 
-    sourceImage.assignPixelToNewNode(0, 0);
-    sourceImage.assignPixelToNewNode(1, 0);
-    sourceImage.assignPixelToNewNode(2, 0);
+    sourceImage->assignPixelToNewNode(0, 0);
+    sourceImage->assignPixelToNewNode(1, 0);
+    sourceImage->assignPixelToNewNode(2, 0);
 
-    auto nodes = implementation.collectPixelNodes();
+    auto nodes = implementation->collectPixelNodes();
 
     verifyNodeSet(nodes,
             extremityPixelLevel, 0u,
@@ -108,10 +95,6 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
     auto leafLevel = DummyType{ 1 };
     auto leafNodeId = 0u;
 
-    auto sourceImage = ImageType(1, 1);
-    auto destinationImage = ImageType(1, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
-
     std::set<NodeType> allNodes;
 
     auto rootNode = makeNode(0u, DummyType{ 3 });
@@ -122,16 +105,12 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
     allNodes.insert(*middleNode);
     allNodes.insert(*leafNode);
 
-    auto leafNodes = implementation.getLeafNodesIn(allNodes);
+    auto leafNodes = implementation->getLeafNodesIn(allNodes);
 
     verifyNodeSet(leafNodes, leafLevel, leafNodeId);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, selectsAllLeafNodes) {
-    auto sourceImage = ImageType(1, 1);
-    auto destinationImage = ImageType(1, 1);
-    auto implementation = FakeImplementationType(sourceImage, destinationImage);
-
     PixelType levelHeights[] = {
         PixelType{ 734 },
         PixelType{ 621 },
@@ -183,7 +162,7 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, selectsAllLeafNodes) {
     for (auto& nodePointer : nodePointers)
         allNodes.insert(*nodePointer);
 
-    auto leafNodes = implementation.getLeafNodesIn(allNodes);
+    auto leafNodes = implementation->getLeafNodesIn(allNodes);
 
     verifyNodeSet(leafNodes,
             nodePointers[4],
