@@ -29,6 +29,42 @@ protected:
             InternalImageType, LevelOrderComparator>;
     using FakeImplementationType = FakeMinMaxTreeImageFilterImplementation<
             InternalImageType, LevelOrderComparator>;
+
+protected:
+    template <typename... RemainingParameterTypes>
+    void verifyNodeSet(const std::set<NodeType>& nodeSet,
+            const RemainingParameterTypes&... remainingParameters) {
+        auto firstPosition = nodeSet.begin();
+        auto lastPosition = nodeSet.end();
+
+        verifyNodesInSet(firstPosition, lastPosition, remainingParameters...);
+    }
+
+    void verifyNodesInSet(std::set<NodeType>::const_iterator& positionInSet,
+            const std::set<NodeType>::const_iterator& lastPosition) {
+        assertThat(positionInSet).isEqualTo(lastPosition);
+    }
+
+    template <typename... RemainingParameterTypes>
+    void verifyNodesInSet(std::set<NodeType>::const_iterator& positionInSet,
+            const std::set<NodeType>::const_iterator& lastPosition,
+            const PixelType& nodeLevel, unsigned int nodeId,
+            const RemainingParameterTypes&... remainingParameters) {
+        assertThat(positionInSet).isNotEqualTo(lastPosition);
+
+        verifySingleNodeInSet(positionInSet, nodeLevel, nodeId);
+
+        positionInSet++;
+
+        verifyNodesInSet(positionInSet, lastPosition, remainingParameters...);
+    }
+
+    void verifySingleNodeInSet(std::set<NodeType>::const_iterator& position,
+            const PixelType& nodeLevel, unsigned int nodeId) {
+        auto& node = *position;
+
+        verifyNodeData(node, nodeLevel, nodeId);
+    }
 };
 
 #endif
