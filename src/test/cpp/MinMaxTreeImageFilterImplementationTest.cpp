@@ -118,3 +118,72 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
 
     verifyNodeSet(leafNodes, leafLevel, leafNodeId);
 }
+
+TEST_F(MinMaxTreeImageFilterImplementationTest, selectsAllLeafNodes) {
+    auto sourceImage = ImageType(1, 1);
+    auto destinationImage = ImageType(1, 1);
+    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+
+    PixelType levelHeights[] = {
+        PixelType{ 734 },
+        PixelType{ 621 },
+        PixelType{ 409 },
+        PixelType{ 408 },
+        PixelType{ 407 },
+        PixelType{ 406 },
+        PixelType{ 31 },
+    };
+
+    auto nodePointers = std::vector<NodePointer>({
+        makeNode(0u, levelHeights[0]),
+        makeNode(0u, levelHeights[1]),
+        makeNode(0u, levelHeights[6]),
+        makeNode(1u, levelHeights[6]),
+        makeNode(1u, levelHeights[1]),
+        makeNode(2u, levelHeights[1]),
+        makeNode(0u, levelHeights[2]),
+        makeNode(0u, levelHeights[3]),
+        makeNode(0u, levelHeights[4]),
+        makeNode(1u, levelHeights[3]),
+        makeNode(1u, levelHeights[2]),
+        makeNode(0u, levelHeights[5]),
+        makeNode(2u, levelHeights[2]),
+        makeNode(3u, levelHeights[2]),
+    });
+
+    nodePointers[1]->setParent(nodePointers[0]);
+    nodePointers[4]->setParent(nodePointers[0]);
+    nodePointers[5]->setParent(nodePointers[0]);
+
+    nodePointers[2]->setParent(nodePointers[1]);
+    nodePointers[3]->setParent(nodePointers[1]);
+
+    nodePointers[6]->setParent(nodePointers[5]);
+    nodePointers[10]->setParent(nodePointers[5]);
+    nodePointers[12]->setParent(nodePointers[5]);
+    nodePointers[13]->setParent(nodePointers[5]);
+
+    nodePointers[7]->setParent(nodePointers[6]);
+    nodePointers[9]->setParent(nodePointers[6]);
+
+    nodePointers[8]->setParent(nodePointers[7]);
+
+    nodePointers[11]->setParent(nodePointers[10]);
+
+    std::set<NodeType> allNodes;
+
+    for (auto& nodePointer : nodePointers)
+        allNodes.insert(*nodePointer);
+
+    auto leafNodes = implementation.getLeafNodesIn(allNodes);
+
+    verifyNodeSet(leafNodes,
+            nodePointers[4],
+            nodePointers[12],
+            nodePointers[13],
+            nodePointers[9],
+            nodePointers[8],
+            nodePointers[11],
+            nodePointers[2],
+            nodePointers[3]);
+}

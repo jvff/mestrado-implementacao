@@ -1,7 +1,9 @@
 #ifndef MIN_MAX_TREE_IMAGE_FILTER_IMPLEMENTATION_TEST_HPP
 #define MIN_MAX_TREE_IMAGE_FILTER_IMPLEMENTATION_TEST_HPP
 
+#include <memory>
 #include <set>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -23,6 +25,7 @@ protected:
     using PixelType = DummyType;
     using LevelOrderComparator = std::greater<PixelType>;
     using NodeType = MinMaxTreeNode<PixelType, LevelOrderComparator>;
+    using NodePointer = std::shared_ptr<NodeType>;
     using InternalImageType = SimpleArrayImage<PixelType>;
     using ImageType = MinMaxTreeImage<InternalImageType, LevelOrderComparator>;
     using ImplementationType = MinMaxTreeImageFilterImplementation<
@@ -48,6 +51,20 @@ protected:
     template <typename... RemainingParameterTypes>
     void verifyNodesInSet(std::set<NodeType>::const_iterator& positionInSet,
             const std::set<NodeType>::const_iterator& lastPosition,
+            const NodePointer& expectedNodePointer,
+            const RemainingParameterTypes&... remainingParameters) {
+        assertThat(positionInSet).isNotEqualTo(lastPosition);
+
+        verifySingleNodeInSet(positionInSet, expectedNodePointer);
+
+        positionInSet++;
+
+        verifyNodesInSet(positionInSet, lastPosition, remainingParameters...);
+    }
+
+    template <typename... RemainingParameterTypes>
+    void verifyNodesInSet(std::set<NodeType>::const_iterator& positionInSet,
+            const std::set<NodeType>::const_iterator& lastPosition,
             const PixelType& nodeLevel, unsigned int nodeId,
             const RemainingParameterTypes&... remainingParameters) {
         assertThat(positionInSet).isNotEqualTo(lastPosition);
@@ -64,6 +81,13 @@ protected:
         auto& node = *position;
 
         verifyNodeData(node, nodeLevel, nodeId);
+    }
+
+    void verifySingleNodeInSet(std::set<NodeType>::const_iterator& position,
+            const NodePointer& nodePointer) {
+        auto& node = *position;
+
+        verifyNode(node, nodePointer);
     }
 };
 
