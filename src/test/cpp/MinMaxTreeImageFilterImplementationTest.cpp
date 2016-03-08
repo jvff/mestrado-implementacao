@@ -26,8 +26,7 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canCollectNodes) {
     auto firstPosition = nodes.begin();
     auto node = *firstPosition;
 
-    assertThat(node.getLevel()).isEqualTo(pixelLevel);
-    assertThat(node.getId()).isEqualTo(0u);
+    verifyNodeData(node, pixelLevel, 0u);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, collectsThreeNodes) {
@@ -62,14 +61,9 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, collectsThreeNodes) {
 
     auto thirdNode = *position;
 
-    assertThat(firstNode.getLevel()).isEqualTo(firstPixelLevel);
-    assertThat(firstNode.getId()).isEqualTo(0u);
-
-    assertThat(secondNode.getLevel()).isEqualTo(secondPixelLevel);
-    assertThat(secondNode.getId()).isEqualTo(0u);
-
-    assertThat(thirdNode.getLevel()).isEqualTo(thirdPixelLevel);
-    assertThat(thirdNode.getId()).isEqualTo(0u);
+    verifyNodeData(firstNode, firstPixelLevel, 0u);
+    verifyNodeData(secondNode, secondPixelLevel, 0u);
+    verifyNodeData(thirdNode, thirdPixelLevel, 0u);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, onlyAddsNodeOnce) {
@@ -99,11 +93,8 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, onlyAddsNodeOnce) {
 
     auto middleNode = *position;
 
-    assertThat(extremityNode.getLevel()).isEqualTo(extremityPixelLevel);
-    assertThat(extremityNode.getId()).isEqualTo(0u);
-
-    assertThat(middleNode.getLevel()).isEqualTo(middlePixelLevel);
-    assertThat(middleNode.getId()).isEqualTo(0u);
+    verifyNodeData(extremityNode, extremityPixelLevel, 0u);
+    verifyNodeData(middleNode, middlePixelLevel, 0u);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, collectsNodesWithDifferentIds) {
@@ -137,14 +128,9 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, collectsNodesWithDifferentIds) {
 
     auto thirdNode = *position;
 
-    assertThat(firstNode.getLevel()).isEqualTo(extremityPixelLevel);
-    assertThat(firstNode.getId()).isEqualTo(0u);
-
-    assertThat(secondNode.getLevel()).isEqualTo(extremityPixelLevel);
-    assertThat(secondNode.getId()).isEqualTo(1u);
-
-    assertThat(thirdNode.getLevel()).isEqualTo(middlePixelLevel);
-    assertThat(thirdNode.getId()).isEqualTo(0u);
+    verifyNodeData(firstNode, extremityPixelLevel, 0u);
+    verifyNodeData(secondNode, extremityPixelLevel, 1u);
+    verifyNodeData(thirdNode, middlePixelLevel, 0u);
 }
 
 TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
@@ -172,6 +158,5 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, canSelectLeafNodes) {
     auto firstPosition = leafNodes.begin();
     auto resultingLeafNode = *firstPosition;
 
-    assertThat(resultingLeafNode.getLevel()).isEqualTo(leafLevel);
-    assertThat(resultingLeafNode.getId()).isEqualTo(leafNodeId);
+    verifyNodeData(resultingLeafNode, leafLevel, leafNodeId);
 }
