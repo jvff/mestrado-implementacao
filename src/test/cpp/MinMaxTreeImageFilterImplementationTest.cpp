@@ -10,6 +10,14 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, isFilterImplementation) {
     AssertThat<ImplementationType>::isSubClass(Of<ParentImplementationType>());
 }
 
+TEST_F(MinMaxTreeImageFilterImplementationTest, sourceImageIsAccessible) {
+    auto sourceImage = ImageType(1, 1);
+    auto destinationImage = ImageType(1, 1);
+    auto implementation = FakeImplementationType(sourceImage, destinationImage);
+
+    assertThat(implementation.sourceImage).isAtSameAddressAs(sourceImage);
+}
+
 TEST_F(MinMaxTreeImageFilterImplementationTest, canCollectNodes) {
     auto pixelLevel = DummyType{ 340 };
     auto sourceImage = ImageType(1, 1);

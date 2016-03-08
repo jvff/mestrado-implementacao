@@ -13,6 +13,9 @@ private:
             LevelOrderComparator>;
 
 public:
+    using SuperClass::sourceImage;
+
+public:
     FakeMinMaxTreeImageFilterImplementation(const ImageType& sourceImage,
             ImageType& destinationImage)
             : SuperClass(sourceImage, destinationImage) {
