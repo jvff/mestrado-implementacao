@@ -1,23 +1,27 @@
 #ifndef HMIN_MIN_TREE_IMPLEMENTATION_HPP
 #define HMIN_MIN_TREE_IMPLEMENTATION_HPP
 
+#include <functional>
 #include <map>
 #include <set>
 
 #include <boost/range/adaptor/reversed.hpp>
 
-#include "FilterImplementation.hpp"
+#include "MinMaxTreeImageFilterImplementation.hpp"
 #include "MinTreeImage.hpp"
 #include "MinTreeNode.hpp"
 
 template <typename InternalImageType>
-class HminMinTreeImplementation : public FilterImplementation<
-        MinTreeImage<InternalImageType>, MinTreeImage<InternalImageType> > {
+class HminMinTreeImplementation : public MinMaxTreeImageFilterImplementation<
+        InternalImageType,
+        std::greater<typename InternalImageType::PixelType> > {
 private:
     using ImageType = MinTreeImage<InternalImageType>;
     using PixelType = typename InternalImageType::PixelType;
     using NodeType = MinTreeNode<PixelType>;
-    using SuperClass = FilterImplementation<ImageType, ImageType>;
+    using LevelOrderComparator = std::greater<PixelType>;
+    using SuperClass = MinMaxTreeImageFilterImplementation<InternalImageType,
+            LevelOrderComparator>;
 
     PixelType featureHeight;
 
@@ -46,37 +50,11 @@ public:
 
 private:
     void collectNodes() {
-        for (auto x = 0u; x < width; ++x) {
-            for (auto y = 0u; y < height; ++y)
-                nodes.insert(sourceImage.getPixelNode(x, y));
-        }
+        nodes = SuperClass::collectPixelNodes();
     }
 
     void findLeafNodes() {
-        leafNodes = nodes;
-
-        for (auto& node : nodes)
-            removeNodeParentChainFromLeafNodeSet(node);
-    }
-
-    void removeNodeParentChainFromLeafNodeSet(const NodeType& node) {
-        if (node.hasParent())
-            removeNodeChainFromLeafNodeSet(node.getParent());
-    }
-
-    void removeNodeChainFromLeafNodeSet(const NodeType& node) {
-        if (leafNodeSetHas(node)) {
-            leafNodes.erase(node);
-
-            removeNodeParentChainFromLeafNodeSet(node);
-        }
-    }
-
-    bool leafNodeSetHas(const NodeType& node) {
-        auto notFound = leafNodes.end();
-        auto searchResult = leafNodes.find(node);
-
-        return searchResult != notFound;
+        leafNodes = getLeafNodesIn(nodes);
     }
 
     void raiseNodes() {
