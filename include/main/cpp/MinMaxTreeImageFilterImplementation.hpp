@@ -17,11 +17,10 @@ private:
     using ImageType = MinMaxTreeImage<InternalImageType, LevelOrderComparator>;
     using SuperClass = FilterImplementation<ImageType, ImageType>;
 
-    using SuperClass::width;
-    using SuperClass::height;
-
 protected:
     using SuperClass::sourceImage;
+    using SuperClass::width;
+    using SuperClass::height;
 
 public:
     using SuperClass::SuperClass;
