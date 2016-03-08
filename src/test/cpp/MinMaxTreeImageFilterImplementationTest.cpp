@@ -14,6 +14,16 @@ TEST_F(MinMaxTreeImageFilterImplementationTest, sourceImageIsAccessible) {
     assertThat(implementation->sourceImage).isAtSameAddressAs(*sourceImage);
 }
 
+TEST_F(MinMaxTreeImageFilterImplementationTest, imageDimensionsAreAccessible) {
+    auto width = 47u;
+    auto height = 79u;
+
+    initialize(width, height);
+
+    assertThat(implementation->width).isEqualTo(width);
+    assertThat(implementation->height).isEqualTo(height);
+}
+
 TEST_F(MinMaxTreeImageFilterImplementationTest, canCollectNodes) {
     auto pixelLevel = DummyType{ 340 };
 

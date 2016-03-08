@@ -14,6 +14,8 @@ private:
 
 public:
     using SuperClass::sourceImage;
+    using SuperClass::width;
+    using SuperClass::height;
 
 public:
     FakeMinMaxTreeImageFilterImplementation(const ImageType& sourceImage,
