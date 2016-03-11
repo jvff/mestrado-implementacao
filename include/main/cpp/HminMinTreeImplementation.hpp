@@ -54,7 +54,7 @@ private:
     }
 
     void findLeafNodes() {
-        leafNodes = getLeafNodesIn(nodes);
+        leafNodes = SuperClass::getLeafNodesIn(nodes);
     }
 
     void raiseNodes() {
