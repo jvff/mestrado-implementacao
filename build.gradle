@@ -38,7 +38,7 @@ model {
             binaries.all {
                 cppCompiler.args "-std=c++11", "-Werror", "-Wall", "-Wextra",
                         "-pedantic"
-                linker.args "-pthread"
+                linker.args "-pthread", "-lOpenCL"
             }
             sources.cpp {
                 lib library: 'main'
