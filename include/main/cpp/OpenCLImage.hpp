@@ -10,9 +10,17 @@ class OpenCLImage : public Image<PixelType> {
 private:
     using SuperClass = Image<PixelType>;
 
+private:
+    cl::Context& context;
+
 public:
-    OpenCLImage(unsigned int width, unsigned int height, cl::Context&,
-            cl::CommandQueue&) : SuperClass(width, height) {
+    OpenCLImage(unsigned int width, unsigned int height,
+            cl::Context& context, cl::CommandQueue&)
+            : SuperClass(width, height), context(context) {
+    }
+
+    cl::Context& getContext() {
+        return context;
     }
 
     void setPixel(unsigned int, unsigned int, PixelType) override {
