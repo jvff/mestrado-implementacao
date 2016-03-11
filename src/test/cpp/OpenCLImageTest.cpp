@@ -1,31 +1,16 @@
-#include <CL/cl.hpp>
-#include <CL/opencl.h>
+#include "OpenCLImageTest.hpp"
 
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
-
-#include "Image.hpp"
-#include "OpenCLImage.hpp"
-
-TEST(OpenCLImageTest, classTemplateExists) {
-    using PixelType = unsigned char;
-    using ImageType = OpenCLImage<PixelType>;
-
+TEST_F(OpenCLImageTest, classTemplateExists) {
     AssertThat<ImageType>::isClassOrStruct();
 }
 
-TEST(OpenCLImageTest, isImage) {
-    using PixelType = unsigned char;
-    using ImageType = OpenCLImage<PixelType>;
+TEST_F(OpenCLImageTest, isImage) {
     using ParentImageType = Image<PixelType>;
 
     AssertThat<ImageType>::isSubClass(Of<ParentImageType>());
 }
 
-TEST(OpenCLImageTest, hasConstructor) {
-    using PixelType = unsigned char;
-    using ImageType = OpenCLImage<PixelType>;
+TEST_F(OpenCLImageTest, hasConstructor) {
     using WidthParameter = unsigned int;
     using HeightParameter = unsigned int;
     using ContextParameter = cl::Context&;
