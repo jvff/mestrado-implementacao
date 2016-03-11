@@ -30,3 +30,11 @@ TEST_F(OpenCLImageTest, contextIsAccessible) {
 
     assertThat(imageContext).isAtSameAddressAs(context);
 }
+
+TEST_F(OpenCLImageTest, commandQueueIsAccessible) {
+    auto image = ImageType(1, 1, context, commandQueue);
+
+    auto& imageCommandQueue = image.getCommandQueue();
+
+    assertThat(imageCommandQueue).isAtSameAddressAs(commandQueue);
+}
