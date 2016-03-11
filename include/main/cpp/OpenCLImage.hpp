@@ -12,15 +12,21 @@ private:
 
 private:
     cl::Context& context;
+    cl::CommandQueue& commandQueue;
 
 public:
     OpenCLImage(unsigned int width, unsigned int height,
-            cl::Context& context, cl::CommandQueue&)
-            : SuperClass(width, height), context(context) {
+            cl::Context& context, cl::CommandQueue& commandQueue)
+            : SuperClass(width, height), context(context),
+            commandQueue(commandQueue) {
     }
 
     cl::Context& getContext() {
         return context;
+    }
+
+    cl::CommandQueue& getCommandQueue() {
+        return commandQueue;
     }
 
     void setPixel(unsigned int, unsigned int, PixelType) override {
