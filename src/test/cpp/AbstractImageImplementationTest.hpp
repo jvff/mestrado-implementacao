@@ -1,14 +1,30 @@
 #ifndef ABSTRACT_IMAGE_IMPLEMENTATION_TEST_HPP
 #define ABSTRACT_IMAGE_IMPLEMENTATION_TEST_HPP
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
 
 #include "Image.hpp"
 
+#include "TestImageFactory.hpp"
+
 template <typename ImageType, typename PixelType>
 class AbstractImageImplementationTest : public ::testing::Test {
+protected:
+    static std::shared_ptr<TestImageFactory<ImageType> > imageFactory;
+
+public:
+    static void SetUpTestCase() {
+        imageFactory.reset(new TestImageFactory<ImageType>());
+    }
+
+    static void TearDownTestCase() {
+        imageFactory.reset();
+    }
+
 protected:
     void testSinglePixel(PixelType value) {
         testPixelsWithSameValue(1, 1, value);
@@ -16,7 +32,7 @@ protected:
 
     void testPixelsWithSameValue(unsigned int width, unsigned int height,
             PixelType value) {
-        ImageType image(width, height);
+        auto image = imageFactory->createImage(width, height);
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
@@ -31,7 +47,7 @@ protected:
 
     void testPixels(unsigned int width, unsigned int height,
             const PixelType values[]) {
-        ImageType image(width, height);
+        auto image = imageFactory->createImage(width, height);
         const PixelType* pixelIterator = &values[0];
 
         for (unsigned int x = 0; x < width; ++x) {
@@ -78,5 +94,10 @@ protected:
     virtual void setPixel(ImageType& image, unsigned int x, unsigned int y,
             const PixelType& value) = 0;
 };
+
+template <typename ImageType, typename PixelType>
+std::shared_ptr<TestImageFactory<ImageType> >
+        AbstractImageImplementationTest<ImageType, PixelType>
+                ::imageFactory;
 
 #endif
