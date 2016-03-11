@@ -1,5 +1,8 @@
 #include "OpenCLImageTest.hpp"
 
+cl::Context OpenCLImageTest::context;
+cl::CommandQueue OpenCLImageTest::commandQueue;
+
 TEST_F(OpenCLImageTest, classTemplateExists) {
     AssertThat<ImageType>::isClassOrStruct();
 }
@@ -18,4 +21,12 @@ TEST_F(OpenCLImageTest, hasConstructor) {
 
     AssertThat<ImageType>::isConstructible(With<WidthParameter, HeightParameter,
             ContextParameter, CommandQueueParameter>());
+}
+
+TEST_F(OpenCLImageTest, contextIsAccessible) {
+    auto image = ImageType(1, 1, context, commandQueue);
+
+    auto& imageContext = image.getContext();
+
+    assertThat(imageContext).isAtSameAddressAs(context);
 }
