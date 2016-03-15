@@ -35,6 +35,10 @@ public:
     PixelType getPixelValue(unsigned int, unsigned int) const override {
         return 0;
     }
+
+    using SuperClass::setPixel;
+    using SuperClass::getPixel;
+    using SuperClass::getPixelValue;
 };
 
 #endif
