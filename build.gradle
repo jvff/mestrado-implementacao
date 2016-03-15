@@ -54,7 +54,13 @@ model {
 
 task checkHeaderGuards(type: com.janitovff.headerguardplugin.HeaderGuardTask)
 
-task test(type: Exec, dependsOn: ['testExecutable', 'checkHeaderGuards']) {
+task opencl2c(type: com.janitovff.opencl2cplugin.OpenCL2CTask) {
+    inputDirectory = file("src/main/opencl")
+    outputDirectory = file("include/main/cpp/cl")
+}
+
+task test(type: Exec,
+        dependsOn: ['testExecutable', 'checkHeaderGuards', 'opencl2c']) {
     doFirst {
         def binary = binaries.getByName 'testExecutable'
         def executableFile = binary.getExecutableFile()
