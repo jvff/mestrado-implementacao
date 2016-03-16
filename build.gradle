@@ -15,14 +15,9 @@ model {
             asserts {
                 headers.srcDir "../asserts/include/main/cpp"
             }
-            mtrace_gtest {
+            gtest_main {
                 binaries.withType(StaticLibraryBinary) {
-                    staticLibraryFile = file("../mtrace_gtest/build/binaries/mtrace_gtestStaticLibrary/libmtrace_gtest.a")
-                }
-            }
-            mtrace_gtest_main {
-                binaries.withType(StaticLibraryBinary) {
-                    staticLibraryFile = file("../mtrace_gtest/build/binaries/mtrace_gtest_mainStaticLibrary/libmtrace_gtest_main.a")
+                    staticLibraryFile = file("/usr/lib/x86_64-linux-gnu/libgtest_main.a")
                 }
             }
         }
@@ -42,8 +37,7 @@ model {
             }
             sources.cpp {
                 lib library: 'main'
-                lib library: 'mtrace_gtest_main', linkage: 'static'
-                lib library: 'mtrace_gtest', linkage: 'static'
+                lib library: 'gtest_main', linkage: 'static'
                 lib library: 'gtest', linkage: 'static'
                 lib library: 'fakeit', linkage: 'api'
                 lib library: 'asserts', linkage: 'api'
