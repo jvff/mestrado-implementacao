@@ -14,11 +14,14 @@ class OpenCLImage : public Image<PixelType> {
 private:
     using SuperClass = Image<PixelType>;
 
+    static constexpr unsigned int pixelSize = sizeof(PixelType);
+
 private:
     cl::Context& context;
     cl::CommandQueue& commandQueue;
     cl::Image2D imageBuffer;
     cl::Program pixelPrograms;
+    cl::Buffer pixelBuffer;
 
 public:
     OpenCLImage(unsigned int width, unsigned int height,
@@ -32,6 +35,8 @@ public:
 
         pixelPrograms = cl::Program(context, sources);
         pixelPrograms.build();
+
+        pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
 
         auto imageFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
 
@@ -58,8 +63,20 @@ public:
         commandQueue.enqueueTask(kernel);
     }
 
-    PixelType getPixelValue(unsigned int, unsigned int) const override {
-        return 0;
+    PixelType getPixelValue(unsigned int x, unsigned int y) const override {
+        cl::Kernel kernel(pixelPrograms, "getPixel");
+        PixelType result;
+
+        kernel.setArg(0, imageBuffer);
+        kernel.setArg(1, x);
+        kernel.setArg(2, y);
+        kernel.setArg(3, pixelBuffer);
+
+        commandQueue.enqueueTask(kernel);
+        commandQueue.enqueueReadBuffer(pixelBuffer, CL_TRUE, 0, pixelSize,
+                &result);
+
+        return result;
     }
 
     using SuperClass::setPixel;
