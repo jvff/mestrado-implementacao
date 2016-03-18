@@ -25,7 +25,7 @@ protected:
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
-                comparePixel(getPixel(image, x, y), value);
+                comparePixel(x, y, value, getPixel(image, x, y));
         }
     }
 
@@ -49,14 +49,14 @@ protected:
 
     virtual void comparePixel(unsigned int x, unsigned int y,
             PixelType expected, PixelType actual) {
-        if (comparePixel(expected, actual) == false) {
+        if (comparePixelValues(expected, actual) == false) {
             FAIL() << "Pixel at (" << x << "," << y << ")" << std::endl
                     << "Expected: " << expected << std::endl
                     << "  Actual: " << actual;
         }
     }
 
-    virtual bool comparePixel(PixelType expected, PixelType actual) {
+    virtual bool comparePixelValues(PixelType expected, PixelType actual) {
         return expected == actual;
     }
 
