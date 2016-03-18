@@ -23,25 +23,16 @@ private:
     cl::Program pixelPrograms;
     cl::Buffer pixelBuffer;
 
+    using SuperClass::width;
+    using SuperClass::height;
+
 public:
     OpenCLImage(unsigned int width, unsigned int height,
             cl::Context& context, cl::CommandQueue& commandQueue)
             : SuperClass(width, height), context(context),
             commandQueue(commandQueue) {
-        auto& sourceCode = ImagePixelTasksSourceCode;
-        auto sourceCodeSize = sizeof(ImagePixelTasksSourceCode);
-        auto sourcePair = std::make_pair(sourceCode, sourceCodeSize);
-        auto sources = cl::Program::Sources(1, sourcePair);
-
-        pixelPrograms = cl::Program(context, sources);
-        pixelPrograms.build();
-
-        pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
-
-        auto imageFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
-
-        imageBuffer = cl::Image2D(context, CL_MEM_READ_WRITE, imageFormat,
-                width, height);
+        buildKernels();
+        allocateBuffers();
     }
 
     cl::Context& getContext() {
@@ -82,6 +73,26 @@ public:
     using SuperClass::setPixel;
     using SuperClass::getPixel;
     using SuperClass::getPixelValue;
+
+private:
+    void buildKernels() {
+        auto& sourceCode = ImagePixelTasksSourceCode;
+        auto sourceCodeSize = sizeof(ImagePixelTasksSourceCode);
+        auto sourcePair = std::make_pair(sourceCode, sourceCodeSize);
+        auto sources = cl::Program::Sources(1, sourcePair);
+
+        pixelPrograms = cl::Program(context, sources);
+        pixelPrograms.build();
+    }
+
+    void allocateBuffers() {
+        auto imageFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
+
+        pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
+
+        imageBuffer = cl::Image2D(context, CL_MEM_READ_WRITE, imageFormat,
+                width, height);
+    }
 };
 
 #endif
