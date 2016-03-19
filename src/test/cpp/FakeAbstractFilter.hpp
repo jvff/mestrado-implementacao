@@ -20,6 +20,9 @@ public:
         return DestinationImageType(1, 1);
     }
 
+    void apply(const SourceImageType&, DestinationImageType&) {
+    }
+
     using SuperClass::apply;
 };
 

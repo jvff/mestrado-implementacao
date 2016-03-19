@@ -57,9 +57,21 @@ protected:
             .Using(RefTo(sourceImage)));
     }
 
+    void verifyApplyWasCalled(DestinationImageType& image) {
+        Verify(OverloadedMethod(filterSpy, apply,
+                void(const SourceImageType&, DestinationImageType&))
+            .Using(RefTo(sourceImage), RefTo(image)));
+    }
+
 private:
     void prepareFilterSpy() {
+        spyApplyMethod();
         spyCreateDestinationImageMethod();
+    }
+
+    void spyApplyMethod() {
+        Spy(OverloadedMethod(filterSpy, apply,
+                void(const SourceImageType&, DestinationImageType&)));
     }
 
     void spyCreateDestinationImageMethod() {

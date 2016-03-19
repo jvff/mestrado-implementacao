@@ -15,3 +15,11 @@ TEST_F(AbstractFilterTest, imageCreationIsRequested) {
 
     verifyImageWasCreated();
 }
+
+TEST_F(AbstractFilterTest, callsApplyWithTheCreatedImage) {
+    expectImageCreation(43, 84);
+
+    auto result = filter.apply(sourceImage);
+
+    verifyApplyWasCalled(result);
+}
