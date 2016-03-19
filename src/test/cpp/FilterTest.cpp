@@ -4,6 +4,12 @@ TEST_F(FilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
+TEST_F(FilterTest, isSubClassOfAbstractFilter) {
+    using ParentFilter = AbstractFilter<SourceImageType, DestinationImageType>;
+
+    AssertThat<DummyFilter>::isSubClass(Of<ParentFilter>());
+}
+
 TEST_F(FilterTest, destructorIsVirtual) {
     AssertThat<DummyFilter>::hasVirtualDestructor();
 }
