@@ -7,3 +7,11 @@ TEST_F(AbstractFilterTest, classTemplateExists) {
 TEST_F(AbstractFilterTest, destructorIsVirtual) {
     AssertThat<DummyFilter>::hasVirtualDestructor();
 }
+
+TEST_F(AbstractFilterTest, imageCreationIsRequested) {
+    expectImageCreation(7, 4);
+
+    filter.apply(sourceImage);
+
+    verifyImageWasCreated();
+}
