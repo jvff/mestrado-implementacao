@@ -35,7 +35,7 @@ public:
         allocateBuffers();
     }
 
-    cl::Context& getContext() {
+    const cl::Context& getContext() const {
         return context;
     }
 
