@@ -3,6 +3,9 @@
 
 template <typename SourceImageType, typename DestinationImageType>
 class AbstractFilter {
+public:
+    virtual ~AbstractFilter() {
+    }
 };
 
 #endif
