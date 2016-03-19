@@ -8,8 +8,15 @@ public:
     }
 
     DestinationImageType apply(const SourceImageType& sourceImage) {
-        return createDestinationImage(sourceImage);
+        auto destinationImage = createDestinationImage(sourceImage);
+
+        apply(sourceImage, destinationImage);
+
+        return destinationImage;
     }
+
+    virtual void apply(const SourceImageType& sourceImage,
+            DestinationImageType& destinationImage) = 0;
 
 protected:
     virtual DestinationImageType createDestinationImage(
