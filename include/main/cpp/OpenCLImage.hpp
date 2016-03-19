@@ -39,7 +39,7 @@ public:
         return context;
     }
 
-    cl::CommandQueue& getCommandQueue() {
+    const cl::CommandQueue& getCommandQueue() const {
         return commandQueue;
     }
 
