@@ -7,11 +7,14 @@
 
 #include "asserts.hpp"
 
+#include "AbstractFilter.hpp"
 #include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
 
 class OpenCLFilterTest : public ::testing::Test {
 protected:
     using PixelType = unsigned int;
+    using ImageType = OpenCLImage<PixelType>;
     using FilterType = OpenCLFilter<PixelType>;
 };
 

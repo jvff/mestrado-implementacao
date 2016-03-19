@@ -13,3 +13,9 @@ TEST_F(OpenCLFilterTest, classTemplateHasVariadicTemplateArguments) {
 
     AssertThat<FilterTypeWithExtraParameters>::isClassOrStruct();
 }
+
+TEST_F(OpenCLFilterTest, isFilter) {
+    using ParentFilter = AbstractFilter<ImageType, ImageType>;
+
+    AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
+}
