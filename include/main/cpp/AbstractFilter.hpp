@@ -6,6 +6,14 @@ class AbstractFilter {
 public:
     virtual ~AbstractFilter() {
     }
+
+    DestinationImageType apply(const SourceImageType& sourceImage) {
+        return createDestinationImage(sourceImage);
+    }
+
+protected:
+    virtual DestinationImageType createDestinationImage(
+            const SourceImageType& sourceImage) = 0;
 };
 
 #endif
