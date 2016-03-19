@@ -1,10 +1,11 @@
 #ifndef FILTER_HPP
 #define FILTER_HPP
 
+#include "AbstractFilter.hpp"
 #include "Image.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
-class Filter {
+class Filter : public AbstractFilter<SourceImageType, DestinationImageType> {
 public:
     virtual ~Filter() {
     }
