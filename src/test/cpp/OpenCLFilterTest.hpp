@@ -18,6 +18,18 @@ protected:
     using PixelType = unsigned int;
     using ImageType = OpenCLImage<PixelType>;
     using FilterType = OpenCLFilter<PixelType>;
+
+protected:
+    static cl::Context context;
+    static cl::CommandQueue commandQueue;
+
+protected:
+    static void SetUpTestCase() {
+        auto defaultDevice = cl::Device::getDefault();
+
+        context = cl::Context::getDefault();
+        commandQueue = cl::CommandQueue(context, defaultDevice);
+    }
 };
 
 #endif
