@@ -19,3 +19,11 @@ TEST_F(OpenCLFilterTest, isFilter) {
 
     AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCode) {
+    using KernelSourceCodeParameter = const std::string&;
+    using KernelFunctionNameParameter = const std::string&;
+
+    AssertThat<FilterType>::isConstructible(
+            With<KernelSourceCodeParameter, KernelFunctionNameParameter>());
+}

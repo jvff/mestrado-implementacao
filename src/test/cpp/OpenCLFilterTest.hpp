@@ -1,6 +1,8 @@
 #ifndef OPEN_C_L_FILTER_TEST_HPP
 #define OPEN_C_L_FILTER_TEST_HPP
 
+#include <string>
+
 #include <CL/cl.hpp>
 
 #include <gtest/gtest.h>
