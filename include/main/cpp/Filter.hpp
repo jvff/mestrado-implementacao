@@ -6,21 +6,6 @@
 
 template <typename SourceImageType, typename DestinationImageType>
 class Filter : public AbstractFilter<SourceImageType, DestinationImageType> {
-public:
-    virtual ~Filter() {
-    }
-
-    virtual DestinationImageType apply(const SourceImageType& sourceImage) {
-        auto destinationImage = createDestinationImage(sourceImage);
-
-        apply(sourceImage, destinationImage);
-
-        return destinationImage;
-    }
-
-    virtual void apply(const SourceImageType& sourceImage,
-            DestinationImageType& destinationImage) = 0;
-
 protected:
     DestinationImageType createDestinationImage(
             const SourceImageType& sourceImage) override {
