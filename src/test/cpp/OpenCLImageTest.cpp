@@ -24,7 +24,7 @@ TEST_F(OpenCLImageTest, hasConstructor) {
 }
 
 TEST_F(OpenCLImageTest, contextIsAccessible) {
-    auto image = ImageType(1, 1, context, commandQueue);
+    const auto image = ImageType(1, 1, context, commandQueue);
 
     auto& imageContext = image.getContext();
 
