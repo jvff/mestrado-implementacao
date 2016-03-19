@@ -10,9 +10,7 @@ public:
     }
 
     virtual DestinationImageType apply(const SourceImageType& sourceImage) {
-        unsigned int width = getDestinationImageWidth(sourceImage);
-        unsigned int height = getDestinationImageHeight(sourceImage);
-        auto destinationImage = createDestinationImage(width, height);
+        auto destinationImage = createDestinationImage(sourceImage);
 
         apply(sourceImage, destinationImage);
 
@@ -33,8 +31,11 @@ protected:
         return sourceImage.getHeight();
     }
 
-    virtual DestinationImageType createDestinationImage(unsigned int width,
-            unsigned int height) {
+    virtual DestinationImageType createDestinationImage(
+            const SourceImageType& sourceImage) {
+        auto width = getDestinationImageWidth(sourceImage);
+        auto height = getDestinationImageHeight(sourceImage);
+
         return DestinationImageType(width, height);
     }
 };

@@ -17,9 +17,9 @@ public:
     using ParentFilter::apply;
 
 protected:
-    DestinationImageType createDestinationImage(unsigned int width,
-            unsigned int height) override {
-        auto image = ParentFilter::createDestinationImage(width, height);
+    DestinationImageType createDestinationImage(
+            const SourceImageType& sourceImage) override {
+        auto image = ParentFilter::createDestinationImage(sourceImage);
 
         image = [] (unsigned int, unsigned int) -> DestinationPixelType {
             return 0;
