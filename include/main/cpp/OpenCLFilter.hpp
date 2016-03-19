@@ -11,7 +11,8 @@ private:
     using ImageType = OpenCLImage<PixelType>;
 
 public:
-    OpenCLFilter(const std::string&, const std::string&) {
+    OpenCLFilter(const std::string&, const std::string&,
+            KernelParameterTypes...) {
     }
 
     void apply(const ImageType&, ImageType&) override {
