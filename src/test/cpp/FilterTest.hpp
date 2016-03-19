@@ -5,6 +5,7 @@
 
 #include "asserts.hpp"
 
+#include "AbstractFilter.hpp"
 #include "Filter.hpp"
 #include "Image.hpp"
 
@@ -60,7 +61,7 @@ protected:
 
     void verifyImageWasCreated() {
         Verify(Method(filterSpy, createDestinationImage)
-            .Using(expectedWidth, expectedHeight));
+            .Using(RefTo(sourceImage)));
     }
 
     void verifyApplyWasCalled(DestinationImageType& image) {

@@ -8,6 +8,14 @@ TEST_F(FilterTest, destructorIsVirtual) {
     AssertThat<DummyFilter>::hasVirtualDestructor();
 }
 
+TEST_F(FilterTest, destinationImageDimensionsAreRequestedByCreateImageMethod) {
+    expectImageCreation(1, 1);
+
+    fakeFilter.createDestinationImage(sourceImage);
+
+    verifyImageDimensionsWereRequested();
+}
+
 TEST_F(FilterTest, destinationImageDimensionsAreRequested) {
     expectImageCreation(1, 1);
 
