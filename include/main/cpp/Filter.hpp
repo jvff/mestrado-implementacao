@@ -22,6 +22,14 @@ public:
             DestinationImageType& destinationImage) = 0;
 
 protected:
+    DestinationImageType createDestinationImage(
+            const SourceImageType& sourceImage) override {
+        auto width = getDestinationImageWidth(sourceImage);
+        auto height = getDestinationImageHeight(sourceImage);
+
+        return DestinationImageType(width, height);
+    }
+
     virtual unsigned int getDestinationImageWidth(
             const SourceImageType& sourceImage) {
         return sourceImage.getWidth();
@@ -30,14 +38,6 @@ protected:
     virtual unsigned int getDestinationImageHeight(
             const SourceImageType& sourceImage) {
         return sourceImage.getHeight();
-    }
-
-    virtual DestinationImageType createDestinationImage(
-            const SourceImageType& sourceImage) {
-        auto width = getDestinationImageWidth(sourceImage);
-        auto height = getDestinationImageHeight(sourceImage);
-
-        return DestinationImageType(width, height);
     }
 };
 
