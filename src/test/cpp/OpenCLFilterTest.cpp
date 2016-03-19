@@ -27,3 +27,16 @@ TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCode) {
     AssertThat<FilterType>::isConstructible(
             With<KernelSourceCodeParameter, KernelFunctionNameParameter>());
 }
+
+TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCodeAndParameters) {
+    using KernelSourceCodeParameter = const std::string&;
+    using KernelFunctionNameParameter = const std::string&;
+    using FirstKernelParameter = unsigned int;
+    using SecondKernelParameter = float;
+    using FilterTypeWithExtraParameters = OpenCLFilter<PixelType,
+            FirstKernelParameter, SecondKernelParameter>;
+
+    AssertThat<FilterTypeWithExtraParameters>::isConstructible(
+            With<KernelSourceCodeParameter, KernelFunctionNameParameter,
+                    FirstKernelParameter, SecondKernelParameter>());
+}
