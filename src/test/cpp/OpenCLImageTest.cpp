@@ -32,7 +32,7 @@ TEST_F(OpenCLImageTest, contextIsAccessible) {
 }
 
 TEST_F(OpenCLImageTest, commandQueueIsAccessible) {
-    auto image = ImageType(1, 1, context, commandQueue);
+    const auto image = ImageType(1, 1, context, commandQueue);
 
     auto& imageCommandQueue = image.getCommandQueue();
 
