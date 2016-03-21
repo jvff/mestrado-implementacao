@@ -10,4 +10,9 @@ struct OpenCLPixelTypeData<unsigned char> {
     static constexpr auto CL_PIXEL_TYPE = CL_UNSIGNED_INT8;
 };
 
+template <>
+struct OpenCLPixelTypeData<unsigned int> {
+    static constexpr auto CL_PIXEL_TYPE = CL_UNSIGNED_INT32;
+};
+
 #endif
