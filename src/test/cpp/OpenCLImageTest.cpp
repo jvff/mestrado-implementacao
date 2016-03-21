@@ -38,3 +38,23 @@ TEST_F(OpenCLImageTest, commandQueueIsAccessible) {
 
     assertThat(imageCommandQueue).isAtSameAddressAs(commandQueue);
 }
+
+TEST_F(OpenCLImageTest, imageBufferIsAccessible) {
+    auto width = 42u;
+    auto height = 23u;
+
+    const auto image = ImageType(width, height, context, commandQueue);
+
+    auto& imageBuffer = image.getImageBuffer();
+
+    auto bufferWidth = imageBuffer.getImageInfo<CL_IMAGE_WIDTH>();
+    auto bufferHeight = imageBuffer.getImageInfo<CL_IMAGE_HEIGHT>();
+    auto bufferFormat = imageBuffer.getImageInfo<CL_IMAGE_FORMAT>();
+    auto bufferChannelOrder = bufferFormat.image_channel_order;
+    auto bufferChannelType = bufferFormat.image_channel_data_type;
+
+    assertThat(bufferWidth).isEqualTo(width);
+    assertThat(bufferHeight).isEqualTo(height);
+    assertThat(bufferChannelOrder).isEqualTo((unsigned int)CL_R);
+    assertThat(bufferChannelType).isEqualTo((unsigned int)CL_UNSIGNED_INT8);
+}
