@@ -17,3 +17,9 @@ TEST(OpenCLPixelTypeDataTest, hasPixelTypeForUnsignedInt) {
 
     assertThat(pixelType).isEqualTo(CL_UNSIGNED_INT32);
 }
+
+TEST(OpenCLPixelTypeDataTest, hasPixelTypeForInt) {
+    auto pixelType = OpenCLPixelTypeData<int>::CL_PIXEL_TYPE;
+
+    assertThat(pixelType).isEqualTo(CL_SIGNED_INT32);
+}
