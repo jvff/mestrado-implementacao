@@ -6,12 +6,14 @@
 #include <CL/cl.hpp>
 
 #include "Image.hpp"
+#include "OpenCLPixelTypeData.hpp"
 
 #include "cl/ImagePixelTasks.h"
 
 template <typename PixelType>
 class OpenCLImage : public Image<PixelType> {
 private:
+    using PixelTypeData = OpenCLPixelTypeData<PixelType>;
     using SuperClass = Image<PixelType>;
 
     static constexpr unsigned int pixelSize = sizeof(PixelType);
@@ -41,6 +43,10 @@ public:
 
     const cl::CommandQueue& getCommandQueue() const {
         return commandQueue;
+    }
+
+    const cl::Image2D getImageBuffer() const {
+        return imageBuffer;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
@@ -86,7 +92,8 @@ private:
     }
 
     void allocateBuffers() {
-        auto imageFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
+        auto imageChannelType = PixelTypeData::CL_PIXEL_TYPE;
+        auto imageFormat = cl::ImageFormat(CL_R, imageChannelType);
 
         pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
 
