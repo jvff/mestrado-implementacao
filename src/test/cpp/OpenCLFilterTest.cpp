@@ -66,6 +66,26 @@ TEST_F(OpenCLFilterTest, appliesKernelToImages) {
     }
 }
 
+TEST_F(OpenCLFilterTest, appliesKernelToImageAndReturnsCreatedImage) {
+    auto width = 4u;
+    auto height = 5u;
+    auto kernelFunctionName = "labelPixelsWithCoordinateSum";
+
+    auto filter = FilterType(kernelSourceCode, kernelFunctionName);
+    auto sourceImage = ImageType(width, height, context, commandQueue);
+
+    auto resultImage = filter.apply(sourceImage);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto pixelValue = resultImage.getPixelValue(x, y);
+            auto expectedPixelValue = x + y;
+
+            assertThat(pixelValue).isEqualTo(expectedPixelValue);
+        }
+    }
+}
+
 TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
     using CustomFilterType = OpenCLFilter<unsigned int, unsigned int>;
 
