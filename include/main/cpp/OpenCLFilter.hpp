@@ -14,6 +14,7 @@ class OpenCLFilter : public AbstractFilter<OpenCLImage<PixelType>,
         OpenCLImage<PixelType> > {
 private:
     using ImageType = OpenCLImage<PixelType>;
+    using SuperClass = AbstractFilter<ImageType, ImageType>;
     using TupleType = std::tuple<KernelParameterTypes...>;
 
     static constexpr auto numberOfExtraParameters =
@@ -43,6 +44,8 @@ public:
 
         runKernel(kernel, destinationImage);
     }
+
+    using SuperClass::apply;
 
 protected:
     ImageType createDestinationImage(const ImageType& sourceImage) override {
