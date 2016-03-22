@@ -77,3 +77,39 @@ TEST_F(OpenCLFilterTest, appliesKernelToImages) {
         }
     }
 }
+
+TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
+    using CustomFilterType = OpenCLFilter<unsigned int, unsigned int>;
+
+    std::string kernelFunctionName = "labelsPixelsInOrder";
+    std::string kernelSourceCode =
+        "__kernel void labelsPixelsInOrder(__read_only image2d_t sourceImage,\n"
+        "       __write_only image2d_t destinationImage, uint width) {\n"
+        "   int2 coordinate;\n"
+        "   uint4 channels;\n"
+        "\n"
+        "   coordinate.x = get_global_id(0);\n"
+        "   coordinate.y = get_global_id(1);\n"
+        "\n"
+        "   channels.x = coordinate.x + coordinate.y * width;\n"
+        "\n"
+        "   write_imageui(destinationImage, coordinate, channels);\n"
+        "}\n";
+
+    auto width = 4u;
+    auto height = 5u;
+    auto filter = CustomFilterType(kernelSourceCode, kernelFunctionName, width);
+    auto sourceImage = ImageType(1, 1, context, commandQueue);
+    auto destinationImage = ImageType(width, height, context, commandQueue);
+
+    filter.apply(sourceImage, destinationImage);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto pixelValue = destinationImage.getPixelValue(x, y);
+            auto expectedPixelValue = x + y * width;
+
+            assertThat(pixelValue).isEqualTo(expectedPixelValue);
+        }
+    }
+}
