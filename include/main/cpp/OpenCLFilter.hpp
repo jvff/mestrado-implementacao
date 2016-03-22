@@ -37,7 +37,7 @@ public:
 
     void apply(const ImageType& sourceImage, ImageType& destinationImage)
             override {
-        auto context = destinationImage.getContext();
+        auto& context = destinationImage.getContext();
         auto kernel = buildKernel(context);
 
         configureParameters(kernel, sourceImage, destinationImage);
@@ -51,8 +51,8 @@ protected:
     ImageType createDestinationImage(const ImageType& sourceImage) override {
         auto width = sourceImage.getWidth();
         auto height = sourceImage.getHeight();
-        auto context = sourceImage.getContext();
-        auto commandQueue = sourceImage.getCommandQueue();
+        auto& context = sourceImage.getContext();
+        auto& commandQueue = sourceImage.getCommandQueue();
 
         return ImageType(width, height, context, commandQueue);
     }
