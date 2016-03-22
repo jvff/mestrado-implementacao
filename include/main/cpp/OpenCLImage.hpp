@@ -37,11 +37,11 @@ public:
         allocateBuffers();
     }
 
-    const cl::Context& getContext() const {
+    cl::Context& getContext() const {
         return context;
     }
 
-    const cl::CommandQueue& getCommandQueue() const {
+    cl::CommandQueue& getCommandQueue() const {
         return commandQueue;
     }
 
