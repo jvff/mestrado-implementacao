@@ -13,6 +13,8 @@
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
 
+#include "cl/OpenCLFilterTestKernels.h"
+
 class OpenCLFilterTest : public ::testing::Test {
 protected:
     using PixelType = unsigned int;
@@ -22,6 +24,7 @@ protected:
 protected:
     static cl::Context context;
     static cl::CommandQueue commandQueue;
+    static std::string kernelSourceCode;
 
 protected:
     static void SetUpTestCase() {
@@ -29,6 +32,8 @@ protected:
 
         context = cl::Context::getDefault();
         commandQueue = cl::CommandQueue(context, defaultDevice);
+
+        kernelSourceCode = OpenCLFilterTestKernelsSourceCode;
     }
 };
 

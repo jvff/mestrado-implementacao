@@ -2,6 +2,7 @@
 
 cl::Context OpenCLFilterTest::context;
 cl::CommandQueue OpenCLFilterTest::commandQueue;
+std::string OpenCLFilterTest::kernelSourceCode;
 
 TEST_F(OpenCLFilterTest, classTemplateExists) {
     AssertThat<FilterType>::isClassOrStruct();
@@ -45,23 +46,10 @@ TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCodeAndParameters) {
 }
 
 TEST_F(OpenCLFilterTest, appliesKernelToImages) {
-    std::string kernelFunctionName = "setThreadIdToPixel";
-    std::string kernelSourceCode =
-        "__kernel void setThreadIdToPixel(__read_only image2d_t sourceImage,\n"
-        "       __write_only image2d_t destinationImage) {\n"
-        "   int2 coordinate;\n"
-        "   uint4 channels;\n"
-        "\n"
-        "   coordinate.x = get_global_id(0);\n"
-        "   coordinate.y = get_global_id(1);\n"
-        "\n"
-        "   channels.x = coordinate.x + coordinate.y;\n"
-        "\n"
-        "   write_imageui(destinationImage, coordinate, channels);\n"
-        "}\n";
-
     auto width = 4u;
     auto height = 5u;
+    auto kernelFunctionName = "labelPixelsWithCoordinateSum";
+
     auto filter = FilterType(kernelSourceCode, kernelFunctionName);
     auto sourceImage = ImageType(1, 1, context, commandQueue);
     auto destinationImage = ImageType(width, height, context, commandQueue);
@@ -81,23 +69,10 @@ TEST_F(OpenCLFilterTest, appliesKernelToImages) {
 TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
     using CustomFilterType = OpenCLFilter<unsigned int, unsigned int>;
 
-    std::string kernelFunctionName = "labelsPixelsInOrder";
-    std::string kernelSourceCode =
-        "__kernel void labelsPixelsInOrder(__read_only image2d_t sourceImage,\n"
-        "       __write_only image2d_t destinationImage, uint width) {\n"
-        "   int2 coordinate;\n"
-        "   uint4 channels;\n"
-        "\n"
-        "   coordinate.x = get_global_id(0);\n"
-        "   coordinate.y = get_global_id(1);\n"
-        "\n"
-        "   channels.x = coordinate.x + coordinate.y * width;\n"
-        "\n"
-        "   write_imageui(destinationImage, coordinate, channels);\n"
-        "}\n";
-
     auto width = 4u;
     auto height = 5u;
+    auto kernelFunctionName = "labelsPixelsInOrder";
+
     auto filter = CustomFilterType(kernelSourceCode, kernelFunctionName, width);
     auto sourceImage = ImageType(1, 1, context, commandQueue);
     auto destinationImage = ImageType(width, height, context, commandQueue);
