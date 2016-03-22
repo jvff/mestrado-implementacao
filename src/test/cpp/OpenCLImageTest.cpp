@@ -58,3 +58,17 @@ TEST_F(OpenCLImageTest, imageBufferIsAccessible) {
     assertThat(bufferChannelOrder).isEqualTo((unsigned int)CL_R);
     assertThat(bufferChannelType).isEqualTo((unsigned int)CL_UNSIGNED_INT8);
 }
+
+TEST_F(OpenCLImageTest, handlesCanBeUsedToCreateNewImage) {
+    const auto firstImage = ImageType(12, 23, context, commandQueue);
+    const auto secondImage = ImageType(21, 32, context, commandQueue);
+
+    auto& firstContext = firstImage.getContext();
+    auto& secondContext = secondImage.getContext();
+
+    auto& firstCommandQueue = firstImage.getCommandQueue();
+    auto& secondCommandQueue = secondImage.getCommandQueue();
+
+    assertThat(firstContext).isAtSameAddressAs(secondContext);
+    assertThat(firstCommandQueue).isAtSameAddressAs(secondCommandQueue);
+}
