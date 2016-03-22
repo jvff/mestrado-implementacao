@@ -2,6 +2,7 @@
 #define OPEN_C_L_FILTER_HPP
 
 #include <tuple>
+#include <type_traits>
 
 #include <CL/cl.hpp>
 
@@ -13,16 +14,24 @@ class OpenCLFilter : public AbstractFilter<OpenCLImage<PixelType>,
         OpenCLImage<PixelType> > {
 private:
     using ImageType = OpenCLImage<PixelType>;
+    using TupleType = std::tuple<KernelParameterTypes...>;
+
+    static constexpr auto numberOfExtraParameters =
+            std::tuple_size<TupleType>::value;
 
 private:
     const std::string kernelSourceCode;
     const std::string kernelFunctionName;
 
+    TupleType kernelParameters;
+
 public:
     OpenCLFilter(const std::string& kernelSourceCode,
-            const std::string& kernelFunctionName, KernelParameterTypes...)
+            const std::string& kernelFunctionName,
+            const KernelParameterTypes&... kernelParameters)
             : kernelSourceCode(kernelSourceCode),
-            kernelFunctionName(kernelFunctionName) {
+            kernelFunctionName(kernelFunctionName),
+            kernelParameters(kernelParameters...) {
     }
 
     void apply(const ImageType& sourceImage, ImageType& destinationImage)
@@ -66,6 +75,23 @@ private:
 
         kernel.setArg(0, sourceImageBuffer);
         kernel.setArg(1, destinationImageBuffer);
+
+        configureExtraParameters<0>(kernel);
+    }
+
+    template <int parameterIndex>
+    typename std::enable_if<parameterIndex >= numberOfExtraParameters>::type
+            configureExtraParameters(cl::Kernel&) {
+    }
+
+    template <int parameterIndex>
+    typename std::enable_if<parameterIndex < numberOfExtraParameters>::type
+            configureExtraParameters(cl::Kernel& kernel) {
+        auto extraParameter = std::get<parameterIndex>(kernelParameters);
+
+        kernel.setArg(parameterIndex + 2, extraParameter);
+
+        configureExtraParameters<parameterIndex + 1>(kernel);
     }
 
     void runKernel(cl::Kernel& kernel, ImageType& destinationImage) {
