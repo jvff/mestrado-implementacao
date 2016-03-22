@@ -27,32 +27,12 @@ public:
 
     void apply(const ImageType& sourceImage, ImageType& destinationImage)
             override {
-        auto sourceCodeString = kernelSourceCode.c_str();
-        auto sourceCodeSize = kernelSourceCode.length();
-        auto sourcePair = std::make_pair(sourceCodeString, sourceCodeSize);
-        auto sources = cl::Program::Sources(1, sourcePair);
-
         auto context = destinationImage.getContext();
-        auto commandQueue = destinationImage.getCommandQueue();
-        auto sourceImageBuffer = sourceImage.getImageBuffer();
-        auto destinationImageBuffer = destinationImage.getImageBuffer();
+        auto kernel = buildKernel(context);
 
-        cl::Program program(context, sources);
+        configureParameters(kernel, sourceImage, destinationImage);
 
-        program.build();
-
-        cl::Kernel kernel(program, kernelFunctionName.c_str());
-
-        kernel.setArg(0, sourceImageBuffer);
-        kernel.setArg(1, destinationImageBuffer);
-
-        auto width = destinationImage.getWidth();
-        auto height = destinationImage.getHeight();
-        auto globalOffset = cl::NullRange;
-        auto globalWorkSize = cl::NDRange(width, height);
-
-        commandQueue.enqueueNDRangeKernel(kernel, globalOffset, globalWorkSize);
-        commandQueue.finish();
+        runKernel(kernel, destinationImage);
     }
 
 protected:
@@ -63,6 +43,39 @@ protected:
         auto commandQueue = sourceImage.getCommandQueue();
 
         return ImageType(width, height, context, commandQueue);
+    }
+
+private:
+    cl::Kernel buildKernel(cl::Context& context) {
+        auto sourceCodeString = kernelSourceCode.c_str();
+        auto sourceCodeSize = kernelSourceCode.length();
+        auto sourcePair = std::make_pair(sourceCodeString, sourceCodeSize);
+        auto sources = cl::Program::Sources(1, sourcePair);
+
+        cl::Program program(context, sources);
+
+        program.build();
+
+        return cl::Kernel(program, kernelFunctionName.c_str());
+    }
+
+    void configureParameters(cl::Kernel& kernel, const ImageType& sourceImage,
+            ImageType& destinationImage) {
+        auto sourceImageBuffer = sourceImage.getImageBuffer();
+        auto destinationImageBuffer = destinationImage.getImageBuffer();
+
+        kernel.setArg(0, sourceImageBuffer);
+        kernel.setArg(1, destinationImageBuffer);
+    }
+
+    void runKernel(cl::Kernel& kernel, ImageType& destinationImage) {
+        auto commandQueue = destinationImage.getCommandQueue();
+        auto width = destinationImage.getWidth();
+        auto height = destinationImage.getHeight();
+        auto globalOffset = cl::NullRange;
+        auto globalWorkSize = cl::NDRange(width, height);
+
+        commandQueue.enqueueNDRangeKernel(kernel, globalOffset, globalWorkSize);
     }
 };
 
