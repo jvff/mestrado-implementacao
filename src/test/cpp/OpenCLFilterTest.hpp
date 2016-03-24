@@ -15,6 +15,7 @@
 
 #include "AssertionsSpecificForCLNDRange.hpp"
 #include "FakeOpenCLFilter.hpp"
+#include "OpenCLFilterOnQuarterImage.hpp"
 
 #include "cl/OpenCLFilterTestKernels.h"
 

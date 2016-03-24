@@ -125,3 +125,35 @@ TEST_F(OpenCLFilterTest, byDefaultHasOneWorkItemPerPixel) {
 
     assertThat(defaultGlobalWorkSize).isEqualTo(oneWorkItemPerPixel);
 }
+
+TEST_F(OpenCLFilterTest, appliesKernelWithCustomGlobalWorkSizeToImages) {
+    using CustomFilterType = OpenCLFilterOnQuarterImage<unsigned int,
+            unsigned int>;
+
+    auto width = 4u;
+    auto height = 5u;
+    auto kernelFunctionName = "labelsPixelsInOrder";
+
+    auto filter = CustomFilterType(kernelSourceCode, kernelFunctionName, width);
+    auto sourceImage = ImageType(1, 1, context, commandQueue);
+    auto destinationImage = ImageType(width, height, context, commandQueue);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y)
+            destinationImage.setPixel(x, y, 0u);
+    }
+
+    filter.apply(sourceImage, destinationImage);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto pixelValue = destinationImage.getPixelValue(x, y);
+            auto expectedPixelValue = x + y * width;
+
+            if (x >= width / 2 || y >= height / 2)
+                expectedPixelValue = 0u;
+
+            assertThat(pixelValue).isEqualTo(expectedPixelValue);
+        }
+    }
+}
