@@ -42,7 +42,7 @@ public:
 
         configureParameters(kernel, sourceImage, destinationImage);
 
-        runKernel(kernel, destinationImage);
+        runKernel(kernel, sourceImage, destinationImage);
     }
 
     using SuperClass::apply;
@@ -105,12 +105,11 @@ private:
         configureExtraParameters<parameterIndex + 1>(kernel);
     }
 
-    void runKernel(cl::Kernel& kernel, ImageType& destinationImage) {
+    void runKernel(cl::Kernel& kernel, const ImageType& sourceImage,
+            ImageType& destinationImage) {
         auto commandQueue = destinationImage.getCommandQueue();
-        auto width = destinationImage.getWidth();
-        auto height = destinationImage.getHeight();
         auto globalOffset = cl::NullRange;
-        auto globalWorkSize = cl::NDRange(width, height);
+        auto globalWorkSize = getGlobalWorkSize(sourceImage, destinationImage);
 
         commandQueue.enqueueNDRangeKernel(kernel, globalOffset, globalWorkSize);
     }
