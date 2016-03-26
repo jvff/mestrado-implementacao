@@ -11,6 +11,7 @@ private:
 public:
     using SuperClass::SuperClass;
     using SuperClass::getGlobalWorkSize;
+    using SuperClass::getLocalWorkSize;
 };
 
 #endif

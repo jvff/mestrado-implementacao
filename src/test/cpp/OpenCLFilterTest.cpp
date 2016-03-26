@@ -157,3 +157,16 @@ TEST_F(OpenCLFilterTest, appliesKernelWithCustomGlobalWorkSizeToImages) {
         }
     }
 }
+
+TEST_F(OpenCLFilterTest, hasNoDefaultLocalWorkSize) {
+    using CustomFilterType = FakeOpenCLFilter<unsigned int>;
+
+    auto filter = CustomFilterType(kernelSourceCode, "");
+    auto sourceImage = ImageType(1, 1, context, commandQueue);
+    auto destinationImage = ImageType(1, 1, context, commandQueue);
+
+    auto defaultLocalWorkSize = filter.getLocalWorkSize(sourceImage,
+            destinationImage);
+
+    assertThat(defaultLocalWorkSize).isEqualTo(cl::NullRange);
+}
