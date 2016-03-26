@@ -153,3 +153,25 @@ TEST_F(OpenCLFilterTest, hasNoDefaultLocalWorkSize) {
 
     assertThat(defaultLocalWorkSize).isEqualTo(cl::NullRange);
 }
+
+TEST_F(OpenCLFilterTest, appliesKernelWithCustomLocalWorkSizeToImages) {
+    using CustomFilterType = OpenCLFilterOnImageQuarters<unsigned int,
+            unsigned int>;
+
+    auto width = 4u;
+    auto height = 6u;
+    auto kernelFunctionName = "labelsPixelsInOrderWithLocalId";
+
+    auto filter = CustomFilterType(kernelSourceCode, kernelFunctionName, width);
+    auto sourceImage = ImageType(1, 1, context, commandQueue);
+    auto destinationImage = ImageType(width, height, context, commandQueue);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y)
+            destinationImage.setPixel(x, y, 0u);
+    }
+
+    filter.apply(sourceImage, destinationImage);
+
+    verifyImagePixels(destinationImage, pixelsInQuartetInOrder(width, height));
+}

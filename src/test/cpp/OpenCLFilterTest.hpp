@@ -16,6 +16,7 @@
 
 #include "AssertionsSpecificForCLNDRange.hpp"
 #include "FakeOpenCLFilter.hpp"
+#include "OpenCLFilterOnImageQuarters.hpp"
 #include "OpenCLFilterOnQuarterImage.hpp"
 
 #include "cl/OpenCLFilterTestKernels.h"
@@ -55,6 +56,19 @@ protected:
     ImageFunction pixelsInOrder(unsigned int width) {
         return [=] (unsigned int x, unsigned int y) {
             return x + y * width;
+        };
+    }
+
+    ImageFunction pixelsInQuartetInOrder(unsigned int width,
+            unsigned int height) {
+        auto halfWidth = width / 2;
+        auto halfHeight = height / 2;
+
+        return [=] (unsigned int x, unsigned int y) {
+            auto xInQuarter = x % halfWidth;
+            auto yInQuarter = y % halfHeight;
+
+            return xInQuarter + yInQuarter * width;
         };
     }
 
