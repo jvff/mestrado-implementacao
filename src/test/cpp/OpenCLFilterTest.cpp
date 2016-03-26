@@ -108,3 +108,20 @@ TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
         }
     }
 }
+
+TEST_F(OpenCLFilterTest, byDefaultHasOneWorkItemPerPixel) {
+    using CustomFilterType = FakeOpenCLFilter<unsigned int>;
+
+    auto width = 100;
+    auto height = 67;
+
+    auto filter = CustomFilterType(kernelSourceCode, "");
+    auto sourceImage = ImageType(2, 3, context, commandQueue);
+    auto destinationImage = ImageType(width, height, context, commandQueue);
+
+    auto defaultGlobalWorkSize = filter.getGlobalWorkSize(sourceImage,
+            destinationImage);
+    auto oneWorkItemPerPixel = cl::NDRange(width, height);
+
+    assertThat(defaultGlobalWorkSize).isEqualTo(oneWorkItemPerPixel);
+}

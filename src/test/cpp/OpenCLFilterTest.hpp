@@ -13,6 +13,9 @@
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
 
+#include "AssertionsSpecificForCLNDRange.hpp"
+#include "FakeOpenCLFilter.hpp"
+
 #include "cl/OpenCLFilterTestKernels.h"
 
 class OpenCLFilterTest : public ::testing::Test {
