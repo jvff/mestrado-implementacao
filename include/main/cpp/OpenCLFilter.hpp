@@ -57,6 +57,14 @@ protected:
         return ImageType(width, height, context, commandQueue);
     }
 
+    virtual cl::NDRange getGlobalWorkSize(const ImageType&,
+            const ImageType& destinationImage) const {
+        auto width = destinationImage.getWidth();
+        auto height = destinationImage.getHeight();
+
+        return cl::NDRange(width, height);
+    }
+
 private:
     cl::Kernel buildKernel(cl::Context& context) {
         auto sourceCodeString = kernelSourceCode.c_str();
