@@ -65,6 +65,11 @@ protected:
         return cl::NDRange(width, height);
     }
 
+    virtual cl::NDRange getLocalWorkSize(const ImageType&,
+            const ImageType&) const {
+        return cl::NullRange;
+    }
+
 private:
     cl::Kernel buildKernel(cl::Context& context) {
         auto sourceCodeString = kernelSourceCode.c_str();
