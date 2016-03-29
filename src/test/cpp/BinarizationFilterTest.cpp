@@ -21,10 +21,10 @@ TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
 }
 
 TEST(BinarizationFilterTest, classIsSimpleFilter) {
-    using SuperClass = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
-    using SubClass = BinarizationFilter<Image<DummyType>, FakeImage<bool> >;
+    using ParentFilter = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
+    using FilterType = BinarizationFilter<Image<DummyType>, FakeImage<bool> >;
 
-    AssertThat<SubClass>::isSubClass(Of<SuperClass>());
+    AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
 }
 
 TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
