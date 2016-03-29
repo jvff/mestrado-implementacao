@@ -56,14 +56,7 @@ TEST_F(OpenCLFilterTest, appliesKernelToImages) {
 
     filter.apply(sourceImage, destinationImage);
 
-    for (auto x = 0u; x < width; ++x) {
-        for (auto y = 0u; y < height; ++y) {
-            auto pixelValue = destinationImage.getPixelValue(x, y);
-            auto expectedPixelValue = x + y;
-
-            assertThat(pixelValue).isEqualTo(expectedPixelValue);
-        }
-    }
+    verifyImagePixels(destinationImage, coordinateSumPixels);
 }
 
 TEST_F(OpenCLFilterTest, appliesKernelToImageAndReturnsCreatedImage) {
@@ -76,14 +69,10 @@ TEST_F(OpenCLFilterTest, appliesKernelToImageAndReturnsCreatedImage) {
 
     auto resultImage = filter.apply(sourceImage);
 
-    for (auto x = 0u; x < width; ++x) {
-        for (auto y = 0u; y < height; ++y) {
-            auto pixelValue = resultImage.getPixelValue(x, y);
-            auto expectedPixelValue = x + y;
+    assertThat(resultImage.getWidth()).isEqualTo(width);
+    assertThat(resultImage.getHeight()).isEqualTo(height);
 
-            assertThat(pixelValue).isEqualTo(expectedPixelValue);
-        }
-    }
+    verifyImagePixels(resultImage, coordinateSumPixels);
 }
 
 TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
@@ -99,14 +88,7 @@ TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
 
     filter.apply(sourceImage, destinationImage);
 
-    for (auto x = 0u; x < width; ++x) {
-        for (auto y = 0u; y < height; ++y) {
-            auto pixelValue = destinationImage.getPixelValue(x, y);
-            auto expectedPixelValue = x + y * width;
-
-            assertThat(pixelValue).isEqualTo(expectedPixelValue);
-        }
-    }
+    verifyImagePixels(destinationImage, pixelsInOrder(width));
 }
 
 TEST_F(OpenCLFilterTest, byDefaultHasOneWorkItemPerPixel) {
@@ -145,17 +127,18 @@ TEST_F(OpenCLFilterTest, appliesKernelWithCustomGlobalWorkSizeToImages) {
 
     filter.apply(sourceImage, destinationImage);
 
-    for (auto x = 0u; x < width; ++x) {
-        for (auto y = 0u; y < height; ++y) {
-            auto pixelValue = destinationImage.getPixelValue(x, y);
-            auto expectedPixelValue = x + y * width;
+    auto halfWidth = width / 2;
+    auto halfHeight = height / 2;
 
-            if (x >= width / 2 || y >= height / 2)
-                expectedPixelValue = 0u;
+    auto firstQuarter = pixelsInOrder(width);
+    auto secondQuarter = zeroedPixels;
+    auto bottomHalf = zeroedPixels;
 
-            assertThat(pixelValue).isEqualTo(expectedPixelValue);
-        }
-    }
+    verifyImagePixels(destinationImage, halfWidth, halfHeight, firstQuarter);
+    verifyImagePixels(destinationImage, halfWidth, 0, width, halfHeight,
+            secondQuarter);
+    verifyImagePixels(destinationImage, 0, halfHeight, width, height,
+            bottomHalf);
 }
 
 TEST_F(OpenCLFilterTest, hasNoDefaultLocalWorkSize) {

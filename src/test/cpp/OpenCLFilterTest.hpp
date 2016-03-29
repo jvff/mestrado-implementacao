@@ -1,6 +1,7 @@
 #ifndef OPEN_C_L_FILTER_TEST_HPP
 #define OPEN_C_L_FILTER_TEST_HPP
 
+#include <functional>
 #include <string>
 
 #include <CL/cl.hpp>
@@ -25,6 +26,8 @@ protected:
     using ImageType = OpenCLImage<PixelType>;
     using FilterType = OpenCLFilter<PixelType>;
 
+    using ImageFunction = std::function<PixelType(unsigned int, unsigned int)>;
+
 protected:
     static cl::Context context;
     static cl::CommandQueue commandQueue;
@@ -38,6 +41,47 @@ protected:
         commandQueue = cl::CommandQueue(context, defaultDevice);
 
         kernelSourceCode = OpenCLFilterTestKernelsSourceCode;
+    }
+
+    static PixelType coordinateSumPixels(unsigned int x, unsigned int y) {
+        return x + y;
+    }
+
+    static PixelType zeroedPixels(unsigned int, unsigned int) {
+        return 0;
+    }
+
+protected:
+    ImageFunction pixelsInOrder(unsigned int width) {
+        return [=] (unsigned int x, unsigned int y) {
+            return x + y * width;
+        };
+    }
+
+    void verifyImagePixels(const ImageType& image,
+            ImageFunction expectedPixels) {
+        auto width = image.getWidth();
+        auto height = image.getHeight();
+
+        verifyImagePixels(image, width, height, expectedPixels);
+    }
+
+    void verifyImagePixels(const ImageType& image, unsigned int width,
+            unsigned int height, ImageFunction expectedPixels) {
+        verifyImagePixels(image, 0u, 0u, width, height, expectedPixels);
+    }
+
+    void verifyImagePixels(const ImageType& image, unsigned int startX,
+            unsigned int startY, unsigned int endX, unsigned int endY,
+            ImageFunction expectedPixels) {
+        for (auto x = startX; x < endX; ++x) {
+            for (auto y = startY; y < endY; ++y) {
+                auto pixelValue = image.getPixelValue(x, y);
+                auto expectedPixelValue = expectedPixels(x, y);
+
+                assertThat(pixelValue).isEqualTo(expectedPixelValue);
+            }
+        }
     }
 };
 
