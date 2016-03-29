@@ -1,10 +1,13 @@
 #ifndef BINARIZATION_FILTER_HPP
 #define BINARIZATION_FILTER_HPP
 
+#include <functional>
+
 #include "SimpleFilter.hpp"
 #include "Image.hpp"
 
-template <typename SourceImageType, typename DestinationImageType>
+template <typename SourceImageType, typename DestinationImageType,
+        template <typename> class ComparatorTemplate = std::less>
 class BinarizationFilter : public SimpleFilter<SourceImageType,
         DestinationImageType> {
 private:
