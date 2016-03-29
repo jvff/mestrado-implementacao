@@ -18,6 +18,16 @@ TEST(BinarizationFilterTest, hasComparatorTemplateParameter) {
             With<ThresholdParameter>());
 }
 
+TEST(BinarizationFilterTest, defaultComparatorIsGreaterThan) {
+    using FilterWithDefaultComparator = BinarizationFilter<Image<DummyType>,
+            FakeImage<bool> >;
+    using ExpectedFilterType = BinarizationFilter<Image<DummyType>,
+            FakeImage<bool>, std::greater>;
+
+    AssertThat<FilterWithDefaultComparator>::isTheSame(
+            As<ExpectedFilterType>());
+}
+
 TEST(BinarizationFilterTest, isConstructibleWithComparatorParameter) {
     using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
             FakeImage<bool> >;
