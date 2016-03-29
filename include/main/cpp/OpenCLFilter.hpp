@@ -115,8 +115,10 @@ private:
         auto commandQueue = destinationImage.getCommandQueue();
         auto globalOffset = cl::NullRange;
         auto globalWorkSize = getGlobalWorkSize(sourceImage, destinationImage);
+        auto localWorkSize = getLocalWorkSize(sourceImage, destinationImage);
 
-        commandQueue.enqueueNDRangeKernel(kernel, globalOffset, globalWorkSize);
+        commandQueue.enqueueNDRangeKernel(kernel, globalOffset, globalWorkSize,
+                localWorkSize);
     }
 };
 
