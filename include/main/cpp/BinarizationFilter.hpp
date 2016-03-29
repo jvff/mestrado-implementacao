@@ -13,13 +13,7 @@ class BinarizationFilter : public SimpleFilter<SourceImageType,
 private:
     using SourcePixelType = typename SourceImageType::PixelType;
     using SuperClass = SimpleFilter<SourceImageType, DestinationImageType>;
-    using Comparator =
-            std::function<bool(const SourcePixelType&, const SourcePixelType&)>;
-
-    static bool defaultComparator(const SourcePixelType& value,
-            const SourcePixelType& threshold) {
-        return value >= threshold;
-    }
+    using Comparator = ComparatorTemplate<SourcePixelType>;
 
     Comparator comparator;
     const SourcePixelType threshold;
@@ -28,12 +22,7 @@ public:
     using SuperClass::apply;
 
     BinarizationFilter(const SourcePixelType& parameter)
-            : BinarizationFilter(parameter, defaultComparator) {
-    }
-
-    BinarizationFilter(const SourcePixelType& parameter,
-            const Comparator& customComparator) : comparator(customComparator),
-            threshold(parameter) {
+            : threshold(parameter) {
     }
 
 protected:
