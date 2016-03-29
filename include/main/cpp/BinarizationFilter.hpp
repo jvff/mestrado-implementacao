@@ -7,7 +7,7 @@
 #include "Image.hpp"
 
 template <typename SourceImageType, typename DestinationImageType,
-        template <typename> class ComparatorTemplate = std::less>
+        template <typename> class ComparatorTemplate = std::greater>
 class BinarizationFilter : public SimpleFilter<SourceImageType,
         DestinationImageType> {
 private:
