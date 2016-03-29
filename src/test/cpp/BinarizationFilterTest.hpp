@@ -13,32 +13,29 @@
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"
 
-template <typename SourcePixel>
+template <typename T>
+class EqualsComparator {
+public:
+    bool operator() (const T& first, const T& second) {
+        return first == second;
+    }
+};
+
+template <typename SourcePixel,
+        template <typename> class ComparatorTemplate = std::greater>
 class TestImage : public Image<SourcePixel> {
 public:
-    using Comparator =
-            std::function<bool(const SourcePixel&, const SourcePixel&)>;
+    using Comparator = ComparatorTemplate<SourcePixel>;
 
     SimpleArrayImage<SourcePixel> sourceImage;
     SimpleArrayImage<bool> expectedImage;
     SourcePixel filterThreshold;
     Comparator comparator;
 
-    static bool defaultComparator(const SourcePixel& value,
-            const SourcePixel& threshold) {
-        return value >= threshold;
-    }
-
     TestImage(unsigned int width, unsigned int height,
             const SourcePixel& threshold)
-            : TestImage(width, height, threshold, defaultComparator) {
-    }
-
-    TestImage(unsigned int width, unsigned int height,
-            const SourcePixel& threshold, const Comparator& customComparator)
             : Image<SourcePixel>(width, height), sourceImage(width, height),
-            expectedImage(width, height), filterThreshold(threshold),
-            comparator(customComparator) {
+            expectedImage(width, height), filterThreshold(threshold) {
         *this = [] (unsigned int x, unsigned int y) {
             return (int)x - (int)y;
         };

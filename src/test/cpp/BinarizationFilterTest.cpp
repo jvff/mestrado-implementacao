@@ -80,15 +80,13 @@ TEST(BinarizationFilterTest, filterResultWithNegativeThreshold) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithCustomComparator) {
-    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool>,
+            EqualsComparator>;
 
     int threshold = 0;
-    auto comparator = [] (int pixelValue, int threshold) -> bool {
-        return pixelValue == threshold;
-    };
 
-    FilterType filter(threshold, comparator);
-    TestImage<int> test(30, 40, threshold, comparator);
+    FilterType filter(threshold);
+    TestImage<int, EqualsComparator> test(30, 40, threshold);
 
     auto result = filter.apply(test.sourceImage);
 
@@ -96,15 +94,13 @@ TEST(BinarizationFilterTest, filterResultWithCustomComparator) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithComparatorAndDifferentThreshold) {
-    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool>,
+            EqualsComparator>;
 
     int threshold = 22;
-    auto comparator = [] (int pixelValue, int threshold) -> bool {
-        return pixelValue <= threshold;
-    };
 
-    FilterType filter(threshold, comparator);
-    TestImage<int> test(33, 51, threshold, comparator);
+    FilterType filter(threshold);
+    TestImage<int, EqualsComparator> test(33, 51, threshold);
 
     auto result = filter.apply(test.sourceImage);
 
@@ -112,15 +108,13 @@ TEST(BinarizationFilterTest, filterResultWithComparatorAndDifferentThreshold) {
 }
 
 TEST(BinarizationFilterTest, filterResultWithComparatorAndNegativeThreshold) {
-    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool> >;
+    using FilterType = BinarizationFilter<Image<int>, SimpleArrayImage<bool>,
+            std::less>;
 
     int threshold = -9;
-    auto comparator = [] (int pixelValue, int threshold) -> bool {
-        return pixelValue < threshold;
-    };
 
-    FilterType filter(threshold, comparator);
-    TestImage<int> test(65, 37, threshold, comparator);
+    FilterType filter(threshold);
+    TestImage<int, std::less> test(65, 37, threshold);
 
     auto result = filter.apply(test.sourceImage);
 
