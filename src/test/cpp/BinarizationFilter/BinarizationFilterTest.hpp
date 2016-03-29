@@ -10,8 +10,8 @@
 #include "BinarizationFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
 
 template <typename T>
 class EqualsComparator {
