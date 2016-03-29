@@ -13,6 +13,9 @@
 #include "../DummyTypes.hpp"
 #include "../FakeImage.hpp"
 
+#define TEST_C(testCase, testName) \
+        TEST(BinarizationFilter##testCase, testName)
+
 template <typename T>
 class EqualsComparator {
 public:

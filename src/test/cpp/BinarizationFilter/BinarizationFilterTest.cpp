@@ -1,40 +1,5 @@
 #include "BinarizationFilterTest.hpp"
 
-TEST(BinarizationFilterTest, classIsntAbstractAndConstructorHasParameter) {
-    using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
-            FakeImage<bool> >;
-    using ThresholdParameter = const DummyType&;
-
-    AssertThat<DummyBinarizationFilter>::isConstructible(
-            With<ThresholdParameter>());
-}
-
-TEST(BinarizationFilterTest, hasComparatorTemplateParameter) {
-    using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
-            FakeImage<bool>, std::less>;
-    using ThresholdParameter = const DummyType&;
-
-    AssertThat<DummyBinarizationFilter>::isConstructible(
-            With<ThresholdParameter>());
-}
-
-TEST(BinarizationFilterTest, defaultComparatorIsGreaterThan) {
-    using FilterWithDefaultComparator = BinarizationFilter<Image<DummyType>,
-            FakeImage<bool> >;
-    using ExpectedFilterType = BinarizationFilter<Image<DummyType>,
-            FakeImage<bool>, std::greater>;
-
-    AssertThat<FilterWithDefaultComparator>::isTheSame(
-            As<ExpectedFilterType>());
-}
-
-TEST(BinarizationFilterTest, classIsSimpleFilter) {
-    using ParentFilter = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
-    using FilterType = BinarizationFilter<Image<DummyType>, FakeImage<bool> >;
-
-    AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
-}
-
 TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
     auto width = 10u;
     auto height = 24u;
