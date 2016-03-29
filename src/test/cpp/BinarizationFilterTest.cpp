@@ -28,9 +28,11 @@ TEST(BinarizationFilterTest, classIsSimpleFilter) {
 }
 
 TEST(BinarizationFilterTest, imageDimensionsAreTheSame) {
-    BinarizationFilter<Image<DummyType>, FakeImage<bool> > filter(DummyType{0});
-    unsigned int width = 10;
-    unsigned int height = 24;
+    auto width = 10u;
+    auto height = 24u;
+    auto threshold = DummyType{ 0 };
+
+    BinarizationFilter<Image<DummyType>, FakeImage<bool> > filter(threshold);
     const Image<DummyType>& sourceImage = FakeImage<DummyType>(width, height);
 
     auto destinationImage = filter.apply(sourceImage);
