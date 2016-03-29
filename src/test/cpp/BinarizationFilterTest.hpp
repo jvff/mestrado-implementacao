@@ -1,6 +1,8 @@
 #ifndef BINARIZATION_FILTER_TEST_HPP
 #define BINARIZATION_FILTER_TEST_HPP
 
+#include <functional>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
