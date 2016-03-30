@@ -20,3 +20,13 @@ TEST_C(OpenCLSpecializationsTest, hasSpecializationForLessThanComparator) {
 
     AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_C(OpenCLSpecializationsTest, hasSpecializationForGreaterThanComparator) {
+    using PixelType = int;
+    using ImageType = OpenCLImage<PixelType>;
+    using Specialization = BinarizationFilter<ImageType, ImageType,
+            std::greater>;
+    using ParentFilter = OpenCLFilter<PixelType, PixelType>;
+
+    AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
+}
