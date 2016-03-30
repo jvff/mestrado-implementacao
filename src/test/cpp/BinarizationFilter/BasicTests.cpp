@@ -1,6 +1,18 @@
-#include "BinarizationFilterTest.hpp"
+#include <functional>
 
-TEST_C(BasicTests, classIsntAbstractAndConstructorHasParameter) {
+#include <gtest/gtest.h>
+
+#include "asserts.hpp"
+
+#include "BinarizationFilter.hpp"
+
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
+
+#define TEST_C(testName) \
+        TEST(BinarizationFilterBasicTests, testName)
+
+TEST_C(classIsntAbstractAndConstructorHasParameter) {
     using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
             FakeImage<bool> >;
     using ThresholdParameter = const DummyType&;
@@ -9,7 +21,7 @@ TEST_C(BasicTests, classIsntAbstractAndConstructorHasParameter) {
             With<ThresholdParameter>());
 }
 
-TEST_C(BasicTests, hasComparatorTemplateParameter) {
+TEST_C(hasComparatorTemplateParameter) {
     using DummyBinarizationFilter = BinarizationFilter<Image<DummyType>,
             FakeImage<bool>, std::less>;
     using ThresholdParameter = const DummyType&;
@@ -18,7 +30,7 @@ TEST_C(BasicTests, hasComparatorTemplateParameter) {
             With<ThresholdParameter>());
 }
 
-TEST_C(BasicTests, defaultComparatorIsGreaterThan) {
+TEST_C(defaultComparatorIsGreaterThan) {
     using FilterWithDefaultComparator = BinarizationFilter<Image<DummyType>,
             FakeImage<bool> >;
     using ExpectedFilterType = BinarizationFilter<Image<DummyType>,
@@ -28,7 +40,7 @@ TEST_C(BasicTests, defaultComparatorIsGreaterThan) {
             As<ExpectedFilterType>());
 }
 
-TEST_C(BasicTests, classIsSimpleFilter) {
+TEST_C(classIsSimpleFilter) {
     using ParentFilter = SimpleFilter<Image<DummyType>, FakeImage<bool> >;
     using FilterType = BinarizationFilter<Image<DummyType>, FakeImage<bool> >;
 
