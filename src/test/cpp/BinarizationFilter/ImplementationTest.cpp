@@ -21,46 +21,37 @@ TYPED_TEST_CASE(BinarizationFilterImplementationTest, TypeParameters);
 TEST_C(imageDimensionsAreTheSame) {
     auto width = 10u;
     auto height = 24u;
-    auto threshold = 0;
 
-    auto filter = FilterType(threshold);
+    initialize(width, height, 0);
+
     const SourceImageType& sourceImage = RealSourceImageType(width, height);
 
-    auto destinationImage = filter.apply(sourceImage);
+    auto destinationImage = filter->apply(sourceImage);
 
     assertThat(destinationImage.getWidth()).isEqualTo(width);
     assertThat(destinationImage.getHeight()).isEqualTo(height);
 }
 
 TEST_C(filterResult) {
-    int threshold = 0;
+    initialize(30, 40, 0);
 
-    auto filter = FilterType(threshold);
-    auto test = TestImageType(30, 40, threshold);
+    auto result = filter->apply(*sourceImage);
 
-    auto result = filter.apply(test.sourceImage);
-
-    assertThat(result).isEqualTo(test.expectedImage);
+    assertThat(result).isEqualTo(*expectedImage);
 }
 
 TEST_C(filterResultWithDifferentThreshold) {
-    int threshold = 22;
+    initialize(33, 51, 22);
 
-    auto filter = FilterType(threshold);
-    auto test = TestImageType(33, 51, threshold);
+    auto result = filter->apply(*sourceImage);
 
-    auto result = filter.apply(test.sourceImage);
-
-    assertThat(result).isEqualTo(test.expectedImage);
+    assertThat(result).isEqualTo(*expectedImage);
 }
 
 TEST_C(filterResultWithNegativeThreshold) {
-    int threshold = -9;
+    initialize(65, 37, -9);
 
-    auto filter = FilterType(threshold);
-    auto test = TestImageType(65, 37, threshold);
+    auto result = filter->apply(*sourceImage);
 
-    auto result = filter.apply(test.sourceImage);
-
-    assertThat(result).isEqualTo(test.expectedImage);
+    assertThat(result).isEqualTo(*expectedImage);
 }
