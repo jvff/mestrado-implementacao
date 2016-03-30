@@ -49,6 +49,13 @@ public:
 template <typename PixelType>
 class BinarizationFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType>,
         std::less> : public OpenCLFilter<PixelType, PixelType> {
+private:
+    using SuperClass = OpenCLFilter<PixelType, PixelType>;
+
+public:
+    BinarizationFilter(const PixelType& threshold)
+            : SuperClass("", "", threshold) {
+    }
 };
 
 #endif
