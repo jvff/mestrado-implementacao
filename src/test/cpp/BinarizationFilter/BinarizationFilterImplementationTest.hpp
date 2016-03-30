@@ -4,9 +4,16 @@
 #include <functional>
 #include <memory>
 
-#include "BinarizationFilterTest.hpp"
+#include <gtest/gtest.h>
+
+#include "asserts.hpp"
+
+#include "BinarizationFilter.hpp"
+#include "SimpleArrayImage.hpp"
 
 #include "../CustomTypedTestMacros.hpp"
+
+#include "EqualsComparator.hpp"
 
 template <typename Aliases>
 class BinarizationFilterImplementationTest : public ::testing::Test {
@@ -93,7 +100,6 @@ struct AliasesWithComparator {
     using Comparator = ComparatorTemplate<PixelType>;
 };
 
-#undef TEST_C
 #define TEST_C(testName) \
     CREATE_BINARIZATION_FILTER_IMPLEMENTATION_TEST_CLASS(testName); \
     REGISTER_CUSTOM_TYPED_TEST(BinarizationFilterImplementationTest, \
