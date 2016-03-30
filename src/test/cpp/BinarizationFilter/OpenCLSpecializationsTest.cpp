@@ -48,3 +48,13 @@ TEST_C(OpenCLSpecializationsTest, isConstructibleWithLessThanComparator) {
 
     AssertThat<Specialization>::isConstructible(With<ThresholdParameter>());
 }
+
+TEST_C(OpenCLSpecializationsTest, isConstructibleWithGreaterThanComparator) {
+    using PixelType = int;
+    using ImageType = OpenCLImage<PixelType>;
+    using Specialization = BinarizationFilter<ImageType, ImageType,
+            std::greater>;
+    using ThresholdParameter = const PixelType&;
+
+    AssertThat<Specialization>::isConstructible(With<ThresholdParameter>());
+}
