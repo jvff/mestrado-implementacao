@@ -1,9 +1,17 @@
+#include <functional>
+
+#include <gtest/gtest.h>
+
+#include "asserts.hpp"
+
+#include "BinarizationFilter.hpp"
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
 
-#include "BinarizationFilterTest.hpp"
+#define TEST_C(testName) \
+        TEST(BinarizationFilterOpenCLSpecializationsTest, testName)
 
-TEST_C(OpenCLSpecializationsTest, hasSpecializationForDefaultComparator) {
+TEST_C(hasSpecializationForDefaultComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType>;
@@ -12,7 +20,7 @@ TEST_C(OpenCLSpecializationsTest, hasSpecializationForDefaultComparator) {
     AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
 }
 
-TEST_C(OpenCLSpecializationsTest, hasSpecializationForLessThanComparator) {
+TEST_C(hasSpecializationForLessThanComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType, std::less>;
@@ -21,7 +29,7 @@ TEST_C(OpenCLSpecializationsTest, hasSpecializationForLessThanComparator) {
     AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
 }
 
-TEST_C(OpenCLSpecializationsTest, hasSpecializationForGreaterThanComparator) {
+TEST_C(hasSpecializationForGreaterThanComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType,
@@ -31,7 +39,7 @@ TEST_C(OpenCLSpecializationsTest, hasSpecializationForGreaterThanComparator) {
     AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
 }
 
-TEST_C(OpenCLSpecializationsTest, isConstructibleWithDefaultComparator) {
+TEST_C(isConstructibleWithDefaultComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType>;
@@ -40,7 +48,7 @@ TEST_C(OpenCLSpecializationsTest, isConstructibleWithDefaultComparator) {
     AssertThat<Specialization>::isConstructible(With<ThresholdParameter>());
 }
 
-TEST_C(OpenCLSpecializationsTest, isConstructibleWithLessThanComparator) {
+TEST_C(isConstructibleWithLessThanComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType, std::less>;
@@ -49,7 +57,7 @@ TEST_C(OpenCLSpecializationsTest, isConstructibleWithLessThanComparator) {
     AssertThat<Specialization>::isConstructible(With<ThresholdParameter>());
 }
 
-TEST_C(OpenCLSpecializationsTest, isConstructibleWithGreaterThanComparator) {
+TEST_C(isConstructibleWithGreaterThanComparator) {
     using PixelType = int;
     using ImageType = OpenCLImage<PixelType>;
     using Specialization = BinarizationFilter<ImageType, ImageType,
