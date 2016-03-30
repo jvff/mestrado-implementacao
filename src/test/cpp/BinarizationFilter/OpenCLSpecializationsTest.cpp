@@ -30,3 +30,12 @@ TEST_C(OpenCLSpecializationsTest, hasSpecializationForGreaterThanComparator) {
 
     AssertThat<Specialization>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_C(OpenCLSpecializationsTest, isConstructibleWithDefaultComparator) {
+    using PixelType = int;
+    using ImageType = OpenCLImage<PixelType>;
+    using Specialization = BinarizationFilter<ImageType, ImageType>;
+    using ThresholdParameter = const PixelType&;
+
+    AssertThat<Specialization>::isConstructible(With<ThresholdParameter>());
+}
