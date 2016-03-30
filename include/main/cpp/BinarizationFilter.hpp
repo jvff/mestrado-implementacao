@@ -39,4 +39,9 @@ class BinarizationFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType> >
         : public OpenCLFilter<PixelType, PixelType> {
 };
 
+template <typename PixelType>
+class BinarizationFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType>,
+        std::less> : public OpenCLFilter<PixelType, PixelType> {
+};
+
 #endif
