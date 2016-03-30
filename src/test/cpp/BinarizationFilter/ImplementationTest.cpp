@@ -1,5 +1,11 @@
 #include "BinarizationFilterImplementationTest.hpp"
 
+template <typename Aliases>
+cl::Context BinarizationFilterImplementationTest<Aliases>::context;
+
+template <typename Aliases>
+cl::CommandQueue BinarizationFilterImplementationTest<Aliases>::commandQueue;
+
 using SimpleImagesWithoutComparator =
         AliasesWithoutComparator<
                 Image<int>, SimpleArrayImage<int>, SimpleArrayImage<bool> >;
@@ -10,11 +16,24 @@ using SimpleImagesWithComparator =
                 Image<int>, SimpleArrayImage<int>, SimpleArrayImage<bool>,
                 ComparatorTemplate>;
 
+using OpenCLImagesWithoutComparator =
+        AliasesWithoutComparator<
+                OpenCLImage<int>, OpenCLImage<int>, OpenCLImage<int> >;
+
+template <template <typename> class ComparatorTemplate>
+using OpenCLImagesWithComparator =
+        AliasesWithComparator<
+                OpenCLImage<int>, OpenCLImage<int>, OpenCLImage<int>,
+                ComparatorTemplate>;
+
 using TypeParameters = ::testing::Types<
         SimpleImagesWithoutComparator,
         SimpleImagesWithComparator<std::less>,
         SimpleImagesWithComparator<std::greater>,
-        SimpleImagesWithComparator<EqualsComparator> >;
+        SimpleImagesWithComparator<EqualsComparator>,
+        OpenCLImagesWithoutComparator,
+        OpenCLImagesWithComparator<std::less>,
+        OpenCLImagesWithComparator<std::greater> >;
 
 TYPED_TEST_CASE(BinarizationFilterImplementationTest, TypeParameters);
 
@@ -24,7 +43,8 @@ TEST_C(imageDimensionsAreTheSame) {
 
     initialize(width, height, 0);
 
-    const SourceImageType& sourceImage = RealSourceImageType(width, height);
+    auto sourceImagePointer = makeImage<RealSourceImageType>(width, height);
+    const SourceImageType& sourceImage = *sourceImagePointer;
 
     auto destinationImage = filter->apply(sourceImage);
 

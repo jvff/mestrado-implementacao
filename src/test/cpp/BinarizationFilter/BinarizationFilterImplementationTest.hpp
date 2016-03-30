@@ -3,12 +3,16 @@
 
 #include <functional>
 #include <memory>
+#include <type_traits>
+
+#include <CL/cl.hpp>
 
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"
 
 #include "BinarizationFilter.hpp"
+#include "OpenCLImage.hpp"
 #include "SimpleArrayImage.hpp"
 
 #include "../CustomTypedTestMacros.hpp"
@@ -24,6 +28,35 @@ private:
     using PixelType = typename Aliases::PixelType;
     using RealSourceImageType = typename Aliases::RealSourceImageType;
     using SourceImageType = typename Aliases::SourceImageType;
+
+    template <typename ReturnType, bool Condition>
+    using FunctionSpecialization =
+            typename std::enable_if<Condition, ReturnType>::type;
+
+    template <typename ImageType, typename... ConstructorParameters>
+    using SpecializationForImageType = FunctionSpecialization<
+            std::shared_ptr<ImageType>,
+            std::is_constructible<ImageType, ConstructorParameters...>::value>;
+
+    template <typename ImageType>
+    using SpecializationForSimpleImage = SpecializationForImageType<ImageType,
+            unsigned int, unsigned int>;
+
+    template <typename ImageType>
+    using SpecializationForOpenCLImage = SpecializationForImageType<ImageType,
+            unsigned int, unsigned int, cl::Context&, cl::CommandQueue&>;
+
+protected:
+    static cl::Context context;
+    static cl::CommandQueue commandQueue;
+
+public:
+    static void SetUpTestCase() {
+        auto defaultDevice = cl::Device::getDefault();
+
+        context = cl::Context::getDefault();
+        commandQueue = cl::CommandQueue(context, defaultDevice);
+    }
 
 protected:
     Comparator comparator;
@@ -44,28 +77,56 @@ protected:
         expectedImage = makeImage<DestinationImageType>(width, height);
 
         paintSourceImage();
-        paintExpectedImage();
+        paintExpectedImage<DestinationImageType>();
     }
 
-private:
     template <typename ImageType>
-    std::shared_ptr<ImageType> makeImage(unsigned int width,
+    SpecializationForSimpleImage<ImageType> makeImage(unsigned int width,
             unsigned int height) {
         return std::make_shared<ImageType>(width, height);
     }
 
+    template <typename ImageType>
+    SpecializationForOpenCLImage<ImageType> makeImage(unsigned int width,
+            unsigned int height) {
+        return std::make_shared<ImageType>(width, height, context,
+                commandQueue);
+    }
+
+private:
     void paintSourceImage() {
         *sourceImage = [] (unsigned int x, unsigned int y) -> PixelType {
             return (PixelType)x - (PixelType)y;
         };
     }
 
-    void paintExpectedImage() {
+    template <typename ImageType>
+    SpecializationForSimpleImage<ImageType> paintExpectedImage() {
         *expectedImage = [&] (unsigned int x, unsigned int y) -> bool {
             auto pixelValue = (PixelType)x - (PixelType)y;
 
             return comparator(pixelValue, threshold);
         };
+
+        return expectedImage;
+    }
+
+    template <typename ImageType>
+    SpecializationForOpenCLImage<ImageType> paintExpectedImage() {
+        auto trueValue = 0xFFFFFFFFu;
+        auto falseValue = 0;
+
+        *expectedImage = [trueValue, falseValue, this] (unsigned int x,
+                unsigned int y) -> PixelType {
+            auto pixelValue = (PixelType)x - (PixelType)y;
+
+            if (comparator(pixelValue, threshold))
+                return trueValue;
+            else
+                return falseValue;
+        };
+
+        return expectedImage;
     }
 };
 
@@ -120,6 +181,11 @@ private: \
 \
 private: \
     using SuperClass::initialize; \
+\
+    template <typename ImageType> \
+    std::shared_ptr<ImageType> makeImage(unsigned int width, unsigned int height) { \
+        return SuperClass::template makeImage<ImageType>(width, height); \
+    } \
 \
 private: \
     using SuperClass::filter; \
