@@ -3,8 +3,10 @@
 
 #include <functional>
 
-#include "SimpleFilter.hpp"
 #include "Image.hpp"
+#include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
+#include "SimpleFilter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType,
         template <typename> class ComparatorTemplate = std::greater>
@@ -30,6 +32,11 @@ protected:
             const SourceImageType& sourceImage) override {
         return comparator(sourceImage.getPixelValue(x, y), threshold);
     }
+};
+
+template <typename PixelType>
+class BinarizationFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType> >
+        : public OpenCLFilter<PixelType, PixelType> {
 };
 
 #endif
