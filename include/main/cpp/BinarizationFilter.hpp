@@ -8,6 +8,8 @@
 #include "OpenCLImage.hpp"
 #include "SimpleFilter.hpp"
 
+#include "cl/BinarizationFilter.h"
+
 template <typename SourceImageType, typename DestinationImageType,
         template <typename> class ComparatorTemplate = std::greater>
 class BinarizationFilter : public SimpleFilter<SourceImageType,
@@ -42,7 +44,8 @@ private:
 
 public:
     BinarizationFilter(const PixelType& threshold)
-            : SuperClass("", "", threshold) {
+            : SuperClass(BinarizationFilterSourceCode,
+                    "binarizeUsingGreaterThan", threshold) {
     }
 };
 
