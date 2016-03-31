@@ -79,6 +79,7 @@ public:
     using SuperClass::setPixel;
     using SuperClass::getPixel;
     using SuperClass::getPixelValue;
+    using SuperClass::operator=;
 
 private:
     void buildKernels() {
