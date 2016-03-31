@@ -14,6 +14,9 @@
 template <typename ImageType, typename PixelType>
 class AbstractImageImplementationTest : public ::testing::Test {
 protected:
+    using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
+
+protected:
     static std::shared_ptr<TestImageFactory<ImageType> > imageFactory;
 
 public:
@@ -60,6 +63,18 @@ protected:
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
                 comparePixel(x, y, *(pixelIterator++), getPixel(image, x, y));
+        }
+    }
+
+    void testPixelsUsingLambda(unsigned int width, unsigned int height,
+            PaintFunction values) {
+        auto image = imageFactory->createImage(width, height);
+
+        image = values;
+
+        for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < height; ++y)
+                comparePixel(x, y, values(x, y), getPixel(image, x, y));
         }
     }
 

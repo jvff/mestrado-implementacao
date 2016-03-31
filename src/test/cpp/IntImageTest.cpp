@@ -59,3 +59,14 @@ IMAGE_TEST(IntImageTest, testRedGreenBlueRect) {
 
     this->testPixels(width, height, values);
 }
+
+IMAGE_TEST(IntImageTest, isSettableWithLambdaExpression) {
+    auto width = 5u;
+    auto height = 4u;
+
+    auto paintFunction = [=] (unsigned int x, unsigned int y) -> int {
+        return x + y * width;
+    };
+
+    this->testPixelsUsingLambda(width, height, paintFunction);
+}
