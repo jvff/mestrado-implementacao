@@ -57,7 +57,8 @@ private:
 
 public:
     BinarizationFilter(const PixelType& threshold)
-            : SuperClass("", "", threshold) {
+            : SuperClass(BinarizationFilterSourceCode, "binarizeUsingLessThan",
+                    threshold) {
     }
 };
 
