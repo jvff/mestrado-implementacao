@@ -5,3 +5,6 @@ const std::string OpenCLPixelTypeData<unsigned char>::setPixelKernel
 
 const std::string OpenCLPixelTypeData<unsigned int>::setPixelKernel
         = "setPixelUsingOneChannel";
+
+const std::string OpenCLPixelTypeData<int>::setPixelKernel
+        = "setPixelUsingOneChannel";
