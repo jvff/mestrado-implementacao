@@ -19,6 +19,8 @@ struct OpenCLPixelTypeData<unsigned char> {
 template <>
 struct OpenCLPixelTypeData<unsigned int> {
     static constexpr auto CL_PIXEL_TYPE = CL_UNSIGNED_INT32;
+
+    static const std::string setPixelKernel;
 };
 
 template <>
