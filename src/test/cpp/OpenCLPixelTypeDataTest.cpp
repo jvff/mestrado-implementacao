@@ -6,6 +6,12 @@
 
 #include "OpenCLPixelTypeData.hpp"
 
+TEST(OpenCLPixelTypeDataTest, hasSetPixelKernelForUnsignedChar) {
+    auto setPixelKernel = OpenCLPixelTypeData<unsigned char>::setPixelKernel;
+
+    assertThat(setPixelKernel).isEqualTo("setPixelUsingOneChannel");
+}
+
 TEST(OpenCLPixelTypeDataTest, hasPixelTypeForUnsignedChar) {
     auto pixelType = OpenCLPixelTypeData<unsigned char>::CL_PIXEL_TYPE;
 
