@@ -17,6 +17,12 @@
         auto setPixelKernel = OpenCLPixelTypeData<Type>::setPixelKernel; \
         \
         assertThat(setPixelKernel).isEqualTo("setPixel" KernelSuffix); \
+    } \
+    \
+    TEST(OpenCLPixelTypeDataTest, hasGetPixelKernelFor##TypeName) { \
+        auto getPixelKernel = OpenCLPixelTypeData<Type>::getPixelKernel; \
+        \
+        assertThat(getPixelKernel).isEqualTo("getPixel" KernelSuffix); \
     }
 
 TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, "UsingOneChannel")
