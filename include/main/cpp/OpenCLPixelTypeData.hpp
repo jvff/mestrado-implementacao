@@ -14,6 +14,7 @@ template <> \
 struct OpenCLPixelTypeData<Type> { \
     static constexpr auto CL_PIXEL_TYPE = OpenCLPixelType; \
     \
+    static const std::string getPixelKernel; \
     static const std::string setPixelKernel; \
 }
 
