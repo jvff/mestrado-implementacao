@@ -1,6 +1,8 @@
 #ifndef OPEN_C_L_PIXEL_TYPE_DATA_HPP
 #define OPEN_C_L_PIXEL_TYPE_DATA_HPP
 
+#include <CL/cl.hpp>
+
 template <typename PixelType>
 struct OpenCLPixelTypeData {
 };
