@@ -25,8 +25,18 @@ model {
 
     components {
         main(NativeLibrarySpec) {
-            sources.cpp.exportedHeaders {
-                srcDir "include/main/cpp"
+            binaries.all {
+                cppCompiler.args "-std=c++11", "-Werror", "-Wall", "-Wextra",
+                        "-pedantic"
+            }
+            sources.cpp {
+                exportedHeaders {
+                    srcDir "include/main/cpp"
+                }
+                source {
+                    srcDir "src/main/cpp"
+                    exclude "**/.*"
+                }
             }
         }
         test(NativeExecutableSpec) {
@@ -36,7 +46,7 @@ model {
                 linker.args "-pthread", "-lOpenCL"
             }
             sources.cpp {
-                lib library: 'main'
+                lib library: 'main', linkage: 'static'
                 lib library: 'gtest_main', linkage: 'static'
                 lib library: 'gtest', linkage: 'static'
                 lib library: 'fakeit', linkage: 'api'
