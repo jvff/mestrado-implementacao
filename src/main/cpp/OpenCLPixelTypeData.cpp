@@ -1,10 +1,9 @@
 #include "OpenCLPixelTypeData.hpp"
 
-const std::string OpenCLPixelTypeData<unsigned char>::setPixelKernel
-        = "setPixelUsingOneChannel";
+#define OPENCL_PIXEL_TYPE_DATA_FOR(Type, KernelNameSuffix) \
+const std::string OpenCLPixelTypeData<Type>::setPixelKernel \
+        = "setPixel" KernelNameSuffix
 
-const std::string OpenCLPixelTypeData<unsigned int>::setPixelKernel
-        = "setPixelUsingOneChannel";
-
-const std::string OpenCLPixelTypeData<int>::setPixelKernel
-        = "setPixelUsingOneChannel";
+OPENCL_PIXEL_TYPE_DATA_FOR(unsigned char, "UsingOneChannel");
+OPENCL_PIXEL_TYPE_DATA_FOR(unsigned int, "UsingOneChannel");
+OPENCL_PIXEL_TYPE_DATA_FOR(int, "UsingOneChannel");
