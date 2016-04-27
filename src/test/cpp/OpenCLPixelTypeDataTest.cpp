@@ -6,11 +6,18 @@
 
 #include "OpenCLPixelTypeData.hpp"
 
-#define TEST_C(TypeName, Type, OpenCLPixelType, KernelSuffix) \
+#define TEST_C(TypeName, Type, OpenCLPixelType, OpenCLPixelChannels, \
+        KernelSuffix) \
     TEST(OpenCLPixelTypeDataTest, hasPixelTypeFor##TypeName) { \
         auto pixelType = OpenCLPixelTypeData<Type>::CL_PIXEL_TYPE; \
         \
         assertThat(pixelType).isEqualTo(OpenCLPixelType); \
+    } \
+    \
+    TEST(OpenCLPixelTypeDataTest, hasPixelChannelsFor##TypeName) { \
+        auto pixelChannels = OpenCLPixelTypeData<Type>::CL_PIXEL_CHANNELS; \
+        \
+        assertThat(pixelChannels).isEqualTo(OpenCLPixelChannels); \
     } \
     \
     TEST(OpenCLPixelTypeDataTest, hasSetPixelKernelFor##TypeName) { \
@@ -25,6 +32,6 @@
         assertThat(getPixelKernel).isEqualTo("getPixel" KernelSuffix); \
     }
 
-TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, "UsingOneChannel")
-TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, "UsingOneChannel")
-TEST_C(Int, int, CL_SIGNED_INT32, "UsingOneChannel")
+TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, CL_R, "UsingOneChannel")
+TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, CL_R, "UsingOneChannel")
+TEST_C(Int, int, CL_SIGNED_INT32, CL_R, "UsingOneChannel")
