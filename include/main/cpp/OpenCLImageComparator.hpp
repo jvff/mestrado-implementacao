@@ -6,6 +6,16 @@
 template <typename PixelType>
 class OpenCLImageComparator
         : protected OpenCLFilter<PixelType, unsigned char*> {
+private:
+    using SuperClass = OpenCLFilter<PixelType, unsigned char*>;
+
+private:
+    unsigned char comparisonResult;
+
+public:
+    OpenCLImageComparator()
+            : SuperClass("", "compareImages", &comparisonResult) {
+    }
 };
 
 #endif
