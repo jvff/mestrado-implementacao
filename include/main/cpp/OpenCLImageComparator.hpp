@@ -4,6 +4,8 @@
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
 
+#include "cl/ImageComparison.h"
+
 template <typename PixelType>
 class OpenCLImageComparator
         : protected OpenCLFilter<PixelType, unsigned char*> {
@@ -16,7 +18,8 @@ private:
 
 public:
     OpenCLImageComparator()
-            : SuperClass("", "compareImages", &comparisonResult) {
+            : SuperClass(ImageComparisonSourceCode, "compareImages",
+                    &comparisonResult) {
     }
 
     bool imagesAreEqual(const ImageType& firstImage,
@@ -24,7 +27,13 @@ public:
         if (dimensionsDontMatch(firstImage, secondImage))
             return false;
 
-        return true;
+        auto& nonConstSecondImage = const_cast<ImageType&>(secondImage);
+
+        comparisonResult = 0;
+
+        SuperClass::apply(firstImage, nonConstSecondImage);
+
+        return comparisonResult != 1;
     }
 
 private:
