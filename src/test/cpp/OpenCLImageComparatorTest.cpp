@@ -21,3 +21,9 @@ TEST(OpenCLImageComparatorTest, isOpenCLFilter) {
 
     AssertThat<ComparatorType>::isSubClass(Of<ParentClass>());
 }
+
+TEST(OpenCLImageComparatorTest, hasDefaultConstructor) {
+    using ComparatorType = OpenCLImageComparator<DummyType>;
+
+    AssertThat<ComparatorType>::isConstructible(WithoutParameters());
+}
