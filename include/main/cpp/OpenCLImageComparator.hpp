@@ -19,7 +19,11 @@ public:
             : SuperClass("", "compareImages", &comparisonResult) {
     }
 
-    bool imagesAreEqual(const ImageType&, const ImageType&) {
+    bool imagesAreEqual(const ImageType& firstImage,
+            const ImageType& secondImage) {
+        if (firstImage.getWidth() != secondImage.getWidth())
+            return false;
+
         return true;
     }
 };
