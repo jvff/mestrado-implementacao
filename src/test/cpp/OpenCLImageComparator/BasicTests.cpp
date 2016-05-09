@@ -7,7 +7,7 @@
 #include "OpenCLFilter.hpp"
 #include "OpenCLImageComparator.hpp"
 
-#include "DummyTypes.hpp"
+#include "../DummyTypes.hpp"
 
 TEST(OpenCLImageComparatorTest, classTemplateExists) {
     using ComparatorType = OpenCLImageComparator<DummyType>;
