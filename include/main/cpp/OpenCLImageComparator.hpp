@@ -21,10 +21,17 @@ public:
 
     bool imagesAreEqual(const ImageType& firstImage,
             const ImageType& secondImage) {
-        if (firstImage.getWidth() != secondImage.getWidth())
+        if (dimensionsDontMatch(firstImage, secondImage))
             return false;
 
         return true;
+    }
+
+private:
+    bool dimensionsDontMatch(const ImageType& firstImage,
+            const ImageType& secondImage) {
+        return firstImage.getWidth() != secondImage.getWidth()
+            || firstImage.getHeight() != secondImage.getHeight();
     }
 };
 
