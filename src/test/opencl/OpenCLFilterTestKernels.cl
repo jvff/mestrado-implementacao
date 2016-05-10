@@ -36,3 +36,21 @@ __kernel void labelsPixelsInOrderWithLocalId(__read_only image2d_t sourceImage,
 
     write_imageui(destinationImage, coordinate, channels);
 }
+
+__kernel void sumPixelValues(__read_only image2d_t sourceImage,
+        __read_only image2d_t destinationImage, __global uint* result) {
+    int2 coordinate;
+    uint4 firstPixel;
+    uint4 secondPixel;
+    uint sum;
+
+    coordinate.x = get_global_id(0);
+    coordinate.y = get_global_id(1);
+
+    firstPixel = read_imageui(sourceImage, coordinate);
+    secondPixel = read_imageui(destinationImage, coordinate);
+
+    sum = firstPixel.x + secondPixel.x;
+
+    atomic_add(result, sum);
+}

@@ -130,3 +130,28 @@ TEST_C(appliesKernelWithCustomLocalWorkSizeToImages) {
 
     verifyImagePixels(destinationImage, pixelsInQuartetInOrder(width, height));
 }
+
+TEST_C(kernelCanReturnValues) {
+    using CustomFilterType = OpenCLFilter<PixelType, unsigned int*>;
+
+    auto resultBuffer = 0u;
+    auto expectedResult = 1u + 2u + 3u + 4u;
+
+    auto width = 2u;
+    auto height = 1u;
+    auto kernelFunctionName = "sumPixelValues";
+
+    auto filter = CustomFilterType(kernelSourceCode, kernelFunctionName,
+            &resultBuffer);
+    auto sourceImage = ImageType(width, height, context, commandQueue);
+    auto destinationImage = ImageType(width, height, context, commandQueue);
+
+    sourceImage.setPixel(0, 0, 1);
+    sourceImage.setPixel(1, 0, 2);
+    destinationImage.setPixel(0, 0, 3);
+    destinationImage.setPixel(1, 0, 4);
+
+    filter.apply(sourceImage, destinationImage);
+
+    assertThat(resultBuffer).isEqualTo(expectedResult);
+}
