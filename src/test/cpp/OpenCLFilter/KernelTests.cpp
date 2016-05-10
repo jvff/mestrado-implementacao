@@ -1,6 +1,6 @@
-#include "OpenCLFilterTest.hpp"
+#include "OpenCLFilterKernelTests.hpp"
 
-TEST_F(OpenCLFilterTest, appliesKernelToImages) {
+TEST_C(appliesKernelToImages) {
     auto width = 4u;
     auto height = 5u;
     auto kernelFunctionName = "labelPixelsWithCoordinateSum";
@@ -14,7 +14,7 @@ TEST_F(OpenCLFilterTest, appliesKernelToImages) {
     verifyImagePixels(destinationImage, coordinateSumPixels);
 }
 
-TEST_F(OpenCLFilterTest, appliesKernelToImageAndReturnsCreatedImage) {
+TEST_C(appliesKernelToImageAndReturnsCreatedImage) {
     auto width = 4u;
     auto height = 5u;
     auto kernelFunctionName = "labelPixelsWithCoordinateSum";
@@ -30,7 +30,7 @@ TEST_F(OpenCLFilterTest, appliesKernelToImageAndReturnsCreatedImage) {
     verifyImagePixels(resultImage, coordinateSumPixels);
 }
 
-TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
+TEST_C(appliesKernelWithParametersToImages) {
     using CustomFilterType = OpenCLFilter<unsigned int, unsigned int>;
 
     auto width = 4u;
@@ -46,7 +46,7 @@ TEST_F(OpenCLFilterTest, appliesKernelWithParametersToImages) {
     verifyImagePixels(destinationImage, pixelsInOrder(width));
 }
 
-TEST_F(OpenCLFilterTest, byDefaultHasOneWorkItemPerPixel) {
+TEST_C(byDefaultHasOneWorkItemPerPixel) {
     using CustomFilterType = FakeOpenCLFilter<unsigned int>;
 
     auto width = 100;
@@ -63,7 +63,7 @@ TEST_F(OpenCLFilterTest, byDefaultHasOneWorkItemPerPixel) {
     assertThat(defaultGlobalWorkSize).isEqualTo(oneWorkItemPerPixel);
 }
 
-TEST_F(OpenCLFilterTest, appliesKernelWithCustomGlobalWorkSizeToImages) {
+TEST_C(appliesKernelWithCustomGlobalWorkSizeToImages) {
     using CustomFilterType = OpenCLFilterOnQuarterImage<unsigned int,
             unsigned int>;
 
@@ -96,7 +96,7 @@ TEST_F(OpenCLFilterTest, appliesKernelWithCustomGlobalWorkSizeToImages) {
             bottomHalf);
 }
 
-TEST_F(OpenCLFilterTest, hasNoDefaultLocalWorkSize) {
+TEST_C(hasNoDefaultLocalWorkSize) {
     using CustomFilterType = FakeOpenCLFilter<unsigned int>;
 
     auto filter = CustomFilterType(kernelSourceCode, "");
@@ -109,7 +109,7 @@ TEST_F(OpenCLFilterTest, hasNoDefaultLocalWorkSize) {
     assertThat(defaultLocalWorkSize).isEqualTo(cl::NullRange);
 }
 
-TEST_F(OpenCLFilterTest, appliesKernelWithCustomLocalWorkSizeToImages) {
+TEST_C(appliesKernelWithCustomLocalWorkSizeToImages) {
     using CustomFilterType = OpenCLFilterOnImageQuarters<unsigned int,
             unsigned int>;
 

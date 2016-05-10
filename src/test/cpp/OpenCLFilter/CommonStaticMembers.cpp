@@ -1,5 +1,5 @@
-#include "OpenCLFilterTest.hpp"
+#include "OpenCLFilterKernelTests.hpp"
 
-cl::Context OpenCLFilterTest::context;
-cl::CommandQueue OpenCLFilterTest::commandQueue;
-std::string OpenCLFilterTest::kernelSourceCode;
+cl::Context OpenCLFilterKernelTests::context;
+cl::CommandQueue OpenCLFilterKernelTests::commandQueue;
+std::string OpenCLFilterKernelTests::kernelSourceCode;

@@ -1,5 +1,5 @@
-#ifndef OPEN_C_L_FILTER_TEST_HPP
-#define OPEN_C_L_FILTER_TEST_HPP
+#ifndef OPEN_C_L_FILTER_KERNEL_TESTS_HPP
+#define OPEN_C_L_FILTER_KERNEL_TESTS_HPP
 
 #include <functional>
 #include <string>
@@ -22,7 +22,7 @@
 
 #include "../cl/OpenCLFilterTestKernels.h"
 
-class OpenCLFilterTest : public ::testing::Test {
+class OpenCLFilterKernelTests : public ::testing::Test {
 protected:
     using PixelType = unsigned int;
     using ImageType = OpenCLImage<PixelType>;
@@ -99,5 +99,8 @@ protected:
         }
     }
 };
+
+#define TEST_C(TestName) \
+    TEST_F(OpenCLFilterKernelTests, TestName)
 
 #endif
