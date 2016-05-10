@@ -1,10 +1,10 @@
-#include "OpenCLFilterTest.hpp"
+#include "OpenCLFilterBasicTests.hpp"
 
-TEST_F(OpenCLFilterTest, classTemplateExists) {
+TEST_C(classTemplateExists) {
     AssertThat<FilterType>::isClassOrStruct();
 }
 
-TEST_F(OpenCLFilterTest, classTemplateHasVariadicTemplateArguments) {
+TEST_C(classTemplateHasVariadicTemplateArguments) {
     using FirstExtraParameter = unsigned int;
     using SecondExtraParameter = char;
     using ThirdExtraParameter = float;
@@ -14,13 +14,13 @@ TEST_F(OpenCLFilterTest, classTemplateHasVariadicTemplateArguments) {
     AssertThat<FilterTypeWithExtraParameters>::isClassOrStruct();
 }
 
-TEST_F(OpenCLFilterTest, isFilter) {
+TEST_C(isFilter) {
     using ParentFilter = AbstractFilter<ImageType, ImageType>;
 
     AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
 }
 
-TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCode) {
+TEST_C(isConstructibleWithKernelSourceCode) {
     using KernelSourceCodeParameter = const std::string&;
     using KernelFunctionNameParameter = const std::string&;
 
@@ -28,7 +28,7 @@ TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCode) {
             With<KernelSourceCodeParameter, KernelFunctionNameParameter>());
 }
 
-TEST_F(OpenCLFilterTest, isConstructibleWithKernelSourceCodeAndParameters) {
+TEST_C(isConstructibleWithKernelSourceCodeAndParameters) {
     using KernelSourceCodeParameter = const std::string&;
     using KernelFunctionNameParameter = const std::string&;
     using FirstKernelParameter = unsigned int;
