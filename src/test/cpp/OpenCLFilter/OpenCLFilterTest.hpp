@@ -14,12 +14,13 @@
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
 
-#include "AssertionsSpecificForCLNDRange.hpp"
+#include "../AssertionsSpecificForCLNDRange.hpp"
+
 #include "FakeOpenCLFilter.hpp"
 #include "OpenCLFilterOnImageQuarters.hpp"
 #include "OpenCLFilterOnQuarterImage.hpp"
 
-#include "cl/OpenCLFilterTestKernels.h"
+#include "../cl/OpenCLFilterTestKernels.h"
 
 class OpenCLFilterTest : public ::testing::Test {
 protected:
