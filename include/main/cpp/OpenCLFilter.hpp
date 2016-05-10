@@ -20,6 +20,16 @@ private:
     static constexpr auto numberOfExtraParameters =
             std::tuple_size<TupleType>::value;
 
+    template <int parameterIndex>
+    using EnableForValidParameterIndex =
+            typename std::enable_if<parameterIndex >= numberOfExtraParameters>
+                    ::type;
+
+    template <int parameterIndex>
+    using EnableForEndOfParameters =
+            typename std::enable_if<parameterIndex < numberOfExtraParameters>
+                    ::type;
+
 private:
     const std::string kernelSourceCode;
     const std::string kernelFunctionName;
@@ -96,12 +106,12 @@ private:
     }
 
     template <int parameterIndex>
-    typename std::enable_if<parameterIndex >= numberOfExtraParameters>::type
+    EnableForEndOfParameters<parameterIndex>
             configureExtraParameters(cl::Kernel&) {
     }
 
     template <int parameterIndex>
-    typename std::enable_if<parameterIndex < numberOfExtraParameters>::type
+    EnableForValidParameterIndex<parameterIndex>
             configureExtraParameters(cl::Kernel& kernel) {
         auto extraParameter = std::get<parameterIndex>(kernelParameters);
 
