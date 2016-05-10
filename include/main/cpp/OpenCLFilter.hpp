@@ -1,13 +1,11 @@
 #ifndef OPEN_C_L_FILTER_HPP
 #define OPEN_C_L_FILTER_HPP
 
-#include <tuple>
-#include <type_traits>
-
 #include <CL/cl.hpp>
 
 #include "AbstractFilter.hpp"
 #include "OpenCLImage.hpp"
+#include "OpenCLKernelParameters.hpp"
 
 template <typename PixelType, typename... KernelParameterTypes>
 class OpenCLFilter : public AbstractFilter<OpenCLImage<PixelType>,
@@ -15,26 +13,12 @@ class OpenCLFilter : public AbstractFilter<OpenCLImage<PixelType>,
 private:
     using ImageType = OpenCLImage<PixelType>;
     using SuperClass = AbstractFilter<ImageType, ImageType>;
-    using TupleType = std::tuple<KernelParameterTypes...>;
-
-    static constexpr auto numberOfExtraParameters =
-            std::tuple_size<TupleType>::value;
-
-    template <int parameterIndex>
-    using EnableForValidParameterIndex =
-            typename std::enable_if<parameterIndex >= numberOfExtraParameters>
-                    ::type;
-
-    template <int parameterIndex>
-    using EnableForEndOfParameters =
-            typename std::enable_if<parameterIndex < numberOfExtraParameters>
-                    ::type;
 
 private:
     const std::string kernelSourceCode;
     const std::string kernelFunctionName;
 
-    TupleType kernelParameters;
+    OpenCLKernelParameters<KernelParameterTypes...> kernelParameters;
 
 public:
     OpenCLFilter(const std::string& kernelSourceCode,
@@ -48,11 +32,16 @@ public:
     void apply(const ImageType& sourceImage, ImageType& destinationImage)
             override {
         auto& context = destinationImage.getContext();
+        auto& commandQueue = destinationImage.getCommandQueue();
         auto kernel = buildKernel(context);
 
-        configureParameters(kernel, sourceImage, destinationImage);
+        configureParameters(context, kernel, sourceImage, destinationImage);
 
-        runKernel(kernel, sourceImage, destinationImage);
+        kernelParameters.sendPointerData(commandQueue);
+        runKernel(commandQueue, kernel, sourceImage, destinationImage);
+        kernelParameters.retrievePointerData(commandQueue);
+
+        commandQueue.finish();
     }
 
     using SuperClass::apply;
@@ -94,35 +83,19 @@ private:
         return cl::Kernel(program, kernelFunctionName.c_str());
     }
 
-    void configureParameters(cl::Kernel& kernel, const ImageType& sourceImage,
-            ImageType& destinationImage) {
+    void configureParameters(cl::Context& context, cl::Kernel& kernel,
+            const ImageType& sourceImage, ImageType& destinationImage) {
         auto sourceImageBuffer = sourceImage.getImageBuffer();
         auto destinationImageBuffer = destinationImage.getImageBuffer();
 
         kernel.setArg(0, sourceImageBuffer);
         kernel.setArg(1, destinationImageBuffer);
 
-        configureExtraParameters<0>(kernel);
+        kernelParameters.configureKernel(context, kernel, 2u);
     }
 
-    template <int parameterIndex>
-    EnableForEndOfParameters<parameterIndex>
-            configureExtraParameters(cl::Kernel&) {
-    }
-
-    template <int parameterIndex>
-    EnableForValidParameterIndex<parameterIndex>
-            configureExtraParameters(cl::Kernel& kernel) {
-        auto extraParameter = std::get<parameterIndex>(kernelParameters);
-
-        kernel.setArg(parameterIndex + 2, extraParameter);
-
-        configureExtraParameters<parameterIndex + 1>(kernel);
-    }
-
-    void runKernel(cl::Kernel& kernel, const ImageType& sourceImage,
-            ImageType& destinationImage) {
-        auto commandQueue = destinationImage.getCommandQueue();
+    void runKernel(cl::CommandQueue& commandQueue, cl::Kernel& kernel,
+            const ImageType& sourceImage, ImageType& destinationImage) {
         auto globalOffset = cl::NullRange;
         auto globalWorkSize = getGlobalWorkSize(sourceImage, destinationImage);
         auto localWorkSize = getLocalWorkSize(sourceImage, destinationImage);
