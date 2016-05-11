@@ -7,22 +7,22 @@ TEST_C(classTemplateExists) {
 }
 
 TEST_C(hasVariadicTemplateParameters) {
-    using FirstParameter = DummyTypes<0>;
-    using SecondParameter = DummyTypes<1>*;
-    using ThirdParameter = DummyTypes<2>;
-    using DummyParameters = OpenCLKernelParameters<FirstParameter,
-            SecondParameter, ThirdParameter>;
+    using FirstParameterType = DummyTypes<0>;
+    using SecondParameterType = DummyTypes<1>*;
+    using ThirdParameterType = DummyTypes<2>;
+    using DummyParameters = OpenCLKernelParameters<FirstParameterType,
+            SecondParameterType, ThirdParameterType>;
 
     AssertThat<DummyParameters>::isClassOrStruct();
 }
 
 TEST_C(hasValueConstructor) {
     using ContextParameter = const cl::Context&;
-    using FirstParameter = int;
-    using SecondParameter = char;
-    using DummyParameters = OpenCLKernelParameters<FirstParameter,
-            SecondParameter>;
+    using FirstParameterType = int;
+    using SecondParameterType = char;
+    using DummyParameters = OpenCLKernelParameters<FirstParameterType,
+            SecondParameterType>;
 
     AssertThat<DummyParameters>::isConstructible(
-            With<ContextParameter, FirstParameter, SecondParameter>());
+            With<ContextParameter, FirstParameterType, SecondParameterType>());
 }
