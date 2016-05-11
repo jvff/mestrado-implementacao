@@ -1,6 +1,8 @@
 #ifndef OPEN_C_L_KERNEL_PARAMETERS_BASIC_TESTS_HPP
 #define OPEN_C_L_KERNEL_PARAMETERS_BASIC_TESTS_HPP
 
+#include <CL/cl.hpp>
+
 #include <gtest/gtest.h>
 
 #include "asserts.hpp"

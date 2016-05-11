@@ -15,3 +15,14 @@ TEST_C(hasVariadicTemplateParameters) {
 
     AssertThat<DummyParameters>::isClassOrStruct();
 }
+
+TEST_C(hasValueConstructor) {
+    using ContextParameter = const cl::Context&;
+    using FirstParameter = int;
+    using SecondParameter = char;
+    using DummyParameters = OpenCLKernelParameters<FirstParameter,
+            SecondParameter>;
+
+    AssertThat<DummyParameters>::isConstructible(
+            With<ContextParameter, FirstParameter, SecondParameter>());
+}
