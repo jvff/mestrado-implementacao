@@ -24,3 +24,23 @@ TEST_C(setsSingleParameter) {
 
     fakeKernel.verifyArguments(0, parameterValue);
 }
+
+TEST_C(setsFourParameters) {
+    using ParametersType =
+            OpenCLKernelParameters<char, float, int, unsigned int>;
+
+    auto fakeContext = cl::Context();
+    auto fakeKernel = FakeKernel();
+
+    auto firstValue = 'z';
+    auto secondValue = -0.004f;
+    auto thirdValue = -20;
+    auto fourthValue = 35u;
+    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
+            thirdValue, fourthValue);
+
+    parameters.configureKernel(fakeKernel);
+
+    fakeKernel.verifyArguments(0, firstValue, 1, secondValue, 2, thirdValue,
+            3, fourthValue);
+}
