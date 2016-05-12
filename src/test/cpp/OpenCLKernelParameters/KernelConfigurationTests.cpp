@@ -3,8 +3,6 @@
 TEST_C(doesNotSetParametersIfNonAreSpecified) {
     using EmptyParametersType = OpenCLKernelParameters<>;
 
-    auto fakeContext = cl::Context();
-    auto fakeKernel = FakeKernel();
     auto emptyParameters = EmptyParametersType(fakeContext);
 
     emptyParameters.configureKernel(fakeKernel);
@@ -15,8 +13,6 @@ TEST_C(doesNotSetParametersIfNonAreSpecified) {
 TEST_C(setsSingleParameter) {
     using SingleParametersType = OpenCLKernelParameters<unsigned int>;
 
-    auto fakeContext = cl::Context();
-    auto fakeKernel = FakeKernel();
     auto parameterValue = 150u;
     auto parameters = SingleParametersType(fakeContext, parameterValue);
 
@@ -28,9 +24,6 @@ TEST_C(setsSingleParameter) {
 TEST_C(setsFourParameters) {
     using ParametersType =
             OpenCLKernelParameters<char, float, int, unsigned int>;
-
-    auto fakeContext = cl::Context();
-    auto fakeKernel = FakeKernel();
 
     auto firstValue = 'z';
     auto secondValue = -0.004f;

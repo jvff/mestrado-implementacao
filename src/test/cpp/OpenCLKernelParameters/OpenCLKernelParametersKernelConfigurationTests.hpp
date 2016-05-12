@@ -13,7 +13,7 @@
 #include "OpenCLKernelParameters.hpp"
 
 #define TEST_C(TestName) \
-    TEST(OpenCLKernelParametersKernelConfigurationTests, TestName)
+    TEST_F(OpenCLKernelParametersKernelConfigurationTests, TestName)
 
 class Wrapper {
 public:
@@ -101,6 +101,12 @@ private:
         verifyArgumentsAt(indicesPosition, valuesPosition,
                 remainingArguments...);
     }
+};
+
+class OpenCLKernelParametersKernelConfigurationTests : public ::testing::Test {
+protected:
+    cl::Context fakeContext;
+    FakeKernel fakeKernel;
 };
 
 #endif
