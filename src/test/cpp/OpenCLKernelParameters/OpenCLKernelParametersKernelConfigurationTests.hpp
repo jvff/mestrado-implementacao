@@ -44,6 +44,24 @@ public:
     }
 };
 
+class FakeBuffer {
+private:
+    const cl::Context& context;
+    cl_mem_flags flags;
+    std::size_t size;
+
+public:
+    FakeBuffer(const cl::Context& context, cl_mem_flags flags, std::size_t size)
+            : context(context), flags(flags), size(size) {
+    }
+
+    bool operator==(const FakeBuffer& otherBuffer) const {
+        return &context == &otherBuffer.context
+            && flags == otherBuffer.flags
+            && size == otherBuffer.size;
+    }
+};
+
 class FakeKernel {
 private:
     using WrapperPointer = std::shared_ptr<Wrapper>;

@@ -37,3 +37,33 @@ TEST_C(setsFourParameters) {
     fakeKernel.verifyArguments(0, firstValue, 1, secondValue, 2, thirdValue,
             3, fourthValue);
 }
+
+TEST_C(replacesPointerWithBuffer) {
+    using ParametersType =
+            OpenCLKernelParameters<char*, int, float*, unsigned int*, char>;
+
+    auto charValue = 'y';
+    auto floatValue = 3.1f;
+    auto uintValue = 912u;
+
+    auto firstValue = &charValue;
+    auto secondValue = -20;
+    auto thirdValue = &floatValue;
+    auto fourthValue = &uintValue;
+    auto fifthValue = 'x';
+
+    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
+            thirdValue, fourthValue, fifthValue);
+
+    parameters.configureKernel<FakeKernel, FakeBuffer>(fakeKernel);
+
+    auto firstValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*firstValue));
+    auto thirdValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*thirdValue));
+    auto fourthValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*fourthValue));
+
+    fakeKernel.verifyArguments(0, firstValueBuffer, 1, secondValue,
+            2, thirdValueBuffer, 3, fourthValueBuffer, 4, fifthValue);
+}
