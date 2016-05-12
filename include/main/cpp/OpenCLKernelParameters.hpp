@@ -37,9 +37,12 @@ public:
 private:
     template <int parameterIndex, typename KernelType>
     EnableForValid<parameterIndex> configureParameters(KernelType& kernel) {
+        const auto nextParameterIndex = parameterIndex + 1;
         auto parameterValue = std::get<parameterIndex>(parameters);
 
         kernel.setArg(parameterIndex, parameterValue);
+
+        configureParameters<nextParameterIndex>(kernel);
     }
 
     template <int parameterIndex, typename KernelType>
