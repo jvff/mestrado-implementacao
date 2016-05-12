@@ -11,3 +11,16 @@ TEST_C(doesNotSetParametersIfNonAreSpecified) {
 
     fakeKernel.verifyArguments();
 }
+
+TEST_C(setsSingleParameter) {
+    using SingleParametersType = OpenCLKernelParameters<unsigned int>;
+
+    auto fakeContext = cl::Context();
+    auto fakeKernel = FakeKernel();
+    auto parameterValue = 150u;
+    auto parameters = SingleParametersType(fakeContext, parameterValue);
+
+    parameters.configureKernel(fakeKernel);
+
+    fakeKernel.verifyArguments(0, parameterValue);
+}
