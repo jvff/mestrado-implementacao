@@ -8,6 +8,10 @@ class OpenCLKernelParameters {
 public:
     OpenCLKernelParameters(const cl::Context&, Parameters...) {
     }
+
+    template <typename KernelType>
+    void configureKernel(KernelType&) {
+    }
 };
 
 #endif
