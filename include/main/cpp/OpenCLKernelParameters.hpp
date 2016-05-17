@@ -5,8 +5,9 @@
 
 #include <CL/cl.hpp>
 
-template <typename... Parameters>
-class OpenCLKernelParameters {
+template <typename KernelType, typename BufferType, typename CommandQueueType,
+        typename... Parameters>
+class TestableOpenCLKernelParameters {
 private:
     using TupleType = std::tuple<Parameters...>;
 
@@ -28,7 +29,7 @@ private:
     template <int parameterIndex>
     using ParameterIsPointer = std::is_pointer<ParameterType<parameterIndex> >;
 
-    template <int parameterIndex, typename BufferType>
+    template <int parameterIndex>
     using EnableForPointerParameter =
             typename std::enable_if<ParameterIsPointer<parameterIndex>::value,
                     BufferType>::type;
@@ -43,32 +44,32 @@ private:
     TupleType parameters;
 
 public:
-    OpenCLKernelParameters(const cl::Context& context, Parameters... parameters)
+    TestableOpenCLKernelParameters(const cl::Context& context,
+            Parameters... parameters)
             : context(context), parameters(parameters...) {
     }
 
-    template <typename KernelType, typename BufferType = cl::Buffer>
     void configureKernel(KernelType& kernel) {
-        configureParameters<0, KernelType, BufferType>(kernel);
+        configureParameters<0>(kernel);
     }
 
 private:
-    template <int parameterIndex, typename KernelType, typename BufferType>
+    template <int parameterIndex>
     EnableForValid<parameterIndex> configureParameters(KernelType& kernel) {
         const auto nextParameterIndex = parameterIndex + 1;
-        auto parameterValue = getParameter<parameterIndex, BufferType>();
+        auto parameterValue = getParameter<parameterIndex>();
 
         kernel.setArg(parameterIndex, parameterValue);
 
-        configureParameters<nextParameterIndex, KernelType, BufferType>(kernel);
+        configureParameters<nextParameterIndex>(kernel);
     }
 
-    template <int parameterIndex, typename KernelType, typename BufferType>
+    template <int parameterIndex>
     EnableForInvalid<parameterIndex> configureParameters(KernelType&) {
     }
 
-    template <int parameterIndex, typename BufferType>
-    EnableForPointerParameter<parameterIndex, BufferType> getParameter() {
+    template <int parameterIndex>
+    EnableForPointerParameter<parameterIndex> getParameter() {
         using PointerType = ParameterType<parameterIndex>;
         using ValueType = typename std::remove_pointer<PointerType>::type;
 
@@ -77,10 +78,15 @@ private:
         return BufferType(context, CL_MEM_READ_WRITE, size);
     }
 
-    template <int parameterIndex, typename BufferType>
+    template <int parameterIndex>
     EnableForNonPointerParameter<parameterIndex> getParameter() {
         return std::get<parameterIndex>(parameters);
     }
 };
+
+template <typename... ParameterTypes>
+using OpenCLKernelParameters =
+        TestableOpenCLKernelParameters<cl::Kernel, cl::Buffer, cl::CommandQueue,
+                ParameterTypes...>;
 
 #endif
