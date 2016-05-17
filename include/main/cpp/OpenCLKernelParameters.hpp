@@ -1,6 +1,7 @@
 #ifndef OPEN_C_L_KERNEL_PARAMETERS_HPP
 #define OPEN_C_L_KERNEL_PARAMETERS_HPP
 
+#include <list>
 #include <tuple>
 
 #include <CL/cl.hpp>
@@ -39,9 +40,16 @@ private:
             typename std::enable_if<!ParameterIsPointer<parameterIndex>::value,
                     ParameterType<parameterIndex> >::type;
 
+    struct PointerData {
+        BufferType deviceBuffer;
+        std::size_t dataSize;
+        void* hostAddress;
+    };
+
 private:
     const cl::Context& context;
     TupleType parameters;
+    std::list<PointerData> pointerDataList;
 
 public:
     TestableOpenCLKernelParameters(const cl::Context& context,
@@ -51,6 +59,11 @@ public:
 
     void configureKernel(KernelType& kernel) {
         configureParameters<0>(kernel);
+    }
+
+    void sendPointerData(CommandQueueType& commandQueue) {
+        for (auto& pointerData : pointerDataList)
+            sendData(commandQueue, pointerData);
     }
 
 private:
@@ -74,13 +87,27 @@ private:
         using ValueType = typename std::remove_pointer<PointerType>::type;
 
         auto size = sizeof(ValueType);
+        auto buffer = BufferType(context, CL_MEM_READ_WRITE, size);
+        auto address = std::get<parameterIndex>(parameters);
 
-        return BufferType(context, CL_MEM_READ_WRITE, size);
+        pointerDataList.push_back(PointerData{ buffer, size, address });
+
+        return buffer;
     }
 
     template <int parameterIndex>
     EnableForNonPointerParameter<parameterIndex> getParameter() {
         return std::get<parameterIndex>(parameters);
+    }
+
+    void sendData(CommandQueueType& commandQueue, PointerData& pointerData) {
+        constexpr auto nonBlocking = CL_FALSE;
+
+        auto& buffer = pointerData.deviceBuffer;
+        auto size = pointerData.dataSize;
+        auto* address = pointerData.hostAddress;
+
+        commandQueue.enqueueWriteBuffer(buffer, nonBlocking, 0, size, address);
     }
 };
 
