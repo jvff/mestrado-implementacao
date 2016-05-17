@@ -123,6 +123,12 @@ private:
 
 class OpenCLKernelParametersKernelConfigurationTests : public ::testing::Test {
 protected:
+    template <typename... ArgumentTypes>
+    using TestOpenCLKernelParameters =
+            TestableOpenCLKernelParameters<FakeKernel, FakeBuffer,
+                    cl::CommandQueue, ArgumentTypes...>;
+
+protected:
     cl::Context fakeContext;
     FakeKernel fakeKernel;
 };

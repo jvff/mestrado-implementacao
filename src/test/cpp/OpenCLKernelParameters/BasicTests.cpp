@@ -26,3 +26,22 @@ TEST_C(hasValueConstructor) {
     AssertThat<DummyParameters>::isConstructible(
             With<ContextParameter, FirstParameterType, SecondParameterType>());
 }
+
+TEST_C(isAliasToTestableClass) {
+    using FirstParameterType = unsigned int;
+    using SecondParameterType = float;
+    using ThirdParameterType = short int;
+    using FourthParameterType = char*;
+
+    using KernelType = cl::Kernel;
+    using BufferType = cl::Buffer;
+    using CommandQueueType = cl::CommandQueue;
+
+    using Alias = OpenCLKernelParameters<FirstParameterType,
+            SecondParameterType, ThirdParameterType, FourthParameterType>;
+    using TestableClass = TestableOpenCLKernelParameters<KernelType, BufferType,
+            CommandQueueType, FirstParameterType, SecondParameterType,
+            ThirdParameterType, FourthParameterType>;
+
+    AssertThat<Alias>::isTheSame(As<TestableClass>());
+}

@@ -1,7 +1,7 @@
 #include "OpenCLKernelParametersKernelConfigurationTests.hpp"
 
 TEST_C(doesNotSetParametersIfNonAreSpecified) {
-    using EmptyParametersType = OpenCLKernelParameters<>;
+    using EmptyParametersType = TestOpenCLKernelParameters<>;
 
     auto emptyParameters = EmptyParametersType(fakeContext);
 
@@ -11,7 +11,7 @@ TEST_C(doesNotSetParametersIfNonAreSpecified) {
 }
 
 TEST_C(setsSingleParameter) {
-    using SingleParametersType = OpenCLKernelParameters<unsigned int>;
+    using SingleParametersType = TestOpenCLKernelParameters<unsigned int>;
 
     auto parameterValue = 150u;
     auto parameters = SingleParametersType(fakeContext, parameterValue);
@@ -23,7 +23,7 @@ TEST_C(setsSingleParameter) {
 
 TEST_C(setsFourParameters) {
     using ParametersType =
-            OpenCLKernelParameters<char, float, int, unsigned int>;
+            TestOpenCLKernelParameters<char, float, int, unsigned int>;
 
     auto firstValue = 'z';
     auto secondValue = -0.004f;
@@ -40,7 +40,7 @@ TEST_C(setsFourParameters) {
 
 TEST_C(replacesPointerWithBuffer) {
     using ParametersType =
-            OpenCLKernelParameters<char*, int, float*, unsigned int*, char>;
+            TestOpenCLKernelParameters<char*, int, float*, unsigned int*, char>;
 
     auto charValue = 'y';
     auto floatValue = 3.1f;
@@ -55,7 +55,7 @@ TEST_C(replacesPointerWithBuffer) {
     auto parameters = ParametersType(fakeContext, firstValue, secondValue,
             thirdValue, fourthValue, fifthValue);
 
-    parameters.configureKernel<FakeKernel, FakeBuffer>(fakeKernel);
+    parameters.configureKernel(fakeKernel);
 
     auto firstValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
             sizeof(*firstValue));
