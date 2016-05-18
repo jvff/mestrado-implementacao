@@ -11,29 +11,12 @@
 
 #include "OpenCLKernelParameters.hpp"
 
+#include "OpenCLKernelParametersFakeBuffer.hpp"
 #include "OpenCLKernelParametersWrapper.hpp"
 #include "OpenCLKernelParametersWrapperFor.hpp"
 
 #define TEST_C(TestName) \
     TEST_F(OpenCLKernelParametersKernelConfigurationTests, TestName)
-
-class FakeBuffer {
-private:
-    const cl::Context& context;
-    cl_mem_flags flags;
-    std::size_t size;
-
-public:
-    FakeBuffer(const cl::Context& context, cl_mem_flags flags, std::size_t size)
-            : context(context), flags(flags), size(size) {
-    }
-
-    bool operator==(const FakeBuffer& otherBuffer) const {
-        return &context == &otherBuffer.context
-            && flags == otherBuffer.flags
-            && size == otherBuffer.size;
-    }
-};
 
 class FakeKernel {
 private:
