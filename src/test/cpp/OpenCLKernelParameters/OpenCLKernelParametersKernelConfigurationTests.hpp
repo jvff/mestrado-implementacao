@@ -2,7 +2,6 @@
 #define OPEN_C_L_KERNEL_PARAMETERS_KERNEL_CONFIGURATION_TESTS_HPP
 
 #include <list>
-#include <typeinfo>
 
 #include <CL/cl.hpp>
 
@@ -13,31 +12,10 @@
 #include "OpenCLKernelParameters.hpp"
 
 #include "OpenCLKernelParametersWrapper.hpp"
+#include "OpenCLKernelParametersWrapperFor.hpp"
 
 #define TEST_C(TestName) \
     TEST_F(OpenCLKernelParametersKernelConfigurationTests, TestName)
-
-template <typename T>
-class WrapperFor : public Wrapper {
-private:
-    T value;
-
-public:
-    WrapperFor(T value) : value(value) {
-    }
-
-    virtual bool operator==(const Wrapper& otherWrapper) const override {
-        try {
-            return *this == dynamic_cast<const WrapperFor<T>&>(otherWrapper);
-        } catch (const std::bad_cast&) {
-            return false;
-        }
-    }
-
-    virtual bool operator==(const WrapperFor<T>& otherWrapper) const {
-        return value == otherWrapper.value;
-    }
-};
 
 class FakeBuffer {
 private:
