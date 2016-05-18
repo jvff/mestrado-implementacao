@@ -12,15 +12,10 @@
 
 #include "OpenCLKernelParameters.hpp"
 
+#include "OpenCLKernelParametersWrapper.hpp"
+
 #define TEST_C(TestName) \
     TEST_F(OpenCLKernelParametersKernelConfigurationTests, TestName)
-
-class Wrapper {
-public:
-    virtual bool operator==(const Wrapper&) const {
-        return false;
-    }
-};
 
 template <typename T>
 class WrapperFor : public Wrapper {
