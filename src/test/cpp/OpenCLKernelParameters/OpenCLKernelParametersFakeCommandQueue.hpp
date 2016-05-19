@@ -29,13 +29,12 @@ private:
         }
     };
 
-    using FakeReadBufferCommand =
+    using FakeReadOrWriteBufferCommand =
             FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
                     void*>;
 
-    using FakeWriteBufferCommand =
-            FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
-                    void*>;
+    using FakeReadBufferCommand = FakeReadOrWriteBufferCommand;
+    using FakeWriteBufferCommand = FakeReadOrWriteBufferCommand;
 
 private:
     std::list<FakeReadBufferCommand> readBufferCommandList;
@@ -44,45 +43,60 @@ private:
 public:
     cl_int enqueueReadBuffer(const FakeBuffer& buffer, cl_bool blocking,
             std::size_t offset, std::size_t size, void* address) {
-        auto command = FakeReadBufferCommand(buffer, blocking, offset, size,
-                address);
-
-        readBufferCommandList.push_back(command);
-
-        return CL_SUCCESS;
+        return enqueueBufferOperation(buffer, blocking, offset, size, address,
+                readBufferCommandList);
     }
 
     cl_int enqueueWriteBuffer(const FakeBuffer& buffer, cl_bool blocking,
             std::size_t offset, std::size_t size, void* address) {
-        auto command = FakeWriteBufferCommand(buffer, blocking, offset, size,
-                address);
-
-        writeBufferCommandList.push_back(command);
-
-        return CL_SUCCESS;
+        return enqueueBufferOperation(buffer, blocking, offset, size, address,
+                writeBufferCommandList);
     }
 
     void verifyReadCommand(const FakeBuffer& buffer, cl_bool blocking,
             std::size_t offset, std::size_t size, void* address) {
-        auto command = FakeReadBufferCommand(buffer, blocking, offset, size,
-                address);
-
-        auto start = readBufferCommandList.begin();
-        auto end = readBufferCommandList.end();
-
-        auto searchResult = find(start, end, command);
-        auto notFound = end;
-
-        assertThat(searchResult).isNotEqualTo(notFound);
+        verifyBufferCommand(buffer, blocking, offset, size, address,
+                readBufferCommandList);
     }
 
     void verifyWriteCommand(const FakeBuffer& buffer, cl_bool blocking,
             std::size_t offset, std::size_t size, void* address) {
-        auto command = FakeWriteBufferCommand(buffer, blocking, offset, size,
-                address);
+        verifyBufferCommand(buffer, blocking, offset, size, address,
+                writeBufferCommandList);
+    }
 
-        auto start = writeBufferCommandList.begin();
-        auto end = writeBufferCommandList.end();
+    template <typename... ParameterTypes>
+    void verifyNonBlockingReadCommands(const ParameterTypes&... parameters) {
+        verifyNonBlockingReadOrWriteCommands(readBufferCommandList,
+                parameters...);
+    }
+
+    template <typename... ParameterTypes>
+    void verifyNonBlockingWriteCommands(const ParameterTypes&... parameters) {
+        verifyNonBlockingReadOrWriteCommands(writeBufferCommandList,
+                parameters...);
+    }
+
+private:
+    cl_int enqueueBufferOperation(const FakeBuffer& buffer, cl_bool blocking,
+            std::size_t offset, std::size_t size, void* address,
+            std::list<FakeReadOrWriteBufferCommand>& commandList) {
+        auto command = FakeReadOrWriteBufferCommand(buffer, blocking, offset,
+                size, address);
+
+        commandList.push_back(command);
+
+        return CL_SUCCESS;
+    }
+
+    void verifyBufferCommand(const FakeBuffer& buffer, cl_bool blocking,
+            std::size_t offset, std::size_t size, void* address,
+            std::list<FakeReadOrWriteBufferCommand>& commandList) {
+        auto command = FakeReadOrWriteBufferCommand(buffer, blocking, offset,
+                size, address);
+
+        auto start = commandList.begin();
+        auto end = commandList.end();
 
         auto searchResult = find(start, end, command);
         auto notFound = end;
@@ -90,38 +104,25 @@ public:
         assertThat(searchResult).isNotEqualTo(notFound);
     }
 
-    void verifyNonBlockingReadCommands() {
+    void verifyNonBlockingReadOrWriteCommands(
+            std::list<FakeReadOrWriteBufferCommand>&) {
     }
 
     template <typename T, typename... RemainingTypes>
-    void verifyNonBlockingReadCommands(const T& value,
-            const FakeBuffer& buffer,
+    void verifyNonBlockingReadOrWriteCommands(
+            std::list<FakeReadOrWriteBufferCommand>& commandList,
+            const T& value, const FakeBuffer& buffer,
             const RemainingTypes&... remainingParameters) {
         const auto nonBlocking = CL_FALSE;
         auto offset = 0;
         auto size = sizeof(value);
         void* address = (void*)&value;
 
-        verifyReadCommand(buffer, nonBlocking, offset, size, address);
+        verifyBufferCommand(buffer, nonBlocking, offset, size, address,
+                commandList);
 
-        verifyNonBlockingReadCommands(remainingParameters...);
-    }
-
-    void verifyNonBlockingWriteCommands() {
-    }
-
-    template <typename T, typename... RemainingTypes>
-    void verifyNonBlockingWriteCommands(const T& value,
-            const FakeBuffer& buffer,
-            const RemainingTypes&... remainingParameters) {
-        const auto nonBlocking = CL_FALSE;
-        auto offset = 0;
-        auto size = sizeof(value);
-        void* address = (void*)&value;
-
-        verifyWriteCommand(buffer, nonBlocking, offset, size, address);
-
-        verifyNonBlockingWriteCommands(remainingParameters...);
+        verifyNonBlockingReadOrWriteCommands(commandList,
+                remainingParameters...);
     }
 };
 
