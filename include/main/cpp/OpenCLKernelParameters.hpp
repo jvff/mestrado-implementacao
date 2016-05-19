@@ -66,6 +66,11 @@ public:
             sendData(commandQueue, pointerData);
     }
 
+    void retrievePointerData(CommandQueueType& commandQueue) {
+        for (auto& pointerData : pointerDataList)
+            retrieveData(commandQueue, pointerData);
+    }
+
 private:
     template <int parameterIndex>
     EnableForValid<parameterIndex> configureParameters(KernelType& kernel) {
@@ -108,6 +113,17 @@ private:
         auto* address = pointerData.hostAddress;
 
         commandQueue.enqueueWriteBuffer(buffer, nonBlocking, 0, size, address);
+    }
+
+    void retrieveData(CommandQueueType& commandQueue,
+            PointerData& pointerData) {
+        constexpr auto nonBlocking = CL_FALSE;
+
+        auto& buffer = pointerData.deviceBuffer;
+        auto size = pointerData.dataSize;
+        auto* address = pointerData.hostAddress;
+
+        commandQueue.enqueueReadBuffer(buffer, nonBlocking, 0, size, address);
     }
 };
 
