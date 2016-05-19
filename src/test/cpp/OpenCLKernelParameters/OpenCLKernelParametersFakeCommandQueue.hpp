@@ -29,14 +29,29 @@ private:
         }
     };
 
+    using FakeReadBufferCommand =
+            FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
+                    void*>;
+
     using FakeWriteBufferCommand =
             FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
                     void*>;
 
 private:
+    std::list<FakeReadBufferCommand> readBufferCommandList;
     std::list<FakeWriteBufferCommand> writeBufferCommandList;
 
 public:
+    cl_int enqueueReadBuffer(const FakeBuffer& buffer, cl_bool blocking,
+            std::size_t offset, std::size_t size, void* address) {
+        auto command = FakeReadBufferCommand(buffer, blocking, offset, size,
+                address);
+
+        readBufferCommandList.push_back(command);
+
+        return CL_SUCCESS;
+    }
+
     cl_int enqueueWriteBuffer(const FakeBuffer& buffer, cl_bool blocking,
             std::size_t offset, std::size_t size, void* address) {
         auto command = FakeWriteBufferCommand(buffer, blocking, offset, size,
@@ -45,6 +60,20 @@ public:
         writeBufferCommandList.push_back(command);
 
         return CL_SUCCESS;
+    }
+
+    void verifyReadCommand(const FakeBuffer& buffer, cl_bool blocking,
+            std::size_t offset, std::size_t size, void* address) {
+        auto command = FakeReadBufferCommand(buffer, blocking, offset, size,
+                address);
+
+        auto start = readBufferCommandList.begin();
+        auto end = readBufferCommandList.end();
+
+        auto searchResult = find(start, end, command);
+        auto notFound = end;
+
+        assertThat(searchResult).isNotEqualTo(notFound);
     }
 
     void verifyWriteCommand(const FakeBuffer& buffer, cl_bool blocking,
@@ -59,6 +88,23 @@ public:
         auto notFound = end;
 
         assertThat(searchResult).isNotEqualTo(notFound);
+    }
+
+    void verifyNonBlockingReadCommands() {
+    }
+
+    template <typename T, typename... RemainingTypes>
+    void verifyNonBlockingReadCommands(const T& value,
+            const FakeBuffer& buffer,
+            const RemainingTypes&... remainingParameters) {
+        const auto nonBlocking = CL_FALSE;
+        auto offset = 0;
+        auto size = sizeof(value);
+        void* address = (void*)&value;
+
+        verifyReadCommand(buffer, nonBlocking, offset, size, address);
+
+        verifyNonBlockingReadCommands(remainingParameters...);
     }
 
     void verifyNonBlockingWriteCommands() {
