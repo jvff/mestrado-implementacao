@@ -11,7 +11,11 @@ private:
     T value;
 
 public:
-    WrapperFor(T value) : value(value) {
+    WrapperFor(const T& value) : value(value) {
+    }
+
+    virtual T& operator*() {
+        return value;
     }
 
     virtual bool operator==(const Wrapper& otherWrapper) const override {

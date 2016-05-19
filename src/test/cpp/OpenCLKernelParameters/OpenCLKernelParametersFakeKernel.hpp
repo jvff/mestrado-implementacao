@@ -10,6 +10,7 @@
 
 #include "asserts.hpp"
 
+#include "OpenCLKernelParametersCapture.hpp"
 #include "OpenCLKernelParametersWrapper.hpp"
 #include "OpenCLKernelParametersWrapperFor.hpp"
 
@@ -69,6 +70,38 @@ private:
 
         verifyArgumentsAt(indicesPosition, valuesPosition,
                 remainingArguments...);
+    }
+
+    template <typename T, typename... RemainingArgumentTypes>
+    void verifyArgumentsAt(IndicesIterator& indicesPosition,
+            ValuesIterator& valuesPosition, unsigned int expectedIndex,
+            Capture<T> valueCapture,
+            RemainingArgumentTypes... remainingArguments) {
+        auto index = *indicesPosition;
+        auto wrappedValue = *valuesPosition;
+        auto& value = *wrappedValue;
+
+        assertThat(index).isEqualTo(expectedIndex);
+
+        captureValue(valueCapture, value);
+
+        ++indicesPosition;
+        ++valuesPosition;
+
+        verifyArgumentsAt(indicesPosition, valuesPosition,
+                remainingArguments...);
+    }
+
+    template <typename T>
+    void captureValue(Capture<T>& capture, Wrapper& wrappedValue) {
+        try {
+            auto valueWrapper = dynamic_cast<WrapperFor<T>&>(wrappedValue);
+            auto value = *valueWrapper;
+
+            capture = value;
+        } catch (const std::bad_cast&) {
+            FAIL() << "Attempt to capture an argument with the wrong type.";
+        }
     }
 };
 
