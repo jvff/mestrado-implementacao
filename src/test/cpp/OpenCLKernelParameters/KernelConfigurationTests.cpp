@@ -85,3 +85,38 @@ TEST_C(replacesPointerWithBuffer) {
     fakeKernel.verifyArguments(0, firstValueBuffer, 1, secondValue,
             2, thirdValueBuffer, 3, fourthValueBuffer, 4, fifthValue);
 }
+
+TEST_C(replacesPointerWithBufferAlsoWithStartingIndex) {
+    using ParametersType =
+            TestOpenCLKernelParameters<int, float*, int*, char, unsigned int*>;
+
+    auto floatValue = -0.17f;
+    auto intValue = -10000;
+    auto uintValue = 82u;
+
+    auto firstValue = -20;
+    auto secondValue = &floatValue;
+    auto thirdValue = &intValue;
+    auto fourthValue = 'b';
+    auto fifthValue = &uintValue;
+
+    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
+            thirdValue, fourthValue, fifthValue);
+
+    auto startingIndex = 8u;
+
+    parameters.configureKernel(fakeKernel, startingIndex);
+
+    auto secondValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*secondValue));
+    auto thirdValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*thirdValue));
+    auto fifthValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
+            sizeof(*fifthValue));
+
+    fakeKernel.verifyArguments(startingIndex, firstValue,
+            startingIndex + 1, secondValueBuffer,
+            startingIndex + 2, thirdValueBuffer,
+            startingIndex + 3, fourthValue,
+            startingIndex + 4, fifthValueBuffer);
+}
