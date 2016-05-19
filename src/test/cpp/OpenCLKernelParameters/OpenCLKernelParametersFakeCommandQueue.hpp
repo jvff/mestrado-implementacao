@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <list>
+#include <tuple>
 
 #include <CL/cl.hpp>
 
@@ -12,31 +13,26 @@
 
 #include "OpenCLKernelParametersFakeBuffer.hpp"
 
-class FakeWriteBufferCommand {
-private:
-    const FakeBuffer& buffer;
-    cl_bool blocking;
-    std::size_t offset;
-    std::size_t size;
-    void* address;
-
-public:
-    FakeWriteBufferCommand(const FakeBuffer& buffer, cl_bool blocking,
-            std::size_t offset, std::size_t size, void* address)
-            : buffer(buffer), blocking(blocking), offset(offset), size(size),
-            address(address) {
-    }
-
-    bool operator==(const FakeWriteBufferCommand& other) {
-        return buffer == other.buffer
-            && blocking == other.blocking
-            && offset == other.offset
-            && size == other.size
-            && address == other.address;
-    }
-};
-
 class FakeCommandQueue {
+private:
+    template <typename... ParameterTypes>
+    class FakeCommand {
+    private:
+        std::tuple<ParameterTypes...> parameters;
+
+    public:
+        FakeCommand(ParameterTypes... parameters) : parameters(parameters...) {
+        }
+
+        bool operator==(const FakeCommand<ParameterTypes...>& other) {
+            return parameters == other.parameters;
+        }
+    };
+
+    using FakeWriteBufferCommand =
+            FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
+                    void*>;
+
 private:
     std::list<FakeWriteBufferCommand> writeBufferCommandList;
 
