@@ -38,6 +38,24 @@ TEST_C(setsFourParameters) {
             3, fourthValue);
 }
 
+TEST_C(setsThreeParametersAfterGivenOffset) {
+    using ParametersType =
+            TestOpenCLKernelParameters<unsigned char, short, unsigned short>;
+
+    unsigned char firstValue = 254;
+    short secondValue = -123;
+    unsigned short thirdValue = 65533;
+    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
+            thirdValue);
+
+    auto startingIndex = 11u;
+
+    parameters.configureKernel(fakeKernel, startingIndex);
+
+    fakeKernel.verifyArguments(startingIndex, firstValue,
+            startingIndex + 1, secondValue, startingIndex + 2, thirdValue);
+}
+
 TEST_C(replacesPointerWithBuffer) {
     using ParametersType =
             TestOpenCLKernelParameters<char*, int, float*, unsigned int*, char>;
