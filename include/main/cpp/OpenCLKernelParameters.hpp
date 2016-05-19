@@ -57,8 +57,8 @@ public:
             : context(context), parameters(parameters...) {
     }
 
-    void configureKernel(KernelType& kernel) {
-        configureParameters<0>(kernel);
+    void configureKernel(KernelType& kernel, unsigned int startingIndex = 0u) {
+        configureParameters<0>(kernel, startingIndex);
     }
 
     void sendPointerData(CommandQueueType& commandQueue) {
@@ -73,17 +73,19 @@ public:
 
 private:
     template <int parameterIndex>
-    EnableForValid<parameterIndex> configureParameters(KernelType& kernel) {
+    EnableForValid<parameterIndex> configureParameters(KernelType& kernel,
+            unsigned int startingIndex) {
         const auto nextParameterIndex = parameterIndex + 1;
         auto parameterValue = getParameter<parameterIndex>();
 
-        kernel.setArg(parameterIndex, parameterValue);
+        kernel.setArg(startingIndex + parameterIndex, parameterValue);
 
-        configureParameters<nextParameterIndex>(kernel);
+        configureParameters<nextParameterIndex>(kernel, startingIndex);
     }
 
     template <int parameterIndex>
-    EnableForInvalid<parameterIndex> configureParameters(KernelType&) {
+    EnableForInvalid<parameterIndex> configureParameters(KernelType&,
+            unsigned int) {
     }
 
     template <int parameterIndex>
