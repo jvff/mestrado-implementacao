@@ -18,9 +18,11 @@ TEST_C(singlePixelImagesAreEqual) {
     firstImage.setPixel(0, 0, 0);
     secondImage.setPixel(0, 0, 0);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(true);
+    assertThat(firstResult).isEqualTo(true);
+    assertThat(secondResult).isEqualTo(true);
 }
 
 TEST_C(imagesWithDifferentWidthsDiffer) {
@@ -32,9 +34,11 @@ TEST_C(imagesWithDifferentWidthsDiffer) {
     secondImage.setPixel(0, 0, 0);
     secondImage.setPixel(1, 0, 0);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(false);
+    assertThat(firstResult).isEqualTo(false);
+    assertThat(secondResult).isEqualTo(false);
 }
 
 TEST_C(imagesWithDifferentHeightsDiffer) {
@@ -46,9 +50,12 @@ TEST_C(imagesWithDifferentHeightsDiffer) {
     secondImage.setPixel(0, 0, 0);
     secondImage.setPixel(0, 1, 0);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(false);
+
+    assertThat(firstResult).isEqualTo(false);
+    assertThat(secondResult).isEqualTo(false);
 }
 
 TEST_C(singlePixelImagesWithDifferentValuesDiffer) {
@@ -59,9 +66,11 @@ TEST_C(singlePixelImagesWithDifferentValuesDiffer) {
     firstImage.setPixel(0, 0, 0);
     secondImage.setPixel(0, 0, 10);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(false);
+    assertThat(firstResult).isEqualTo(false);
+    assertThat(secondResult).isEqualTo(false);
 }
 
 TEST_C(largerImagesAreEqual) {
@@ -72,9 +81,11 @@ TEST_C(largerImagesAreEqual) {
     paintImageWithUniquePixels(firstImage);
     paintImageWithUniquePixels(secondImage);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(true);
+    assertThat(firstResult).isEqualTo(true);
+    assertThat(secondResult).isEqualTo(true);
 }
 
 TEST_C(largerImagesDifferWhenSinglePixelIsDifferent) {
@@ -87,9 +98,11 @@ TEST_C(largerImagesDifferWhenSinglePixelIsDifferent) {
 
     secondImage.setPixel(5, 3, 0u);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(false);
+    assertThat(firstResult).isEqualTo(false);
+    assertThat(secondResult).isEqualTo(false);
 }
 
 TEST_C(largerImagesDifferWhenTwoPixelsAreDifferent) {
@@ -103,7 +116,9 @@ TEST_C(largerImagesDifferWhenTwoPixelsAreDifferent) {
     secondImage.setPixel(5, 3, 0u);
     secondImage.setPixel(6, 4, 0u);
 
-    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+    auto firstResult = comparator.imagesAreEqual(firstImage, secondImage);
+    auto secondResult = comparator.imagesAreEqual(secondImage, firstImage);
 
-    assertThat(result).isEqualTo(false);
+    assertThat(firstResult).isEqualTo(false);
+    assertThat(secondResult).isEqualTo(false);
 }
