@@ -47,18 +47,17 @@ private:
     };
 
 private:
-    const cl::Context& context;
     TupleType parameters;
     std::list<PointerData> pointerDataList;
 
 public:
-    TestableOpenCLKernelParameters(const cl::Context& context,
-            Parameters... parameters)
-            : context(context), parameters(parameters...) {
+    TestableOpenCLKernelParameters(Parameters... parameters)
+            : parameters(parameters...) {
     }
 
-    void configureKernel(KernelType& kernel, unsigned int startingIndex = 0u) {
-        configureParameters<0>(kernel, startingIndex);
+    void configureKernel(const cl::Context& context, KernelType& kernel,
+            unsigned int startingIndex = 0u) {
+        configureParameters<0>(context, kernel, startingIndex);
     }
 
     void sendPointerData(CommandQueueType& commandQueue) {
@@ -73,23 +72,25 @@ public:
 
 private:
     template <int parameterIndex>
-    EnableForValid<parameterIndex> configureParameters(KernelType& kernel,
+    EnableForValid<parameterIndex> configureParameters(
+            const cl::Context& context, KernelType& kernel,
             unsigned int startingIndex) {
         const auto nextParameterIndex = parameterIndex + 1;
-        auto parameterValue = getParameter<parameterIndex>();
+        auto parameterValue = getParameter<parameterIndex>(context);
 
         kernel.setArg(startingIndex + parameterIndex, parameterValue);
 
-        configureParameters<nextParameterIndex>(kernel, startingIndex);
+        configureParameters<nextParameterIndex>(context, kernel, startingIndex);
     }
 
     template <int parameterIndex>
-    EnableForInvalid<parameterIndex> configureParameters(KernelType&,
-            unsigned int) {
+    EnableForInvalid<parameterIndex> configureParameters(const cl::Context&,
+            KernelType&, unsigned int) {
     }
 
     template <int parameterIndex>
-    EnableForPointerParameter<parameterIndex> getParameter() {
+    EnableForPointerParameter<parameterIndex> getParameter(
+            const cl::Context& context) {
         using PointerType = ParameterType<parameterIndex>;
         using ValueType = typename std::remove_pointer<PointerType>::type;
 
@@ -103,7 +104,8 @@ private:
     }
 
     template <int parameterIndex>
-    EnableForNonPointerParameter<parameterIndex> getParameter() {
+    EnableForNonPointerParameter<parameterIndex> getParameter(
+            const cl::Context&) {
         return std::get<parameterIndex>(parameters);
     }
 
