@@ -63,3 +63,16 @@ TEST_C(singlePixelImagesWithDifferentValuesDiffer) {
 
     assertThat(result).isEqualTo(false);
 }
+
+TEST_C(largerImagesAreEqual) {
+    auto firstImage = ImageType(3, 7, context, commandQueue);
+    auto secondImage = ImageType(3, 7, context, commandQueue);
+    auto comparator = ComparatorType();
+
+    paintImageWithUniquePixels(firstImage);
+    paintImageWithUniquePixels(secondImage);
+
+    auto result = comparator.imagesAreEqual(firstImage, secondImage);
+
+    assertThat(result).isEqualTo(true);
+}

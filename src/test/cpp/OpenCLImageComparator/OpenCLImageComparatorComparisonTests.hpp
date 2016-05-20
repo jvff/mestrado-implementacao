@@ -24,6 +24,15 @@ protected:
         context = cl::Context::getDefault();
         commandQueue = cl::CommandQueue(context, defaultDevice);
     }
+
+protected:
+    void paintImageWithUniquePixels(ImageType& image) {
+        auto width = image.getWidth();
+
+        image = [=] (unsigned int x, unsigned int y) -> PixelType {
+            return x + y * width;
+        };
+    }
 };
 
 #define TEST_C(TestName) \
