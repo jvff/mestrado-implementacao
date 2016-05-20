@@ -3,9 +3,9 @@
 TEST_C(doesNotSetParametersIfNonAreSpecified) {
     using EmptyParametersType = TestOpenCLKernelParameters<>;
 
-    auto emptyParameters = EmptyParametersType(fakeContext);
+    auto emptyParameters = EmptyParametersType();
 
-    emptyParameters.configureKernel(fakeKernel);
+    emptyParameters.configureKernel(fakeContext, fakeKernel);
 
     fakeKernel.verifyArguments();
 }
@@ -14,9 +14,9 @@ TEST_C(setsSingleParameter) {
     using SingleParametersType = TestOpenCLKernelParameters<unsigned int>;
 
     auto parameterValue = 150u;
-    auto parameters = SingleParametersType(fakeContext, parameterValue);
+    auto parameters = SingleParametersType(parameterValue);
 
-    parameters.configureKernel(fakeKernel);
+    parameters.configureKernel(fakeContext, fakeKernel);
 
     fakeKernel.verifyArguments(0, parameterValue);
 }
@@ -29,10 +29,10 @@ TEST_C(setsFourParameters) {
     auto secondValue = -0.004f;
     auto thirdValue = -20;
     auto fourthValue = 35u;
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue, fourthValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue,
+            fourthValue);
 
-    parameters.configureKernel(fakeKernel);
+    parameters.configureKernel(fakeContext, fakeKernel);
 
     fakeKernel.verifyArguments(0, firstValue, 1, secondValue, 2, thirdValue,
             3, fourthValue);
@@ -45,12 +45,11 @@ TEST_C(setsThreeParametersAfterGivenOffset) {
     unsigned char firstValue = 254;
     short secondValue = -123;
     unsigned short thirdValue = 65533;
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue);
 
     auto startingIndex = 11u;
 
-    parameters.configureKernel(fakeKernel, startingIndex);
+    parameters.configureKernel(fakeContext, fakeKernel, startingIndex);
 
     fakeKernel.verifyArguments(startingIndex, firstValue,
             startingIndex + 1, secondValue, startingIndex + 2, thirdValue);
@@ -70,10 +69,10 @@ TEST_C(replacesPointerWithBuffer) {
     auto fourthValue = &uintValue;
     auto fifthValue = 'x';
 
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue, fourthValue, fifthValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue,
+            fourthValue, fifthValue);
 
-    parameters.configureKernel(fakeKernel);
+    parameters.configureKernel(fakeContext, fakeKernel);
 
     auto firstValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
             sizeof(*firstValue));
@@ -100,12 +99,12 @@ TEST_C(replacesPointerWithBufferAlsoWithStartingIndex) {
     auto fourthValue = 'b';
     auto fifthValue = &uintValue;
 
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue, fourthValue, fifthValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue,
+            fourthValue, fifthValue);
 
     auto startingIndex = 8u;
 
-    parameters.configureKernel(fakeKernel, startingIndex);
+    parameters.configureKernel(fakeContext, fakeKernel, startingIndex);
 
     auto secondValueBuffer = FakeBuffer(fakeContext, CL_MEM_READ_WRITE,
             sizeof(*secondValue));

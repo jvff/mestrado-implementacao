@@ -14,10 +14,10 @@ TEST_C(copiesDataFromPointers) {
     auto fourthValue = &uintValue;
     auto fifthValue = 'x';
 
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue, fourthValue, fifthValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue,
+            fourthValue, fifthValue);
 
-    parameters.configureKernel(fakeKernel);
+    parameters.configureKernel(fakeContext, fakeKernel);
     parameters.sendPointerData(fakeCommandQueue);
 
     auto firstValueCapture = Capture<FakeBuffer>();
@@ -50,10 +50,10 @@ TEST_C(copiesDataToPointers) {
     auto fourthValue = &uintValue;
     auto fifthValue = 'x';
 
-    auto parameters = ParametersType(fakeContext, firstValue, secondValue,
-            thirdValue, fourthValue, fifthValue);
+    auto parameters = ParametersType(firstValue, secondValue, thirdValue,
+            fourthValue, fifthValue);
 
-    parameters.configureKernel(fakeKernel);
+    parameters.configureKernel(fakeContext, fakeKernel);
     parameters.retrievePointerData(fakeCommandQueue);
 
     auto firstValueCapture = Capture<FakeBuffer>();
