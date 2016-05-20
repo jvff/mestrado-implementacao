@@ -11,19 +11,12 @@
 #include "Image.hpp"
 #include "OpenCLImage.hpp"
 
-class OpenCLImageTest : public ::testing::Test {
+#include "../AbstractOpenCLTest.hpp"
+
+class OpenCLImageTest : public AbstractOpenCLTest {
 protected:
     using PixelType = unsigned char;
     using ImageType = OpenCLImage<PixelType>;
-
-protected:
-    static cl::Context context;
-    static cl::CommandQueue commandQueue;
-
-protected:
-    static void SetUpTestCase() {
-        context = cl::Context(CL_DEVICE_TYPE_CPU);
-    }
 };
 
 #endif

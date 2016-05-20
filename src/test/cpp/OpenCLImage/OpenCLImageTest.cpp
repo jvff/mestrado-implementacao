@@ -1,8 +1,5 @@
 #include "OpenCLImageTest.hpp"
 
-cl::Context OpenCLImageTest::context;
-cl::CommandQueue OpenCLImageTest::commandQueue;
-
 TEST_F(OpenCLImageTest, classTemplateExists) {
     AssertThat<ImageType>::isClassOrStruct();
 }

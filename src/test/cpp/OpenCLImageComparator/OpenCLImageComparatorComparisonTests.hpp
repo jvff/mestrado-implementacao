@@ -7,23 +7,13 @@
 
 #include "OpenCLImageComparator.hpp"
 
-class OpenCLImageComparatorComparisonTests : public ::testing::Test {
+#include "../AbstractOpenCLTest.hpp"
+
+class OpenCLImageComparatorComparisonTests : public AbstractOpenCLTest {
 protected:
     using PixelType = unsigned int;
     using ImageType = OpenCLImage<PixelType>;
     using ComparatorType = OpenCLImageComparator<PixelType>;
-
-protected:
-    static cl::Context context;
-    static cl::CommandQueue commandQueue;
-
-protected:
-    static void SetUpTestCase() {
-        auto defaultDevice = cl::Device::getDefault();
-
-        context = cl::Context::getDefault();
-        commandQueue = cl::CommandQueue(context, defaultDevice);
-    }
 
 protected:
     void paintImageWithUniquePixels(ImageType& image) {

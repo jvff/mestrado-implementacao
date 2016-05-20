@@ -16,11 +16,12 @@
 #include "SimpleArrayImage.hpp"
 
 #include "../CustomTypedTestMacros.hpp"
+#include "../AbstractOpenCLTest.hpp"
 
 #include "EqualsComparator.hpp"
 
 template <typename Aliases>
-class BinarizationFilterImplementationTest : public ::testing::Test {
+class BinarizationFilterImplementationTest : public AbstractOpenCLTest {
 private:
     using Comparator = typename Aliases::Comparator;
     using DestinationImageType = typename Aliases::DestinationImageType;
@@ -45,18 +46,6 @@ private:
     template <typename ImageType>
     using SpecializationForOpenCLImage = SpecializationForImageType<ImageType,
             unsigned int, unsigned int, cl::Context&, cl::CommandQueue&>;
-
-protected:
-    static cl::Context context;
-    static cl::CommandQueue commandQueue;
-
-public:
-    static void SetUpTestCase() {
-        auto defaultDevice = cl::Device::getDefault();
-
-        context = cl::Context::getDefault();
-        commandQueue = cl::CommandQueue(context, defaultDevice);
-    }
 
 protected:
     Comparator comparator;

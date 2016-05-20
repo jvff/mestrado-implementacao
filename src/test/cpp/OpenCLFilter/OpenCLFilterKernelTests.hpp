@@ -15,6 +15,7 @@
 #include "OpenCLImage.hpp"
 
 #include "../AssertionsSpecificForCLNDRange.hpp"
+#include "../AbstractOpenCLTest.hpp"
 
 #include "FakeOpenCLFilter.hpp"
 #include "OpenCLFilterOnImageQuarters.hpp"
@@ -22,8 +23,10 @@
 
 #include "../cl/OpenCLFilterTestKernels.h"
 
-class OpenCLFilterKernelTests : public ::testing::Test {
+class OpenCLFilterKernelTests : public AbstractOpenCLTest {
 protected:
+    using SuperClass = AbstractOpenCLTest;
+
     using PixelType = unsigned int;
     using ImageType = OpenCLImage<PixelType>;
     using FilterType = OpenCLFilter<PixelType>;
@@ -31,16 +34,11 @@ protected:
     using ImageFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
 protected:
-    static cl::Context context;
-    static cl::CommandQueue commandQueue;
     static std::string kernelSourceCode;
 
 protected:
     static void SetUpTestCase() {
-        auto defaultDevice = cl::Device::getDefault();
-
-        context = cl::Context::getDefault();
-        commandQueue = cl::CommandQueue(context, defaultDevice);
+        SuperClass::SetUpTestCase();
 
         kernelSourceCode = OpenCLFilterTestKernelsSourceCode;
     }

@@ -1,11 +1,5 @@
 #include "BinarizationFilterImplementationTest.hpp"
 
-template <typename Aliases>
-cl::Context BinarizationFilterImplementationTest<Aliases>::context;
-
-template <typename Aliases>
-cl::CommandQueue BinarizationFilterImplementationTest<Aliases>::commandQueue;
-
 using SimpleImagesWithoutComparator =
         AliasesWithoutComparator<
                 Image<int>, SimpleArrayImage<int>, SimpleArrayImage<bool> >;
