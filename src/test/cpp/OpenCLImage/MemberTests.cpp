@@ -1,6 +1,6 @@
-#include "OpenCLImageTest.hpp"
+#include "OpenCLImageMemberTests.hpp"
 
-TEST_F(OpenCLImageTest, contextIsAccessible) {
+TEST_C(contextIsAccessible) {
     const auto image = ImageType(1, 1, context, commandQueue);
 
     auto& imageContext = image.getContext();
@@ -8,7 +8,7 @@ TEST_F(OpenCLImageTest, contextIsAccessible) {
     assertThat(imageContext).isAtSameAddressAs(context);
 }
 
-TEST_F(OpenCLImageTest, commandQueueIsAccessible) {
+TEST_C(commandQueueIsAccessible) {
     const auto image = ImageType(1, 1, context, commandQueue);
 
     auto& imageCommandQueue = image.getCommandQueue();
@@ -16,7 +16,7 @@ TEST_F(OpenCLImageTest, commandQueueIsAccessible) {
     assertThat(imageCommandQueue).isAtSameAddressAs(commandQueue);
 }
 
-TEST_F(OpenCLImageTest, imageBufferIsAccessible) {
+TEST_C(imageBufferIsAccessible) {
     auto width = 42u;
     auto height = 23u;
 
@@ -36,7 +36,7 @@ TEST_F(OpenCLImageTest, imageBufferIsAccessible) {
     assertThat(bufferChannelType).isEqualTo((unsigned int)CL_UNSIGNED_INT8);
 }
 
-TEST_F(OpenCLImageTest, handlesCanBeUsedToCreateNewImage) {
+TEST_C(handlesCanBeUsedToCreateNewImage) {
     const auto firstImage = ImageType(12, 23, context, commandQueue);
     const auto secondImage = ImageType(21, 32, context, commandQueue);
 
