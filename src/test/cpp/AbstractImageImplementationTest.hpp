@@ -9,24 +9,13 @@
 
 #include "Image.hpp"
 
-#include "TestImageFactory.hpp"
+#include "AbstractImageTest.hpp"
 
 template <typename ImageType, typename PixelType>
-class AbstractImageImplementationTest : public ::testing::Test {
+class AbstractImageImplementationTest : public AbstractImageTest<ImageType> {
 protected:
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
-
-protected:
-    static std::shared_ptr<TestImageFactory<ImageType> > imageFactory;
-
-public:
-    static void SetUpTestCase() {
-        imageFactory.reset(new TestImageFactory<ImageType>());
-    }
-
-    static void TearDownTestCase() {
-        imageFactory.reset();
-    }
+    using SuperClass = AbstractImageTest<ImageType>;
 
 protected:
     void testSinglePixel(PixelType value) {
@@ -35,7 +24,7 @@ protected:
 
     void testPixelsWithSameValue(unsigned int width, unsigned int height,
             PixelType value) {
-        auto image = imageFactory->createImage(width, height);
+        auto image = createImage(width, height);
 
         for (unsigned int x = 0; x < width; ++x) {
             for (unsigned int y = 0; y < height; ++y)
@@ -50,7 +39,7 @@ protected:
 
     void testPixels(unsigned int width, unsigned int height,
             const PixelType values[]) {
-        auto image = imageFactory->createImage(width, height);
+        auto image = createImage(width, height);
         const PixelType* pixelIterator = &values[0];
 
         for (unsigned int x = 0; x < width; ++x) {
@@ -68,7 +57,7 @@ protected:
 
     void testPixelsUsingLambda(unsigned int width, unsigned int height,
             PaintFunction values) {
-        auto image = imageFactory->createImage(width, height);
+        auto image = createImage(width, height);
 
         image = values;
 
@@ -108,11 +97,8 @@ protected:
             unsigned int y) = 0;
     virtual void setPixel(ImageType& image, unsigned int x, unsigned int y,
             const PixelType& value) = 0;
-};
 
-template <typename ImageType, typename PixelType>
-std::shared_ptr<TestImageFactory<ImageType> >
-        AbstractImageImplementationTest<ImageType, PixelType>
-                ::imageFactory;
+    using SuperClass::createImage;
+};
 
 #endif
