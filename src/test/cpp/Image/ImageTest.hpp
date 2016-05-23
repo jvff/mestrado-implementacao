@@ -11,8 +11,8 @@
 
 #include "Image.hpp"
 
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
 
 using namespace fakeit;
 
