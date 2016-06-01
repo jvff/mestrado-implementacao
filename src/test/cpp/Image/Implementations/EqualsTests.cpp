@@ -13,7 +13,7 @@ TEST_C(imageIsEqualToItself) {
     assertThat(image).isEqualTo(image);
 }
 
-TEST_C(isComparable) {
+TEST_C(twoImagesAreEqual) {
     auto width = 89u;
     auto height = 78u;
     auto firstImage = createImage(width, height);
