@@ -72,10 +72,5 @@ task testOpencl2c(type: com.janitovff.opencl2cplugin.OpenCL2CTask) {
 task test(type: Exec,
         dependsOn: ['testExecutable', 'checkHeaderGuards', 'opencl2c',
                 'testOpencl2c']) {
-    doFirst {
-        def binary = binaries.getByName 'testExecutable'
-        def executableFile = binary.getExecutableFile()
-
-        commandLine executableFile.toString(), '--gtest_color=yes'
-    }
+    commandLine 'build/binaries/testExecutable/test', '--gtest_color=yes'
 }
