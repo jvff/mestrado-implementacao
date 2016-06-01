@@ -18,7 +18,7 @@ class FakeKernel {
 private:
     using WrapperPointer = std::shared_ptr<Wrapper>;
 
-    using IndicesList = std::list<cl_uint>;
+    using IndicesList = std::list<unsigned int>;
     using ValuesList = std::list<WrapperPointer>;
 
     using IndicesIterator = IndicesList::iterator;

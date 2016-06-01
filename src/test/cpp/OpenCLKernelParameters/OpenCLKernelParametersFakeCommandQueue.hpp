@@ -30,7 +30,7 @@ private:
     };
 
     using FakeReadOrWriteBufferCommand =
-            FakeCommand<const FakeBuffer&, cl_bool, std::size_t, std::size_t,
+            FakeCommand<const FakeBuffer&, bool, std::size_t, std::size_t,
                     void*>;
 
     using FakeReadBufferCommand = FakeReadOrWriteBufferCommand;
@@ -78,7 +78,7 @@ public:
     }
 
 private:
-    cl_int enqueueBufferOperation(const FakeBuffer& buffer, cl_bool blocking,
+    cl_int enqueueBufferOperation(const FakeBuffer& buffer, bool blocking,
             std::size_t offset, std::size_t size, void* address,
             std::list<FakeReadOrWriteBufferCommand>& commandList) {
         auto command = FakeReadOrWriteBufferCommand(buffer, blocking, offset,
@@ -89,7 +89,7 @@ private:
         return CL_SUCCESS;
     }
 
-    void verifyBufferCommand(const FakeBuffer& buffer, cl_bool blocking,
+    void verifyBufferCommand(const FakeBuffer& buffer, bool blocking,
             std::size_t offset, std::size_t size, void* address,
             std::list<FakeReadOrWriteBufferCommand>& commandList) {
         auto command = FakeReadOrWriteBufferCommand(buffer, blocking, offset,
