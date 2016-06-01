@@ -2,7 +2,6 @@
 #define IMPLEMENTATION_TEST_MACROS_HPP
 
 #include <functional>
-#include <tuple>
 
 #include <gtest/gtest.h>
 
@@ -10,9 +9,6 @@
 #include "ImageImplementationTestUsingPixels.hpp"
 #include "ImageImplementationTestUsingValues.hpp"
 #include "ImplementationTestRegistration.hpp"
-
-#define PIXEL_TYPES(...) \
-    using PixelTypesTuple = std::tuple<__VA_ARGS__>
 
 #define IMAGE_IMPLEMENTATION_TEST_CASE(TestCase) \
     DECLARE_IMAGE_IMPLEMENTATION_TEST_FIXTURE(TestCase, UsingCoordinates); \

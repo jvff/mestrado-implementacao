@@ -1,6 +1,5 @@
+#include "AllPixelTypes.hpp"
 #include "ComparisonTests.hpp"
-
-PIXEL_TYPES(int, bool);
 
 TEST_C(isComparable) {
     auto width = 89u;

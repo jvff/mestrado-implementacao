@@ -1,6 +1,5 @@
+#include "AllPixelTypes.hpp"
 #include "StorageTests.hpp"
-
-PIXEL_TYPES(int, bool);
 
 TEST_C(pixelsAreCorrect) {
     const auto width = 26u;
