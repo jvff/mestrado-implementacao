@@ -55,6 +55,7 @@ public: \
     void TestBody(); \
 \
 private: \
+    using SuperClass::createImage; \
     using SuperClass::testPixels; \
     using SuperClass::testPixelsUsingLambda; \
 }
