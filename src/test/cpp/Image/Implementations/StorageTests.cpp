@@ -1,4 +1,4 @@
-#include "ImageImplementationTests.hpp"
+#include "StorageTests.hpp"
 
 PIXEL_TYPES(int, bool);
 
