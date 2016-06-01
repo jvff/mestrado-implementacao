@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../CustomParameterizedTestFactory.hpp"
+#include "../../CustomParameterizedTestFactory.hpp"
 
 #include "PixelTypeImageImplementations.hpp"
 #include "PixelTypeImagePatterns.hpp"
