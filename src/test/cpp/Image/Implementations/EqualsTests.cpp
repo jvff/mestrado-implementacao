@@ -1,5 +1,5 @@
 #include "AllPixelTypes.hpp"
-#include "ComparisonTests.hpp"
+#include "EqualsTests.hpp"
 
 TEST_C(isComparable) {
     auto width = 89u;
