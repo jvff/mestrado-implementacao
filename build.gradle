@@ -46,7 +46,18 @@ model {
     }
 }
 
-task checkHeaderGuards(type: com.janitovff.headerguardplugin.HeaderGuardTask)
+task checkMainHeaderGuards(
+        type: com.janitovff.headerguardplugin.HeaderGuardTask) {
+    inputDirectory = file("include/main/cpp")
+}
+
+task checkTestHeaderGuards(
+        type: com.janitovff.headerguardplugin.HeaderGuardTask) {
+    inputDirectory = file("src/test/cpp")
+}
+
+task checkHeaderGuards(
+        dependsOn: ['checkMainHeaderGuards', 'checkTestHeaderGuards' ])
 
 task opencl2c(type: com.janitovff.opencl2cplugin.OpenCL2CTask) {
     inputDirectory = file("src/main/opencl")

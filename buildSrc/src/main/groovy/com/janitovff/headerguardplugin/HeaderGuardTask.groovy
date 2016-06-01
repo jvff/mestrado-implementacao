@@ -10,6 +10,8 @@ import java.util.regex.Pattern
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileTree
+import org.gradle.api.tasks.incremental.IncrementalTaskInputs
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskAction
 
@@ -18,23 +20,22 @@ import static com.janitovff.headerguardplugin.HeaderGuardException.*
 public class HeaderGuardTask extends DefaultTask  {
     private HashMap<File, Exception> failures = new HashMap<File, Exception>()
 
+    @InputDirectory
+    def File inputDirectory
+
     @TaskAction
-    public void checkHeaders() throws HeaderGuardException {
+    public void checkHeaders(IncrementalTaskInputs inputs)
+            throws HeaderGuardException {
         failures.clear()
 
-        for (def sourceSet : project.sources) {
-            for (def languageSourceSet : sourceSet) {
-                checkHeadersIn(languageSourceSet.source)
-                checkHeadersIn(languageSourceSet.exportedHeaders)
-            }
+        inputs.outOfDate { change ->
+            maybeCheckHeader(change.file)
         }
     }
 
-    private void checkHeadersIn(FileTree fileTree) throws HeaderGuardException {
-        fileTree.visit { fileDetails ->
-            if (isHeader(fileDetails.getName()))
-                checkHeader(fileDetails.getFile())
-        }
+    void maybeCheckHeader(File headerCandidate) throws HeaderGuardException {
+        if (isHeader(headerCandidate.name))
+            checkHeader(headerCandidate)
 
         checkForFailures()
     }
