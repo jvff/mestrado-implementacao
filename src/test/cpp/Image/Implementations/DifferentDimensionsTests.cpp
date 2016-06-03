@@ -1,5 +1,5 @@
 #include "AllPixelTypes.hpp"
-#include "ComparisonTests.hpp"
+#include "DifferentDimensionsTests.hpp"
 
 TEST_C(imagesWithDifferentWidthsDiffer) {
     auto firstWidth = 23u;
