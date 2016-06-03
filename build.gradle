@@ -72,5 +72,5 @@ task testOpencl2c(type: com.janitovff.opencl2cplugin.OpenCL2CTask) {
 task test(type: Exec,
         dependsOn: ['testExecutable', 'checkHeaderGuards', 'opencl2c',
                 'testOpencl2c']) {
-    commandLine 'build/binaries/testExecutable/test', '--gtest_color=yes'
+    commandLine 'build/exe/test/test', '--gtest_color=yes'
 }
