@@ -19,3 +19,22 @@ TEST_C(imagesWithDifferentWidthsDiffer) {
     assertThat(firstImage).isNotEqualTo(secondImage);
     assertThat(secondImage).isNotEqualTo(firstImage);
 }
+
+TEST_C(imagesWithDifferentHeightsDiffer) {
+    auto width = 18u;
+    auto firstHeight = 17u;
+    auto secondHeight = 16u;
+
+    auto firstImage = createImage(width, firstHeight);
+    auto secondImage = createImage(width, secondHeight);
+
+    auto paintFunction = [&] (unsigned int x, unsigned int y) -> PixelType {
+        return pattern(width, firstHeight, x, y);
+    };
+
+    firstImage = paintFunction;
+    secondImage = paintFunction;
+
+    assertThat(firstImage).isNotEqualTo(secondImage);
+    assertThat(secondImage).isNotEqualTo(firstImage);
+}
