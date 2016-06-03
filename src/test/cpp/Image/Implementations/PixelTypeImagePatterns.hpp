@@ -31,6 +31,10 @@ public:
     PaintFunction getImagePattern(unsigned int index) {
         return patterns[index];
     }
+
+    std::vector<PaintFunction> getPatternVector() {
+        return patterns;
+    }
 };
 
 template <typename PixelType>

@@ -5,6 +5,8 @@
 
 #include <gtest/gtest.h>
 
+#include "ImplementationTestPatternPairParameters.hpp"
+#include "ImplementationTestSinglePatternParameters.hpp"
 #include "ImplementationTestRegistrator.hpp"
 
 namespace testing {
@@ -18,7 +20,22 @@ public:
     static bool Register(const std::string& testCaseName,
             const std::string& testName) {
         using Registrator = ImplementationTestRegistrator<FixtureClassTemplate,
-                TestClassTemplate, PixelTypesTuple>;
+                TestClassTemplate, ImplementationTestSinglePatternParameters,
+                PixelTypesTuple>;
+
+        auto registrator = Registrator();
+
+        return registrator.registerTests(testCaseName, testName);
+    }
+
+    template <template <typename> class FixtureClassTemplate,
+            template <typename> class TestClassTemplate,
+            typename PixelTypesTuple>
+    static bool RegisterWithPatternPairs(const std::string& testCaseName,
+            const std::string& testName) {
+        using Registrator = ImplementationTestRegistrator<FixtureClassTemplate,
+                TestClassTemplate, ImplementationTestPatternPairParameters,
+                PixelTypesTuple>;
 
         auto registrator = Registrator();
 

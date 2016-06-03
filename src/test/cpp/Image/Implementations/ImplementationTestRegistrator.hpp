@@ -1,7 +1,6 @@
 #ifndef IMPLEMENTATION_TEST_REGISTRATOR_HPP
 #define IMPLEMENTATION_TEST_REGISTRATOR_HPP
 
-#include <functional>
 #include <string>
 #include <tuple>
 #include <type_traits>
@@ -19,13 +18,10 @@ namespace internal {
 
 template <template <typename> class FixtureClassTemplate,
         template <typename> class TestClassTemplate,
+        template <typename> class TestParametersTemplate,
         typename PixelTypesTuple>
 class ImplementationTestRegistrator {
 private:
-    template <typename PixelType>
-    using Pattern = std::function<PixelType(unsigned int, unsigned int,
-            unsigned int, unsigned int)>;
-
     static constexpr auto numberOfPixelTypes =
             std::tuple_size<PixelTypesTuple>::value;
 
@@ -131,31 +127,32 @@ private:
     void registerTestsForImplementation(const std::string& testCaseName,
             const std::string& testName,
             const std::string& implementationName) {
-        auto patterns = PixelTypeImagePatterns<PixelType>();
-        auto numberOfPatterns = patterns.getNumberOfPatterns();
+        using TestParameters = TestParametersTemplate<PixelType>;
+        using TestParameterType = typename TestParameters::TestParameterType;
 
-        for (auto index = 0u; index < numberOfPatterns; ++index) {
-            registerSingleTest<PixelType, ImplementationType>(testCaseName,
-                    testName, implementationName,
-                    patterns.getImagePattern(index));
+        auto parameters = TestParameters::getTestParameters();
+
+        for (const auto& parameter : parameters) {
+            registerSingleTest<PixelType, ImplementationType, TestParameterType>
+                    (testCaseName, testName, implementationName, parameter);
         }
     }
 
-    template <typename PixelType, typename ImplementationType>
+    template <typename PixelType, typename ImplementationType,
+            typename TestParameterType>
     void registerSingleTest(const std::string& testCaseName,
             const std::string& testName, const std::string& implementationName,
-            const Pattern<PixelType>& imagePattern) {
-        using PatternType = Pattern<PixelType>;
+            const TestParameterType& testParameter) {
         using FixtureClass = FixtureClassTemplate<ImplementationType>;
         using TestClass = TestClassTemplate<ImplementationType>;
         using TestFactory = CustomParameterizedTestFactory<TestClass,
-                PatternType>;
+                TestParameterType>;
 
         auto finalTestCaseName = testCaseName + "<" + implementationName + ">";
 
         MakeAndRegisterTestInfo(finalTestCaseName.c_str(), testName.c_str(),
                 NULL, NULL, GetTypeId<FixtureClass>(), TestClass::SetUpTestCase,
-                TestClass::TearDownTestCase, new TestFactory(imagePattern));
+                TestClass::TearDownTestCase, new TestFactory(testParameter));
     }
 };
 
