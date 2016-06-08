@@ -34,4 +34,6 @@
 
 TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, CL_R, "UsingOneChannel")
 TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, CL_R, "UsingOneChannel")
+TEST_C(UnsignedInt64, std::uint64_t, CL_UNSIGNED_INT32, CL_RG,
+        "UsingTwoChannels")
 TEST_C(Int, int, CL_SIGNED_INT32, CL_R, "UsingOneChannel")
