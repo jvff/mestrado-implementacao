@@ -6,6 +6,12 @@
 
 #include "cl/ImageComparison.h"
 
+template <typename PixelType, typename... KernelParameterTypes>
+class OpenCLFilter;
+
+template <typename PixelType>
+class OpenCLImage;
+
 template <typename PixelType>
 class OpenCLImageComparator
         : protected OpenCLFilter<PixelType, unsigned char*> {

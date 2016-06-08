@@ -7,8 +7,12 @@
 
 #include "Image.hpp"
 #include "OpenCLPixelTypeData.hpp"
+#include "OpenCLImageComparator.hpp"
 
 #include "cl/ImagePixelTasks.h"
+
+template <typename PixelType>
+class OpenCLImageComparator;
 
 template <typename PixelType>
 class OpenCLImage : public Image<PixelType> {
@@ -102,5 +106,13 @@ private:
                 width, height);
     }
 };
+
+template <typename PixelType>
+bool operator==(const OpenCLImage<PixelType>& firstImage,
+        const OpenCLImage<PixelType>& secondImage) {
+    auto comparator = OpenCLImageComparator<PixelType>();
+
+    return comparator.imagesAreEqual(firstImage, secondImage);
+}
 
 #endif

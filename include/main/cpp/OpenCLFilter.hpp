@@ -7,6 +7,9 @@
 #include "OpenCLImage.hpp"
 #include "OpenCLKernelParameters.hpp"
 
+template <typename PixelType>
+class OpenCLImage;
+
 template <typename PixelType, typename... KernelParameterTypes>
 class OpenCLFilter : public AbstractFilter<OpenCLImage<PixelType>,
         OpenCLImage<PixelType> > {
