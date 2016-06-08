@@ -1,6 +1,7 @@
 #ifndef OPEN_C_L_PIXEL_TYPE_DATA_HPP
 #define OPEN_C_L_PIXEL_TYPE_DATA_HPP
 
+#include <cstdint>
 #include <string>
 
 #include <CL/cl.hpp>
@@ -21,6 +22,7 @@ struct OpenCLPixelTypeData<Type> { \
 
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned char, CL_UNSIGNED_INT8, CL_R);
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned int, CL_UNSIGNED_INT32, CL_R);
+OPENCL_PIXEL_TYPE_DATA_FOR(std::uint64_t, CL_UNSIGNED_INT32, CL_RG);
 OPENCL_PIXEL_TYPE_DATA_FOR(int, CL_SIGNED_INT32, CL_R);
 
 #undef OPENCL_PIXEL_TYPE_DATA_FOR
