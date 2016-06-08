@@ -1,6 +1,8 @@
 #ifndef PIXEL_TYPE_NAME_HPP
 #define PIXEL_TYPE_NAME_HPP
 
+#include <cstdint>
+
 #define PIXEL_TYPE_NAME(Type) \
 template <typename Enable> \
 struct PixelTypeName<Type, Enable> { \
@@ -15,6 +17,7 @@ struct PixelTypeName {
 };
 
 PIXEL_TYPE_NAME(bool);
+PIXEL_TYPE_NAME(std::uint64_t);
 PIXEL_TYPE_NAME(int);
 
 #endif

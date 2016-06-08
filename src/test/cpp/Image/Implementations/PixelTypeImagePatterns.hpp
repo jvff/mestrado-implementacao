@@ -1,6 +1,7 @@
 #ifndef PIXEL_TYPE_IMAGE_PATTERNS_HPP
 #define PIXEL_TYPE_IMAGE_PATTERNS_HPP
 
+#include <cstdint>
 #include <functional>
 #include <initializer_list>
 #include <vector>
@@ -106,6 +107,40 @@ private:
 
 private:
     using SuperClass = AbstractPixelTypeImagePatterns<int>;
+
+public:
+    PixelTypeImagePatterns()
+            : SuperClass({ redGreenBlueStripes, uniquePixels }) {
+    }
+};
+
+template <>
+class PixelTypeImagePatterns<std::uint64_t>
+        : public AbstractPixelTypeImagePatterns<std::uint64_t> {
+private:
+    static std::uint64_t redGreenBlueStripes(unsigned int, unsigned int,
+            unsigned int x, unsigned int y) {
+        switch (y % 5) {
+            case 0:
+            case 1:
+            case 2:
+                return 0xFFFF << (16 * ((x % 3) + 1));
+            case 3:
+                return 0x0000000000000000;
+            case 4:
+                return 0xFFFFFFFFFFFFFFFF;
+            default:
+                return 0;
+        };
+    }
+
+    static std::uint64_t uniquePixels(unsigned int width, unsigned int,
+            unsigned int x, unsigned int y) {
+        return x + y * width;
+    }
+
+private:
+    using SuperClass = AbstractPixelTypeImagePatterns<std::uint64_t>;
 
 public:
     PixelTypeImagePatterns()
