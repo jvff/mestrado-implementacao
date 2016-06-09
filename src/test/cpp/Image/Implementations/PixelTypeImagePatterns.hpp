@@ -120,11 +120,14 @@ class PixelTypeImagePatterns<std::uint64_t>
 private:
     static std::uint64_t redGreenBlueStripes(unsigned int, unsigned int,
             unsigned int x, unsigned int y) {
+        const std::uint64_t fullChannel = 0xFFFF;
+        const auto alphaChannel = fullChannel;
+
         switch (y % 5) {
             case 0:
             case 1:
             case 2:
-                return 0xFFFF << (16 * ((x % 3) + 1));
+                return fullChannel << (16 * ((x % 3) + 1)) | alphaChannel;
             case 3:
                 return 0x0000000000000000;
             case 4:
