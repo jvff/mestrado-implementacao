@@ -54,7 +54,9 @@ public:
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
-        cl::Kernel kernel(pixelPrograms, "setPixel");
+        const auto& setPixelKernelName = PixelTypeData::setPixelKernel.c_str();
+
+        cl::Kernel kernel(pixelPrograms, setPixelKernelName);
 
         kernel.setArg(0, imageBuffer);
         kernel.setArg(1, x);
@@ -65,7 +67,9 @@ public:
     }
 
     PixelType getPixelValue(unsigned int x, unsigned int y) const override {
-        cl::Kernel kernel(pixelPrograms, "getPixel");
+        const auto& getPixelKernelName = PixelTypeData::getPixelKernel.c_str();
+
+        cl::Kernel kernel(pixelPrograms, getPixelKernelName);
         PixelType result;
 
         kernel.setArg(0, imageBuffer);
@@ -97,8 +101,9 @@ private:
     }
 
     void allocateBuffers() {
+        auto imageChannels = PixelTypeData::CL_PIXEL_CHANNELS;
         auto imageChannelType = PixelTypeData::CL_PIXEL_TYPE;
-        auto imageFormat = cl::ImageFormat(CL_R, imageChannelType);
+        auto imageFormat = cl::ImageFormat(imageChannels, imageChannelType);
 
         pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
 
