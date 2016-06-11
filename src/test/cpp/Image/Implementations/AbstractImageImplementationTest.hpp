@@ -9,13 +9,14 @@
 
 #include "Image.hpp"
 
-#include "AbstractImageTest.hpp"
+#include "../../AbstractTestWithImage.hpp"
 
 template <typename ImageType, typename PixelType>
-class AbstractImageImplementationTest : public AbstractImageTest<ImageType> {
+class AbstractImageImplementationTest
+        : public AbstractTestWithImage<ImageType> {
 protected:
     using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
-    using SuperClass = AbstractImageTest<ImageType>;
+    using SuperClass = AbstractTestWithImage<ImageType>;
 
 protected:
     void testSinglePixel(PixelType value) {

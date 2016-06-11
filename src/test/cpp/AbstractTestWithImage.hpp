@@ -1,5 +1,5 @@
-#ifndef ABSTRACT_IMAGE_TEST_HPP
-#define ABSTRACT_IMAGE_TEST_HPP
+#ifndef ABSTRACT_TEST_WITH_IMAGE_HPP
+#define ABSTRACT_TEST_WITH_IMAGE_HPP
 
 #include <memory>
 
@@ -8,7 +8,7 @@
 #include "TestImageFactory.hpp"
 
 template <typename ImageType>
-class AbstractImageTest : public ::testing::Test {
+class AbstractTestWithImage : public ::testing::Test {
 protected:
     static std::shared_ptr<TestImageFactory<ImageType> > imageFactory;
 
@@ -29,6 +29,6 @@ protected:
 
 template <typename ImageType>
 std::shared_ptr<TestImageFactory<ImageType> >
-        AbstractImageTest<ImageType>::imageFactory;
+        AbstractTestWithImage<ImageType>::imageFactory;
 
 #endif
