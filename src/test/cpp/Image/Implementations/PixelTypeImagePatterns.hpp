@@ -142,12 +142,18 @@ private:
         return x + y * width;
     }
 
+    static std::uint64_t uniquePixelsWithFullMost32SignificantBits(
+            unsigned int width, unsigned int, unsigned int x, unsigned int y) {
+        return (x + y * width) | 0xFFFFFFFF00000000;
+    }
+
 private:
     using SuperClass = AbstractPixelTypeImagePatterns<std::uint64_t>;
 
 public:
     PixelTypeImagePatterns()
-            : SuperClass({ redGreenBlueStripes, uniquePixels }) {
+            : SuperClass({ redGreenBlueStripes, uniquePixels,
+                    uniquePixelsWithFullMost32SignificantBits }) {
     }
 };
 
