@@ -16,8 +16,8 @@
 #include "SimpleArrayImage.hpp"
 #include "SimpleFilter.hpp"
 
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
 
 using namespace fakeit;
 
