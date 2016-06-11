@@ -12,4 +12,6 @@ __kernel void compareImages(__read_only image2d_t firstImage,
 
     if (firstPixel.x != secondPixel.x)
         *result = 1;
+    else if (firstPixel.y != secondPixel.y)
+        *result = 1;
 }
