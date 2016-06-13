@@ -14,7 +14,8 @@
 #include "RgbImage.hpp"
 
 #include "ColorChannel.hpp"
-#include "FakeImage.hpp"
+
+#include "../../FakeImage.hpp"
 
 using namespace fakeit;
 
