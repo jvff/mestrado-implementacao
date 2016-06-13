@@ -6,38 +6,6 @@ using PixelTypes = ::testing::Types<unsigned char, unsigned short, unsigned int,
         std::int16_t, std::int32_t, std::int64_t>;
 TYPED_TEST_CASE(RgbImageTest, PixelTypes);
 
-TYPED_TEST(RgbImageTest, classTemplateExists) {
-    using RgbImageType = typename TestFixture::RgbImageType;
-
-    AssertThat<RgbImageType>::isClassOrStruct();
-}
-
-TYPED_TEST(RgbImageTest, isSubClassOfImage) {
-    using PixelType = typename TestFixture::PixelType;
-    using RgbImageClass = typename TestFixture::RgbImageType;
-    using ParentImageClass = Image<PixelType>;
-
-    AssertThat<RgbImageClass>::isSubClass(Of<ParentImageClass>());
-}
-
-TYPED_TEST(RgbImageTest, isConstructibleWithUnsignedIntImage) {
-    using InternalImageType = typename TestFixture::InternalImageType;
-    using IntRgbImageClass = typename TestFixture::RgbImageType;
-    using IntImageParameter = InternalImageType&;
-
-    AssertThat<IntRgbImageClass>::isConstructible(With<IntImageParameter>());
-}
-
-TYPED_TEST(RgbImageTest, isConstructibleWithUnsignedIntImageAndAlphaFlag) {
-    using InternalImageType = typename TestFixture::InternalImageType;
-    using IntRgbImageClass = typename TestFixture::RgbImageType;
-    using IntImageParameter = InternalImageType&;
-    using HasAlphaFlag = bool;
-
-    AssertThat<IntRgbImageClass>::isConstructible(
-            With<IntImageParameter, HasAlphaFlag>());
-}
-
 TYPED_TEST(RgbImageTest, usesInternalImage) {
     using RgbImageType = typename TestFixture::RgbImageType;
 
