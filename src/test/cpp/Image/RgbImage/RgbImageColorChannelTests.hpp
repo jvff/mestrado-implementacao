@@ -1,8 +1,7 @@
-#ifndef RGB_IMAGE_TEST_HPP
-#define RGB_IMAGE_TEST_HPP
+#ifndef RGB_IMAGE_COLOR_CHANNEL_TESTS_HPP
+#define RGB_IMAGE_COLOR_CHANNEL_TESTS_HPP
 
 #include <cmath>
-#include <cstdint>
 #include <memory>
 
 #include <gtest/gtest.h>
@@ -13,19 +12,22 @@
 
 #include "RgbImage.hpp"
 
+#include "AbstractRgbImageTestWithInternalImageMock.hpp"
 #include "ColorChannel.hpp"
 
+#include "../../CustomTypedTestMacros.hpp"
 #include "../../FakeImage.hpp"
 
 using namespace fakeit;
 
-template <typename PixelTypeParameter>
-class RgbImageTest : public ::testing::Test {
+template <typename PixelType>
+class RgbImageColorChannelTests
+        : public AbstractRgbImageTestWithInternalImageMock<PixelType> {
 protected:
-    using PixelType = PixelTypeParameter;
-    using InternalImageType = FakeImage<PixelType>;
+    using SuperClass = AbstractRgbImageTestWithInternalImageMock<PixelType>;
+    using InternalImageType = typename SuperClass::InternalImageType;
+    using PaintFunction = typename SuperClass::PaintFunction;
     using RgbImageType = RgbImage<InternalImageType>;
-    using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
 
     std::unique_ptr<ColorChannel<PixelType> > redChannel;
     std::unique_ptr<ColorChannel<PixelType> > greenChannel;
@@ -55,21 +57,6 @@ protected:
         auto paintFunction = getColorPaintFunction(width, height);
 
         return mockInternalImage(width, height, paintFunction);
-    }
-
-    Mock<InternalImageType> mockInternalImage(unsigned int width,
-            unsigned int height, PaintFunction paintFunction) {
-        Mock<InternalImageType> mockImage;
-
-        auto returnPixel = paintFunction;
-
-        When(Method(mockImage, getWidth)).AlwaysReturn(width);
-        When(Method(mockImage, getHeight)).AlwaysReturn(height);
-        When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
-        When(Method(mockImage, setPixel).Using(Lt(width), Lt(height), _))
-            .AlwaysReturn();
-
-        return mockImage;
     }
 
     PaintFunction getColorPaintFunction(unsigned int width,
@@ -183,6 +170,28 @@ protected:
 
         assertThat(relativeChannelValue).isAlmostEqualTo(expectedValue);
     }
+
+private:
+    using SuperClass::mockInternalImage;
 };
+
+#define TEST_C(TestName) \
+    CREATE_RGB_IMAGE_COLOR_CHANNEL_TESTS_CLASS(TestName); \
+    REGISTER_CUSTOM_TYPED_TEST(RgbImageColorChannelTests, TestName); \
+    START_CUSTOM_TYPED_TEST_BODY(RgbImageColorChannelTests, TestName)
+
+#define CREATE_RGB_IMAGE_COLOR_CHANNEL_TESTS_CLASS(TestName) \
+template <typename PixelTypeParameter> \
+class GTEST_TEST_CLASS_NAME_(RgbImageColorChannelTests, TestName) \
+        : public RgbImageColorChannelTests<PixelTypeParameter> { \
+private: \
+    using PixelType = PixelTypeParameter; \
+    using SuperClass = RgbImageColorChannelTests<PixelType>; \
+    using InternalImageType = typename SuperClass::InternalImageType; \
+    using RgbImageType = typename SuperClass::RgbImageType; \
+\
+public: \
+    void TestBody(); \
+}
 
 #endif
