@@ -7,7 +7,7 @@ TEST_C(usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
 
-    auto mockImage = this->mockSimpleInternalImage(width, height);
+    auto mockImage = mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);
@@ -29,7 +29,7 @@ TEST_C(updatesInternalImage) {
     unsigned int width = 4;
     unsigned int height = 7;
 
-    auto mockImage = this->mockSimpleInternalImage(width, height);
+    auto mockImage = mockSimpleInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     RgbImageType rgbImage(internalImage);

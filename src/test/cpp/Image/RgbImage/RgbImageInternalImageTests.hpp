@@ -68,6 +68,9 @@ private: \
 \
 public: \
     void TestBody(); \
+\
+private: \
+    using SuperClass::mockSimpleInternalImage; \
 }
 
 #endif
