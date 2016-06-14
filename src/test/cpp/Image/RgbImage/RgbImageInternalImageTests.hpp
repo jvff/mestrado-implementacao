@@ -26,16 +26,14 @@ protected:
 protected:
     Mock<InternalImageType> mockSimpleInternalImage(unsigned int width,
             unsigned int height) {
-        return mockInternalImage(width, height, getSimplePaintFunction(width));
+        auto paintFunction = [=] (unsigned int x, unsigned int y) -> PixelType {
+            return x + y * width;
+        };
+
+        return mockInternalImage(width, height, paintFunction);
     }
 
 private:
-    PaintFunction getSimplePaintFunction(unsigned int width) {
-        return [width] (unsigned int x, unsigned int y) -> PixelType {
-            return x + y * width;
-        };
-    }
-
     using SuperClass::mockInternalImage;
 };
 
