@@ -50,11 +50,6 @@ protected:
         redChannel->isAfter(*greenChannel);
     }
 
-    Mock<InternalImageType> mockSimpleInternalImage(unsigned int width,
-            unsigned int height) {
-        return mockInternalImage(width, height, getSimplePaintFunction(width));
-    }
-
     Mock<InternalImageType> mockColorInternalImage(unsigned int width,
             unsigned int height) {
         auto paintFunction = getColorPaintFunction(width, height);
@@ -75,12 +70,6 @@ protected:
             .AlwaysReturn();
 
         return mockImage;
-    }
-
-    PaintFunction getSimplePaintFunction(unsigned int width) {
-        return [width] (unsigned int x, unsigned int y) -> PixelType {
-            return x + y * width;
-        };
     }
 
     PaintFunction getColorPaintFunction(unsigned int width,
