@@ -1,8 +1,6 @@
 #ifndef RGB_IMAGE_INTERNAL_IMAGE_TESTS_HPP
 #define RGB_IMAGE_INTERNAL_IMAGE_TESTS_HPP
 
-#include <functional>
-
 #include <gtest/gtest.h>
 
 #include "fakeit.hpp"
@@ -11,16 +9,19 @@
 
 #include "RgbImage.hpp"
 
+#include "AbstractRgbImageTestWithInternalImageMock.hpp"
+
 #include "../../CustomTypedTestMacros.hpp"
-#include "../../FakeImage.hpp"
 
 using namespace fakeit;
 
 template <typename PixelType>
-class RgbImageInternalImageTests : public ::testing::Test {
+class RgbImageInternalImageTests
+        : public AbstractRgbImageTestWithInternalImageMock<PixelType> {
 protected:
-    using InternalImageType = FakeImage<PixelType>;
-    using PaintFunction = std::function<PixelType(unsigned int, unsigned int)>;
+    using SuperClass = AbstractRgbImageTestWithInternalImageMock<PixelType>;
+    using InternalImageType = typename SuperClass::InternalImageType;
+    using PaintFunction = typename SuperClass::PaintFunction;
 
 protected:
     Mock<InternalImageType> mockSimpleInternalImage(unsigned int width,
@@ -29,26 +30,13 @@ protected:
     }
 
 private:
-    Mock<InternalImageType> mockInternalImage(unsigned int width,
-            unsigned int height, PaintFunction paintFunction) {
-        Mock<InternalImageType> mockImage;
-
-        auto returnPixel = paintFunction;
-
-        When(Method(mockImage, getWidth)).AlwaysReturn(width);
-        When(Method(mockImage, getHeight)).AlwaysReturn(height);
-        When(Method(mockImage, getPixelValue)).AlwaysDo(returnPixel);
-        When(Method(mockImage, setPixel).Using(Lt(width), Lt(height), _))
-            .AlwaysReturn();
-
-        return mockImage;
-    }
-
     PaintFunction getSimplePaintFunction(unsigned int width) {
         return [width] (unsigned int x, unsigned int y) -> PixelType {
             return x + y * width;
         };
     }
+
+    using SuperClass::mockInternalImage;
 };
 
 #define TEST_C(TestName) \
