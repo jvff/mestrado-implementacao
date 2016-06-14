@@ -7,14 +7,14 @@ TEST_C(hasRedGreenAndBlueChannels) {
     unsigned int width = 20;
     unsigned int height = 17;
 
-    this->calculateChannelParameters();
+    calculateChannelParameters();
 
-    auto mockImage = this->mockColorInternalImage(width, height);
+    auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage);
 
-    this->checkChannelsOfAllPixels(internalImage, rgbImage);
+    checkChannelsOfAllPixels(internalImage, rgbImage);
 }
 
 TEST_C(hasRedGreenAndBlueRelativeValues) {
@@ -23,15 +23,14 @@ TEST_C(hasRedGreenAndBlueRelativeValues) {
     unsigned int width = 20;
     unsigned int height = 17;
 
-    this->calculateChannelParameters();
+    calculateChannelParameters();
 
-    auto mockImage = this->mockColorInternalImage(width, height);
+    auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage);
 
-    this->checkRelativeChannelsOfAllPixels(internalImage, rgbImage,
-            WITHOUT_ALPHA);
+    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITHOUT_ALPHA);
 }
 
 TEST_C(hasRedGreenBlueAndAlphaChannels) {
@@ -39,14 +38,14 @@ TEST_C(hasRedGreenBlueAndAlphaChannels) {
     unsigned int height = 18;
     bool withAlpha = true;
 
-    this->calculateChannelParameters(withAlpha);
+    calculateChannelParameters(withAlpha);
 
-    auto mockImage = this->mockColorInternalImage(width, height);
+    auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage, withAlpha);
 
-    this->checkChannelsOfAllPixels(internalImage, rgbImage);
+    checkChannelsOfAllPixels(internalImage, rgbImage);
 }
 
 TEST_C(hasRedGreenBlueAndAlphaRelativeValues) {
@@ -55,12 +54,12 @@ TEST_C(hasRedGreenBlueAndAlphaRelativeValues) {
     unsigned int width = 20;
     unsigned int height = 17;
 
-    this->calculateChannelParameters(WITH_ALPHA);
+    calculateChannelParameters(WITH_ALPHA);
 
-    auto mockImage = this->mockColorInternalImage(width, height);
+    auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
     const RgbImageType rgbImage(internalImage, WITH_ALPHA);
 
-    this->checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITH_ALPHA);
+    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITH_ALPHA);
 }

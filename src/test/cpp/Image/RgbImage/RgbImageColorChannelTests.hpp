@@ -192,6 +192,12 @@ private: \
 \
 public: \
     void TestBody(); \
+\
+private: \
+    using SuperClass::calculateChannelParameters; \
+    using SuperClass::checkChannelsOfAllPixels; \
+    using SuperClass::checkRelativeChannelsOfAllPixels; \
+    using SuperClass::mockColorInternalImage; \
 }
 
 #endif
