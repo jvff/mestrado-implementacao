@@ -26,3 +26,9 @@ TEST_C(isConstructibleWithUnsignedIntImageAndAlphaFlag) {
     AssertThat<RgbImageType>::isConstructible(
             With<InternalImageParameter, HasAlphaFlag>());
 }
+
+TEST_C(hasInternalImageTypeAlias) {
+    using InternalImageTypeAlias = typename RgbImageType::InternalImageType;
+
+    AssertThat<InternalImageTypeAlias>::isTheSame(As<InternalImageType>());
+}
