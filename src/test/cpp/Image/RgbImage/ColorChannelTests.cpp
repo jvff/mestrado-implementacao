@@ -18,9 +18,10 @@ TEST_C(hasRedGreenAndBlueChannels) {
 }
 
 TEST_C(hasRedGreenBlueAndAlphaChannels) {
+    const bool withAlpha = true;
+
     unsigned int width = 15;
     unsigned int height = 18;
-    bool withAlpha = true;
 
     calculateChannelParameters(withAlpha);
 

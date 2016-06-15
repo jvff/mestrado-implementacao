@@ -4,7 +4,7 @@
 TYPED_TEST_CASE(RgbImageRelativeColorChannelTests, PixelTypes);
 
 TEST_C(hasRedGreenAndBlueRelativeValues) {
-    const bool WITHOUT_ALPHA = false;
+    const bool withoutAlpha = false;
 
     unsigned int width = 20;
     unsigned int height = 17;
@@ -16,21 +16,21 @@ TEST_C(hasRedGreenAndBlueRelativeValues) {
 
     const RgbImageType rgbImage(internalImage);
 
-    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITHOUT_ALPHA);
+    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, withoutAlpha);
 }
 
 TEST_C(hasRedGreenBlueAndAlphaRelativeValues) {
-    const bool WITH_ALPHA = true;
+    const bool withAlpha = true;
 
     unsigned int width = 20;
     unsigned int height = 17;
 
-    calculateChannelParameters(WITH_ALPHA);
+    calculateChannelParameters(withAlpha);
 
     auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
 
-    const RgbImageType rgbImage(internalImage, WITH_ALPHA);
+    const RgbImageType rgbImage(internalImage, withAlpha);
 
-    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, WITH_ALPHA);
+    checkRelativeChannelsOfAllPixels(internalImage, rgbImage, withAlpha);
 }
