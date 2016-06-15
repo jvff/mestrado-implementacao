@@ -32,23 +32,23 @@ public:
         shiftAmount = channel.shiftAmount + channel.bitDepth;
     }
 
-    PixelType getComponent(PixelType pixelValue) {
+    PixelType getComponent(PixelType pixelValue) const {
         return (pixelValue >> shiftAmount) & mask;
     }
 
-    float getRelativeComponent(PixelType pixelValue) {
+    float getRelativeComponent(PixelType pixelValue) const {
         float component = getComponent(pixelValue);
 
         return component / (float)maxValue;
     }
 
-    void apply(float relativeComponent, PixelType& pixel) {
+    void apply(float relativeComponent, PixelType& pixel) const {
         PixelType component = std::min(1.f, relativeComponent) * maxValue;
 
         apply(component, pixel);
     }
 
-    void apply(PixelType component, PixelType& pixel) {
+    void apply(PixelType component, PixelType& pixel) const {
         PixelType shiftedComponent = (component & mask) << shiftAmount;
 
         pixel &= mask << shiftAmount;

@@ -9,7 +9,7 @@ TEST_C(hasRedGreenAndBlueRelativeValues) {
     unsigned int width = 20;
     unsigned int height = 17;
 
-    calculateChannelParameters();
+    initializePainter(width, height, withoutAlpha);
 
     auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();
@@ -25,7 +25,7 @@ TEST_C(hasRedGreenBlueAndAlphaRelativeValues) {
     unsigned int width = 20;
     unsigned int height = 17;
 
-    calculateChannelParameters(withAlpha);
+    initializePainter(width, height, withAlpha);
 
     auto mockImage = mockColorInternalImage(width, height);
     auto& internalImage = mockImage.get();

@@ -21,9 +21,12 @@ protected:
     using RgbImageType = typename SuperClass::RgbImageType;
 
 protected:
-    using SuperClass::calculateChannelParameters;
+    using SuperClass::painter;
+
+protected:
     using SuperClass::checkChannelsOfAllPixels;
     using SuperClass::checkRelativeChannelsOfAllPixels;
+    using SuperClass::initializePainter;
     using SuperClass::mockColorInternalImage;
 };
 
@@ -42,13 +45,16 @@ private: \
     using InternalImageType = typename SuperClass::InternalImageType; \
     using RgbImageType = typename SuperClass::RgbImageType; \
 \
+private: \
+    using SuperClass::painter; \
+\
 public: \
     void TestBody(); \
 \
 private: \
-    using SuperClass::calculateChannelParameters; \
     using SuperClass::checkChannelsOfAllPixels; \
     using SuperClass::checkRelativeChannelsOfAllPixels; \
+    using SuperClass::initializePainter; \
     using SuperClass::mockColorInternalImage; \
 }
 

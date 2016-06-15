@@ -19,7 +19,7 @@ protected:
 
 protected:
     Mock<InternalImageType> mockInternalImage(unsigned int width,
-            unsigned int height, PaintFunction paintFunction) {
+            unsigned int height, const PaintFunction& paintFunction) {
         Mock<InternalImageType> mockImage;
 
         auto returnPixel = paintFunction;
