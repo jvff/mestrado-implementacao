@@ -7,9 +7,9 @@ template <typename PixelType>
 class ColorChannel {
 private:
     unsigned int bitDepth;
-    unsigned int maxValue;
-    unsigned int mask;
     unsigned int shiftAmount;
+    PixelType maxValue;
+    PixelType mask;
 
 public:
     ColorChannel(unsigned int numberOfChannels, bool shouldUseRemainingBits) {
@@ -49,9 +49,14 @@ public:
     }
 
     void apply(PixelType component, PixelType& pixel) const {
-        PixelType shiftedComponent = (component & mask) << shiftAmount;
+        auto channelMask = mask << shiftAmount;
+        auto maskToClearChannel = ~channelMask;
 
-        pixel &= mask << shiftAmount;
+        PixelType shiftedComponent = component << shiftAmount;
+
+        shiftedComponent &= channelMask;
+
+        pixel &= maskToClearChannel;
         pixel |= shiftedComponent;
     }
 };
