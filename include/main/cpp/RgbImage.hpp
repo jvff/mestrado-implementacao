@@ -5,8 +5,11 @@
 
 #include "Image.hpp"
 
-template <typename InternalImageType>
-class RgbImage : public Image<typename InternalImageType::PixelType> {
+template <typename InternalImageTypeParameter>
+class RgbImage : public Image<typename InternalImageTypeParameter::PixelType> {
+public:
+    using InternalImageType = InternalImageTypeParameter;
+
 private:
     using PixelType = typename InternalImageType::PixelType;
     using SuperClass = Image<PixelType>;
