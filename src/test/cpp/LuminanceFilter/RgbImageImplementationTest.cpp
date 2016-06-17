@@ -9,16 +9,15 @@ TYPED_TEST_CASE(LuminanceFilterRgbImageImplementationTest, TypeParameters);
 
 TEST_C(handlesRgbImages) {
     using DestinationPixelType = typename DestinationImageType::PixelType;
-    using InternalImageType = typename SourceImageType::InternalImageType;
 
     unsigned int width = 8;
     unsigned int height = 8;
 
     FilterType filter;
 
-    auto internalImage = InternalImageType(width, height);
+    auto internalImage = createInternalImage(width, height);
     auto sourceImage = SourceImageType(internalImage, true);
-    auto expectedImage = DestinationImageType(width, height);
+    auto expectedImage = createDestinationImage(width, height);
 
     float pixelFactor = std::numeric_limits<DestinationPixelType>::max();
 

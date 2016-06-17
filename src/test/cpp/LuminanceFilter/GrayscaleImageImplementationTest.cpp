@@ -1,7 +1,8 @@
 #include "LuminanceFilterGrayscaleImageImplementationTest.hpp"
 
 using TypeParameters = ::testing::Types<
-        Aliases<Image<int>, SimpleArrayImage<int>, SimpleArrayImage<int> > >;
+        Aliases<Image<int>, SimpleArrayImage<int>, SimpleArrayImage<int> >,
+        Aliases<OpenCLImage<int>, OpenCLImage<int>, OpenCLImage<int> > >;
 
 TYPED_TEST_CASE(LuminanceFilterGrayscaleImageImplementationTest,
         TypeParameters);
@@ -13,7 +14,7 @@ TEST_C(doesntChangeImage) {
     unsigned int height = 3;
 
     FilterType filter;
-    auto realSourceImage = RealSourceImageType(width, height);
+    auto realSourceImage = createSourceImage(width, height);
     const SourceImageType& sourceImage = realSourceImage;
 
     realSourceImage = [=] (unsigned int x, unsigned int y) -> SourcePixelType {
