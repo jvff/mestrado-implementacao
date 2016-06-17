@@ -66,3 +66,38 @@ TEST_C(pixelsCanBeSetUsingRelativeComponents) {
         }
     }
 }
+
+TEST_C(pixelsWithAlphaValueCanBeSetUsingRelativeComponents) {
+    const bool withAlpha = true;
+
+    unsigned int width = 10;
+    unsigned int height = 14;
+
+    initializePainter(width, height, withAlpha);
+
+    auto mockImage = mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    auto rgbImage = RgbImageType(internalImage, withAlpha);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto redComponent = painter->getRedComponent(x, y);
+            auto greenComponent = painter->getGreenComponent(x, y);
+            auto blueComponent = painter->getBlueComponent(x, y);
+            auto alphaComponent = painter->getAlphaComponent(x, y);
+
+            rgbImage.setPixel(x, y, redComponent, greenComponent,
+                    blueComponent, alphaComponent);
+        }
+    }
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto& paintFunction = *painter;
+            auto rawPixelValue = paintFunction(x, y);
+
+            Verify(Method(mockImage, setPixel).Using(x, y, rawPixelValue));
+        }
+    }
+}
