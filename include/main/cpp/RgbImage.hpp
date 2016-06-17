@@ -86,7 +86,7 @@ public:
 
     void setPixel(unsigned int x, unsigned int y, float redComponent,
             float greenComponent, float blueComponent,
-            float alphaComponent = 0.f) {
+            float alphaComponent = 1.f) {
         PixelType rawPixelValue = 0;
 
         setColorComponent(rawPixelValue, redComponent, maximumRedChannelValue,
