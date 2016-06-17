@@ -8,6 +8,8 @@
 #include "Filter.hpp"
 #include "Image.hpp"
 #include "LuminanceFilter.hpp"
+#include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
 #include "RgbImage.hpp"
 #include "SimpleFilter.hpp"
 
