@@ -19,7 +19,8 @@ private:
     bool withAlpha;
 
     float alphaConversionFactor;
-    float colorConversionFactor;
+    float redConversionFactor;
+    float greenAndBlueConversionFactor;
 
     ColorChannelPointer redChannel;
     ColorChannelPointer greenChannel;
@@ -51,17 +52,17 @@ public:
     }
 
     float getRedComponent(unsigned int x, unsigned int y) const {
-        return calculateComponent(x, y, topRightCorner, colorConversionFactor);
+        return calculateComponent(x, y, topRightCorner, redConversionFactor);
     }
 
     float getGreenComponent(unsigned int x, unsigned int y) const {
         return calculateComponent(x, y, bottomLeftCorner,
-                colorConversionFactor);
+                greenAndBlueConversionFactor);
     }
 
     float getBlueComponent(unsigned int x, unsigned int y) const {
         return calculateComponent(x, y, bottomRightCorner,
-                colorConversionFactor);
+                greenAndBlueConversionFactor);
     }
 
     float getAlphaComponent(unsigned int x, unsigned int y) const {
@@ -93,13 +94,17 @@ private:
     }
 
     void calculateConversionFactors() {
-        auto farthestPointForGreenChannel = Coordinate(width / 2, height - 1);
+        auto farthestPointForRedChannel = Coordinate(width / 2, height - 1);
+        auto farthestPointForGreenChannel = Coordinate(width - 1, height / 2);
         auto farthestPointForAlphaChannel = bottomRightCorner;
 
         alphaConversionFactor = calculateConversionFactor(
                 farthestPointForAlphaChannel);
 
-        colorConversionFactor = calculateConversionFactor(
+        redConversionFactor = calculateConversionFactor(
+                farthestPointForRedChannel);
+
+        greenAndBlueConversionFactor = calculateConversionFactor(
                 farthestPointForGreenChannel);
     }
 

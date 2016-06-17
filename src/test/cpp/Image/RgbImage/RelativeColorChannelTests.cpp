@@ -101,3 +101,41 @@ TEST_C(pixelsWithAlphaValueCanBeSetUsingRelativeComponents) {
         }
     }
 }
+
+TEST_C(defaultAlphaValueIsFullOpacity) {
+    const bool withAlpha = true;
+
+    unsigned int width = 4;
+    unsigned int height = 3;
+
+    initializePainter(width, height, withAlpha);
+
+    auto mockImage = mockColorInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    auto rgbImage = RgbImageType(internalImage, withAlpha);
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto redComponent = painter->getRedComponent(x, y);
+            auto greenComponent = painter->getGreenComponent(x, y);
+            auto blueComponent = painter->getBlueComponent(x, y);
+
+            rgbImage.setPixel(x, y, redComponent, greenComponent,
+                    blueComponent);
+        }
+    }
+
+    for (auto x = 0u; x < width; ++x) {
+        for (auto y = 0u; y < height; ++y) {
+            auto& paintFunction = *painter;
+            auto rawPixelValue = paintFunction(x, y);
+
+            auto& alphaChannel = painter->getAlphaChannel();
+
+            alphaChannel.apply(1.f, rawPixelValue);
+
+            Verify(Method(mockImage, setPixel).Using(x, y, rawPixelValue));
+        }
+    }
+}
