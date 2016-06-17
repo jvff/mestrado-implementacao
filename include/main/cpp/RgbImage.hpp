@@ -37,6 +37,7 @@ private:
     float maximumRedChannelValue;
     float maximumGreenChannelValue;
     float maximumBlueChannelValue;
+    float maximumAlphaChannelValue;
 
     float inverseMaximumRedChannelValue;
     float inverseMaximumGreenChannelValue;
@@ -71,11 +72,12 @@ public:
         maximumRedChannelValue = (float)redChannelMask;
         maximumGreenChannelValue = (float)greenChannelMask;
         maximumBlueChannelValue = (float)blueChannelMask;
+        maximumAlphaChannelValue = (float)alphaChannelMask;
 
         inverseMaximumRedChannelValue = 1.f / maximumRedChannelValue;
         inverseMaximumGreenChannelValue = 1.f / maximumGreenChannelValue;
         inverseMaximumBlueChannelValue = 1.f / maximumBlueChannelValue;
-        inverseMaximumAlphaChannelValue = 1.f / (float)alphaChannelMask;
+        inverseMaximumAlphaChannelValue = 1.f / maximumAlphaChannelValue;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
@@ -83,7 +85,8 @@ public:
     }
 
     void setPixel(unsigned int x, unsigned int y, float redComponent,
-            float greenComponent, float blueComponent) {
+            float greenComponent, float blueComponent,
+            float alphaComponent = 0.f) {
         PixelType rawPixelValue = 0;
 
         setColorComponent(rawPixelValue, redComponent, maximumRedChannelValue,
@@ -93,6 +96,9 @@ public:
                 greenChannelMask);
         setColorComponent(rawPixelValue, blueComponent, maximumBlueChannelValue,
                 blueChannelShiftAmount, blueChannelMask);
+        setColorComponent(rawPixelValue, alphaComponent,
+                maximumAlphaChannelValue, alphaChannelShiftAmount,
+                alphaChannelMask);
 
         internalImage.setPixel(x, y, rawPixelValue);
     }
