@@ -34,6 +34,10 @@ private:
     unsigned int blueChannelMask;
     unsigned int alphaChannelMask;
 
+    float maximumRedChannelValue;
+    float maximumGreenChannelValue;
+    float maximumBlueChannelValue;
+
     float inverseMaximumRedChannelValue;
     float inverseMaximumGreenChannelValue;
     float inverseMaximumBlueChannelValue;
@@ -64,14 +68,33 @@ public:
         blueChannelMask = (1 << blueChannelBits) - 1;
         alphaChannelMask = (1 << alphaChannelBits) - 1;
 
-        inverseMaximumRedChannelValue = 1.f / (float)redChannelMask;
-        inverseMaximumGreenChannelValue = 1.f / (float)greenChannelMask;
-        inverseMaximumBlueChannelValue = 1.f / (float)blueChannelMask;
+        maximumRedChannelValue = (float)redChannelMask;
+        maximumGreenChannelValue = (float)greenChannelMask;
+        maximumBlueChannelValue = (float)blueChannelMask;
+
+        inverseMaximumRedChannelValue = 1.f / maximumRedChannelValue;
+        inverseMaximumGreenChannelValue = 1.f / maximumGreenChannelValue;
+        inverseMaximumBlueChannelValue = 1.f / maximumBlueChannelValue;
         inverseMaximumAlphaChannelValue = 1.f / (float)alphaChannelMask;
     }
 
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
         internalImage.setPixel(x, y, value);
+    }
+
+    void setPixel(unsigned int x, unsigned int y, float redComponent,
+            float greenComponent, float blueComponent) {
+        PixelType rawPixelValue = 0;
+
+        setColorComponent(rawPixelValue, redComponent, maximumRedChannelValue,
+                redChannelShiftAmount, redChannelMask);
+        setColorComponent(rawPixelValue, greenComponent,
+                maximumGreenChannelValue, greenChannelShiftAmount,
+                greenChannelMask);
+        setColorComponent(rawPixelValue, blueComponent, maximumBlueChannelValue,
+                blueChannelShiftAmount, blueChannelMask);
+
+        internalImage.setPixel(x, y, rawPixelValue);
     }
 
     PixelType getPixelValue(unsigned int x, unsigned int y) const override {
@@ -132,6 +155,20 @@ private:
         PixelType value = internalImage.getPixelValue(x, y);
 
         return (value >> channelShiftAmount) & channelMask;
+    }
+
+    void setColorComponent(PixelType& rawPixelValue,
+            float relativeComponentValue, float maximumChannelValue,
+            unsigned int channelShiftAmount, PixelType channelMask) {
+        float absoluteComponentValue =
+                relativeComponentValue * maximumChannelValue;
+
+        auto componentValue = (PixelType)absoluteComponentValue;
+
+        componentValue &= channelMask;
+        componentValue <<= channelShiftAmount;
+
+        rawPixelValue |= componentValue;
     }
 };
 
