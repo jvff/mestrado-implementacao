@@ -4,6 +4,8 @@
 #include <cmath>
 
 #include "Filter.hpp"
+#include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
 #include "RgbImage.hpp"
 #include "SimpleFilter.hpp"
 
@@ -57,6 +59,11 @@ protected:
     float getMaximumLuminanceValue() {
         return std::numeric_limits<DestinationPixelType>::max();
     }
+};
+
+template <typename PixelType>
+class LuminanceFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType> >
+        : public OpenCLFilter<PixelType> {
 };
 
 #endif
