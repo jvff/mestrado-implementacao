@@ -43,3 +43,15 @@ TEST_C(specializationForRgbOpenCLImagesIsSubClassOfFilter) {
 
     AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_C(specializationForRgbOpenCLImagesIsAlsoSubClassOfOpenCLFilter) {
+    using PixelType = unsigned char;
+    using OpenCLImageType = OpenCLImage<PixelType>;
+    using SourceImageType = RgbImage<OpenCLImageType>;
+    using DestinationImageType = OpenCLImageType;
+
+    using FilterType = LuminanceFilter<SourceImageType, DestinationImageType>;
+    using ParentFilter = OpenCLFilter<PixelType>;
+
+    AssertThat<FilterType>::isSubClass(Of<ParentFilter>());
+}
