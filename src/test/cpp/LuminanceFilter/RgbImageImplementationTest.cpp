@@ -3,7 +3,10 @@
 using TypeParameters = ::testing::Types<
         Aliases<RgbImage<SimpleArrayImage<std::uint64_t> >,
                 RgbImage<SimpleArrayImage<std::uint64_t> >,
-                SimpleArrayImage<unsigned char> > >;
+                SimpleArrayImage<unsigned char> >,
+        Aliases<RgbImage<OpenCLImage<std::uint64_t> >,
+                RgbImage<OpenCLImage<std::uint64_t> >,
+                OpenCLImage<std::uint64_t> > >;
 
 TYPED_TEST_CASE(LuminanceFilterRgbImageImplementationTest, TypeParameters);
 
@@ -38,9 +41,16 @@ TEST_C(handlesRgbImages) {
             sourceImage.setPixel(x, y, redComponent, greenComponent,
                     blueComponent);
 
-            float redContribution = 0.2126f * redComponent;
-            float greenContribution = 0.7152f * greenComponent;;
-            float blueContribution = 0.0722f * blueComponent;;
+            auto updatedRedComponent =
+                    sourceImage.getRelativeRedComponent(x, y);
+            auto updatedGreenComponent =
+                    sourceImage.getRelativeGreenComponent(x, y);
+            auto updatedBlueComponent =
+                    sourceImage.getRelativeBlueComponent(x, y);
+
+            float redContribution = 0.2126f * updatedRedComponent;
+            float greenContribution = 0.7152f * updatedGreenComponent;;
+            float blueContribution = 0.0722f * updatedBlueComponent;;
 
             float relativeLuminance = 0.f;
 
@@ -48,10 +58,10 @@ TEST_C(handlesRgbImages) {
             relativeLuminance += greenContribution;
             relativeLuminance += blueContribution;
 
-            DestinationPixelType luminanceValue =
-                    std::round(relativeLuminance * pixelFactor);
+            auto luminanceValue = std::round(relativeLuminance * pixelFactor);
+            auto expectedValue = convertFloatDestinationValue(luminanceValue);
 
-            expectedImage.setPixel(x, y, luminanceValue);
+            expectedImage.setPixel(x, y, expectedValue);
         }
     }
 

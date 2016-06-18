@@ -15,6 +15,9 @@ private:
     template <class ImageType>
     using ImageFactoryPointer = std::shared_ptr<TestImageFactory<ImageType> >;
 
+protected:
+    using DestinationPixelType = typename DestinationImageType::PixelType;
+
 private:
     static ImageFactoryPointer<InternalImageType> internalImageFactory;
     static ImageFactoryPointer<DestinationImageType> destinationImageFactory;
@@ -41,6 +44,28 @@ protected:
             unsigned int height) {
         return destinationImageFactory->createImage(width, height);
     }
+
+    DestinationPixelType convertFloatDestinationValue(float value) {
+        auto saturatedValue = std::numeric_limits<DestinationPixelType>::max();
+        int numberOfRepresentableBits = sizeof(DestinationPixelType) * 8;
+
+        if (std::numeric_limits<DestinationPixelType>::is_signed) {
+            numberOfRepresentableBits -= 1;
+
+            if (value < 0.f)
+                saturatedValue -= 1;
+        } else if (value < 0.f)
+            return 0;
+
+        int exponent;
+
+        std::frexp(value, &exponent);
+
+        if (exponent > numberOfRepresentableBits)
+            return saturatedValue;
+        else
+            return (DestinationPixelType)value;
+    }
 };
 
 template <typename Aliases>
@@ -61,6 +86,7 @@ std::shared_ptr<TestImageFactory<
     TEST_C_FOR_TEST_CASE(LuminanceFilterRgbImageImplementationTest, testName, \
         using SuperClass::createInternalImage; \
         using SuperClass::createDestinationImage; \
+        using SuperClass::convertFloatDestinationValue; \
     )
 
 #endif
