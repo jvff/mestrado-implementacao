@@ -5,6 +5,7 @@
 
 #include "asserts.hpp"
 
+#include "AbstractFilter.hpp"
 #include "Filter.hpp"
 #include "Image.hpp"
 #include "LuminanceFilter.hpp"
