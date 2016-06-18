@@ -79,7 +79,8 @@ template <typename PixelType>
 class LuminanceFilter<RgbImage<OpenCLImage<PixelType> >,
         OpenCLImage<PixelType> >
         : public AbstractFilter<RgbImage<OpenCLImage<PixelType> >,
-                OpenCLImage<PixelType> > {
+                OpenCLImage<PixelType> >,
+        protected OpenCLFilter<PixelType> {
 };
 
 #endif
