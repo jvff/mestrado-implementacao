@@ -11,6 +11,7 @@
 #include "SimpleFilter.hpp"
 
 #include "cl/BypassFilter.h"
+#include "cl/LuminanceFilter.h"
 
 template <typename SourceImageType, typename DestinationImageType>
 class LuminanceFilter : public Filter<SourceImageType, DestinationImageType> {
@@ -81,6 +82,33 @@ class LuminanceFilter<RgbImage<OpenCLImage<PixelType> >,
         : public AbstractFilter<RgbImage<OpenCLImage<PixelType> >,
                 OpenCLImage<PixelType> >,
         protected OpenCLFilter<PixelType> {
+private:
+    using SuperClass = OpenCLFilter<PixelType>;
+    using OpenCLImageType = OpenCLImage<PixelType>;
+    using SourceImageType = RgbImage<OpenCLImageType>;
+    using DestinationImageType = OpenCLImageType;
+
+public:
+    LuminanceFilter()
+            : SuperClass(LuminanceFilterSourceCode, "calculateLuminance") {
+    }
+
+    DestinationImageType apply(const SourceImageType& sourceImage) {
+        auto& internalImage = sourceImage.getInternalImage();
+
+        return OpenCLFilter<PixelType>::apply(internalImage);
+    }
+
+    void apply(const SourceImageType&, DestinationImageType&) override {
+    }
+
+protected:
+    DestinationImageType createDestinationImage(
+            const SourceImageType& sourceImage) override {
+        auto& internalImage = sourceImage.getInternalImage();
+
+        return OpenCLFilter<PixelType>::createDestinationImage(internalImage);
+    }
 };
 
 #endif
