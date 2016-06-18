@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include "AbstractFilter.hpp"
 #include "Filter.hpp"
 #include "OpenCLFilter.hpp"
 #include "OpenCLImage.hpp"
@@ -72,6 +73,13 @@ private:
 public:
     LuminanceFilter() : SuperClass(BypassFilterSourceCode, "copyImage") {
     }
+};
+
+template <typename PixelType>
+class LuminanceFilter<RgbImage<OpenCLImage<PixelType> >,
+        OpenCLImage<PixelType> >
+        : public AbstractFilter<RgbImage<OpenCLImage<PixelType> >,
+                OpenCLImage<PixelType> > {
 };
 
 #endif
