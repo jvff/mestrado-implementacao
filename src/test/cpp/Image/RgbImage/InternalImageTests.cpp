@@ -17,6 +17,23 @@ TEST_C(internalImageCanBeAccessed) {
     assertThat(retrievedInternalImage).isAtSameAddressAs(internalImage);
 }
 
+TEST_C(internalImageCanBeAccessedThroughConstObject) {
+    unsigned int width = 2;
+    unsigned int height = 4;
+
+    auto mockImage = mockSimpleInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    const RgbImageType rgbImage(internalImage);
+
+    auto& retrievedInternalImage = rgbImage.getInternalImage();
+
+    using ResultType = decltype(retrievedInternalImage);
+
+    assertThat<ResultType>(retrievedInternalImage).isConstReference();
+    assertThat(retrievedInternalImage).isAtSameAddressAs(internalImage);
+}
+
 TEST_C(usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
