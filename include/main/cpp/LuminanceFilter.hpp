@@ -9,6 +9,8 @@
 #include "RgbImage.hpp"
 #include "SimpleFilter.hpp"
 
+#include "cl/BypassFilter.h"
+
 template <typename SourceImageType, typename DestinationImageType>
 class LuminanceFilter : public Filter<SourceImageType, DestinationImageType> {
 private:
@@ -64,6 +66,12 @@ protected:
 template <typename PixelType>
 class LuminanceFilter<OpenCLImage<PixelType>, OpenCLImage<PixelType> >
         : public OpenCLFilter<PixelType> {
+private:
+    using SuperClass = OpenCLFilter<PixelType>;
+
+public:
+    LuminanceFilter() : SuperClass(BypassFilterSourceCode, "copyImage") {
+    }
 };
 
 #endif
