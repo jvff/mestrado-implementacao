@@ -80,6 +80,10 @@ public:
         inverseMaximumAlphaChannelValue = 1.f / maximumAlphaChannelValue;
     }
 
+    InternalImageType& getInternalImage() {
+        return internalImage;
+    }
+
     void setPixel(unsigned int x, unsigned int y, PixelType value) override {
         internalImage.setPixel(x, y, value);
     }
