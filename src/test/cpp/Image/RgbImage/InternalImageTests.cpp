@@ -3,6 +3,20 @@
 
 TYPED_TEST_CASE(RgbImageInternalImageTests, PixelTypes);
 
+TEST_C(internalImageCanBeAccessed) {
+    unsigned int width = 2;
+    unsigned int height = 4;
+
+    auto mockImage = mockSimpleInternalImage(width, height);
+    auto& internalImage = mockImage.get();
+
+    RgbImageType rgbImage(internalImage);
+
+    auto& retrievedInternalImage = rgbImage.getInternalImage();
+
+    assertThat(retrievedInternalImage).isAtSameAddressAs(internalImage);
+}
+
 TEST_C(usesInternalImage) {
     unsigned int width = 8;
     unsigned int height = 5;
