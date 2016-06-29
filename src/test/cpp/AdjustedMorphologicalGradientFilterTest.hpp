@@ -8,7 +8,7 @@
 #include "AdjustedMorphologicalGradientFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractMorphologicalGradientTestData.hpp"
+#include "MorphologicalGradientFilter/AbstractMorphologicalGradientTestData.hpp"
 #include "ChainableMethodMacros.hpp"
 #include "DummyTypes.hpp"
 #include "FakeImage.hpp"

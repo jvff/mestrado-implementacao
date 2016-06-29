@@ -5,8 +5,8 @@
 
 #include "SimpleArrayImage.hpp"
 
-#include "AbstractFilterTestData.hpp"
-#include "RectanglePainter.hpp"
+#include "../AbstractFilterTestData.hpp"
+#include "../RectanglePainter.hpp"
 
 template <typename FilterType, typename PixelType,
         typename ImageType = SimpleArrayImage<PixelType> >

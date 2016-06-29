@@ -9,9 +9,10 @@
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractMorphologicalGradientTestData.hpp"
-#include "ChainableMethodMacros.hpp"
-#include "DummyTypes.hpp"
-#include "FakeImage.hpp"
+
+#include "../ChainableMethodMacros.hpp"
+#include "../DummyTypes.hpp"
+#include "../FakeImage.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 class MorphologicalGradientFilterTestData
