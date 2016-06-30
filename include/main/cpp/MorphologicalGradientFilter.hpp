@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
 #include "SimpleFilter.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
@@ -61,6 +63,12 @@ protected:
 
         return pixel;
     }
+};
+
+template <typename PixelType>
+class MorphologicalGradientFilter<OpenCLImage<PixelType>,
+        OpenCLImage<PixelType> >
+        : public OpenCLFilter<PixelType, unsigned int> {
 };
 
 #endif
