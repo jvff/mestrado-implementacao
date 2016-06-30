@@ -3,7 +3,7 @@
 #include "MorphologicalGradientFilterTestData.hpp"
 
 #define TEST_C(TestName) \
-    TEST(MorphologicalGradientFilterTest, TestName)
+    TEST(MorphologicalGradientFilterImplementationTests, TestName)
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MorphologicalGradientFilterTestData<PixelType, ImageType>;
