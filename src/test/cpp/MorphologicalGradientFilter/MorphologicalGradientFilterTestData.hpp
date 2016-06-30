@@ -1,9 +1,5 @@
-#ifndef MORPHOLOGICAL_GRADIENT_FILTER_TEST_HPP
-#define MORPHOLOGICAL_GRADIENT_FILTER_TEST_HPP
-
-#include <gtest/gtest.h>
-
-#include "asserts.hpp"
+#ifndef MORPHOLOGICAL_GRADIENT_FILTER_TEST_DATA_HPP
+#define MORPHOLOGICAL_GRADIENT_FILTER_TEST_DATA_HPP
 
 #include "MorphologicalGradientFilter.hpp"
 #include "SimpleArrayImage.hpp"

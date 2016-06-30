@@ -1,4 +1,6 @@
-#include "MorphologicalGradientFilterTest.hpp"
+#include <gtest/gtest.h>
+
+#include "MorphologicalGradientFilterTestData.hpp"
 
 template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
 using TestData = MorphologicalGradientFilterTestData<PixelType, ImageType>;
