@@ -10,6 +10,7 @@ const std::string OpenCLPixelTypeData<Type>::getPixelKernel \
 const std::string OpenCLPixelTypeData<Type>::kernelPixelType \
         = KernelPixelType
 
+OPENCL_PIXEL_TYPE_DATA_FOR(bool, "ForBoolPixelType", "bool");
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned char, "UsingOneChannel", "uchar");
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned int, "UsingOneChannel", "uint");
 OPENCL_PIXEL_TYPE_DATA_FOR(std::uint64_t, "UsingTwoChannels", "ulong");

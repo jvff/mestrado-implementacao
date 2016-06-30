@@ -21,6 +21,7 @@ struct OpenCLPixelTypeData<Type> { \
     static const std::string kernelPixelType; \
 }
 
+OPENCL_PIXEL_TYPE_DATA_FOR(bool, CL_UNSIGNED_INT8, CL_R);
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned char, CL_UNSIGNED_INT8, CL_R);
 OPENCL_PIXEL_TYPE_DATA_FOR(unsigned int, CL_UNSIGNED_INT32, CL_R);
 OPENCL_PIXEL_TYPE_DATA_FOR(std::uint64_t, CL_UNSIGNED_INT32, CL_RG);
