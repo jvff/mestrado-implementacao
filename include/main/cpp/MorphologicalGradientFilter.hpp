@@ -69,6 +69,13 @@ template <typename PixelType>
 class MorphologicalGradientFilter<OpenCLImage<PixelType>,
         OpenCLImage<PixelType> >
         : public OpenCLFilter<PixelType, unsigned int> {
+private:
+    using SuperClass = OpenCLFilter<PixelType, unsigned int>;
+
+public:
+    MorphologicalGradientFilter(unsigned int structureSize)
+            : SuperClass("", "", structureSize) {
+    }
 };
 
 #endif
