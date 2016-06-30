@@ -8,12 +8,16 @@
 #include "SimpleArrayImage.hpp"
 
 #include "AbstractTestData.hpp"
+#include "TestImageFactory.hpp"
 
 template <typename SourceImageType, typename DestinationImageType>
 class AbstractImageTransformationTestData : public AbstractTestData {
 protected:
     using SourceImagePointer = std::unique_ptr<SourceImageType>;
     using DestinationImagePointer = std::unique_ptr<DestinationImageType>;
+
+    TestImageFactory<SourceImageType> sourceImageFactory;
+    TestImageFactory<DestinationImageType> destinationImageFactory;
 
     unsigned int width;
     unsigned int height;
@@ -36,9 +40,10 @@ public:
 
             updateExpectedDimensions();
 
-            sourceImage.reset(new SourceImageType(width, height));
-            expectedImage.reset(new DestinationImageType(expectedWidth,
-                        expectedHeight));
+            sourceImage.reset(new SourceImageType(
+                    sourceImageFactory.createImage(width, height)));
+            expectedImage.reset(new DestinationImageType(
+                    destinationImageFactory.createImage(width, height)));
 
             state = State::READY;
 

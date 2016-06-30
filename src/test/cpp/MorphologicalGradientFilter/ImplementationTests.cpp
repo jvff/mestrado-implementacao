@@ -1,7 +1,8 @@
 #include "MorphologicalGradientFilterImplementationTests.hpp"
 
 using ImageTypes = ::testing::Types<
-        TestAliases<Image, SimpleArrayImage> >;
+        TestAliases<Image, SimpleArrayImage>,
+        TestAliases<OpenCLImage, OpenCLImage> >;
 
 TYPED_TEST_CASE(MorphologicalGradientFilterImplementationTests, ImageTypes);
 
