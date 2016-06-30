@@ -38,6 +38,8 @@
         assertThat(kernelPixelType).isEqualTo(KernelPixelType); \
     }
 
+TEST_C(Bool, bool, CL_UNSIGNED_INT8, CL_R, "ForBoolPixelType",
+        "bool")
 TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, CL_R, "UsingOneChannel",
         "uchar")
 TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, CL_R, "UsingOneChannel",
