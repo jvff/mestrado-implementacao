@@ -12,7 +12,8 @@ struct PixelTypeImageImplementations
 
 template <>
 struct PixelTypeImageImplementations<bool>
-        : public AbstractPixelTypeImageImplementations<bool, SimpleArrayImage> {
+        : public AbstractPixelTypeImageImplementations<bool, SimpleArrayImage,
+                OpenCLImage> {
 };
 
 template <typename PixelType>
