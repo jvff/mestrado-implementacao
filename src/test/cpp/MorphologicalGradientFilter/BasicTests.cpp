@@ -9,7 +9,10 @@
 #include "../DummyTypes.hpp"
 #include "../FakeImage.hpp"
 
-TEST(MorphologicalGradientFilterTest, classTemplateExists) {
+#define TEST_C(TestName) \
+    TEST(MorphologicalGradientFilterBasicTests, TestName)
+
+TEST_C(classTemplateExists) {
     using SourceImageType = Image<DummyType>;
     using DestinationImageType = FakeImage<DummyType>;
     using DummyFilter = MorphologicalGradientFilter<SourceImageType,
@@ -18,7 +21,7 @@ TEST(MorphologicalGradientFilterTest, classTemplateExists) {
     AssertThat<DummyFilter>::isClassOrStruct();
 }
 
-TEST(MorphologicalGradientFilterTest, isSimpleFilter) {
+TEST_C(isSimpleFilter) {
     using SourcePixelType = DummyTypes<1>;
     using DestinationPixelType = DummyTypes<2>;
     using SourceImageType = Image<SourcePixelType>;
@@ -30,7 +33,7 @@ TEST(MorphologicalGradientFilterTest, isSimpleFilter) {
     AssertThat<SubClass>::isSubClass(Of<SuperClass>());
 }
 
-TEST(MorphologicalGradientFilterTest, isConstructibleWithParameter) {
+TEST_C(isConstructibleWithParameter) {
     using SourceImageType = Image<DummyType>;
     using DestinationImageType = FakeImage<DummyType>;
     using DummyFilter = MorphologicalGradientFilter<SourceImageType,
