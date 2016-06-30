@@ -3,6 +3,8 @@
 #include "asserts.hpp"
 
 #include "Image.hpp"
+#include "OpenCLFilter.hpp"
+#include "OpenCLImage.hpp"
 #include "MorphologicalGradientFilter.hpp"
 #include "SimpleFilter.hpp"
 
@@ -41,4 +43,14 @@ TEST_C(isConstructibleWithParameter) {
     using StructureSizeParameter = unsigned int;
 
     AssertThat<DummyFilter>::isConstructible(With<StructureSizeParameter>());
+}
+
+TEST_C(specializationForOpenCLImagesIsOpenCLFilter) {
+    using PixelType = int;
+    using ImageType = OpenCLImage<PixelType>;
+    using SpecializedFilter = MorphologicalGradientFilter<ImageType, ImageType>;
+    using StructureSizeParameterType = unsigned int;
+    using ParentFilter = OpenCLFilter<PixelType, StructureSizeParameterType>;
+
+    AssertThat<SpecializedFilter>::isSubClass(Of<ParentFilter>());
 }
