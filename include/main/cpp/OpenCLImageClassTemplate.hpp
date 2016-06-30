@@ -91,9 +91,10 @@ private:
         auto sourceCodeSize = sizeof(ImagePixelTasksSourceCode);
         auto sourcePair = std::make_pair(sourceCode, sourceCodeSize);
         auto sources = cl::Program::Sources(1, sourcePair);
+        auto compilerOptions = "-cl-std=CL2.0";
 
         pixelPrograms = cl::Program(context, sources);
-        pixelPrograms.build();
+        pixelPrograms.build(compilerOptions);
     }
 
     void allocateBuffers() {
