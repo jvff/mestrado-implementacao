@@ -54,3 +54,13 @@ TEST_C(specializationForOpenCLImagesIsOpenCLFilter) {
 
     AssertThat<SpecializedFilter>::isSubClass(Of<ParentFilter>());
 }
+
+TEST_C(specializationForOpenCLImagesIsConstructibleWithParameter) {
+    using PixelType = int;
+    using ImageType = OpenCLImage<PixelType>;
+    using SpecializedFilter = MorphologicalGradientFilter<ImageType, ImageType>;
+    using StructureSizeParameter = unsigned int;
+
+    AssertThat<SpecializedFilter>::isConstructible(
+            With<StructureSizeParameter>());
+}
