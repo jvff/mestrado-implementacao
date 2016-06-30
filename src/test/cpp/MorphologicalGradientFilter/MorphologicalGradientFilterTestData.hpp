@@ -1,6 +1,7 @@
 #ifndef MORPHOLOGICAL_GRADIENT_FILTER_TEST_DATA_HPP
 #define MORPHOLOGICAL_GRADIENT_FILTER_TEST_DATA_HPP
 
+#include "Image.hpp"
 #include "MorphologicalGradientFilter.hpp"
 #include "SimpleArrayImage.hpp"
 
@@ -8,16 +9,21 @@
 
 #include "../ChainableMethodMacros.hpp"
 
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
+template <typename PixelType,
+        typename DestinationImageType = SimpleArrayImage<PixelType>,
+        typename SourceImageType = Image<PixelType> >
 class MorphologicalGradientFilterTestData
         : public AbstractMorphologicalGradientTestData<
-                MorphologicalGradientFilter<Image<PixelType>, ImageType>,
-                PixelType, ImageType> {
+                MorphologicalGradientFilter<SourceImageType,
+                        DestinationImageType>,
+                PixelType, DestinationImageType> {
 private:
-    using FilterType = MorphologicalGradientFilter<Image<PixelType>, ImageType>;
+    using FilterType = MorphologicalGradientFilter<SourceImageType,
+            DestinationImageType>;
     using SuperClass = AbstractMorphologicalGradientTestData<FilterType,
-            PixelType, ImageType>;
-    using ThisType = MorphologicalGradientFilterTestData<PixelType, ImageType>;
+            PixelType, DestinationImageType>;
+    using ThisType = MorphologicalGradientFilterTestData<PixelType,
+            DestinationImageType, SourceImageType>;
 
 public:
     ~MorphologicalGradientFilterTestData() {

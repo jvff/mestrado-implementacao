@@ -1,12 +1,9 @@
-#include <gtest/gtest.h>
+#include "MorphologicalGradientFilterImplementationTests.hpp"
 
-#include "MorphologicalGradientFilterTestData.hpp"
+using ImageTypes = ::testing::Types<
+        TestAliases<Image, SimpleArrayImage> >;
 
-#define TEST_C(TestName) \
-    TEST(MorphologicalGradientFilterImplementationTests, TestName)
-
-template <typename PixelType, typename ImageType = SimpleArrayImage<PixelType> >
-using TestData = MorphologicalGradientFilterTestData<PixelType, ImageType>;
+TYPED_TEST_CASE(MorphologicalGradientFilterImplementationTests, ImageTypes);
 
 TEST_C(binarySquare) {
     TestData<bool>()
