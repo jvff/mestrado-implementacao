@@ -2,15 +2,9 @@
 #define OPEN_C_L_IMAGE_COMPARATOR_HPP
 
 #include "OpenCLFilter.hpp"
-#include "OpenCLImage.hpp"
+#include "OpenCLImageClassTemplate.hpp"
 
 #include "cl/ImageComparison.h"
-
-template <typename PixelType, typename... KernelParameterTypes>
-class OpenCLFilter;
-
-template <typename PixelType>
-class OpenCLImage;
 
 template <typename PixelType>
 class OpenCLImageComparator
