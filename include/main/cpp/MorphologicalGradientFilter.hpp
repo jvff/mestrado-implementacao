@@ -7,6 +7,8 @@
 #include "OpenCLImage.hpp"
 #include "SimpleFilter.hpp"
 
+#include "cl/MorphologicalGradientFilter.h"
+
 template <typename SourceImageType, typename DestinationImageType>
 class MorphologicalGradientFilter : public SimpleFilter<SourceImageType,
         DestinationImageType> {
@@ -74,7 +76,21 @@ private:
 
 public:
     MorphologicalGradientFilter(unsigned int structureSize)
-            : SuperClass("", "", structureSize) {
+            : SuperClass(MorphologicalGradientFilterSourceCode, "applyFilter",
+                    structureSize) {
+    }
+};
+
+template <>
+class MorphologicalGradientFilter<OpenCLImage<bool>, OpenCLImage<bool> >
+        : public OpenCLFilter<bool, unsigned int> {
+private:
+    using SuperClass = OpenCLFilter<bool, unsigned int>;
+
+public:
+    MorphologicalGradientFilter(unsigned int structureSize)
+            : SuperClass(MorphologicalGradientFilterSourceCode,
+                    "applyFilterToBoolImage", structureSize) {
     }
 };
 
