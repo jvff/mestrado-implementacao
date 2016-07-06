@@ -16,7 +16,8 @@ private:
     using PixelTypeData = OpenCLPixelTypeData<PixelType>;
     using SuperClass = Image<PixelType>;
 
-    static constexpr unsigned int pixelSize = sizeof(PixelType);
+protected:
+    static constexpr auto pixelBufferSize = PixelTypeData::CL_PIXEL_BUFFER_SIZE;
 
 private:
     cl::Context& context;
@@ -74,7 +75,7 @@ public:
         kernel.setArg(3, pixelBuffer);
 
         commandQueue.enqueueTask(kernel);
-        commandQueue.enqueueReadBuffer(pixelBuffer, CL_TRUE, 0, pixelSize,
+        commandQueue.enqueueReadBuffer(pixelBuffer, CL_TRUE, 0, pixelBufferSize,
                 &result);
 
         return result;
@@ -102,7 +103,7 @@ private:
         auto imageChannelType = PixelTypeData::CL_PIXEL_TYPE;
         auto imageFormat = cl::ImageFormat(imageChannels, imageChannelType);
 
-        pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelSize);
+        pixelBuffer = cl::Buffer(context, CL_MEM_WRITE_ONLY, pixelBufferSize);
 
         imageBuffer = cl::Image2D(context, CL_MEM_READ_WRITE, imageFormat,
                 width, height);
