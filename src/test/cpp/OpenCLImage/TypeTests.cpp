@@ -19,3 +19,14 @@ TEST_C(hasConstructor) {
     AssertThat<ImageType>::isConstructible(With<WidthParameter, HeightParameter,
             ContextParameter, CommandQueueParameter>());
 }
+
+TEST_C(usesCorrectPixelBufferSize) {
+    using FakeImageType = FakeOpenCLImage<PixelType>;
+    using PixelTypeData = OpenCLPixelTypeData<PixelType>;
+
+    constexpr auto pixelBufferSize = FakeImageType::pixelBufferSize;
+    constexpr auto expectedPixelBufferSize =
+                PixelTypeData::CL_PIXEL_BUFFER_SIZE;
+
+    assertThat(pixelBufferSize).isEqualTo(expectedPixelBufferSize);
+}
