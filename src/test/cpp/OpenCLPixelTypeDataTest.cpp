@@ -7,7 +7,7 @@
 #include "OpenCLPixelTypeData.hpp"
 
 #define TEST_C(TypeName, Type, OpenCLPixelType, OpenCLPixelChannels, \
-        KernelSuffix, KernelPixelType) \
+        OpenCLPixelBufferType, KernelSuffix, KernelPixelType) \
     TEST(OpenCLPixelTypeDataTest, hasPixelTypeFor##TypeName) { \
         auto pixelType = OpenCLPixelTypeData<Type>::CL_PIXEL_TYPE; \
         \
@@ -18,6 +18,12 @@
         auto pixelChannels = OpenCLPixelTypeData<Type>::CL_PIXEL_CHANNELS; \
         \
         assertThat(pixelChannels).isEqualTo(OpenCLPixelChannels); \
+    } \
+    \
+    TEST(OpenCLPixelTypeDataTest, hasPixelBufferSizeFor##TypeName) { \
+        auto pixelChannels = OpenCLPixelTypeData<Type>::CL_PIXEL_BUFFER_SIZE; \
+        \
+        assertThat(pixelChannels).isEqualTo(sizeof(OpenCLPixelBufferType)); \
     } \
     \
     TEST(OpenCLPixelTypeDataTest, hasSetPixelKernelFor##TypeName) { \
@@ -38,12 +44,12 @@
         assertThat(kernelPixelType).isEqualTo(KernelPixelType); \
     }
 
-TEST_C(Bool, bool, CL_UNSIGNED_INT8, CL_R, "ForBoolPixelType",
+TEST_C(Bool, bool, CL_UNSIGNED_INT8, CL_R, cl_uchar, "ForBoolPixelType",
         "bool")
-TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, CL_R, "UsingOneChannel",
-        "uchar")
-TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, CL_R, "UsingOneChannel",
-        "uint")
-TEST_C(UnsignedInt64, std::uint64_t, CL_UNSIGNED_INT32, CL_RG,
+TEST_C(UnsignedChar, unsigned char, CL_UNSIGNED_INT8, CL_R, cl_uint,
+        "UsingOneChannel", "uchar")
+TEST_C(UnsignedInt, unsigned int, CL_UNSIGNED_INT32, CL_R, cl_uint,
+        "UsingOneChannel", "uint")
+TEST_C(UnsignedInt64, std::uint64_t, CL_UNSIGNED_INT32, CL_RG, cl_ulong,
         "UsingTwoChannels", "ulong")
-TEST_C(Int, int, CL_SIGNED_INT32, CL_R, "UsingOneChannel", "int")
+TEST_C(Int, int, CL_SIGNED_INT32, CL_R, cl_uint, "UsingOneChannel", "int")
