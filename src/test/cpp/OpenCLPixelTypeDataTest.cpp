@@ -7,7 +7,7 @@
 #include "OpenCLPixelTypeData.hpp"
 
 #define TEST_C(TypeName, Type, OpenCLPixelType, OpenCLPixelChannels, \
-        OpenCLPixelBufferType, KernelSuffix, KernelPixelType) \
+        PixelBufferType, KernelSuffix, KernelPixelType) \
     TEST(OpenCLPixelTypeDataTest, hasPixelTypeFor##TypeName) { \
         auto pixelType = OpenCLPixelTypeData<Type>::CL_PIXEL_TYPE; \
         \
@@ -20,10 +20,17 @@
         assertThat(pixelChannels).isEqualTo(OpenCLPixelChannels); \
     } \
     \
+    TEST(OpenCLPixelTypeDataTest, hasPixelBufferTypeFor##TypeName) { \
+        using BufferType = \
+                typename OpenCLPixelTypeData<Type>::OpenCLPixelBufferType; \
+        \
+        AssertThat<BufferType>::isTheSame(As<PixelBufferType>()); \
+    } \
+    \
     TEST(OpenCLPixelTypeDataTest, hasPixelBufferSizeFor##TypeName) { \
         auto pixelChannels = OpenCLPixelTypeData<Type>::CL_PIXEL_BUFFER_SIZE; \
         \
-        assertThat(pixelChannels).isEqualTo(sizeof(OpenCLPixelBufferType)); \
+        assertThat(pixelChannels).isEqualTo(sizeof(PixelBufferType)); \
     } \
     \
     TEST(OpenCLPixelTypeDataTest, hasSetPixelKernelFor##TypeName) { \
