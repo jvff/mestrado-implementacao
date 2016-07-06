@@ -11,9 +11,11 @@ struct OpenCLPixelTypeData {
 };
 
 #define OPENCL_PIXEL_TYPE_DATA_FOR(Type, OpenCLPixelType, OpenCLPixelChannels, \
-        OpenCLPixelBufferType) \
+        PixelBufferType) \
 template <> \
 struct OpenCLPixelTypeData<Type> { \
+    using OpenCLPixelBufferType = PixelBufferType; \
+    \
     static constexpr auto CL_PIXEL_TYPE = OpenCLPixelType; \
     static constexpr auto CL_PIXEL_CHANNELS = OpenCLPixelChannels; \
     static constexpr auto CL_PIXEL_BUFFER_SIZE = \
