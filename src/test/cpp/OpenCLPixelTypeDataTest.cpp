@@ -27,12 +27,6 @@
         AssertThat<BufferType>::isTheSame(As<PixelBufferType>()); \
     } \
     \
-    TEST(OpenCLPixelTypeDataTest, hasPixelBufferSizeFor##TypeName) { \
-        auto pixelChannels = OpenCLPixelTypeData<Type>::CL_PIXEL_BUFFER_SIZE; \
-        \
-        assertThat(pixelChannels).isEqualTo(sizeof(PixelBufferType)); \
-    } \
-    \
     TEST(OpenCLPixelTypeDataTest, hasSetPixelKernelFor##TypeName) { \
         auto setPixelKernel = OpenCLPixelTypeData<Type>::setPixelKernel; \
         \
