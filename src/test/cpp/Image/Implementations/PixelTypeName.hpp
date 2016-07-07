@@ -17,6 +17,7 @@ struct PixelTypeName {
 };
 
 PIXEL_TYPE_NAME(bool);
+PIXEL_TYPE_NAME(unsigned char);
 PIXEL_TYPE_NAME(std::uint64_t);
 PIXEL_TYPE_NAME(int);
 

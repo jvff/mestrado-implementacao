@@ -82,6 +82,29 @@ public:
 };
 
 template <>
+class PixelTypeImagePatterns<unsigned char>
+        : public AbstractPixelTypeImagePatterns<unsigned char> {
+private:
+    static unsigned char uniquePixels(unsigned int width, unsigned int,
+            unsigned int x, unsigned int y) {
+        return x + y * width;
+    }
+
+    static unsigned char rotatedUniquePixels(unsigned int, unsigned int height,
+            unsigned int x, unsigned int y) {
+        return x * height + y;
+    }
+
+private:
+    using SuperClass = AbstractPixelTypeImagePatterns<unsigned char>;
+
+public:
+    PixelTypeImagePatterns()
+            : SuperClass({ uniquePixels, rotatedUniquePixels }) {
+    }
+};
+
+template <>
 class PixelTypeImagePatterns<int> : public AbstractPixelTypeImagePatterns<int> {
 private:
     static int redGreenBlueStripes(unsigned int, unsigned int, unsigned int x,

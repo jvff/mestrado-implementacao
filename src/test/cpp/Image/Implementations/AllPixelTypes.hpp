@@ -5,6 +5,6 @@
 
 #include "PixelTypesMacro.hpp"
 
-PIXEL_TYPES(bool, int, std::uint64_t);
+PIXEL_TYPES(bool, unsigned char, int, std::uint64_t);
 
 #endif
