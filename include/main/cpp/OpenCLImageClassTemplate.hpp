@@ -17,7 +17,8 @@ private:
     using SuperClass = Image<PixelType>;
 
 protected:
-    static constexpr auto pixelBufferSize = PixelTypeData::CL_PIXEL_BUFFER_SIZE;
+    static constexpr auto pixelBufferSize =
+            sizeof(typename PixelTypeData::OpenCLPixelBufferType);
 
 private:
     cl::Context& context;
