@@ -26,7 +26,7 @@ TEST_C(usesCorrectPixelBufferSize) {
 
     constexpr auto pixelBufferSize = FakeImageType::pixelBufferSize;
     constexpr auto expectedPixelBufferSize =
-                PixelTypeData::CL_PIXEL_BUFFER_SIZE;
+                sizeof(typename PixelTypeData::OpenCLPixelBufferType);
 
     assertThat(pixelBufferSize).isEqualTo(expectedPixelBufferSize);
 }
