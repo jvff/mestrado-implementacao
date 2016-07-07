@@ -18,8 +18,6 @@ struct OpenCLPixelTypeData<Type> { \
     \
     static constexpr auto CL_PIXEL_TYPE = OpenCLPixelType; \
     static constexpr auto CL_PIXEL_CHANNELS = OpenCLPixelChannels; \
-    static constexpr auto CL_PIXEL_BUFFER_SIZE = \
-            sizeof(OpenCLPixelBufferType); \
     \
     static const std::string getPixelKernel; \
     static const std::string setPixelKernel; \
