@@ -14,11 +14,11 @@ template <typename PixelType>
 class OpenCLImage : public Image<PixelType> {
 private:
     using PixelTypeData = OpenCLPixelTypeData<PixelType>;
+    using PixelBufferType = typename PixelTypeData::OpenCLPixelBufferType;
     using SuperClass = Image<PixelType>;
 
 protected:
-    static constexpr auto pixelBufferSize =
-            sizeof(typename PixelTypeData::OpenCLPixelBufferType);
+    static constexpr auto pixelBufferSize = sizeof(PixelBufferType);
 
 private:
     cl::Context& context;
@@ -55,11 +55,12 @@ public:
         const auto& setPixelKernelName = PixelTypeData::setPixelKernel.c_str();
 
         cl::Kernel kernel(pixelPrograms, setPixelKernelName);
+        PixelBufferType argumentValue = value;
 
         kernel.setArg(0, imageBuffer);
         kernel.setArg(1, x);
         kernel.setArg(2, y);
-        kernel.setArg(3, value);
+        kernel.setArg(3, argumentValue);
 
         commandQueue.enqueueTask(kernel);
     }
@@ -68,7 +69,7 @@ public:
         const auto& getPixelKernelName = PixelTypeData::getPixelKernel.c_str();
 
         cl::Kernel kernel(pixelPrograms, getPixelKernelName);
-        PixelType result;
+        PixelBufferType result;
 
         kernel.setArg(0, imageBuffer);
         kernel.setArg(1, x);
@@ -79,7 +80,7 @@ public:
         commandQueue.enqueueReadBuffer(pixelBuffer, CL_TRUE, 0, pixelBufferSize,
                 &result);
 
-        return result;
+        return (PixelType)result;
     }
 
     using SuperClass::setPixel;
